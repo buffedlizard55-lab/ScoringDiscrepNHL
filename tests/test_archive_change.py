@@ -14,9 +14,13 @@ one scoring credit, through the *same* record builder the live monitor uses.
 
 import json
 import os
+import sys
 import tempfile
 import unittest
 from unittest import mock
+
+# same shim as tests/test_core.py: the CI workflow runs discovery without PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
 from nhl_monitor import archive, backfill
 from nhl_monitor.fetch import Response
