@@ -1,5 +1,5 @@
 {
-  "probed_at_utc": "2026-10-07T05:01:08Z",
+  "probed_at_utc": "2026-10-07T05:02:41Z",
   "kind": "GS",
   "game_type": 2,
   "game_no": 1,
@@ -389,9 +389,48 @@
   "earliest_season_with_report": "20002001",
   "latest_frozen_original_season": "20192020",
   "earliest_regenerated_season": "20032004",
-  "interpretation": "In frozen seasons the live document preserves the ORIGINAL game-night ruling, so it can be diffed against the current database to recover scoring changes with both states official. From the earliest regenerated season onward the original bytes are overwritten and only archived snapshots can reveal what changed.",
+  "frozen_seasons": [
+    "20002001",
+    "20012002",
+    "20022003",
+    "20052006",
+    "20062007",
+    "20082009",
+    "20092010",
+    "20102011",
+    "20112012",
+    "20162017",
+    "20182019",
+    "20192020"
+  ],
+  "regenerated_seasons": [
+    "20032004",
+    "20122013",
+    "20132014",
+    "20142015",
+    "20202021",
+    "20212022",
+    "20232024",
+    "20242025",
+    "20252026",
+    "20262027"
+  ],
+  "undetermined_seasons": [
+    "20072008",
+    "20152016",
+    "20172018",
+    "20222023"
+  ],
+  "seasons_without_a_report": [
+    "19992000",
+    "20042005"
+  ],
+  "eras_overlap": true,
+  "interpretation": "The two behaviours are NOT a single era transition and must be measured per season. Where the live document is still the game-night document (footer on the game's own date) it preserves the ORIGINAL ruling, so it can be diffed against the current database to recover a scoring change with both states official. Where the document has been regenerated, the original bytes are gone and only archived snapshots can show what changed - which is why the per-season column, not a cut-off year, is what the backfill should read.",
   "caveats": [
-    "One game per season is probed: a season is only reported as frozen if that game's footer timestamp is on the game's own date.",
-    "A missing report for a mid-season game does not prove the season is absent - re-run with a different --game-no before drawing a conclusion."
+    "One game per season is probed: a season is classified from a single document's footer, so a single season can contain both behaviours.",
+    "A footer a few days after the game (1-4 days) is neither a game-night record nor a late batch rebuild: it may already contain corrections. Treated as weak evidence, not as an original record.",
+    "A missing report for a mid-season game does not prove the season is absent - re-run with a different --game-no before drawing a conclusion.",
+    "20042005 returns 404; that season was not played, so the absence is not a coverage gap. It is listed so the hole is visible rather than silently missing."
   ]
 }
