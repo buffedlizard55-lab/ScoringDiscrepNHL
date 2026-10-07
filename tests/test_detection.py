@@ -369,6 +369,50 @@ class UpsertValidationTests(unittest.TestCase):
         self.assertEqual(merged[0]["notes"], "checked against the sheet by hand")
         self.assertEqual(stats["skipped_human"], 1)
 
+    def test_upsert_refreshes_the_embedded_mirror_on_a_protected_record(self):
+        """A protected status freezes the judgement, not the evidence.
+
+        ``parallel_record`` is the verbatim original from the parallel line, kept
+        "so a reviewer can diff". Before this it was frozen the moment a record
+        reached a human status, so a claim withdrawn upstream stayed asserted here
+        forever - the record's own flags said withdrawn while the mirror it carries
+        still listed the claim, and every derived artifact republished both.
+        """
+        human = self._record(status="verified")
+        human["verification"]["verified_at"] = "2026-10-07"
+        human["parallel_record"] = {"record_id": "NHL-X", "flags": ["claim_later_withdrawn"]}
+
+        incoming = self._record(status="verified")
+        incoming["verification"]["verified_at"] = "2026-10-07"
+        incoming["parallel_record"] = {"record_id": "NHL-X", "flags": ["claim_was_withdrawn"]}
+
+        merged, stats = db_mod.upsert([human], [incoming])
+        self.assertEqual(merged[0]["status"], "verified", "the judgement must stay sticky")
+        self.assertEqual(stats["skipped_human"], 1)
+        self.assertEqual(stats["mirror_refreshed"], 1)
+        self.assertEqual(merged[0]["parallel_record"]["flags"], ["claim_was_withdrawn"])
+
+    def test_upsert_does_not_touch_a_mirror_that_did_not_change(self):
+        human = self._record(status="verified")
+        human["verification"]["verified_at"] = "2026-10-07"
+        mirror = {"record_id": "NHL-X", "flags": ["stable"]}
+        human["parallel_record"] = mirror
+        incoming = self._record(status="verified")
+        incoming["verification"]["verified_at"] = "2026-10-07"
+        incoming["parallel_record"] = json.loads(json.dumps(mirror))
+        merged, stats = db_mod.upsert([human], [incoming])
+        self.assertEqual(stats["mirror_refreshed"], 0)
+        self.assertEqual(merged[0]["parallel_record"]["flags"], ["stable"])
+
+    def test_upsert_never_invents_a_mirror(self):
+        """A record with no mirror must not acquire one from an unrelated sighting."""
+        human = self._record(status="verified")
+        human["verification"]["verified_at"] = "2026-10-07"
+        incoming = self._record(status="flagged")
+        merged, stats = db_mod.upsert([human], [incoming])
+        self.assertNotIn("parallel_record", merged[0])
+        self.assertEqual(stats["mirror_refreshed"], 0)
+
     def test_upsert_adds_and_bumps_seen_count(self):
         a = self._record("SDN-000000000a")
         b = self._record("SDN-000000000b")

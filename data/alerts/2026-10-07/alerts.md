@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (6)
 
-Run `20261007T172255Z-0.4.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261007T173336Z-0.4.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] EDM at VAN - 2026-10-01 (game None)
 

@@ -4,147 +4,6 @@
   "record_count": 11,
   "records": [
     {
-      "record_id": "SDN-0bb32245dc",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "low",
-      "detected_by": "prior_art_log",
-      "detection": {
-        "check_id": "C22",
-        "rule": "goal_clock_conflict",
-        "rule_label": "Goal clock in the official feed disputed by a public audit log",
-        "severity": "low",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": "2018020443",
-        "season": "20182019",
-        "game_type": "REG",
-        "date": "2018-12-07",
-        "away_team": "CAR",
-        "home_team": "ANA",
-        "final_score": {
-          "away": 4,
-          "home": 1
-        },
-        "gamecenter_url": "https://www.nhl.com/gamecenter/2018020443",
-        "report_urls": {
-          "GS": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
-          "PL": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM"
-        }
-      },
-      "discrepancy": {
-        "period": 2,
-        "clock": "18:07",
-        "team": null,
-        "field": "clock",
-        "goal_key": null,
-        "change_type": "goal_clock_conflict",
-        "summary": "Game 2018020443: audit log states the period 2 goal at 18:07 should be 18:05",
-        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1313 to 1315' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
-        "total_changed": false,
-        "attribution_only": false,
-        "goal_no_goal_change": false,
-        "video_review": false,
-        "when_corrected": "not_applicable",
-        "timing_uncertain": true,
-        "market_impact": {
-          "total_changed": false,
-          "affects_game_total": "no",
-          "affects_player_props": "no",
-          "affects_result_markets": "no",
-          "risk": "low",
-          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
-          "rule_class": "timing"
-        },
-        "reason": {
-          "stated_by_league": false,
-          "text": "",
-          "rule_citation": null,
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "official play-by-play feed",
-        "goal_present": true,
-        "ruling": "goal at 18:07 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "18:07",
-        "team": null
-      },
-      "corrected_state": {
-        "artifact": "audit log assertion",
-        "goal_present": true,
-        "ruling": "goal at 18:05 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "18:05",
-        "team": null
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": 0,
-        "basis": "timing only"
-      },
-      "sources": [
-        {
-          "label": "Official GS sheet for game 2018020443 (reviewer to read the SCORING SUMMARY row)",
-          "url": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "Official play-by-play sheet for the same game",
-          "url": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
-          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
-          "kind": "third_party",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "- 2018020443\n\t- Change GOAL from 1313 to 1315"
-        },
-        {
-          "label": "NHL GameCenter landing payload for game 2018020443 (retrieved to establish the teams, date and final score, and to check the disputed clock)",
-          "url": "https://api-web.nhle.com/v1/gamecenter/2018020443/landing",
-          "kind": "official_api",
-          "evidence": "primary",
-          "retrieved_at": "2026-10-07T00:00:00Z",
-          "http_status": 200,
-          "quote": "id 2018020443, season 20182019, gameDate 2018-12-07, gameState OFF, awayTeam CAR score 4, homeTeam ANA score 1; period 2 contains exactly one goal: eventId 244, timeInPeriod 01:53, C. Bishop (8478056), CAR, ev, unassisted",
-          "note": "Retrieved through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts. ADVERSE FINDING: no goal at 18:07 exists in any period of this game, so the clock value this lead disputes is not present in the current official record. Transcript committed at data/evidence/reverify-2026-10-07/gamecenter-2018020443-landing.txt."
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "The official GameCenter payload for this game lists one period-2 goal, at 01:53. The audit log's 18:07 does not appear in any period. Either the log refers to a different game/season numbering or the official record was corrected in a way that also moved the goal. Open the payload and the two official sheets before promoting this record.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "disputed_clock_value_not_present_in_current_official_record",
-        "no_goal_count_or_attribution_impact",
-        "requires_human_verification",
-        "third_party_claim_only"
-      ],
-      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
-      "seen_count": 1
-    },
-    {
       "record_id": "SDN-1e29a4010a",
       "schema_version": "1.0",
       "status": "pending_review",
@@ -834,6 +693,147 @@
       "seen_count": 1
     },
     {
+      "record_id": "SDN-0bb32245dc",
+      "schema_version": "1.0",
+      "status": "pending_review",
+      "confidence": "low",
+      "detected_by": "prior_art_log",
+      "detection": {
+        "check_id": "C22",
+        "rule": "goal_clock_conflict",
+        "rule_label": "Goal clock in the official feed disputed by a public audit log",
+        "severity": "low",
+        "detected_at": "2026-10-07T05:00:00Z",
+        "run_id": "seed-2026-10-07",
+        "tool_version": "0.4.0"
+      },
+      "game": {
+        "game_id": "2018020443",
+        "season": "20182019",
+        "game_type": "REG",
+        "date": "2018-12-07",
+        "away_team": "CAR",
+        "home_team": "ANA",
+        "final_score": {
+          "away": 4,
+          "home": 1
+        },
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2018020443",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
+          "PL": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 2,
+        "clock": "18:07",
+        "team": null,
+        "field": "clock",
+        "goal_key": null,
+        "change_type": "goal_clock_conflict",
+        "summary": "Game 2018020443: audit log states the period 2 goal at 18:07 should be 18:05",
+        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1313 to 1315' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
+        "total_changed": false,
+        "attribution_only": false,
+        "goal_no_goal_change": false,
+        "video_review": false,
+        "when_corrected": "not_applicable",
+        "timing_uncertain": true,
+        "market_impact": {
+          "total_changed": false,
+          "affects_game_total": "no",
+          "affects_player_props": "no",
+          "affects_result_markets": "no",
+          "risk": "low",
+          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
+          "rule_class": "timing"
+        },
+        "reason": {
+          "stated_by_league": false,
+          "text": "",
+          "rule_citation": null,
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "official play-by-play feed",
+        "goal_present": true,
+        "ruling": "goal at 18:07 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "18:07",
+        "team": null
+      },
+      "corrected_state": {
+        "artifact": "audit log assertion",
+        "goal_present": true,
+        "ruling": "goal at 18:05 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "18:05",
+        "team": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 0,
+        "basis": "timing only"
+      },
+      "sources": [
+        {
+          "label": "Official GS sheet for game 2018020443 (reviewer to read the SCORING SUMMARY row)",
+          "url": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "Official play-by-play sheet for the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
+          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
+          "kind": "third_party",
+          "evidence": "secondary",
+          "retrieved_at": "2026-10-07",
+          "quote": "- 2018020443\n\t- Change GOAL from 1313 to 1315"
+        },
+        {
+          "label": "NHL GameCenter landing payload for game 2018020443 (retrieved to establish the teams, date and final score, and to check the disputed clock)",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2018020443/landing",
+          "kind": "official_api",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T00:00:00Z",
+          "http_status": 200,
+          "quote": "id 2018020443, season 20182019, gameDate 2018-12-07, gameState OFF, awayTeam CAR score 4, homeTeam ANA score 1; period 2 contains exactly one goal: eventId 244, timeInPeriod 01:53, C. Bishop (8478056), CAR, ev, unassisted",
+          "note": "Retrieved through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts. ADVERSE FINDING: no goal at 18:07 exists in any period of this game, so the clock value this lead disputes is not present in the current official record. Transcript committed at data/evidence/reverify-2026-10-07/gamecenter-2018020443-landing.txt."
+        }
+      ],
+      "verification": {
+        "status": "pending_review",
+        "evidence_grade": "secondary",
+        "independently_checkable": true,
+        "check_instructions": "The official GameCenter payload for this game lists one period-2 goal, at 01:53. The audit log's 18:07 does not appear in any period. Either the log refers to a different game/season numbering or the official record was corrected in a way that also moved the goal. Open the payload and the two official sheets before promoting this record.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "disputed_clock_value_not_present_in_current_official_record",
+        "no_goal_count_or_attribution_impact",
+        "requires_human_verification",
+        "third_party_claim_only"
+      ],
+      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
+      "first_seen_at": "2026-10-07T05:00:00Z",
+      "seen_count": 1
+    },
+    {
       "record_id": "SDN-e84fc1c8ec",
       "schema_version": "1.0",
       "status": "verified",
@@ -1229,7 +1229,9 @@
             "name": "Highlight clip title inside the official GameCenter payload",
             "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
             "retrieved_at_utc": "2026-10-07T00:00:00Z",
-            "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+            "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+            "evidence_status": "withdrawn",
+            "reverified_at_utc": "2026-10-07T00:00:00Z"
           },
           {
             "role": "official_announcement_reproduction",
@@ -1280,18 +1282,33 @@
         },
         "flags": [
           "assists_before_the_change_not_captured",
+          "initial_state_corroboration_withdrawn_on_reverification",
           "initial_state_reported_by_secondary_source_only",
-          "official_payload_contains_two_different_clip_titles_for_the_same_goal",
           "pre_change_assist_credits_unresolved"
         ],
         "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+        "reverification": {
+          "reverified_at_utc": "2026-10-07T00:00:00Z",
+          "method": "Re-fetched GS021140.HTM and the GameCenter landing payload for 2024021140 through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts, so http_status is inferred from returned content rather than read from a response line.",
+          "confirmed": [
+            "GS021140.HTM row 2: 2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
+            "GS021140.HTM footer: 2025-03-27 8.23.23",
+            "GS021140.HTM header: Start 6:37 CDT; End 9:02 CDT",
+            "GameCenter event 146: playerId 8482110 (Mercer, goalsToDate 16), assists 8482684 (Hughes, 31) and 8480002 (Hischier, 28)"
+          ],
+          "not_confirmed": [
+            "The French highlight-clip title naming Mercer (clip 6370608420112). The payload fetched on the re-check carries a French title naming Meier (clip 6370610205112), so this corroboration of the superseded credit is withdrawn rather than disproved."
+          ],
+          "evidence": "data/evidence/reverify-2026-10-07/",
+          "effect_on_the_record": "None on the corrected state, which stands on the official report and the official announcement. The superseded credit now rests on the secondary reproduction alone, which this record already flagged."
+        },
         "completeness": {
           "missing_requested_fields": [],
           "fields_present": 22,
           "fields_requested": 22,
           "percent_complete": 100.0
         },
-        "revision": 2,
+        "revision": 5,
         "previous_revisions": [
           {
             "record_id": "NHL-20242025-021140-01",
@@ -1426,7 +1443,7 @@
             "reason": {
               "category": "official_source_statement",
               "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
-              "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
+              "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
               "announcement_channel": "NHL Public Relations (@NHLPR)",
               "announcement_issued_on": "2025-03-27"
             },
@@ -1466,7 +1483,9 @@
                 "name": "Highlight clip title inside the official GameCenter payload",
                 "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
                 "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+                "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+                "evidence_status": "withdrawn",
+                "reverified_at_utc": "2026-10-07T00:00:00Z"
               },
               {
                 "role": "official_announcement_reproduction",
@@ -1482,7 +1501,7 @@
                 "name": "NHL Public Relations (@NHLPR)",
                 "url": "https://x.com/NHLPR/status/1905120424146383077",
                 "retrievable_as_text": true,
-                "retrieved_at_utc": null,
+                "retrieved_at_utc": "2026-10-07T00:00:00Z",
                 "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
               },
               {
@@ -1517,23 +1536,28 @@
             },
             "flags": [
               "assists_before_the_change_not_captured",
+              "initial_state_corroboration_withdrawn_on_reverification",
               "initial_state_reported_by_secondary_source_only",
-              "official_payload_contains_two_different_clip_titles_for_the_same_goal",
               "pre_change_assist_credits_unresolved"
             ],
             "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+            "reverification": {
+              "reverified_at_utc": "2026-10-07T00:00:00Z",
+              "evidence": "data/evidence/reverify-2026-10-07/",
+              "note": "The French-clip corroboration of the superseded credit was not reproducible on re-check and is withdrawn. See data/reference/verified_facts.json F17 and F22."
+            },
             "completeness": {
               "missing_requested_fields": [],
               "fields_present": 22,
               "fields_requested": 22,
               "percent_complete": 100.0
             },
-            "revision": 1
+            "revision": 4
           }
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1,
+      "seen_count": 2,
       "reverification": {
         "reverified_at_utc": "2026-10-07T00:00:00Z",
         "evidence": "data/evidence/reverify-2026-10-07/",
@@ -1555,7 +1579,15 @@
           "quote": null,
           "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved."
         }
-      ]
+      ],
+      "detection_history": [
+        {
+          "run_id": "ported-from:CS-2025-03-26-NJD-AT-CHI-G1140",
+          "detected_at": "2026-10-07T00:00:00Z",
+          "machine_status": "verified"
+        }
+      ],
+      "last_seen_at": "2026-10-07T00:00:00Z"
     },
     {
       "record_id": "SDN-35d7818c51",
@@ -2236,7 +2268,15 @@
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1
+      "seen_count": 2,
+      "detection_history": [
+        {
+          "run_id": "ported-from:CS-2025-04-01-NSH-AT-CBJ-G1185",
+          "detected_at": "2026-10-07T00:00:00Z",
+          "machine_status": "verified"
+        }
+      ],
+      "last_seen_at": "2026-10-07T00:00:00Z"
     },
     {
       "record_id": "SDN-2247415389",
@@ -2915,7 +2955,15 @@
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1
+      "seen_count": 2,
+      "detection_history": [
+        {
+          "run_id": "ported-from:CS-2025-04-08-BOS-AT-NJD-G1238",
+          "detected_at": "2026-10-07T00:00:00Z",
+          "machine_status": "verified"
+        }
+      ],
+      "last_seen_at": "2026-10-07T00:00:00Z"
     },
     {
       "record_id": "SDN-42c8407955",
