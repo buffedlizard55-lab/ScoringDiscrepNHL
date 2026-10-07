@@ -144,7 +144,7 @@ python -m nhl_monitor verify --record-id NHL-20232024-020001-01
 python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
 python -m nhl_monitor sources                     # the source registry with verification status
 
-python -m unittest discover -s tests -v           # 43 tests
+python -m unittest discover -s tests -v           # 121 tests
 python tools/build_site.py && python -m http.server 8080 --directory _site   # local site
 ```
 
