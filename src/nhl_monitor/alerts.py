@@ -198,7 +198,127 @@ def write_alert_index(*, root: str = ALERTS_DIR) -> List[str]:
     with open(path, "w") as fh:
         json.dump(index, fh, indent=2, ensure_ascii=False)
         fh.write("\n")
-    return [path]
+    # The site feed lives beside the alerts directory (data/alerts.json next to
+    # data/alerts/), so deriving it from `root` keeps a test's temporary root
+    # isolated instead of writing into the repository.
+    data_dir = os.path.dirname(os.path.abspath(root))
+    return [path] + write_site_feed(
+        alerts,
+        json_path=os.path.join(data_dir, "alerts.json"),
+        rss_path=os.path.join(data_dir, "alerts.xml"),
+    )
+
+
+SITE_ALERTS_PATH = os.path.join(store.DATA_DIR, "alerts.json")
+SITE_RSS_PATH = os.path.join(store.DATA_DIR, "alerts.xml")
+SITE_FEED_MAX = 500
+
+
+def _site_shape(alert: dict) -> dict:
+    """Project a monitor alert into the flat shape the published site and the RSS
+    feed both read.
+
+    The site at the repository root (what GitHub Pages serves) reads
+    ``data/alerts.json``; this monitor writes ``data/alerts/index.json``. Before
+    this projection existed the scheduled monitor could detect a discrepancy,
+    write the alert, and the published Alerts tab would still say "No alerts yet"
+    - which is exactly what it did. One feed, one shape, every writer projects
+    into it.
+    """
+    return {
+        "id": alert.get("alert_id") or alert.get("record_id"),
+        "record_id": alert.get("record_id"),
+        "type": alert.get("discrepancy_type"),
+        "severity": alert.get("severity", "low"),
+        "title": alert.get("title"),
+        "body": alert.get("body_markdown"),
+        "links": alert.get("official_urls") or [],
+        "created_at": alert.get("created_at_utc"),
+        "affects_goal_total": alert.get("affects_goal_total", False),
+        "detected_by": "nhl_monitor",
+    }
+
+
+def write_site_feed(alerts: List[dict], *, json_path: str = SITE_ALERTS_PATH,
+                    rss_path: str = SITE_RSS_PATH) -> List[str]:
+    """Merge projected alerts into data/alerts.json and rewrite data/alerts.xml.
+
+    Existing entries are preserved (the engine's monitor writes this file too) and
+    de-duplicated by id, so re-running a detection route cannot inflate the feed or
+    make an old alert look new.
+    """
+    existing: List[dict] = []
+    try:
+        with open(json_path, encoding="utf-8") as fh:
+            blob = json.load(fh)
+            existing = blob.get("alerts") or []
+    except Exception:
+        existing = []
+
+    by_id: Dict[str, dict] = {}
+    for a in existing:
+        if a.get("id"):
+            by_id[a["id"]] = a
+    for a in alerts:
+        projected = _site_shape(a)
+        if not projected.get("id"):
+            continue
+        previous = by_id.get(projected["id"])
+        if previous and previous.get("created_at"):
+            projected["first_seen_at"] = previous.get("first_seen_at") or previous["created_at"]
+            projected["created_at"] = previous["created_at"]
+        by_id[projected["id"]] = projected
+
+    merged = sorted(by_id.values(), key=lambda a: a.get("created_at") or "", reverse=True)
+    merged = merged[:SITE_FEED_MAX]
+    now = store.utcnow()
+    with open(json_path, "w", encoding="utf-8") as fh:
+        json.dump({"schema_version": 1, "generated_at": now, "alerts": merged},
+                  fh, indent=2, ensure_ascii=False)
+        fh.write("\n")
+    _write_site_rss(merged, now, rss_path)
+    return [json_path, rss_path]
+
+
+def _write_site_rss(alerts: List[dict], now: str, rss_path: str = SITE_RSS_PATH) -> None:
+    import html as _html
+    from email.utils import format_datetime
+    from datetime import datetime, timezone
+
+    def pubdate(value: str) -> str:
+        try:
+            dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            return format_datetime(dt, usegmt=True)
+        except (ValueError, TypeError):
+            return value or now
+
+    items = []
+    for a in alerts[:50]:
+        links = "".join(
+            f'<p><a href="{_html.escape(l)}">{_html.escape(l)}</a></p>'
+            for l in (a.get("links") or []) if l
+        )
+        items.append(
+            "    <item>\n"
+            f"      <title>{_html.escape(a.get('title') or '')}</title>\n"
+            f"      <guid isPermaLink=\"false\">sdnhl-{_html.escape(str(a.get('id') or ''))}</guid>\n"
+            f"      <pubDate>{pubdate(a.get('created_at'))}</pubDate>\n"
+            f"      <description>{_html.escape(a.get('body') or '')}{links}</description>\n"
+            "    </item>"
+        )
+    rss = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0">\n  <channel>\n'
+        "    <title>ScoringDiscrepNHL alerts</title>\n"
+        "    <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>\n"
+        "    <description>Automated alerts for detected NHL scoring discrepancies and "
+        "corrections. Every alert links to official-source evidence.</description>\n"
+        f"    <lastBuildDate>{pubdate(now)}</lastBuildDate>\n"
+        + ("\n".join(items) + "\n" if items else "")
+        + "  </channel>\n</rss>\n"
+    )
+    with open(rss_path, "w", encoding="utf-8") as fh:
+        fh.write(rss)
 
 
 def open_github_issue(title: str, body: str, *, labels: Optional[List[str]] = None,

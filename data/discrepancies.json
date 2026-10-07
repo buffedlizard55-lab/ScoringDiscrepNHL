@@ -1,643 +1,8 @@
 {
   "schema_version": "1.0",
   "generated_by": "pipeline/nhl_scoring (db.py)",
-  "record_count": 1473,
+  "record_count": 1469,
   "records": [
-    {
-      "record_id": "SDN-0bb32245dc",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "low",
-      "detected_by": "prior_art_log",
-      "detection": {
-        "check_id": "C22",
-        "rule": "goal_clock_conflict",
-        "rule_label": "Goal clock in the official feed disputed by a public audit log",
-        "severity": "low",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": "2018020443",
-        "season": "20182019",
-        "game_type": "REG",
-        "date": null,
-        "away_team": null,
-        "home_team": null,
-        "final_score": null,
-        "gamecenter_url": "https://www.nhl.com/gamecenter/2018020443",
-        "report_urls": {
-          "GS": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
-          "PL": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM"
-        }
-      },
-      "discrepancy": {
-        "period": 2,
-        "clock": "18:07",
-        "team": null,
-        "field": "clock",
-        "goal_key": null,
-        "change_type": "goal_clock_conflict",
-        "summary": "Game 2018020443: audit log states the period 2 goal at 18:07 should be 18:05",
-        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1313 to 1315' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
-        "total_changed": false,
-        "attribution_only": false,
-        "goal_no_goal_change": false,
-        "video_review": false,
-        "when_corrected": "not_applicable",
-        "timing_uncertain": true,
-        "market_impact": {
-          "total_changed": false,
-          "affects_game_total": "no",
-          "affects_player_props": "no",
-          "affects_result_markets": "no",
-          "risk": "low",
-          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
-          "rule_class": "timing"
-        },
-        "reason": {
-          "stated_by_league": false,
-          "text": "",
-          "rule_citation": null,
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "official play-by-play feed",
-        "goal_present": true,
-        "ruling": "goal at 18:07 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "18:07",
-        "team": null
-      },
-      "corrected_state": {
-        "artifact": "audit log assertion",
-        "goal_present": true,
-        "ruling": "goal at 18:05 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "18:05",
-        "team": null
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": 0,
-        "basis": "timing only"
-      },
-      "sources": [
-        {
-          "label": "Official GS sheet for game 2018020443 (reviewer to read the SCORING SUMMARY row)",
-          "url": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "Official play-by-play sheet for the same game",
-          "url": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
-          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
-          "kind": "third_party",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "- 2018020443\n\t- Change GOAL from 1313 to 1315"
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "requires_human_verification",
-        "third_party_claim_only",
-        "no_goal_count_or_attribution_impact"
-      ],
-      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
-      "seen_count": 1
-    },
-    {
-      "record_id": "SDN-1e29a4010a",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "low",
-      "detected_by": "prior_art_log",
-      "detection": {
-        "check_id": "C22",
-        "rule": "goal_clock_conflict",
-        "rule_label": "Goal clock in the official feed disputed by a public audit log",
-        "severity": "low",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": "2016020609",
-        "season": "20162017",
-        "game_type": "REG",
-        "date": null,
-        "away_team": null,
-        "home_team": null,
-        "final_score": null,
-        "gamecenter_url": "https://www.nhl.com/gamecenter/2016020609",
-        "report_urls": {
-          "GS": "https://www.nhl.com/scores/htmlreports/20162017/GS020609.HTM",
-          "PL": "https://www.nhl.com/scores/htmlreports/20162017/PL020609.HTM"
-        }
-      },
-      "discrepancy": {
-        "period": 3,
-        "clock": "01:05",
-        "team": null,
-        "field": "clock",
-        "goal_key": null,
-        "change_type": "goal_clock_conflict",
-        "summary": "Game 2016020609: audit log states the period 3 goal at 01:05 should be 01:00",
-        "detail": "Third-party PBP audit log entry: 'Change GOAL from 3535 to 3540' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
-        "total_changed": false,
-        "attribution_only": false,
-        "goal_no_goal_change": false,
-        "video_review": false,
-        "when_corrected": "not_applicable",
-        "timing_uncertain": true,
-        "market_impact": {
-          "total_changed": false,
-          "affects_game_total": "no",
-          "affects_player_props": "no",
-          "affects_result_markets": "no",
-          "risk": "low",
-          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
-          "rule_class": "timing"
-        },
-        "reason": {
-          "stated_by_league": false,
-          "text": "",
-          "rule_citation": null,
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "official play-by-play feed",
-        "goal_present": true,
-        "ruling": "goal at 01:05 of period 3",
-        "scorer": null,
-        "assists": [],
-        "period": 3,
-        "clock": "01:05",
-        "team": null
-      },
-      "corrected_state": {
-        "artifact": "audit log assertion",
-        "goal_present": true,
-        "ruling": "goal at 01:00 of period 3",
-        "scorer": null,
-        "assists": [],
-        "period": 3,
-        "clock": "01:00",
-        "team": null
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": 0,
-        "basis": "timing only"
-      },
-      "sources": [
-        {
-          "label": "Official GS sheet for game 2016020609 (reviewer to read the SCORING SUMMARY row)",
-          "url": "https://www.nhl.com/scores/htmlreports/20162017/GS020609.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "Official play-by-play sheet for the same game",
-          "url": "https://www.nhl.com/scores/htmlreports/20162017/PL020609.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
-          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
-          "kind": "third_party",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "- 2016020609\n\t- Change GOAL from 3535 to 3540"
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "requires_human_verification",
-        "third_party_claim_only",
-        "no_goal_count_or_attribution_impact"
-      ],
-      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
-      "seen_count": 1
-    },
-    {
-      "record_id": "SDN-61c6c6d83f",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "low",
-      "detected_by": "prior_art_log",
-      "detection": {
-        "check_id": "C22",
-        "rule": "goal_clock_conflict",
-        "rule_label": "Goal clock in the official feed disputed by a public audit log",
-        "severity": "low",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": "2019030232",
-        "season": "20192020",
-        "game_type": "PO",
-        "date": null,
-        "away_team": null,
-        "home_team": null,
-        "final_score": null,
-        "gamecenter_url": "https://www.nhl.com/gamecenter/2019030232",
-        "report_urls": {
-          "GS": "https://www.nhl.com/scores/htmlreports/20192020/GS030232.HTM",
-          "PL": "https://www.nhl.com/scores/htmlreports/20192020/PL030232.HTM"
-        }
-      },
-      "discrepancy": {
-        "period": 3,
-        "clock": "00:30",
-        "team": null,
-        "field": "clock",
-        "goal_key": null,
-        "change_type": "goal_clock_conflict",
-        "summary": "Game 2019030232: audit log states the period 3 goal at 00:30 should be 00:29",
-        "detail": "Third-party PBP audit log entry: 'Change GOAL from 3570 to 3571' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
-        "total_changed": false,
-        "attribution_only": false,
-        "goal_no_goal_change": false,
-        "video_review": false,
-        "when_corrected": "not_applicable",
-        "timing_uncertain": true,
-        "market_impact": {
-          "total_changed": false,
-          "affects_game_total": "no",
-          "affects_player_props": "no",
-          "affects_result_markets": "no",
-          "risk": "low",
-          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
-          "rule_class": "timing"
-        },
-        "reason": {
-          "stated_by_league": false,
-          "text": "",
-          "rule_citation": null,
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "official play-by-play feed",
-        "goal_present": true,
-        "ruling": "goal at 00:30 of period 3",
-        "scorer": null,
-        "assists": [],
-        "period": 3,
-        "clock": "00:30",
-        "team": null
-      },
-      "corrected_state": {
-        "artifact": "audit log assertion",
-        "goal_present": true,
-        "ruling": "goal at 00:29 of period 3",
-        "scorer": null,
-        "assists": [],
-        "period": 3,
-        "clock": "00:29",
-        "team": null
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": 0,
-        "basis": "timing only"
-      },
-      "sources": [
-        {
-          "label": "Official GS sheet for game 2019030232 (reviewer to read the SCORING SUMMARY row)",
-          "url": "https://www.nhl.com/scores/htmlreports/20192020/GS030232.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "Official play-by-play sheet for the same game",
-          "url": "https://www.nhl.com/scores/htmlreports/20192020/PL030232.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
-          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
-          "kind": "third_party",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "- 2019030232\n\t- Change GOAL from 3570 to 3571"
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "requires_human_verification",
-        "third_party_claim_only",
-        "no_goal_count_or_attribution_impact"
-      ],
-      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
-      "seen_count": 1
-    },
-    {
-      "record_id": "SDN-bf5aea9b8c",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "low",
-      "detected_by": "prior_art_log",
-      "detection": {
-        "check_id": "C22",
-        "rule": "goal_clock_conflict",
-        "rule_label": "Goal clock in the official feed disputed by a public audit log",
-        "severity": "low",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": "2019021019",
-        "season": "20192020",
-        "game_type": "REG",
-        "date": null,
-        "away_team": null,
-        "home_team": null,
-        "final_score": null,
-        "gamecenter_url": "https://www.nhl.com/gamecenter/2019021019",
-        "report_urls": {
-          "GS": "https://www.nhl.com/scores/htmlreports/20192020/GS021019.HTM",
-          "PL": "https://www.nhl.com/scores/htmlreports/20192020/PL021019.HTM"
-        }
-      },
-      "discrepancy": {
-        "period": 2,
-        "clock": "09:55",
-        "team": null,
-        "field": "clock",
-        "goal_key": null,
-        "change_type": "goal_clock_conflict",
-        "summary": "Game 2019021019: audit log states the period 2 goal at 09:55 should be 09:54",
-        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1805 to 1806' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
-        "total_changed": false,
-        "attribution_only": false,
-        "goal_no_goal_change": false,
-        "video_review": false,
-        "when_corrected": "not_applicable",
-        "timing_uncertain": true,
-        "market_impact": {
-          "total_changed": false,
-          "affects_game_total": "no",
-          "affects_player_props": "no",
-          "affects_result_markets": "no",
-          "risk": "low",
-          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
-          "rule_class": "timing"
-        },
-        "reason": {
-          "stated_by_league": false,
-          "text": "",
-          "rule_citation": null,
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "official play-by-play feed",
-        "goal_present": true,
-        "ruling": "goal at 09:55 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "09:55",
-        "team": null
-      },
-      "corrected_state": {
-        "artifact": "audit log assertion",
-        "goal_present": true,
-        "ruling": "goal at 09:54 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "09:54",
-        "team": null
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": 0,
-        "basis": "timing only"
-      },
-      "sources": [
-        {
-          "label": "Official GS sheet for game 2019021019 (reviewer to read the SCORING SUMMARY row)",
-          "url": "https://www.nhl.com/scores/htmlreports/20192020/GS021019.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "Official play-by-play sheet for the same game",
-          "url": "https://www.nhl.com/scores/htmlreports/20192020/PL021019.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
-          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
-          "kind": "third_party",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "- 2019021019\n\t- Change GOAL from 1805 to 1806"
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "requires_human_verification",
-        "third_party_claim_only",
-        "no_goal_count_or_attribution_impact"
-      ],
-      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
-      "seen_count": 1
-    },
-    {
-      "record_id": "SDN-fa5dbc0a87",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "low",
-      "detected_by": "prior_art_log",
-      "detection": {
-        "check_id": "C22",
-        "rule": "goal_clock_conflict",
-        "rule_label": "Goal clock in the official feed disputed by a public audit log",
-        "severity": "low",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": "2015020557",
-        "season": "20152016",
-        "game_type": "REG",
-        "date": null,
-        "away_team": null,
-        "home_team": null,
-        "final_score": null,
-        "gamecenter_url": "https://www.nhl.com/gamecenter/2015020557",
-        "report_urls": {
-          "GS": "https://www.nhl.com/scores/htmlreports/20152016/GS020557.HTM",
-          "PL": "https://www.nhl.com/scores/htmlreports/20152016/PL020557.HTM"
-        }
-      },
-      "discrepancy": {
-        "period": 2,
-        "clock": "19:15",
-        "team": null,
-        "field": "clock",
-        "goal_key": null,
-        "change_type": "goal_clock_conflict",
-        "summary": "Game 2015020557: audit log states the period 2 goal at 19:15 should be 19:14",
-        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1245 to 1246' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
-        "total_changed": false,
-        "attribution_only": false,
-        "goal_no_goal_change": false,
-        "video_review": false,
-        "when_corrected": "not_applicable",
-        "timing_uncertain": true,
-        "market_impact": {
-          "total_changed": false,
-          "affects_game_total": "no",
-          "affects_player_props": "no",
-          "affects_result_markets": "no",
-          "risk": "low",
-          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
-          "rule_class": "timing"
-        },
-        "reason": {
-          "stated_by_league": false,
-          "text": "",
-          "rule_citation": null,
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "official play-by-play feed",
-        "goal_present": true,
-        "ruling": "goal at 19:15 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "19:15",
-        "team": null
-      },
-      "corrected_state": {
-        "artifact": "audit log assertion",
-        "goal_present": true,
-        "ruling": "goal at 19:14 of period 2",
-        "scorer": null,
-        "assists": [],
-        "period": 2,
-        "clock": "19:14",
-        "team": null
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": 0,
-        "basis": "timing only"
-      },
-      "sources": [
-        {
-          "label": "Official GS sheet for game 2015020557 (reviewer to read the SCORING SUMMARY row)",
-          "url": "https://www.nhl.com/scores/htmlreports/20152016/GS020557.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "Official play-by-play sheet for the same game",
-          "url": "https://www.nhl.com/scores/htmlreports/20152016/PL020557.HTM",
-          "kind": "official_report",
-          "evidence": "primary",
-          "retrieved_at": ""
-        },
-        {
-          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
-          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
-          "kind": "third_party",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "- 2015020557\n\t- Change GOAL from 1245 to 1246"
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "requires_human_verification",
-        "third_party_claim_only",
-        "no_goal_count_or_attribution_impact"
-      ],
-      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
-      "seen_count": 1
-    },
     {
       "record_id": "SDN-87fb3e543f",
       "schema_version": "1.0",
@@ -1158,7 +523,7 @@
     {
       "record_id": "SDN-5398241ee2",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -1305,7 +670,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -1315,7 +680,8 @@
       },
       "flags": [
         "pbp_crosscheck_inconclusive",
-        "review_type_inferred"
+        "review_type_inferred",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: verdict sentence: overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -1324,7 +690,7 @@
     {
       "record_id": "SDN-b9e7a69fd5",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -1471,7 +837,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -1481,7 +847,8 @@
       },
       "flags": [
         "pbp_crosscheck_inconclusive",
-        "review_type_inferred"
+        "review_type_inferred",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: verdict sentence: overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -2511,7 +1878,7 @@
     {
       "record_id": "SDN-d91baddb1f",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -2658,7 +2025,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -2668,7 +2035,8 @@
       },
       "flags": [
         "pbp_crosscheck_inconclusive",
-        "review_type_inferred"
+        "review_type_inferred",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: verdict sentence: overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -3669,7 +3037,7 @@
     {
       "record_id": "SDN-10d9fbe23e",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -3816,7 +3184,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -3826,7 +3194,8 @@
       },
       "flags": [
         "pbp_crosscheck_inconclusive",
-        "review_type_inferred"
+        "review_type_inferred",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: result line: Original call is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -7304,7 +6673,7 @@
     {
       "record_id": "SDN-03fb8fe4e2",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -7478,7 +6847,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -7489,7 +6858,8 @@
       "flags": [
         "final_team_unresolved",
         "pbp_conflicts_with_situation_room_statement",
-        "review_type_inferred"
+        "review_type_inferred",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: result line: Review overturns \"Interference on the Goalkeeper\" decision that resulted in a \"no goal\" call.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -7658,6 +7028,170 @@
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: result line: Review overturns call of no goaltender interference, no goal Canadiens.",
       "first_seen_at": "2026-10-07T17:33:05Z",
+      "seen_count": 1
+    },
+    {
+      "record_id": "SDN-c869b6e308",
+      "schema_version": "1.0",
+      "status": "flagged",
+      "confidence": "medium",
+      "detected_by": "league_statement",
+      "detection": {
+        "check_id": "SR1",
+        "rule": "situation_room_no_goal_overturned_to_goal",
+        "rule_label": "Situation Room statement: on-ice call overturned",
+        "severity": "high",
+        "detected_at": "2026-10-07T20:39:47Z",
+        "run_id": "offline-fix-20261007",
+        "tool_version": "0.5.0",
+        "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+        "statement_published_at": "2016-11-13T01:12:23Z"
+      },
+      "game": {
+        "game_id": "2016020213",
+        "season": "20162017",
+        "game_type": "REG",
+        "date": "2016-11-12",
+        "away_team": "SJS",
+        "home_team": "TBL",
+        "venue": null,
+        "final_score": {
+          "away": null,
+          "home": null
+        },
+        "game_state": null,
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2016020213",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20162017/GS020213.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 1,
+        "period_type": "REG",
+        "clock": "07:18",
+        "team": null,
+        "field": "goal_added",
+        "goal_key": "P1@07:18",
+        "change_type": "no_goal_overturned_to_goal",
+        "summary": "Coach's Challenge (Goaltender Interference): on-ice no-goal overturned, goal awarded to the attacking team at 07:18 of period 1",
+        "detail": "At 7:18 of the first period in the Sharks/Lightning game, San Jose requested a Coach's Challenge to review the \"Interference on the Goalkeeper\" decision that resulted in a \"no goal\" call.After reviewing all available replays and consulting with the referee, NHL Hockey Operations staff determined that Tampa Bay's Brayden Point made contact with goaltender Ben Bishop, resulting in the puck crossing the goal line.Therefore the original call is overturned - good goal San Jose Sharks.Since the Coach's Challenge resulted in the original call being overturned, the Sharks retain their time-out.",
+        "total_changed": true,
+        "attribution_only": false,
+        "goal_no_goal_change": true,
+        "video_review": true,
+        "when_corrected": "in_game",
+        "timing_uncertain": false,
+        "market_impact": {
+          "total_changed": true,
+          "affects_game_total": "yes",
+          "affects_period_total": "yes",
+          "affects_player_props": "yes",
+          "affects_result_markets": "yes",
+          "risk": "medium",
+          "settlement_window": "in_game",
+          "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+          "rule_class": "total"
+        },
+        "review": {
+          "kind": "coach_challenge",
+          "type_group": "Goaltender Interference",
+          "initiated_by": "San Jose",
+          "type": "Goaltender Interference",
+          "type_inferred": true,
+          "result": "Review overturns \"Interference on the Goalkeeper\" decision that resulted in a \"no goal\" call",
+          "on_ice_call": "no_goal",
+          "final_call": "goal",
+          "outcome": "overturned",
+          "classification_confidence": "medium",
+          "classification_basis": "offline re-read of the result line (prose names the reversed call); confirm on next full ingest",
+          "clock_reset": null,
+          "statement_format": "prose"
+        },
+        "reason": {
+          "stated_by_league": true,
+          "text": "At 7:18 of the first period in the Sharks/Lightning game, San Jose requested a Coach's Challenge to review the \"Interference on the Goalkeeper\" decision that resulted in a \"no goal\" call.After reviewing all available replays and consulting with the referee, NHL Hockey Operations staff determined that Tampa Bay's Brayden Point made contact with goaltender Ben Bishop, resulting in the puck crossing the goal line.Therefore the original call is overturned - good goal San Jose Sharks.Since the Coach's Challenge resulted in the original call being overturned, the Sharks retain their time-out.",
+          "rule_citation": "",
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "on-ice call, as described in the NHL Situation Room statement",
+        "goal_present": false,
+        "ruling": "no_goal",
+        "scorer": null,
+        "assists": [],
+        "period": 1,
+        "clock": "07:18",
+        "team": null,
+        "score_after": null,
+        "note": null
+      },
+      "corrected_state": {
+        "artifact": "NHL Situation Room result",
+        "goal_present": true,
+        "ruling": "goal",
+        "scorer": null,
+        "assists": [],
+        "period": 1,
+        "clock": "07:18",
+        "team": null,
+        "score_after": null,
+        "event_id": null,
+        "shot_type": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 1,
+        "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+      },
+      "sources": [
+        {
+          "label": "NHL Situation Room statement - Coach's Challenge: SJS @ TBL - 7:18 of First Period",
+          "url": "https://www.nhl.com/news/coach-challenge-san-jose-sharks-tampa-bay-lightning-283673292",
+          "kind": "official_statement",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T17:20:30Z",
+          "quote": "Review overturns \"Interference on the Goalkeeper\" decision that resulted in a \"no goal\" call"
+        },
+        {
+          "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+          "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/coach-challenge-san-jose-sharks-tampa-bay-lightning-283673292",
+          "kind": "official_api",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T17:20:30Z",
+          "note": "contentDate 2016-11-13T01:12:23Z"
+        },
+        {
+          "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+          "url": "https://www.nhl.com/scores/htmlreports/20162017/GS020213.HTM",
+          "kind": "official_report",
+          "evidence": "reference",
+          "retrieved_at": "",
+          "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+        }
+      ],
+      "verification": {
+        "status": "flagged",
+        "evidence_grade": "primary",
+        "independently_checkable": true,
+        "method": "league_statement",
+        "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2016020213/play-by-play and look at period 1 around 07:18: a goal event for the awarded team must be present. The GS report should show the same scoring summary.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "awaiting_pbp_crosscheck",
+        "final_team_unresolved",
+        "needs_human_read_of_on_ice_call",
+        "reclassified_offline_pending_reparse",
+        "review_type_inferred"
+      ],
+      "notes": [
+        "Ingested from the official NHL Situation Room feed (prose format). Classification basis: offline re-read of the result line (prose names the reversed call); confirm on next full ingest.",
+        "2026-10-07: direction re-read offline from the result line (2016-17 prose names the reversed call); the full statement is re-parsed on the next full ingest and the play-by-play cross-check re-run."
+      ],
+      "first_seen_at": "2026-10-07T20:39:47Z",
       "seen_count": 1
     },
     {
@@ -12979,7 +12513,7 @@
     {
       "record_id": "SDN-12a2e1834f",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -13126,7 +12660,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -13137,10 +12671,175 @@
       "flags": [
         "game_id_resolved_from_schedule",
         "pbp_conflicts_with_situation_room_statement",
-        "review_type_inferred"
+        "review_type_inferred",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (prose format). Classification basis: result line: Goal overturned as Stars deemed offsides.",
       "first_seen_at": "2026-10-07T17:33:05Z",
+      "seen_count": 1
+    },
+    {
+      "record_id": "SDN-e7b66b9048",
+      "schema_version": "1.0",
+      "status": "flagged",
+      "confidence": "medium",
+      "detected_by": "league_statement",
+      "detection": {
+        "check_id": "SR1",
+        "rule": "situation_room_goal_overturned_to_no_goal",
+        "rule_label": "Situation Room statement: on-ice call overturned",
+        "severity": "high",
+        "detected_at": "2026-10-07T20:39:47Z",
+        "run_id": "offline-fix-20261007",
+        "tool_version": "0.5.0",
+        "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+        "statement_published_at": "2017-01-16T19:28:47Z"
+      },
+      "game": {
+        "game_id": "2016020657",
+        "season": "20162017",
+        "game_type": "REG",
+        "date": "2017-01-16",
+        "away_team": "DAL",
+        "home_team": "BUF",
+        "venue": null,
+        "final_score": {
+          "away": null,
+          "home": null
+        },
+        "game_state": null,
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2016020657",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20162017/GS020657.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 2,
+        "period_type": "REG",
+        "clock": "01:38",
+        "team": "DAL",
+        "field": "goal_removed",
+        "goal_key": "P2@01:38",
+        "change_type": "goal_overturned_to_no_goal",
+        "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal DAL at 01:38 of period 2",
+        "detail": "At 1:38 of the second period in the Stars/Sabres game, Buffalo requested a Coach's Challenge to determine whether Dallas was off-side prior to their goal.\n\nAfter reviewing all available replays and consulting with the linesmen, NHL Hockey Operations staff determined that Dallas' Patrick Eaves was off-side prior to the goal. According to Rule 78.7, \"The standard for overturning the call in the event of a 'GOAL' call on the ice is that the Toronto Video Room, after reviewing any and all available replays and consulting with the Linesman, determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an \"Off-side\" infraction; where this standard is met, the goal will be disallowed.\"Therefore the original call is overturned - no goal Dallas Stars.The clock is re-set to show 18:31 (1:29 elapsed time), when the off-side infraction occurred.Since the Coach's Challenge resulted in the original call being overturned, the Buffalo Sabres retain their time-out.",
+        "total_changed": true,
+        "attribution_only": false,
+        "goal_no_goal_change": true,
+        "video_review": true,
+        "when_corrected": "in_game",
+        "timing_uncertain": false,
+        "market_impact": {
+          "total_changed": true,
+          "affects_game_total": "yes",
+          "affects_period_total": "yes",
+          "affects_player_props": "yes",
+          "affects_result_markets": "yes",
+          "risk": "medium",
+          "settlement_window": "in_game",
+          "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+          "rule_class": "total"
+        },
+        "review": {
+          "kind": "coach_challenge",
+          "type_group": "Off-Side",
+          "initiated_by": "Buffalo",
+          "type": "Off-Side",
+          "type_inferred": true,
+          "result": "Goal overturned as Stars deemed offsides",
+          "on_ice_call": "goal",
+          "final_call": "no_goal",
+          "outcome": "overturned",
+          "classification_confidence": "medium",
+          "classification_basis": "offline re-read of the result line (prose names the reversed call); confirm on next full ingest",
+          "clock_reset": null,
+          "statement_format": "prose"
+        },
+        "reason": {
+          "stated_by_league": true,
+          "text": "At 1:38 of the second period in the Stars/Sabres game, Buffalo requested a Coach's Challenge to determine whether Dallas was off-side prior to their goal.\n\nAfter reviewing all available replays and consulting with the linesmen, NHL Hockey Operations staff determined that Dallas' Patrick Eaves was off-side prior to the goal. According to Rule 78.7, \"The standard for overturning the call in the event of a 'GOAL' call on the ice is that the Toronto Video Room, after reviewing any and all available replays and consulting with the Linesman, determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an \"Off-side\" infraction; where this standard is met, the goal will be disallowed.\"Therefore the original call is overturned - no goal Dallas Stars.The clock is re-set to show 18:31 (1:29 elapsed time), when the off-side infraction occurred.Since the Coach's Challenge resulted in the original call being overturned, the Buffalo Sabres retain their time-out.",
+          "rule_citation": "78.7",
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "on-ice call, as described in the NHL Situation Room statement",
+        "goal_present": true,
+        "ruling": "goal",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "01:38",
+        "team": "DAL",
+        "score_after": null,
+        "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+      },
+      "corrected_state": {
+        "artifact": "NHL Situation Room result",
+        "goal_present": false,
+        "ruling": "no_goal",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "01:38",
+        "team": "DAL",
+        "score_after": null,
+        "event_id": null,
+        "shot_type": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": -1,
+        "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+      },
+      "sources": [
+        {
+          "label": "NHL Situation Room statement - Coach's Challenge: DAL @ BUF - 1:38 of Second Period",
+          "url": "https://www.nhl.com/news/stars-goal-overturned-due-to-offsides-call-285739778",
+          "kind": "official_statement",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T17:19:36Z",
+          "quote": "Goal overturned as Stars deemed offsides"
+        },
+        {
+          "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+          "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/stars-goal-overturned-due-to-offsides-call-285739778",
+          "kind": "official_api",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T17:19:36Z",
+          "note": "contentDate 2017-01-16T19:28:47Z"
+        },
+        {
+          "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+          "url": "https://www.nhl.com/scores/htmlreports/20162017/GS020657.HTM",
+          "kind": "official_report",
+          "evidence": "reference",
+          "retrieved_at": "",
+          "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+        }
+      ],
+      "verification": {
+        "status": "flagged",
+        "evidence_grade": "primary",
+        "independently_checkable": true,
+        "method": "league_statement",
+        "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2016020657/play-by-play and look at period 2 around 01:38: there must be no goal for DAL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "awaiting_pbp_crosscheck",
+        "game_id_resolved_from_schedule",
+        "needs_human_read_of_on_ice_call",
+        "reclassified_offline_pending_reparse",
+        "review_type_inferred"
+      ],
+      "notes": [
+        "Ingested from the official NHL Situation Room feed (prose format). Classification basis: offline re-read of the result line (prose names the reversed call); confirm on next full ingest.",
+        "2026-10-07: direction re-read offline from the result line (2016-17 prose names the reversed call); the full statement is re-parsed on the next full ingest and the play-by-play cross-check re-run."
+      ],
+      "first_seen_at": "2026-10-07T20:39:47Z",
       "seen_count": 1
     },
     {
@@ -189777,7 +189476,7 @@
     {
       "record_id": "SDN-a6a4b17b7c",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -189924,7 +189623,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -189933,7 +189632,8 @@
         "verified_at": ""
       },
       "flags": [
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -195272,7 +194972,7 @@
     {
       "record_id": "SDN-7ec65e30d8",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -195419,7 +195119,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -195429,7 +195129,8 @@
       },
       "flags": [
         "game_id_resolved_from_schedule",
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -195438,7 +195139,7 @@
     {
       "record_id": "SDN-92679d2457",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -195585,7 +195286,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -195595,7 +195296,8 @@
       },
       "flags": [
         "game_id_resolved_from_schedule",
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -197600,7 +197302,7 @@
     {
       "record_id": "SDN-ece67ebcd8",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -197747,7 +197449,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -197757,7 +197459,8 @@
       },
       "flags": [
         "game_id_resolved_from_schedule",
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -207089,7 +206792,7 @@
     {
       "record_id": "SDN-922f77090a",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -207236,7 +206939,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -207246,7 +206949,8 @@
       },
       "flags": [
         "game_id_resolved_from_schedule",
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -208088,16 +207792,6 @@
           "note": "role=corrected_state"
         },
         {
-          "label": "Highlight clip title inside the official GameCenter payload",
-          "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
-          "kind": "secondary",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07T00:00:00Z",
-          "http_status": null,
-          "quote": null,
-          "note": "role=initial_state_corroboration; note=The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
-        },
-        {
           "label": "Athlon Sports (syndicated via Yardbarker)",
           "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
           "kind": "secondary",
@@ -208146,8 +207840,8 @@
       },
       "flags": [
         "assists_before_the_change_not_captured",
+        "initial_state_corroboration_withdrawn_on_reverification",
         "initial_state_reported_by_secondary_source_only",
-        "official_payload_contains_two_different_clip_titles_for_the_same_goal",
         "ported_from_parallel_line",
         "pre_change_assist_credits_unresolved"
       ],
@@ -208325,7 +208019,9 @@
             "name": "Highlight clip title inside the official GameCenter payload",
             "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
             "retrieved_at_utc": "2026-10-07T00:00:00Z",
-            "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+            "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+            "evidence_status": "withdrawn",
+            "reverified_at_utc": "2026-10-07T00:00:00Z"
           },
           {
             "role": "official_announcement_reproduction",
@@ -208376,18 +208072,33 @@
         },
         "flags": [
           "assists_before_the_change_not_captured",
+          "initial_state_corroboration_withdrawn_on_reverification",
           "initial_state_reported_by_secondary_source_only",
-          "official_payload_contains_two_different_clip_titles_for_the_same_goal",
           "pre_change_assist_credits_unresolved"
         ],
         "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+        "reverification": {
+          "reverified_at_utc": "2026-10-07T00:00:00Z",
+          "method": "Re-fetched GS021140.HTM and the GameCenter landing payload for 2024021140 through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts, so http_status is inferred from returned content rather than read from a response line.",
+          "confirmed": [
+            "GS021140.HTM row 2: 2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
+            "GS021140.HTM footer: 2025-03-27 8.23.23",
+            "GS021140.HTM header: Start 6:37 CDT; End 9:02 CDT",
+            "GameCenter event 146: playerId 8482110 (Mercer, goalsToDate 16), assists 8482684 (Hughes, 31) and 8480002 (Hischier, 28)"
+          ],
+          "not_confirmed": [
+            "The French highlight-clip title naming Mercer (clip 6370608420112). The payload fetched on the re-check carries a French title naming Meier (clip 6370610205112), so this corroboration of the superseded credit is withdrawn rather than disproved."
+          ],
+          "evidence": "data/evidence/reverify-2026-10-07/",
+          "effect_on_the_record": "None on the corrected state, which stands on the official report and the official announcement. The superseded credit now rests on the secondary reproduction alone, which this record already flagged."
+        },
         "completeness": {
           "missing_requested_fields": [],
           "fields_present": 22,
           "fields_requested": 22,
           "percent_complete": 100.0
         },
-        "revision": 2,
+        "revision": 5,
         "previous_revisions": [
           {
             "record_id": "NHL-20242025-021140-01",
@@ -208522,7 +208233,7 @@
             "reason": {
               "category": "official_source_statement",
               "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
-              "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
+              "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
               "announcement_channel": "NHL Public Relations (@NHLPR)",
               "announcement_issued_on": "2025-03-27"
             },
@@ -208562,7 +208273,9 @@
                 "name": "Highlight clip title inside the official GameCenter payload",
                 "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
                 "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+                "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+                "evidence_status": "withdrawn",
+                "reverified_at_utc": "2026-10-07T00:00:00Z"
               },
               {
                 "role": "official_announcement_reproduction",
@@ -208578,7 +208291,7 @@
                 "name": "NHL Public Relations (@NHLPR)",
                 "url": "https://x.com/NHLPR/status/1905120424146383077",
                 "retrievable_as_text": true,
-                "retrieved_at_utc": null,
+                "retrieved_at_utc": "2026-10-07T00:00:00Z",
                 "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
               },
               {
@@ -208613,23 +208326,58 @@
             },
             "flags": [
               "assists_before_the_change_not_captured",
+              "initial_state_corroboration_withdrawn_on_reverification",
               "initial_state_reported_by_secondary_source_only",
-              "official_payload_contains_two_different_clip_titles_for_the_same_goal",
               "pre_change_assist_credits_unresolved"
             ],
             "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+            "reverification": {
+              "reverified_at_utc": "2026-10-07T00:00:00Z",
+              "evidence": "data/evidence/reverify-2026-10-07/",
+              "note": "The French-clip corroboration of the superseded credit was not reproducible on re-check and is withdrawn. See data/reference/verified_facts.json F17 and F22."
+            },
             "completeness": {
               "missing_requested_fields": [],
               "fields_present": 22,
               "fields_requested": 22,
               "percent_complete": 100.0
             },
-            "revision": 1
+            "revision": 4
           }
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1
+      "seen_count": 2,
+      "reverification": {
+        "reverified_at_utc": "2026-10-07T00:00:00Z",
+        "evidence": "data/evidence/reverify-2026-10-07/",
+        "confirmed": [
+          "GS021140.HTM row 2 and footer",
+          "GameCenter event 146 scorer and both assists"
+        ],
+        "not_confirmed": [
+          "French highlight-clip title naming Mercer (clip 6370608420112)"
+        ]
+      },
+      "withdrawn_sources": [
+        {
+          "label": "Highlight clip title inside the official GameCenter payload",
+          "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+          "kind": "secondary",
+          "retrieved_at": "2026-10-07T00:00:00Z",
+          "http_status": null,
+          "quote": null,
+          "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved."
+        }
+      ],
+      "detection_history": [
+        {
+          "run_id": "ported-from:CS-2025-03-26-NJD-AT-CHI-G1140",
+          "detected_at": "2026-10-07T00:00:00Z",
+          "machine_status": "verified"
+        }
+      ],
+      "last_seen_at": "2026-10-07T00:00:00Z"
     },
     {
       "record_id": "SDN-47c762d35e",
@@ -210474,7 +210222,15 @@
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1
+      "seen_count": 2,
+      "detection_history": [
+        {
+          "run_id": "ported-from:CS-2025-04-01-NSH-AT-CBJ-G1185",
+          "detected_at": "2026-10-07T00:00:00Z",
+          "machine_status": "verified"
+        }
+      ],
+      "last_seen_at": "2026-10-07T00:00:00Z"
     },
     {
       "record_id": "SDN-d70f2fc70d",
@@ -212163,7 +211919,15 @@
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1
+      "seen_count": 2,
+      "detection_history": [
+        {
+          "run_id": "ported-from:CS-2025-04-08-BOS-AT-NJD-G1238",
+          "detected_at": "2026-10-07T00:00:00Z",
+          "machine_status": "verified"
+        }
+      ],
+      "last_seen_at": "2026-10-07T00:00:00Z"
     },
     {
       "record_id": "SDN-a56bdfd1c5",
@@ -231584,7 +231348,7 @@
     {
       "record_id": "SDN-f47d95f6f9",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -231731,7 +231495,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -231741,7 +231505,8 @@
       },
       "flags": [
         "game_id_resolved_from_schedule",
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Penalty Edmonton.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -234735,7 +234500,7 @@
     {
       "record_id": "SDN-5743e30678",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -234882,7 +234647,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -234892,7 +234657,8 @@
       },
       "flags": [
         "game_id_resolved_from_schedule",
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Penalty New Jersey.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -238393,7 +238159,7 @@
     {
       "record_id": "SDN-0ca5613143",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -238540,7 +238306,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -238549,7 +238315,8 @@
         "verified_at": ""
       },
       "flags": [
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -242941,7 +242708,7 @@
     {
       "record_id": "SDN-f4d5af5908",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -243088,7 +242855,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -243097,7 +242864,8 @@
         "verified_at": ""
       },
       "flags": [
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -244926,7 +244694,7 @@
     {
       "record_id": "SDN-6c3a487a2d",
       "schema_version": "1.0",
-      "status": "flagged",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "league_statement",
       "detection": {
@@ -245073,7 +244841,7 @@
         }
       ],
       "verification": {
-        "status": "flagged",
+        "status": "retired",
         "evidence_grade": "primary",
         "independently_checkable": true,
         "method": "league_statement+pbp_crosscheck",
@@ -245082,7 +244850,8 @@
         "verified_at": ""
       },
       "flags": [
-        "pbp_crosscheck_inconclusive"
+        "pbp_crosscheck_inconclusive",
+        "superseded_by_reclassification"
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Penalty Minnesota.",
       "first_seen_at": "2026-10-07T17:33:05Z",
@@ -246079,145 +245848,6 @@
       ],
       "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No goal Vegas.",
       "first_seen_at": "2026-10-07T17:33:05Z",
-      "seen_count": 1
-    },
-    {
-      "record_id": "SDN-42c8407955",
-      "schema_version": "1.0",
-      "status": "pending_review",
-      "confidence": "medium",
-      "detected_by": "manual_research",
-      "detection": {
-        "check_id": "MANUAL",
-        "rule": "nogoal_reversed_to_goal_on_league_review",
-        "rule_label": "Ruling change reported; official per-game artifact not yet linked",
-        "severity": "high",
-        "detected_at": "2026-10-07T05:00:00Z",
-        "run_id": "seed-2026-10-07",
-        "tool_version": "0.4.0"
-      },
-      "game": {
-        "game_id": null,
-        "season": "20262027",
-        "game_type": "REG",
-        "date": "2026-10-01",
-        "away_team": "EDM",
-        "home_team": "VAN",
-        "venue": null,
-        "final_score": {
-          "away": null,
-          "home": null
-        },
-        "gamecenter_url": null,
-        "report_urls": {},
-        "teams_note": "Reported as Edmonton at Vancouver, Rogers Arena, third period."
-      },
-      "discrepancy": {
-        "period": 3,
-        "clock": null,
-        "team": "VAN",
-        "field": "goal_no_goal",
-        "goal_key": null,
-        "change_type": "nogoal_reversed_to_goal_on_league_review",
-        "summary": "Marco Rossi goal: called a goal on the ice, changed to no-goal by the referee, then reinstated by Situation Room review as a legal shoulder deflection",
-        "detail": "Three states in one play: goal -> no goal (gloved puck) -> goal (deflected off the shoulder). The final record credits the goal; the two intermediate rulings leave no trace in the published box score, which is why this class is only catchable live.",
-        "total_changed": null,
-        "attribution_only": false,
-        "goal_no_goal_change": true,
-        "video_review": true,
-        "when_corrected": "in_game",
-        "timing_uncertain": false,
-        "market_impact": {
-          "total_changed": null,
-          "affects_game_total": "yes",
-          "affects_period_total": "yes",
-          "affects_player_props": "yes",
-          "affects_result_markets": "yes",
-          "risk": "high",
-          "reason": "A goal that did not exist at one moment exists at the next, inside the same game: the number of goals a live game-total market is watching moved while the game was in progress.",
-          "rule_class": "total"
-        },
-        "reason": {
-          "stated_by_league": true,
-          "text": "NHL explanation as quoted by Scouting The Refs: \"The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion.\" Not a challengeable play; league-initiated under Rule 37.",
-          "rule_citation": "78.4 (deflection off body) with 37.3 (batted puck review)",
-          "needs_human_read": true
-        }
-      },
-      "initial_state": {
-        "artifact": "on-ice ruling after referee's revision",
-        "goal_present": false,
-        "ruling": "no_goal_gloved_puck",
-        "scorer": {
-          "name": "M. Rossi"
-        },
-        "assists": [],
-        "period": 3,
-        "clock": null,
-        "team": "VAN"
-      },
-      "corrected_state": {
-        "artifact": "Situation Room review outcome",
-        "goal_present": true,
-        "ruling": "goal",
-        "scorer": {
-          "name": "M. Rossi"
-        },
-        "assists": [],
-        "period": 3,
-        "clock": null,
-        "team": "VAN"
-      },
-      "totals": {
-        "initial_game_goals": null,
-        "corrected_game_goals": null,
-        "goal_delta": null,
-        "basis": "not yet read from an official artifact"
-      },
-      "sources": [
-        {
-          "label": "Official NHL daily scoreboard API (resolves the game id for 2026-10-01)",
-          "url": "https://api-web.nhle.com/v1/score/2026-10-01",
-          "kind": "official_api",
-          "evidence": "primary",
-          "retrieved_at": "",
-          "note": "Find EDM at VAN in games[], then re-read the record against the game center landing JSON and the GS sheet for that game."
-        },
-        {
-          "label": "Scouting The Refs - quote of the NHL's own explanation",
-          "url": "https://scoutingtherefs.com/2026/10/02/nhl-oversight-goal-marco-rossi-canucks-oilers/",
-          "kind": "secondary",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07",
-          "quote": "The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion."
-        },
-        {
-          "label": "NHL Rule 78.4 (goal scored by legal means) / 37.3 (batted puck)",
-          "url": "https://nhl.bamcontent.com/images/manual/NHL-Rulebook-2025-26.pdf",
-          "kind": "official_document",
-          "evidence": "reference",
-          "retrieved_at": "",
-          "note": "Rule text governs whether a deflection off the shoulder is legal; the cited PDF is the current official rulebook."
-        }
-      ],
-      "verification": {
-        "status": "pending_review",
-        "evidence_grade": "secondary",
-        "independently_checkable": true,
-        "check_instructions": "Resolve the game id with GET https://api-web.nhle.com/v1/score/2026-10-01 (match EDM at VAN), then open gamecenter/{id}/landing and confirm the goal is present in summary.scoring at the stated period and clock. Pull the GS/PL sheets from right-rail gameReports for the frozen post-game rendering.",
-        "verified_by": "",
-        "verified_at": ""
-      },
-      "flags": [
-        "game_id_not_resolved",
-        "not_challengeable_league_initiated",
-        "requires_human_verification",
-        "secondary_source_only",
-        "three_state_ruling_sequence",
-        "total_change_reported_by_secondary_source_not_established"
-      ],
-      "notes": "Three-state ruling sequence in one play (goal -> no goal -> goal). It is the cleanest available demonstration that goal/no-goal changes are invisible in the final published record: the box score shows one goal and no trace of the two reversals.",
-      "first_seen_at": "2026-10-07T05:00:00Z",
       "seen_count": 1
     },
     {

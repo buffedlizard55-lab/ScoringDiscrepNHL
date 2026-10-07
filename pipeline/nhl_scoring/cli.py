@@ -452,9 +452,16 @@ def validate_cmd(args: argparse.Namespace) -> int:
 def alerts_cmd(args: argparse.Namespace) -> int:
     payload = db_mod.load_db(args.db)
     triaged = alerts_mod.triage(payload.get("records", []))
-    if args.since:
+    since = args.since
+    if getattr(args, "recent_days", None):
+        # Backfills create hundreds of historical records in one run. Alerts are
+        # for what is new to a subscriber, so the digest is bounded by game date.
+        from datetime import datetime, timedelta, timezone
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=args.recent_days)).strftime("%Y-%m-%d")
+        since = max(since or "", cutoff)
+    if since:
         triaged = [t for t in triaged
-                   if ((t["record"].get("game") or {}).get("date") or "") >= args.since]
+                   if ((t["record"].get("game") or {}).get("date") or "") >= since]
     print(f"alerts: {len(triaged)} alert(s)")
     for item in triaged[: args.limit]:
         game = item["record"].get("game") or {}
@@ -464,6 +471,11 @@ def alerts_cmd(args: argparse.Namespace) -> int:
     if args.write:
         out = alerts_mod.write_alerts(triaged, args.out_dir, date_str=_now()[:10], run_id=_run_id())
         print(f"alerts: wrote {out}")
+        # The published site reads data/alerts.json, not the date-stamped digest, so
+        # every alert this engine raises is projected there too. Without this the
+        # Alerts tab stays on "No alerts yet" however many alerts exist.
+        feed = alerts_mod.write_site_feed(triaged, REPO_ROOT, now=_now())
+        print(f"alerts: site feed -> {feed['json']} ({feed['count']} alerts) + {feed['rss']}")
     if args.webhook:
         import urllib.request
         body = json.dumps(alerts_mod.webhook_payload(triaged)).encode("utf-8")
@@ -613,6 +625,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("alerts", help="render the alert set from the database")
     s.add_argument("--db", default=os.path.join(REPO_ROOT, "data", "discrepancies.json"))
     s.add_argument("--since", help="only alert on games on/after this date")
+    s.add_argument("--recent-days", type=int, default=0,
+                   help="only alert on games in the last N days (bounds backfill noise; 0 = no bound)")
     s.add_argument("--limit", type=int, default=25)
     s.add_argument("--write", action="store_true")
     s.add_argument("--out-dir", default=os.path.join(REPO_ROOT, "data", "alerts"))

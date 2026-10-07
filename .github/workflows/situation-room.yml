@@ -85,7 +85,7 @@ jobs:
       - name: Validate the database
         run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
       - name: Render alerts
-        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 50
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 50 --recent-days 14
       - name: Rebuild the site (repository root is what GitHub Pages serves)
         run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
       - name: Commit and push

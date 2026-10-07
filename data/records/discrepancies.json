@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at_utc": "2026-10-07T05:07:57Z",
+  "updated_at_utc": "2026-10-07T17:22:54Z",
   "count": 3,
   "records": [
     {
@@ -176,7 +176,9 @@
           "name": "Highlight clip title inside the official GameCenter payload",
           "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
           "retrieved_at_utc": "2026-10-07T00:00:00Z",
-          "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+          "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+          "evidence_status": "withdrawn",
+          "reverified_at_utc": "2026-10-07T00:00:00Z"
         },
         {
           "role": "official_announcement_reproduction",
@@ -227,18 +229,33 @@
       },
       "flags": [
         "assists_before_the_change_not_captured",
+        "initial_state_corroboration_withdrawn_on_reverification",
         "initial_state_reported_by_secondary_source_only",
-        "official_payload_contains_two_different_clip_titles_for_the_same_goal",
         "pre_change_assist_credits_unresolved"
       ],
       "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+      "reverification": {
+        "reverified_at_utc": "2026-10-07T00:00:00Z",
+        "method": "Re-fetched GS021140.HTM and the GameCenter landing payload for 2024021140 through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts, so http_status is inferred from returned content rather than read from a response line.",
+        "confirmed": [
+          "GS021140.HTM row 2: 2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
+          "GS021140.HTM footer: 2025-03-27 8.23.23",
+          "GS021140.HTM header: Start 6:37 CDT; End 9:02 CDT",
+          "GameCenter event 146: playerId 8482110 (Mercer, goalsToDate 16), assists 8482684 (Hughes, 31) and 8480002 (Hischier, 28)"
+        ],
+        "not_confirmed": [
+          "The French highlight-clip title naming Mercer (clip 6370608420112). The payload fetched on the re-check carries a French title naming Meier (clip 6370610205112), so this corroboration of the superseded credit is withdrawn rather than disproved."
+        ],
+        "evidence": "data/evidence/reverify-2026-10-07/",
+        "effect_on_the_record": "None on the corrected state, which stands on the official report and the official announcement. The superseded credit now rests on the secondary reproduction alone, which this record already flagged."
+      },
       "completeness": {
         "missing_requested_fields": [],
         "fields_present": 22,
         "fields_requested": 22,
         "percent_complete": 100.0
       },
-      "revision": 2,
+      "revision": 5,
       "previous_revisions": [
         {
           "record_id": "NHL-20242025-021140-01",
@@ -373,7 +390,7 @@
           "reason": {
             "category": "official_source_statement",
             "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
-            "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
+            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
             "announcement_channel": "NHL Public Relations (@NHLPR)",
             "announcement_issued_on": "2025-03-27"
           },
@@ -413,7 +430,9 @@
               "name": "Highlight clip title inside the official GameCenter payload",
               "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
               "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+              "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+              "evidence_status": "withdrawn",
+              "reverified_at_utc": "2026-10-07T00:00:00Z"
             },
             {
               "role": "official_announcement_reproduction",
@@ -429,7 +448,7 @@
               "name": "NHL Public Relations (@NHLPR)",
               "url": "https://x.com/NHLPR/status/1905120424146383077",
               "retrievable_as_text": true,
-              "retrieved_at_utc": null,
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
               "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
             },
             {
@@ -464,18 +483,23 @@
           },
           "flags": [
             "assists_before_the_change_not_captured",
+            "initial_state_corroboration_withdrawn_on_reverification",
             "initial_state_reported_by_secondary_source_only",
-            "official_payload_contains_two_different_clip_titles_for_the_same_goal",
             "pre_change_assist_credits_unresolved"
           ],
           "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+          "reverification": {
+            "reverified_at_utc": "2026-10-07T00:00:00Z",
+            "evidence": "data/evidence/reverify-2026-10-07/",
+            "note": "The French-clip corroboration of the superseded credit was not reproducible on re-check and is withdrawn. See data/reference/verified_facts.json F17 and F22."
+          },
           "completeness": {
             "missing_requested_fields": [],
             "fields_present": 22,
             "fields_requested": 22,
             "percent_complete": 100.0
           },
-          "revision": 1
+          "revision": 4
         }
       ]
     },
@@ -1391,18 +1415,12 @@
     }
   ],
   "status_note": [
-    "This database is intentionally EMPTY on the day the system was built.",
-    "A scoring discrepancy is only ever written here by the detector, and only when it has two",
-    "captured official states (or one official artifact plus a documented official statement) that",
-    "differ. Nothing is seeded from memory, media reports or assumptions, so there are no",
-    "placeholder rows to mistake for verified history.",
-    "",
-    "To populate it with the historical census, run (from a machine with normal internet access,",
-    "e.g. the scheduled GitHub workflow `backfill.yml`):",
-    "  python -m nhl_monitor backfill-era   --season 20052006 --start 1 --end 1065",
-    "  python -m nhl_monitor backfill-archive --game-id <id>   # archived-snapshot census",
-    "and for going-forward coverage:",
-    "  python -m nhl_monitor monitor --date $(date -u +%F)     # run every few minutes on game days"
+    "3 record(s), each written by a detection route from official sources only.",
+    "By status: verified_from_official_announcement = 3.",
+    "0 changed the number of goals; 3 changed player attribution only.",
+    "Nothing is seeded from memory, media reports or assumptions. Every record carries its source",
+    "URLs and a `flags` list naming the part of its evidence that is missing. A record whose",
+    "evidence is thin says so instead of being smoothed over."
   ],
   "coverage": {
     "official_sources_verified": [

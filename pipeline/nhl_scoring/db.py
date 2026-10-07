@@ -374,9 +374,21 @@ def load_db(path: str) -> Dict[str, Any]:
     return payload
 
 
+def canonical_order(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """The one order every artifact derived from the store is written in.
+
+    ``save_db`` sorted by (game date, record_id) while ``write_csv`` wrote rows in
+    whatever order it was handed, so the JSON and the CSV listed the same records
+    in different orders and a byte-for-byte sync check could never pass. Both now
+    go through here, so the export cannot drift from the database it exports.
+    """
+    return sorted(records,
+                  key=lambda r: ((r.get("game") or {}).get("date") or "",
+                                 r.get("record_id") or ""))
+
+
 def save_db(payload: Dict[str, Any], path: str) -> None:
-    records = sorted(payload.get("records", []),
-                     key=lambda r: ((r.get("game") or {}).get("date") or "", r.get("record_id") or ""))
+    records = canonical_order(payload.get("records", []))
     out = {
         "schema_version": payload.get("schema_version", SCHEMA_VERSION),
         "generated_by": "pipeline/nhl_scoring (db.py)",
@@ -408,7 +420,8 @@ def upsert(existing: List[Dict[str, Any]], incoming: List[Dict[str, Any]],
     blocks and record that they did.
     """
     by_id = {r.get("record_id"): r for r in existing if r.get("record_id")}
-    stats = {"added": 0, "updated": 0, "unchanged": 0, "skipped_human": 0}
+    stats = {"added": 0, "updated": 0, "unchanged": 0, "skipped_human": 0,
+             "mirror_refreshed": 0}
     for record in incoming:
         rid = record.get("record_id")
         cur = by_id.get(rid)
@@ -430,6 +443,16 @@ def upsert(existing: List[Dict[str, Any]], incoming: List[Dict[str, Any]],
         if human:
             merged = dict(cur)
             stats["skipped_human"] += 1
+            # A protected status freezes the *judgement*, not the evidence. The
+            # embedded mirror of the parallel line's object is evidence: README and
+            # STATUS both describe it as the verbatim original kept "so a reviewer
+            # can diff". If it never refreshes, a claim withdrawn upstream stays
+            # asserted here forever, and the record ends up contradicting itself -
+            # its own flags say withdrawn while the mirror still lists the claim.
+            incoming_mirror = record.get("parallel_record")
+            if incoming_mirror is not None and merged.get("parallel_record") != incoming_mirror:
+                merged["parallel_record"] = incoming_mirror
+                stats["mirror_refreshed"] += 1
         else:
             merged = dict(record)
             merged["first_seen_at"] = cur.get("first_seen_at") \
@@ -496,7 +519,7 @@ def to_csv(rows: List[Dict[str, Any]]) -> List[List[str]]:
 
 def write_csv(rows: List[Dict[str, Any]], path: str) -> int:
     import csv as _csv
-    table = to_csv(rows)
+    table = to_csv(canonical_order(rows))
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="") as fh:
         _csv.writer(fh, lineterminator="\n").writerows(table)

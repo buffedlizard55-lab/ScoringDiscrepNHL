@@ -13,5 +13,7 @@
     "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
     "https://x.com/NHLPR/status/1909831272047800540",
     "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play"
-  ]
+  ],
+  "first_seen_at_utc": "2026-10-07T05:21:27Z",
+  "last_emitted_at_utc": "2026-10-07T17:22:54Z"
 }

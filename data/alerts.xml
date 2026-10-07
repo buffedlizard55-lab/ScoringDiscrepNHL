@@ -4,6 +4,354 @@
     <title>ScoringDiscrepNHL alerts</title>
     <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>
     <description>Automated alerts for detected NHL scoring discrepancies and corrections. Every alert links to official-source evidence.</description>
-    <lastBuildDate>Tue, 07 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2026 20:38:56 GMT</lastBuildDate>
+    <item>
+      <title>[MEDIUM] Goal scorer changed: NJD @ CHI 2025-03-26 — REG P1 6:50</title>
+      <guid isPermaLink="false">sdnhl-ALERT-NHL-20242025-021140-01</guid>
+      <pubDate>Wed, 07 Oct 2026 05:21:27 GMT</pubDate>
+      <description>**NJD @ CHI** — 2025-03-26 (game 2024021140, season 20242025)
+
+- Event: REG period 1 at 6:50 (PP), team NJD
+- Type: `scorer_change` — affects goal total: **False** / attribution only: **True**
+- Timing: `postgame_after_publication` — the league announced the change on 2025-03-27, after the game of 2025-03-26 had been published as final
+
+**Initial ruling (as previously published)**
+- Goal credited to #28 Timo Meier (assists: unassisted), strength unknown
+
+**Corrected ruling**
+- Goal credited to #91 Dawson Mercer (assists: Luke Hughes, Nico Hischier), strength unknown
+
+**What changed:** goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer
+
+**Why (official statements only):** OFFICIAL SCORING CHANGE: Game 1,140
+@NJDevils at @NHLBlackhawks
+
+Goal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats
+
+**Settlement relevance:** attribution — Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.
+
+**Evidence status:** `verified_corrected_state_and_official_announcement` | flags: assists_before_the_change_not_captured, initial_state_corroboration_withdrawn_on_reverification, initial_state_reported_by_secondary_source_only, pre_change_assist_credits_unresolved
+
+**Official sources**
+- [corrected_state] Official Game Summary (HTML): GS021140.HTM — https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM (HTTP 200, retrieved 2026-10-07T00:00:00Z)
+- [corrected_state] NHL GameCenter play-by-play — https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play (HTTP 200, retrieved 2026-10-07T00:00:00Z)
+- [initial_state_corroboration] Highlight clip title inside the official GameCenter payload — https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [official_announcement_reproduction] Athlon Sports (syndicated via Yardbarker) — https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [official_announcement] NHL Public Relations (@NHLPR) — https://x.com/NHLPR/status/1905120424146383077 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [cross_check] NHL GameCenter boxscore — https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+
+_Record id `NHL-20242025-021140-01` · detected 2026-10-07T00:00:00Z by official_statement_ingest:2025-03-26-njd-at-chi-g1140.json · status `verified_from_official_announcement`_<p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play">https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play</a></p><p><a href="https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112">https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112</a></p><p><a href="https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992">https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992</a></p><p><a href="https://x.com/NHLPR/status/1905120424146383077">https://x.com/NHLPR/status/1905120424146383077</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore">https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore</a></p></description>
+    </item>
+    <item>
+      <title>[MEDIUM] Assists changed: NSH @ CBJ 2025-04-01 — REG P3 9:02</title>
+      <guid isPermaLink="false">sdnhl-ALERT-NHL-20242025-021185-01</guid>
+      <pubDate>Wed, 07 Oct 2026 05:21:27 GMT</pubDate>
+      <description>**NSH @ CBJ** — 2025-04-01 (game 2024021185, season 20242025)
+
+- Event: REG period 3 at 9:02 (EV), team NSH
+- Type: `assist_change` — affects goal total: **False** / attribution only: **True**
+- Timing: `postgame_after_publication` — the league announced the change on 2025-04-02, after the game of 2025-04-01 had been published as final
+
+**Initial ruling (as previously published)**
+- Goal credited to #82 Jordan Oesterle (assists: unassisted), strength unknown
+
+**Corrected ruling**
+- Goal credited to #82 Jordan Oesterle (assists: Cole Smith, Michael McCarron), strength unknown
+
+**What changed:** assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron
+
+**Why (official statements only):** OFFICIAL SCORING CHANGE: Game 1185
+@PredsNHL at @BlueJacketsNHL
+
+Goal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats
+
+**Settlement relevance:** attribution — Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.
+
+**Evidence status:** `verified_corrected_state_and_official_announcement` | flags: assists_before_the_change_not_captured, declared_change_not_confirmable_from_states:assist_change, initial_state_not_retrievable_from_any_source, pre_change_assist_credits_undetermined
+
+**Official sources**
+- [corrected_state] Official Game Summary (HTML): GS021185.HTM — https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM (HTTP 200, retrieved 2026-10-07T00:00:00Z)
+- [official_announcement_reproduction] Athlon Sports (syndicated via Yardbarker) — https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [cross_check] Same Game Summary, season totals — https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [official_announcement] NHL Public Relations (@NHLPR) — https://x.com/NHLPR/status/1907298847056941350 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [cross_check] NHL GameCenter play-by-play — https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+
+_Record id `NHL-20242025-021185-01` · detected 2026-10-07T00:00:00Z by official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json · status `verified_from_official_announcement`_<p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM</a></p><p><a href="https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037">https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM</a></p><p><a href="https://x.com/NHLPR/status/1907298847056941350">https://x.com/NHLPR/status/1907298847056941350</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play">https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play</a></p></description>
+    </item>
+    <item>
+      <title>[MEDIUM] Assists changed: BOS @ NJD 2025-04-08 — REG P1 9:38</title>
+      <guid isPermaLink="false">sdnhl-ALERT-NHL-20242025-021238-01</guid>
+      <pubDate>Wed, 07 Oct 2026 05:21:27 GMT</pubDate>
+      <description>**BOS @ NJD** — 2025-04-08 (game 2024021238, season 20242025)
+
+- Event: REG period 1 at 9:38 (EV), team BOS
+- Type: `assist_change` — affects goal total: **False** / attribution only: **True**
+- Timing: `postgame_after_publication` — the league announced the change on 2025-04-09, after the game of 2025-04-08 had been published as final
+
+**Initial ruling (as previously published)**
+- Goal credited to #88 David Pastrnak (assists: Parker Wotherspoon), strength unknown
+
+**Corrected ruling**
+- Goal credited to #88 David Pastrnak (assists: Morgan Geekie), strength unknown
+
+**What changed:** assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie
+
+**Why (official statements only):** OFFICIAL SCORING CHANGE: Game 1238
+@NHLBruins at @NJDevils
+
+Goal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats
+
+**Settlement relevance:** attribution — Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.
+
+**Evidence status:** `verified_corrected_state_and_official_announcement` | flags: initial_state_citation_in_reproduction_points_at_a_different_goal, initial_state_reported_by_secondary_source_only, official_play_by_play_event_not_quoted_this_pass
+
+**Official sources**
+- [corrected_state] Official Game Summary (HTML): GS021238.HTM — https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM (HTTP 200, retrieved 2026-10-07T00:00:00Z)
+- [official_announcement_reproduction] Athlon Sports (syndicated via Yardbarker) — https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [cross_check] Same Game Summary, goal 2 of the same game — https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [official_announcement] NHL Public Relations (@NHLPR) — https://x.com/NHLPR/status/1909831272047800540 (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+- [cross_check] NHL GameCenter play-by-play — https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play (HTTP ?, retrieved 2026-10-07T00:00:00Z)
+
+_Record id `NHL-20242025-021238-01` · detected 2026-10-07T00:00:00Z by official_statement_ingest:2025-04-08-bos-at-njd-g1238.json · status `verified_from_official_announcement`_<p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM</a></p><p><a href="https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683">https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM</a></p><p><a href="https://x.com/NHLPR/status/1909831272047800540">https://x.com/NHLPR/status/1909831272047800540</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play">https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-01 EDM @ VAN - Marco Rossi goal: called a goal on the ice, changed to no-goal by the referee, then reinstated by Situation Room review as a legal shoulder deflection</title>
+      <guid isPermaLink="false">sdnhl-SDN-42c8407955</guid>
+      <pubDate>Wed, 07 Oct 2026 05:00:00 GMT</pubDate>
+      <description>Marco Rossi goal: called a goal on the ice, changed to no-goal by the referee, then reinstated by Situation Room review as a legal shoulder deflection
+Three states in one play: goal -&gt; no goal (gloved puck) -&gt; goal (deflected off the shoulder). The final record credits the goal; the two intermediate rulings leave no trace in the published box score, which is why this class is only catchable live.
+Record SDN-42c8407955 - status pending_review - confidence medium
+Change type: nogoal_reversed_to_goal_on_league_review
+Goal total changed: None
+Attribution only: False
+Corrected: in_game
+Flags: game_id_not_resolved, not_challengeable_league_initiated, requires_human_verification, secondary_source_only, three_state_ruling_sequence, total_change_reported_by_secondary_source_not_established
+Official reason: NHL explanation as quoted by Scouting The Refs: &quot;The Referee&#x27;s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi&#x27;s shoulder and entered the Edmonton net in a legal fashion.&quot; Not a challengeable play; league-initiated under Rule 37.<p><a href="https://api-web.nhle.com/v1/score/2026-10-01">https://api-web.nhle.com/v1/score/2026-10-01</a></p><p><a href="https://scoutingtherefs.com/2026/10/02/nhl-oversight-goal-marco-rossi-canucks-oilers/">https://scoutingtherefs.com/2026/10/02/nhl-oversight-goal-marco-rossi-canucks-oilers/</a></p><p><a href="https://nhl.bamcontent.com/images/manual/NHL-Rulebook-2025-26.pdf">https://nhl.bamcontent.com/images/manual/NHL-Rulebook-2025-26.pdf</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-03 CGY @ VAN - Vancouver goal waived off on the ice, then awarded after Situation Room review; a 1-0 Calgary lead became part of a 4-1 Vancouver win</title>
+      <guid isPermaLink="false">sdnhl-SDN-3916f9ce9a</guid>
+      <pubDate>Wed, 07 Oct 2026 05:00:00 GMT</pubDate>
+      <description>Vancouver goal waived off on the ice, then awarded after Situation Room review; a 1-0 Calgary lead became part of a 4-1 Vancouver win
+Liam Ohgren&#x27;s goal about 90 seconds into the third period was not initially counted; review of the white webbing in the goaltender&#x27;s glove showed the puck crossing the line and the goal was awarded, changing the period and game goal count.
+Record SDN-3916f9ce9a - status pending_review - confidence medium
+Change type: goal_awarded_after_goal_line_review
+Goal total changed: None
+Attribution only: False
+Corrected: in_game
+Flags: game_id_not_resolved, goal_line_review_admitted_inconclusive_risk, period_and_game_total_impact, requires_human_verification, secondary_source_only, total_change_reported_by_secondary_source_not_established
+Official reason: NHL Situation Room official Rod Pasma told Sportsnet the puck was seen moving in Devlin Cooley&#x27;s glove through the white webbing while behind the line, so the goal was awarded; he added the call might have been ruled inconclusive had the webbing been black. This is a rule 78.4/goal-line review outcome, not a scorer&#x27;s decision.<p><a href="https://api-web.nhle.com/v1/score/2026-10-03">https://api-web.nhle.com/v1/score/2026-10-03</a></p><p><a href="https://scoutingtherefs.com/2026/10/04/canucks-flames-ohgren-controversy/">https://scoutingtherefs.com/2026/10/04/canucks-flames-ohgren-controversy/</a></p><p><a href="https://www.nhl.com/news/frozen-frenzy-nhl-situation-room-live-blog-october-22-2024">https://www.nhl.com/news/frozen-frenzy-nhl-situation-room-live-blog-october-22-2024</a></p></description>
+    </item>
+    <item>
+      <title>[INFO] 2000-10-04 COL @ DAL - COL at DAL 2000-10-04: assists [&#x27;C. DRURY&#x27;] in nhl_gs_report vs [&#x27;C. Drury&#x27;, &#x27;J. Sakic&#x27;] in nhl_api_landing</title>
+      <guid isPermaLink="false">sdnhl-SDN-87fb3e543f</guid>
+      <pubDate>Wed, 07 Oct 2026 04:36:00 GMT</pubDate>
+      <description>COL at DAL 2000-10-04: assists [&#x27;C. DRURY&#x27;] in nhl_gs_report vs [&#x27;C. Drury&#x27;, &#x27;J. Sakic&#x27;] in nhl_api_landing
+assists [&#x27;C. DRURY&#x27;] in nhl_gs_report vs [&#x27;C. Drury&#x27;, &#x27;J. Sakic&#x27;] in nhl_api_landing
+Record SDN-87fb3e543f - status verified - confidence high
+Change type: assist_attribution_conflict
+Goal total changed: False
+Attribution only: True
+Corrected: unknown
+Flags: pre_2007_no_video_or_clip_to_adjudicate, requires_human_verification, single_artifact_evidence, which_artifact_is_final_unresolved
+Official reason: No public correction notice exists for this game. The league&#x27;s two official renderings of the same goal disagree on the number of assists credited; which one reflects the scorer&#x27;s final decision cannot be established from public data alone, because the JSON is edited in place while the sheet is a frozen post-game artifact. The game itself ended 2-2 (OT, no further goals), so the discrepancy is attribution-only and cannot move a goal total.<p><a href="https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM">https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2000020001/landing">https://api-web.nhle.com/v1/gamecenter/2000020001/landing</a></p><p><a href="https://www.nhl.com/gamecenter/col-vs-dal/2000/10/04/2000020001">https://www.nhl.com/gamecenter/col-vs-dal/2000/10/04/2000020001</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-06 NSH @ TOR - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal TOR at 11:49 of period 3</title>
+      <guid isPermaLink="false">sdnhl-SDN-261948dfcd</guid>
+      <pubDate>Wed, 07 Oct 2026 01:41:00 GMT</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal TOR at 11:49 of period 3
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.
+Record SDN-261948dfcd - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/nashville-predators-toronto-maple-leafs-coach-challenge">https://www.nhl.com/news/nashville-predators-toronto-maple-leafs-coach-challenge</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-06 STL @ CHI - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:05 of period 2</title>
+      <guid isPermaLink="false">sdnhl-SDN-21ad557cd4</guid>
+      <pubDate>Wed, 07 Oct 2026 01:38:00 GMT</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:05 of period 2
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that St. Louis’ Jonatan Berggren preceded the puck into the offensive zone and was in an off-side position prior to Connor McMichael’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 18:59 (1:01 elapsed time), when the off-side infraction occurred.
+Record SDN-21ad557cd4 - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that St. Louis’ Jonatan Berggren preceded the puck into the offensive zone and was in an off-side position prior to Connor McMichael’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 18:59 (1:01 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/st-louis-blues-chicago-blackhawks-coach-challenge">https://www.nhl.com/news/st-louis-blues-chicago-blackhawks-coach-challenge</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-chicago-blackhawks-coach-challenge">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-chicago-blackhawks-coach-challenge</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[REVIEW] 2025-03-26 NJD @ CHI - goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer</title>
+      <guid isPermaLink="false">sdnhl-SDN-e84fc1c8ec</guid>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 GMT</pubDate>
+      <description>goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer
+Record SDN-e84fc1c8ec - status verified - confidence high
+Change type: scorer_changed_by_official_announcement
+Goal total changed: False
+Attribution only: True
+Corrected: postgame
+Flags: assists_before_the_change_not_captured, initial_state_corroboration_withdrawn_on_reverification, initial_state_reported_by_secondary_source_only, ported_from_parallel_line, pre_change_assist_credits_unresolved
+Official reason: OFFICIAL SCORING CHANGE: Game 1,140
+@NJDevils at @NHLBlackhawks
+
+Goal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats<p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play">https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play</a></p><p><a href="https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992">https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992</a></p><p><a href="https://x.com/NHLPR/status/1905120424146383077">https://x.com/NHLPR/status/1905120424146383077</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore">https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore</a></p></description>
+    </item>
+    <item>
+      <title>[INFO] 2025-04-01 NSH @ CBJ - assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron</title>
+      <guid isPermaLink="false">sdnhl-SDN-35d7818c51</guid>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 GMT</pubDate>
+      <description>assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron
+Record SDN-35d7818c51 - status verified - confidence high
+Change type: assists_changed_by_official_announcement
+Goal total changed: False
+Attribution only: True
+Corrected: postgame
+Flags: assists_before_the_change_not_captured, declared_change_not_confirmable_from_states:assist_change, initial_state_not_retrievable_from_any_source, ported_from_parallel_line, pre_change_assist_credits_undetermined
+Official reason: OFFICIAL SCORING CHANGE: Game 1185
+@PredsNHL at @BlueJacketsNHL
+
+Goal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats<p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM</a></p><p><a href="https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037">https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM</a></p><p><a href="https://x.com/NHLPR/status/1907298847056941350">https://x.com/NHLPR/status/1907298847056941350</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play">https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play</a></p></description>
+    </item>
+    <item>
+      <title>[INFO] 2025-04-08 BOS @ NJD - assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie</title>
+      <guid isPermaLink="false">sdnhl-SDN-2247415389</guid>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 GMT</pubDate>
+      <description>assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie
+Record SDN-2247415389 - status verified - confidence high
+Change type: assists_changed_by_official_announcement
+Goal total changed: False
+Attribution only: True
+Corrected: postgame
+Flags: initial_state_citation_in_reproduction_points_at_a_different_goal, initial_state_reported_by_secondary_source_only, official_play_by_play_event_not_quoted_this_pass, ported_from_parallel_line
+Official reason: OFFICIAL SCORING CHANGE: Game 1238
+@NHLBruins at @NJDevils
+
+Goal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats<p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM</a></p><p><a href="https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683">https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM">https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM</a></p><p><a href="https://x.com/NHLPR/status/1909831272047800540">https://x.com/NHLPR/status/1909831272047800540</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play">https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-05 WPG @ PIT - Video review (High-Sticking the Puck): on-ice no-goal overturned, goal awarded to PIT at 09:27 of period 2</title>
+      <guid isPermaLink="false">sdnhl-SDN-26e9b24b21</guid>
+      <pubDate>Tue, 06 Oct 2026 01:15:00 GMT</pubDate>
+      <description>Video review (High-Sticking the Puck): on-ice no-goal overturned, goal awarded to PIT at 09:27 of period 2
+Video review determined that Ben Kindel&#x27;s stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”
+Record SDN-26e9b24b21 - status verified - confidence high
+Change type: no_goal_overturned_to_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Flags: game_id_resolved_from_schedule
+Official reason: Video review determined that Ben Kindel&#x27;s stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”<p><a href="https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review">https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-03 MTL @ PIT - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3</title>
+      <guid isPermaLink="false">sdnhl-SDN-73e0895bf7</guid>
+      <pubDate>2026-10-04T01:39:13.984Z</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined  Erik Karlsson preceded the puck into the offensive zone and did not have possession and control of the puck as he entered the attacking zone prior to Egor Chinakhov&#x27;s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 15:06 (4:54 elapsed time), when the off-side infraction occurred.
+Record SDN-73e0895bf7 - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined  Erik Karlsson preceded the puck into the offensive zone and did not have possession and control of the puck as he entered the attacking zone prior to Egor Chinakhov&#x27;s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 15:06 (4:54 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847">https://www.nhl.com/news/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-02 STL @ DAL - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:06 of period 3</title>
+      <guid isPermaLink="false">sdnhl-SDN-5c05cee8b5</guid>
+      <pubDate>2026-10-03T03:29:04.463Z</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:06 of period 3
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that St. Louis’ Pavel Buchnevich preceded the puck into the offensive zone and was in an off-side position prior to Adam Jiricek’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 19:02 (0:58 elapsed time), when the off-side infraction occurred.
+Record SDN-5c05cee8b5 - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that St. Louis’ Pavel Buchnevich preceded the puck into the offensive zone and was in an off-side position prior to Adam Jiricek’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 19:02 (0:58 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/st-louis-blues-dallas-stars-coach-challenge">https://www.nhl.com/news/st-louis-blues-dallas-stars-coach-challenge</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-dallas-stars-coach-challenge">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-dallas-stars-coach-challenge</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-02 NYR @ DET - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal NYR at 07:08 of period 1</title>
+      <guid isPermaLink="false">sdnhl-SDN-5619ac48fc</guid>
+      <pubDate>2026-10-02T23:12:25.85Z</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal NYR at 07:08 of period 1
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states\, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\
+
+Video review determined that Detroit’s Eeli Tolvanen preceded the puck into the offensive zone and was in an off-side position prior to Oliver Bjorkstrand’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”  
+The clock is reset to show 12:57 (7:03 elapsed time), when the off-side infraction occurred.
+Record SDN-5619ac48fc - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Flags: game_id_resolved_from_schedule
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states\, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\
+
+Video review determined that Detroit’s Eeli Tolvanen preceded the puck into the offensive zone and was in an off-side position prior to Oliver Bjorkstrand’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”  
+The clock is reset to show 12:57 (7:03 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/new-york-rangers-detroit-red-wings-coach-challenge">https://www.nhl.com/news/new-york-rangers-detroit-red-wings-coach-challenge</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-rangers-detroit-red-wings-coach-challenge">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-rangers-detroit-red-wings-coach-challenge</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-01 EDM @ VAN - Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3</title>
+      <guid isPermaLink="false">sdnhl-SDN-752f5a246e</guid>
+      <pubDate>Fri, 02 Oct 2026 04:34:00 GMT</pubDate>
+      <description>Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3
+The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.
+Record SDN-752f5a246e - status flagged - confidence medium
+Change type: no_goal_overturned_to_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Flags: game_id_resolved_from_schedule, needs_human_read_of_on_ice_call, on_ice_call_inferred_from_wording
+Official reason: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.<p><a href="https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720">https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-01 MIN @ NSH - Coach&#x27;s Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1</title>
+      <guid isPermaLink="false">sdnhl-SDN-61ee9676e1</guid>
+      <pubDate>Fri, 02 Oct 2026 01:15:00 GMT</pubDate>
+      <description>Coach&#x27;s Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined Minnesota’s Ryan Hartman’s presence in the crease impaired Juuse Saros’ ability to play his position prior to Yakov Trenin’s goal. The decision was made in accordance with Rule 69.1 which states, in part, “Goals should be disallowed only if: (1) an attacking player, either by his positioning or by contact, impairs the goalkeeper’s ability to move freely within his crease or defend his goal.”
+Record SDN-61ee9676e1 - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined Minnesota’s Ryan Hartman’s presence in the crease impaired Juuse Saros’ ability to play his position prior to Yakov Trenin’s goal. The decision was made in accordance with Rule 69.1 which states, in part, “Goals should be disallowed only if: (1) an attacking player, either by his positioning or by contact, impairs the goalkeeper’s ability to move freely within his crease or defend his goal.”<p><a href="https://www.nhl.com/news/minnesota-wild-nashville-predators-coach-challenge">https://www.nhl.com/news/minnesota-wild-nashville-predators-coach-challenge</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-nashville-predators-coach-challenge">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-nashville-predators-coach-challenge</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM</a></p></description>
+    </item>
   </channel>
 </rss>

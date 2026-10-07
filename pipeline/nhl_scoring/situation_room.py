@@ -365,9 +365,14 @@ def classify_outcome(kind: str, fields: Dict[str, str], description: str, body: 
         return out
     verdict_norm = _norm(verdict_source)
     if verdict_norm and re.search(r"\bnot (?:a )?reviewable\b", verdict_norm):
-        out.update(changed=False, outcome="not_reviewable", confidence="high",
-                   basis=f"result line: {_strip_markdown(verdict_source)[:160]}")
-        return out
+        # "Play is not reviewable; call on ice stands - no goal X": the on-ice
+        # call stood, so it is an upheld call with a final ruling. Only when no
+        # ruling is stated at all is the statement filed as not_reviewable.
+        if _final_call(verdict_source) is None:
+            out.update(changed=False, outcome="not_reviewable", confidence="high",
+                       basis=f"result line: {_strip_markdown(verdict_source)[:160]}")
+            return out
+        out["not_reviewable"] = True
     if verdict_norm and re.search(r"\bpenalty\b", verdict_norm) and not re.search(r"\bgoal\b", verdict_norm):
         # 2025-26 coach's challenges of delay-of-game penalties, major-penalty
         # reviews, "penalty call rescinded": a penalty changed, no goal did.
@@ -636,6 +641,8 @@ def ruling_from_item(item: Dict[str, Any]) -> Ruling:
         flags.append("review_type_inferred")
     if final_team is None and verdict["final_call"]:
         flags.append("final_team_unresolved")
+    if verdict.get("not_reviewable"):
+        flags.append("not_reviewable_play_call_stood")
     return Ruling(
         slug=item.get("slug") or "",
         headline=headline.strip(),
@@ -1121,6 +1128,7 @@ def ruling_to_record(ruling: Ruling, *, run_id: str, now: Optional[str] = None) 
             "market_impact": market,
             "review": {
                 "kind": ruling.kind,
+                "type_group": normalize_review_type(ruling.review_type),
                 "initiated_by": ruling.initiated_by,
                 "type": ruling.review_type,
                 "type_inferred": ruling.review_type_inferred,
@@ -1493,6 +1501,8 @@ def retire_stale_records(existing: List[Dict[str, Any]], stale: List[Dict[str, s
         flags = set(rec.get("flags") or [])
         if db_mod.is_machine_verified(rec) or rec.get("status") in ("flagged", "pending_review"):
             rec["status"] = "retired"
+            if isinstance(rec.get("verification"), dict):
+                rec["verification"]["status"] = "retired"
             flags.add("superseded_by_reclassification")
             rec.setdefault("notes", [])
             if isinstance(rec["notes"], list):

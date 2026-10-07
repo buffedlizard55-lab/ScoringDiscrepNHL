@@ -20,6 +20,8 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from .situation_room import normalize_review_type
+
 SITE_FILES = ("index.html", "styles.css", "app.js", "data.js", ".nojekyll")
 
 DOC_PAGES: List[Tuple[str, str, str]] = [
@@ -202,7 +204,6 @@ def compact_ruling(r: Dict[str, Any]) -> Dict[str, Any]:
     """The subset of a Situation Room ruling the site table needs (keeps data.js small)."""
     xc = r.get("crosscheck") or {}
     return {
-        "slug": r.get("slug"),
         "date": r.get("game_date") or (r.get("content_date") or "")[:10],
         "published": r.get("content_date"),
         "season": r.get("season"),
@@ -219,7 +220,33 @@ def compact_ruling(r: Dict[str, Any]) -> Dict[str, Any]:
         "record_id": r.get("record_id"),
         "url": r.get("public_url"),
         "flags": r.get("flags") or [],
+        "group": r.get("review_type_group") or normalize_review_type(r.get("review_type")),
     }
+
+
+def compact_record(r: Dict[str, Any]) -> Dict[str, Any]:
+    """Trim per-record text that is identical across hundreds of records
+    (templated check instructions, market-impact boilerplate, hashes) so the
+    embedded payload stays loadable. Every field the page renders is kept;
+    the full record is always one click away in data/discrepancies.json."""
+    out = json.loads(json.dumps(r))
+    disc = out.get("discrepancy") or {}
+    reason = (disc.get("reason") or {}).get("text") if isinstance(disc.get("reason"), dict) else None
+    if disc.get("detail") and reason and disc["detail"].strip() == reason.strip():
+        disc["detail"] = ""          # the page shows reason.text; no need to ship it twice
+    ver = out.get("verification") or {}
+    ver.pop("check_instructions", None)
+    for src in out.get("sources") or []:
+        src.pop("sha256", None)
+        if src.get("note") and len(src["note"]) > 240:
+            src["note"] = src["note"][:237] + "..."
+    det = out.get("detection") or {}
+    det.pop("rule", None)
+    out.pop("parallel_record", None)
+    review = disc.get("review")
+    if isinstance(review, dict) and review.get("type") and not review.get("type_group"):
+        review["type_group"] = normalize_review_type(review.get("type"))
+    return out
 
 
 def build(out_dir: str, *, db_path: str, repo_root: str,
@@ -303,7 +330,7 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "alert_feed": alert_feed,
         },
         "summary": summarize(records),
-        "records": records,
+        "records": [compact_record(r) for r in records],
         "rulings": rulings_compact,
         "alerts": alerts_compact,
         "docs": docs,

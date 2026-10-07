@@ -311,7 +311,8 @@ class TestIngestOffline(unittest.TestCase):
             # upsert keeps ids stable across runs; machine-verified records are
             # refreshed by the machine (only human verdicts are sticky)
             merged, stats = db_mod.upsert(out["records"], out2["records"])
-            self.assertEqual(stats, {"added": 0, "updated": 2, "unchanged": 0, "skipped_human": 0})
+            self.assertEqual({k: stats[k] for k in ("added", "updated", "unchanged", "skipped_human")},
+                             {"added": 0, "updated": 2, "unchanged": 0, "skipped_human": 0})
             self.assertEqual({r["record_id"] for r in merged}, {r["record_id"] for r in out["records"]})
             self.assertTrue(all(db_mod.is_machine_verified(r) for r in merged if r["status"] == "verified"))
             # a human verdict on the same record is sticky
@@ -511,6 +512,11 @@ class TestNonGoalStatementsAndProsePhrasing(unittest.TestCase):
     def test_not_reviewable(self):
         out = sr.classify_outcome("video_review", {"result": "This is not a reviewable play"}, "", "")
         self.assertEqual(out["outcome"], "not_reviewable")
+        # the on-ice call stood and is stated: that is an upheld call, flagged
+        out = sr.classify_outcome("video_review", {"result": "Play is not reviewable; call on ice stands - no goal Calgary"}, "", "")
+        self.assertEqual(out["outcome"], "upheld")
+        self.assertEqual(out["final_call"], "no_goal")
+        self.assertTrue(out.get("not_reviewable"))
 
     def test_2016_prose_names_the_reversed_call(self):
         self.assertEqual(sr._final_call("Goal overturned as Stars deemed offsides"), "no_goal")

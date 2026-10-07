@@ -40,7 +40,7 @@
     {key: 'date_to', label: 'Date to', type: 'date'},
     {key: 'game_type', label: 'Game type', type: 'select', options: uniq(R.map(function (r) { return r.game && r.game.game_type; })).sort()},
     {key: 'review_kind', label: 'Review kind', type: 'select', options: [['coach_challenge', "Coach's Challenge"], ['video_review', 'Video review (Situation Room / referee)']]},
-    {key: 'review_type', label: 'Challenge / review type', type: 'select', options: uniq(R.map(function (r) { return r.discrepancy && r.discrepancy.review && r.discrepancy.review.type; })).sort()}
+    {key: 'review_type', label: 'Challenge / review type', type: 'select', options: uniq(R.map(function (r) { return r.discrepancy && r.discrepancy.review && (r.discrepancy.review.type_group || r.discrepancy.review.type); })).sort()}
   ];
   var TOGGLES = [
     {key: 'goal_total_changed', label: 'Changed the goal total'},
@@ -74,7 +74,7 @@
     if (active.period && String(d.period) !== String(active.period)) return false;
     if (active.game_type && g.game_type !== active.game_type) return false;
     if (active.review_kind && !(d.review && d.review.kind === active.review_kind)) return false;
-    if (active.review_type && !(d.review && d.review.type === active.review_type)) return false;
+    if (active.review_type && !(d.review && (d.review.type_group || d.review.type) === active.review_type)) return false;
     if (active.goal_added && d.field !== 'goal_added') return false;
     if (active.goal_removed && d.field !== 'goal_removed') return false;
     if (active.date_from && (g.date || '') < active.date_from) return false;
@@ -532,7 +532,10 @@
       '(these become database records); <strong>upheld</strong> = the on-ice call stood; <strong>on_ice_call_not_stated</strong> = the ' +
       'statement gives the result but not the on-ice call, so no change is inferred - unless a documented human read (marked ' +
       '<em>human read</em>, with its source on the record) supplies the on-ice call. Column "PBP" is the automatic cross-check of ' +
-      'overturned calls against the official play-by-play.' + (sr.last_run ? ' Last ingest ' + esc(sr.last_run) + '.' : '')}));
+      'overturned calls against the official play-by-play. <strong>penalty_review</strong>, <strong>not_reviewable</strong> and ' +
+      '<strong>not_a_review</strong> (officiating-crew updates) are kept so the feed is complete, but no goal changed and no record is made. ' +
+      'The Type filter groups the league\'s ~70 spellings into a dozen buckets; the row shows the verbatim label.' +
+      (sr.last_run ? ' Last ingest ' + esc(sr.last_run) + '.' : '')}));
     var bar = h('div', {class: 'fgrid'});
     function sel(key, label, options) {
       var lab = h('label', {class: 'f'}); lab.appendChild(h('span', {text: label}));
@@ -547,18 +550,18 @@
     q.appendChild(qi); bar.appendChild(q);
     sel('season', 'Season', uniq(RUL.map(function (r) { return r.season; })).sort(naturalDesc));
     sel('team', 'Team', uniq(RUL.map(function (r) { return r.away; }).concat(RUL.map(function (r) { return r.home; }))).sort());
-    sel('outcome', 'Outcome', ['overturned', 'upheld', 'on_ice_call_not_stated', 'unclassified']);
+    sel('outcome', 'Outcome', uniq(['overturned', 'upheld', 'on_ice_call_not_stated', 'penalty_review', 'not_reviewable', 'not_a_review', 'unclassified'].concat(RUL.map(function (r) { return r.outcome; }))));
     sel('kind', 'Kind', ['coach_challenge', 'video_review']);
-    sel('type', 'Type', uniq(RUL.map(function (r) { return r.type; })).sort());
+    sel('type', 'Type', uniq(RUL.map(function (r) { return r.group || r.type; })).sort());
     wrap.appendChild(bar);
     var rows = RUL.filter(function (r) {
       if (rulFilter.season && String(r.season) !== rulFilter.season) return false;
       if (rulFilter.team && r.away !== rulFilter.team && r.home !== rulFilter.team) return false;
       if (rulFilter.outcome && r.outcome !== rulFilter.outcome) return false;
       if (rulFilter.kind && r.kind !== rulFilter.kind) return false;
-      if (rulFilter.type && r.type !== rulFilter.type) return false;
+      if (rulFilter.type && (r.group || r.type) !== rulFilter.type) return false;
       if (rulFilter.q) {
-        var hay = [r.date, r.game_id, r.away, r.home, r.type, r.result, r.outcome, r.team, r.initiated_by].join(' ').toLowerCase();
+        var hay = [r.date, r.game_id, r.away, r.home, r.type, r.group, r.result, r.outcome, r.team, r.initiated_by].join(' ').toLowerCase();
         if (hay.indexOf(rulFilter.q.toLowerCase()) === -1) return false;
       }
       return true;

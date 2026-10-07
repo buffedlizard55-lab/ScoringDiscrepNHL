@@ -26,30 +26,44 @@ original and the corrected state preserved.
 > gaps are owned in the data (`status`, `flags`, `pending_review`) and in
 > [docs/STATUS.md](docs/STATUS.md), never smoothed over.
 
-> **Status, stated plainly (2026-10-07).** The toolkit, the website and both detection paths are built,
-> unit-tested (**73 tests**) and wired to a scheduler. The database holds **three verified records** — every
-> one built from the league's own scoring-change announcement *and* cross-checked against the official game
-> report it names, with the superseded credit, the flags and the exact URLs preserved (see
-> [the first three records](#the-first-three-records)). It is **not** a complete census of NHL scoring
-> changes: three records from one season is a proof of method, not coverage, and each record states in its
-> own flags which part of its evidence is missing. Two things still require a networked machine: the mass
-> backfill and the live monitor (the build sandbox has no route to NHL hosts — measured, artifact committed
-> at [`docs/evidence/sandbox_network_probe.json`](docs/evidence/sandbox_network_probe.json)). Nothing is
-> seeded from memory, media reporting or assumptions, which is why every row below can be opened and
-> re-checked.
-
-> **Two implementations of this brief now coexist in this repository (2026-10-07).** `main` already
-> carried a complete, independently built implementation from parallel sessions — `pipeline/`, a
-> root-served site (`index.html`, `js/`, `css/`), its own database `data/discrepancies.json`
-> (**0 records**), its own tests and docs, and a 30-minute monitor. This branch adds a second:
-> `src/nhl_monitor/`, `site/` and `data/records/discrepancies.json` (**3 verified records**).
-> Nothing from either line was deleted. The four colliding artifacts were each resolved once: one
-> monitor is scheduled (this line's), the parallel line's monitor is parked verbatim at
-> `.github/workflows/monitor_root_site.yml.disabled`, and the parallel line's README and source
-> catalog are preserved verbatim under `docs/parallel_line/`. **A decision is owed** — two
-> databases, two monitors and two sites are one too many of each. See
-> [`docs/parallel_line/PARALLEL_LINE.md`](docs/parallel_line/PARALLEL_LINE.md) for what differs,
-> what each line is good at, and the exact steps to keep either one.
+> **Status, stated plainly (2026-10-07, after the first full Situation Room backfill).** The league publishes
+> an official **Situation Room statement for every Coach's Challenge and video review** (NHL content API,
+> tag `situation-room`, February 2016 → today, minutes after the play). This repository now ingests that
+> feed end to end: **4,406 statements** are in the ledger
+> ([`data/situation_room/rulings.json`](data/situation_room/rulings.json)); **1,470 are rulings that changed
+> the on-ice call** (goal→no goal or no goal→goal), 1,921 upheld the call, 897 give the result but not the
+> on-ice call (kept, no change inferred), and 118 are not goal reviews at all (officiating-crew updates,
+> penalty-only challenges, non-reviewable plays). Every changed call with a resolvable game id was
+> cross-checked against the official play-by-play: **1,394 agree, 51 inconclusive, 12 conflict, 13 not
+> checked** - the conflicts and inconclusives are *flagged*, not hidden.
+>
+> The database ([`data/discrepancies.json`](data/discrepancies.json)) holds **1,469 records**: 1,448 live
+> Situation Room records (1,327 goal→no goal, 121 no goal→goal; **1,393 verified** by statement + play-by-play
+> agreement, 55 flagged for a human), 3 verified scorer/assist corrections from official scoring-change
+> announcements, 1 single-artifact assist conflict, 1 pending hand-typed record awaiting its documented
+> on-ice read, and **16 retired** rows (records a parser correction no longer supports - kept, marked, never
+> silently deleted). Five third-party goal-clock leads were moved out of the database to
+> [`data/leads/third_party_clock_claims.json`](data/leads/third_party_clock_claims.json) because no official
+> source states a correction. `PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate` → **1,469 records,
+> 0 invalid**; `python3 -m unittest discover -s tests -t .` → **259 tests OK**; `node tools/check_engine_site.mjs`
+> runs the published client against the committed payload and passes.
+>
+> **What is live.** One site at the repository root (GitHub Pages: `main`, `/`): Database (filters for season,
+> date, team, period, type, goal-count vs attribution-only, video review, when corrected, market impact),
+> Situation Room log (all 4,406 statements, grouped review types, PBP cross-check column), Alerts
+> ([`data/alerts.json`](data/alerts.json) + [`data/alerts.xml`](data/alerts.xml), bounded to the last 14 days
+> of games so a backfill cannot flood subscribers), Market view, Coverage, Monitor, and every document in
+> `docs/`. [`situation-room.yml`](.github/workflows/situation-room.yml) polls the feed twice an hour on `main`
+> (cron on GitHub Actions is best-effort - measured, see fact F32) and commits ledger, database, alerts and site.
+>
+> **What this is not, yet.** Scorer/assist-only corrections still come only from the league's scoring-change
+> announcements (3 records); pre-2016 reviews have no statement feed (documented limit); 897 statements state
+> the result without the on-ice call and become records only through a *documented* human read
+> ([`data/curation/situation_room_human_reads.json`](data/curation/situation_room_human_reads.json)); the
+> ledger committed by the first run was parsed by version 0.4.0 - the 0.5.0 parser in this tree re-reads the
+> 2016-17 prose forms, files non-goal statements, captures raw statement text and retires records it no
+> longer supports, and is applied on the next full run. Open items are listed at the end of this file and in
+> [`docs/STATUS.md`](docs/STATUS.md).
 
 ---
 
@@ -88,7 +102,7 @@ artifact on **2026-10-07**. The full ledger, including the observations and the 
 | The 2000-2004 report layout is different and is parsed. | On-ice skaters sit inside the scoring summary, the strength column is last, there is no league-shield logo, and bench penalties appear as a player cell literally reading `Team`. Fixture: `tests/fixtures/gs_20002001_020001.html`. |
 | **The NHL publishes scoring changes in a fixed, machine-parseable form.** | `OFFICIAL SCORING CHANGE: Game <n> @<away> at @<home> Goal at <M:SS> of the <ordinal> period now reads <scorer> from <assist1> and <assist2>. #NHLStats` — retrieved and parsed for three games; each resolves to a specific goal in the official report (F16). |
 | Corrections land **after** the game is final, by hours. | All three announcements were posted between **2h49m and 3h25m** after the reported end of the game. This is the latency a market would care about, and it is measured from the announcement timestamp and the report's own end-of-game clock. |
-| An official payload can still show the **superseded** credit. | For the corrected goal of game 1140, the event's English highlight-clip title still reads `meier-scores-ppg` while the French title for the same event reads `mercer-…`, and the scoring fields read Mercer (F17). Stored as corroboration, flagged as an inconsistency. |
+| ~~An official payload can still show the **superseded** credit.~~ **WITHDRAWN on re-verification.** | The claim was that event 146 of game 1140 carried an English clip title reading `meier-…` and a French one reading `mercer-…`. Re-fetched 2026-10-07, the payload reads `njd-chi-meier-scores-ppg-…-6370610304112` and `njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112` — **both "meier"**, and a different French clip id than was recorded. The corroboration is withdrawn (F17 amended, F22 records the pass, transcript at [`data/evidence/reverify-2026-10-07/gamecenter-2024021140-event146.txt`](data/evidence/reverify-2026-10-07/gamecenter-2024021140-event146.txt)). Root cause: a paraphrase was stored instead of the payload, so the claim was never auditable. |
 | The Wayback CDX index exposes a content **digest per snapshot**. | One snapshot for `20232024/GS020001.HTM` (digest `TE24NPUUMSEV3LQEBNQE2TN3NO5GNATJ`), so "did this document ever change?" is answerable without downloading every version. |
 | Archive coverage is sparse and noisy. | 2006-era captures of 2005-06 reports are HTTP 302 redirects with the empty digest `3I42H3S6NNFQ2MSVX7XZKYAYSCX5QBYJ`; these are rejected as evidence. |
 | A **negative control** passed. | The archived copy of `20232024/GS020001.HTM` (2025-01-25) has the same eight-goal scoring summary and the same footer as the live document, so the method produced no false positive on that game — and it proves a regenerated footer is *not* by itself a change. |

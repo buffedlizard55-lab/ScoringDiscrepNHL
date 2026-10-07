@@ -25,9 +25,18 @@ jobs:
           test -f data.js
           test -f .nojekyll
           test -f data/discrepancies.json
+          test -f data/records/discrepancies.json
+          test -f data/alerts.json
           node --check app.js
           node --check pipeline/nhl_scoring/site_assets/app.js
       - name: Site is in sync with the database
         run: |
           PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out /tmp/site_check
           for f in index.html app.js styles.css; do cmp "/tmp/site_check/$f" "$f"; done
+      # The published site is the repository root (Pages: branch main, path /).
+      # `node --check` only proves the file parses. This runs the real client
+      # against the real committed payload and asserts on what it renders.
+      - name: Smoke-test the published site client against the committed data
+        run: node tools/check_engine_site.mjs
+      - name: The alert feed the site reads must not be empty while alerts exist
+        run: PYTHONPATH=src:pipeline python3 -m unittest tests.test_alert_feed -v

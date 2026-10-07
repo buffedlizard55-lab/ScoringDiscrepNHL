@@ -1,0 +1,657 @@
+{
+  "_about": "Leads, not records. A third-party audit log (aknodell/nhlPbpScrapeR) claims the official play-by-play goal clock is off by 1-5 seconds in these games. Both official artifacts agree with each other, no official source states a correction, and no goal count or attribution is affected, so they do not meet the database bar (an official source for the change). One (game 2018020443) failed re-verification outright: the disputed clock value does not exist in the current official record (see the record notes). Kept verbatim with the official sheet links a reviewer needs; promote to data/discrepancies.json only if an official artifact stating the other clock value is found.",
+  "moved_at": "2026-10-07T18:00:00Z",
+  "moved_from": "data/discrepancies.json (seed-2026-10-07 rows, check C22)",
+  "count": 5,
+  "leads": [
+    {
+      "record_id": "SDN-0bb32245dc",
+      "schema_version": "1.0",
+      "status": "pending_review",
+      "confidence": "low",
+      "detected_by": "prior_art_log",
+      "detection": {
+        "check_id": "C22",
+        "rule": "goal_clock_conflict",
+        "rule_label": "Goal clock in the official feed disputed by a public audit log",
+        "severity": "low",
+        "detected_at": "2026-10-07T05:00:00Z",
+        "run_id": "seed-2026-10-07",
+        "tool_version": "0.4.0"
+      },
+      "game": {
+        "game_id": "2018020443",
+        "season": "20182019",
+        "game_type": "REG",
+        "date": "2018-12-07",
+        "away_team": "CAR",
+        "home_team": "ANA",
+        "final_score": {
+          "away": 4,
+          "home": 1
+        },
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2018020443",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
+          "PL": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 2,
+        "clock": "18:07",
+        "team": null,
+        "field": "clock",
+        "goal_key": null,
+        "change_type": "goal_clock_conflict",
+        "summary": "Game 2018020443: audit log states the period 2 goal at 18:07 should be 18:05",
+        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1313 to 1315' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
+        "total_changed": false,
+        "attribution_only": false,
+        "goal_no_goal_change": false,
+        "video_review": false,
+        "when_corrected": "not_applicable",
+        "timing_uncertain": true,
+        "market_impact": {
+          "total_changed": false,
+          "affects_game_total": "no",
+          "affects_player_props": "no",
+          "affects_result_markets": "no",
+          "risk": "low",
+          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
+          "rule_class": "timing"
+        },
+        "reason": {
+          "stated_by_league": false,
+          "text": "",
+          "rule_citation": null,
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "official play-by-play feed",
+        "goal_present": true,
+        "ruling": "goal at 18:07 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "18:07",
+        "team": null
+      },
+      "corrected_state": {
+        "artifact": "audit log assertion",
+        "goal_present": true,
+        "ruling": "goal at 18:05 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "18:05",
+        "team": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 0,
+        "basis": "timing only"
+      },
+      "sources": [
+        {
+          "label": "Official GS sheet for game 2018020443 (reviewer to read the SCORING SUMMARY row)",
+          "url": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "Official play-by-play sheet for the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20182019/PL020443.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
+          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
+          "kind": "third_party",
+          "evidence": "secondary",
+          "retrieved_at": "2026-10-07",
+          "quote": "- 2018020443\n\t- Change GOAL from 1313 to 1315"
+        },
+        {
+          "label": "NHL GameCenter landing payload for game 2018020443 (retrieved to establish the teams, date and final score, and to check the disputed clock)",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2018020443/landing",
+          "kind": "official_api",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T00:00:00Z",
+          "http_status": 200,
+          "quote": "id 2018020443, season 20182019, gameDate 2018-12-07, gameState OFF, awayTeam CAR score 4, homeTeam ANA score 1; period 2 contains exactly one goal: eventId 244, timeInPeriod 01:53, C. Bishop (8478056), CAR, ev, unassisted",
+          "note": "Retrieved through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts. ADVERSE FINDING: no goal at 18:07 exists in any period of this game, so the clock value this lead disputes is not present in the current official record. Transcript committed at data/evidence/reverify-2026-10-07/gamecenter-2018020443-landing.txt."
+        }
+      ],
+      "verification": {
+        "status": "pending_review",
+        "evidence_grade": "secondary",
+        "independently_checkable": true,
+        "check_instructions": "The official GameCenter payload for this game lists one period-2 goal, at 01:53. The audit log's 18:07 does not appear in any period. Either the log refers to a different game/season numbering or the official record was corrected in a way that also moved the goal. Open the payload and the two official sheets before promoting this record.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "disputed_clock_value_not_present_in_current_official_record",
+        "no_goal_count_or_attribution_impact",
+        "requires_human_verification",
+        "third_party_claim_only"
+      ],
+      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
+      "first_seen_at": "2026-10-07T05:00:00Z",
+      "seen_count": 1
+    },
+    {
+      "record_id": "SDN-1e29a4010a",
+      "schema_version": "1.0",
+      "status": "pending_review",
+      "confidence": "low",
+      "detected_by": "prior_art_log",
+      "detection": {
+        "check_id": "C22",
+        "rule": "goal_clock_conflict",
+        "rule_label": "Goal clock in the official feed disputed by a public audit log",
+        "severity": "low",
+        "detected_at": "2026-10-07T05:00:00Z",
+        "run_id": "seed-2026-10-07",
+        "tool_version": "0.4.0"
+      },
+      "game": {
+        "game_id": "2016020609",
+        "season": "20162017",
+        "game_type": "REG",
+        "date": null,
+        "away_team": null,
+        "home_team": null,
+        "final_score": null,
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2016020609",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20162017/GS020609.HTM",
+          "PL": "https://www.nhl.com/scores/htmlreports/20162017/PL020609.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 3,
+        "clock": "01:05",
+        "team": null,
+        "field": "clock",
+        "goal_key": null,
+        "change_type": "goal_clock_conflict",
+        "summary": "Game 2016020609: audit log states the period 3 goal at 01:05 should be 01:00",
+        "detail": "Third-party PBP audit log entry: 'Change GOAL from 3535 to 3540' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
+        "total_changed": false,
+        "attribution_only": false,
+        "goal_no_goal_change": false,
+        "video_review": false,
+        "when_corrected": "not_applicable",
+        "timing_uncertain": true,
+        "market_impact": {
+          "total_changed": false,
+          "affects_game_total": "no",
+          "affects_player_props": "no",
+          "affects_result_markets": "no",
+          "risk": "low",
+          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
+          "rule_class": "timing"
+        },
+        "reason": {
+          "stated_by_league": false,
+          "text": "",
+          "rule_citation": null,
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "official play-by-play feed",
+        "goal_present": true,
+        "ruling": "goal at 01:05 of period 3",
+        "scorer": null,
+        "assists": [],
+        "period": 3,
+        "clock": "01:05",
+        "team": null
+      },
+      "corrected_state": {
+        "artifact": "audit log assertion",
+        "goal_present": true,
+        "ruling": "goal at 01:00 of period 3",
+        "scorer": null,
+        "assists": [],
+        "period": 3,
+        "clock": "01:00",
+        "team": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 0,
+        "basis": "timing only"
+      },
+      "sources": [
+        {
+          "label": "Official GS sheet for game 2016020609 (reviewer to read the SCORING SUMMARY row)",
+          "url": "https://www.nhl.com/scores/htmlreports/20162017/GS020609.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "Official play-by-play sheet for the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20162017/PL020609.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
+          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
+          "kind": "third_party",
+          "evidence": "secondary",
+          "retrieved_at": "2026-10-07",
+          "quote": "- 2016020609\n\t- Change GOAL from 3535 to 3540"
+        }
+      ],
+      "verification": {
+        "status": "pending_review",
+        "evidence_grade": "secondary",
+        "independently_checkable": true,
+        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "requires_human_verification",
+        "third_party_claim_only",
+        "no_goal_count_or_attribution_impact"
+      ],
+      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
+      "first_seen_at": "2026-10-07T05:00:00Z",
+      "seen_count": 1
+    },
+    {
+      "record_id": "SDN-61c6c6d83f",
+      "schema_version": "1.0",
+      "status": "pending_review",
+      "confidence": "low",
+      "detected_by": "prior_art_log",
+      "detection": {
+        "check_id": "C22",
+        "rule": "goal_clock_conflict",
+        "rule_label": "Goal clock in the official feed disputed by a public audit log",
+        "severity": "low",
+        "detected_at": "2026-10-07T05:00:00Z",
+        "run_id": "seed-2026-10-07",
+        "tool_version": "0.4.0"
+      },
+      "game": {
+        "game_id": "2019030232",
+        "season": "20192020",
+        "game_type": "PO",
+        "date": null,
+        "away_team": null,
+        "home_team": null,
+        "final_score": null,
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2019030232",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20192020/GS030232.HTM",
+          "PL": "https://www.nhl.com/scores/htmlreports/20192020/PL030232.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 3,
+        "clock": "00:30",
+        "team": null,
+        "field": "clock",
+        "goal_key": null,
+        "change_type": "goal_clock_conflict",
+        "summary": "Game 2019030232: audit log states the period 3 goal at 00:30 should be 00:29",
+        "detail": "Third-party PBP audit log entry: 'Change GOAL from 3570 to 3571' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
+        "total_changed": false,
+        "attribution_only": false,
+        "goal_no_goal_change": false,
+        "video_review": false,
+        "when_corrected": "not_applicable",
+        "timing_uncertain": true,
+        "market_impact": {
+          "total_changed": false,
+          "affects_game_total": "no",
+          "affects_player_props": "no",
+          "affects_result_markets": "no",
+          "risk": "low",
+          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
+          "rule_class": "timing"
+        },
+        "reason": {
+          "stated_by_league": false,
+          "text": "",
+          "rule_citation": null,
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "official play-by-play feed",
+        "goal_present": true,
+        "ruling": "goal at 00:30 of period 3",
+        "scorer": null,
+        "assists": [],
+        "period": 3,
+        "clock": "00:30",
+        "team": null
+      },
+      "corrected_state": {
+        "artifact": "audit log assertion",
+        "goal_present": true,
+        "ruling": "goal at 00:29 of period 3",
+        "scorer": null,
+        "assists": [],
+        "period": 3,
+        "clock": "00:29",
+        "team": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 0,
+        "basis": "timing only"
+      },
+      "sources": [
+        {
+          "label": "Official GS sheet for game 2019030232 (reviewer to read the SCORING SUMMARY row)",
+          "url": "https://www.nhl.com/scores/htmlreports/20192020/GS030232.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "Official play-by-play sheet for the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20192020/PL030232.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
+          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
+          "kind": "third_party",
+          "evidence": "secondary",
+          "retrieved_at": "2026-10-07",
+          "quote": "- 2019030232\n\t- Change GOAL from 3570 to 3571"
+        }
+      ],
+      "verification": {
+        "status": "pending_review",
+        "evidence_grade": "secondary",
+        "independently_checkable": true,
+        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "requires_human_verification",
+        "third_party_claim_only",
+        "no_goal_count_or_attribution_impact"
+      ],
+      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
+      "first_seen_at": "2026-10-07T05:00:00Z",
+      "seen_count": 1
+    },
+    {
+      "record_id": "SDN-bf5aea9b8c",
+      "schema_version": "1.0",
+      "status": "pending_review",
+      "confidence": "low",
+      "detected_by": "prior_art_log",
+      "detection": {
+        "check_id": "C22",
+        "rule": "goal_clock_conflict",
+        "rule_label": "Goal clock in the official feed disputed by a public audit log",
+        "severity": "low",
+        "detected_at": "2026-10-07T05:00:00Z",
+        "run_id": "seed-2026-10-07",
+        "tool_version": "0.4.0"
+      },
+      "game": {
+        "game_id": "2019021019",
+        "season": "20192020",
+        "game_type": "REG",
+        "date": null,
+        "away_team": null,
+        "home_team": null,
+        "final_score": null,
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2019021019",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20192020/GS021019.HTM",
+          "PL": "https://www.nhl.com/scores/htmlreports/20192020/PL021019.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 2,
+        "clock": "09:55",
+        "team": null,
+        "field": "clock",
+        "goal_key": null,
+        "change_type": "goal_clock_conflict",
+        "summary": "Game 2019021019: audit log states the period 2 goal at 09:55 should be 09:54",
+        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1805 to 1806' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
+        "total_changed": false,
+        "attribution_only": false,
+        "goal_no_goal_change": false,
+        "video_review": false,
+        "when_corrected": "not_applicable",
+        "timing_uncertain": true,
+        "market_impact": {
+          "total_changed": false,
+          "affects_game_total": "no",
+          "affects_player_props": "no",
+          "affects_result_markets": "no",
+          "risk": "low",
+          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
+          "rule_class": "timing"
+        },
+        "reason": {
+          "stated_by_league": false,
+          "text": "",
+          "rule_citation": null,
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "official play-by-play feed",
+        "goal_present": true,
+        "ruling": "goal at 09:55 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "09:55",
+        "team": null
+      },
+      "corrected_state": {
+        "artifact": "audit log assertion",
+        "goal_present": true,
+        "ruling": "goal at 09:54 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "09:54",
+        "team": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 0,
+        "basis": "timing only"
+      },
+      "sources": [
+        {
+          "label": "Official GS sheet for game 2019021019 (reviewer to read the SCORING SUMMARY row)",
+          "url": "https://www.nhl.com/scores/htmlreports/20192020/GS021019.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "Official play-by-play sheet for the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20192020/PL021019.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
+          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
+          "kind": "third_party",
+          "evidence": "secondary",
+          "retrieved_at": "2026-10-07",
+          "quote": "- 2019021019\n\t- Change GOAL from 1805 to 1806"
+        }
+      ],
+      "verification": {
+        "status": "pending_review",
+        "evidence_grade": "secondary",
+        "independently_checkable": true,
+        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "requires_human_verification",
+        "third_party_claim_only",
+        "no_goal_count_or_attribution_impact"
+      ],
+      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
+      "first_seen_at": "2026-10-07T05:00:00Z",
+      "seen_count": 1
+    },
+    {
+      "record_id": "SDN-fa5dbc0a87",
+      "schema_version": "1.0",
+      "status": "pending_review",
+      "confidence": "low",
+      "detected_by": "prior_art_log",
+      "detection": {
+        "check_id": "C22",
+        "rule": "goal_clock_conflict",
+        "rule_label": "Goal clock in the official feed disputed by a public audit log",
+        "severity": "low",
+        "detected_at": "2026-10-07T05:00:00Z",
+        "run_id": "seed-2026-10-07",
+        "tool_version": "0.4.0"
+      },
+      "game": {
+        "game_id": "2015020557",
+        "season": "20152016",
+        "game_type": "REG",
+        "date": null,
+        "away_team": null,
+        "home_team": null,
+        "final_score": null,
+        "gamecenter_url": "https://www.nhl.com/gamecenter/2015020557",
+        "report_urls": {
+          "GS": "https://www.nhl.com/scores/htmlreports/20152016/GS020557.HTM",
+          "PL": "https://www.nhl.com/scores/htmlreports/20152016/PL020557.HTM"
+        }
+      },
+      "discrepancy": {
+        "period": 2,
+        "clock": "19:15",
+        "team": null,
+        "field": "clock",
+        "goal_key": null,
+        "change_type": "goal_clock_conflict",
+        "summary": "Game 2015020557: audit log states the period 2 goal at 19:15 should be 19:14",
+        "detail": "Third-party PBP audit log entry: 'Change GOAL from 1245 to 1246' (seconds from period start in the feed). Applied by the log's author to both the API and HTML feeds, i.e. the official records agree with each other and are both alleged to be off by one to five seconds.",
+        "total_changed": false,
+        "attribution_only": false,
+        "goal_no_goal_change": false,
+        "video_review": false,
+        "when_corrected": "not_applicable",
+        "timing_uncertain": true,
+        "market_impact": {
+          "total_changed": false,
+          "affects_game_total": "no",
+          "affects_player_props": "no",
+          "affects_result_markets": "no",
+          "risk": "low",
+          "reason": "Clock precision does not change what was scored. It matters for period totals measured to the second, last-goal timing props, and anyone reconstructing the game from the feed.",
+          "rule_class": "timing"
+        },
+        "reason": {
+          "stated_by_league": false,
+          "text": "",
+          "rule_citation": null,
+          "needs_human_read": true
+        }
+      },
+      "initial_state": {
+        "artifact": "official play-by-play feed",
+        "goal_present": true,
+        "ruling": "goal at 19:15 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "19:15",
+        "team": null
+      },
+      "corrected_state": {
+        "artifact": "audit log assertion",
+        "goal_present": true,
+        "ruling": "goal at 19:14 of period 2",
+        "scorer": null,
+        "assists": [],
+        "period": 2,
+        "clock": "19:14",
+        "team": null
+      },
+      "totals": {
+        "initial_game_goals": null,
+        "corrected_game_goals": null,
+        "goal_delta": 0,
+        "basis": "timing only"
+      },
+      "sources": [
+        {
+          "label": "Official GS sheet for game 2015020557 (reviewer to read the SCORING SUMMARY row)",
+          "url": "https://www.nhl.com/scores/htmlreports/20152016/GS020557.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "Official play-by-play sheet for the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20152016/PL020557.HTM",
+          "kind": "official_report",
+          "evidence": "primary",
+          "retrieved_at": ""
+        },
+        {
+          "label": "aknodell/nhlPbpScrapeR - after_goal_corrections.md (third-party audit log)",
+          "url": "https://github.com/aknodell/nhlPbpScrapeR/blob/main/after_goal_corrections.md",
+          "kind": "third_party",
+          "evidence": "secondary",
+          "retrieved_at": "2026-10-07",
+          "quote": "- 2015020557\n\t- Change GOAL from 1245 to 1246"
+        }
+      ],
+      "verification": {
+        "status": "pending_review",
+        "evidence_grade": "secondary",
+        "independently_checkable": true,
+        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
+        "verified_by": "",
+        "verified_at": ""
+      },
+      "flags": [
+        "requires_human_verification",
+        "third_party_claim_only",
+        "no_goal_count_or_attribution_impact"
+      ],
+      "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
+      "first_seen_at": "2026-10-07T05:00:00Z",
+      "seen_count": 1
+    }
+  ]
+}
