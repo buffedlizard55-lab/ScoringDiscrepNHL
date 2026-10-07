@@ -130,13 +130,29 @@
     }
   ],
   "extra_flags": [
-    "pre_change_assist_credits_unresolved",
-    "official_payload_contains_two_different_clip_titles_for_the_same_goal"
+    "pre_change_assist_credits_unresolved"
   ],
   "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
   "reverification": {
     "reverified_at_utc": "2026-10-07T00:00:00Z",
+    "method": "Re-fetched GS021140.HTM and the GameCenter landing payload for 2024021140 through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts, so http_status is inferred from returned content rather than read from a response line.",
+    "confirmed": [
+      "GS021140.HTM row 2: 2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
+      "GS021140.HTM footer: 2025-03-27 8.23.23",
+      "GS021140.HTM header: Start 6:37 CDT; End 9:02 CDT",
+      "GameCenter event 146: playerId 8482110 (Mercer, goalsToDate 16), assists 8482684 (Hughes, 31) and 8480002 (Hischier, 28)"
+    ],
+    "not_confirmed": [
+      "The French highlight-clip title naming Mercer (clip 6370608420112). The payload fetched on the re-check carries a French title naming Meier (clip 6370610205112), so this corroboration of the superseded credit is withdrawn rather than disproved."
+    ],
     "evidence": "data/evidence/reverify-2026-10-07/",
-    "note": "The French-clip corroboration of the superseded credit was not reproducible on re-check and is withdrawn. See data/reference/verified_facts.json F17 and F22."
-  }
+    "effect_on_the_record": "None on the corrected state, which stands on the official report and the official announcement. The superseded credit now rests on the secondary reproduction alone, which this record already flagged."
+  },
+  "withdrawn_flags": [
+    {
+      "flag": "official_payload_contains_two_different_clip_titles_for_the_same_goal",
+      "withdrawn_on": "2026-10-07",
+      "why": "Re-fetched, the official GameCenter payload reads 'meier' in BOTH the English and the French highlight-clip title for event 146, and the French clip id is 6370610205112 rather than the 6370608420112 originally recorded. The corroboration is not reproducible. See data/evidence/reverify-2026-10-07/gamecenter-2024021140-event146.txt and verified_facts F17/F22."
+    }
+  ]
 }
