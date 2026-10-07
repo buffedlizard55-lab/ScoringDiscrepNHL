@@ -20,6 +20,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: nhl-monitor
@@ -43,6 +44,20 @@ jobs:
 
       - name: Run snapshot monitor (today + last 3 days)
         run: python3 monitor/nhl_monitor.py --days 4
+
+      - name: Notify — open an issue for any new discrepancy alerts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f data/alerts/ISSUE_BODY.md ]; then
+            gh issue create \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "⚠️ Possible NHL scoring discrepancy detected $(date -u +%Y-%m-%d\ %H:%M)Z" \
+              --body-file data/alerts/ISSUE_BODY.md \
+              || echo "::warning::Could not open issue (may need issue permissions)."
+          else
+            echo "No new alerts this run."
+          fi
 
       - name: Commit any new snapshots/alerts
         run: |

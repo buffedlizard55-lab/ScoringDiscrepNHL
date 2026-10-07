@@ -12,6 +12,7 @@ These posts are the league's own record of in-game review decisions:
 | Game | Ruling | Link |
 |---|---|---|
 | STL @ COL, Oct 19, 2017 (statement Oct 20) | Rantanen goal overturned in error — "the goal should have counted" | ✅ [NHL.com statement](https://www.nhl.com/news/situation-room-correction-avalanche-blues/c-292120660) |
+| NYR @ OTT, Mar 8, 2025 | Soucy shot ruled to have crossed the line — goal added (Rule 37.3(i)) | ✅ [NHL.com](https://www.nhl.com/news/new-york-rangers-ottawa-senators-video-review) |
 | BUF @ NYR, Dec 10, 2021 (admitted Dec 12) | Olofsson goal reversed for offside; NHL admits call should have stood | ✅ [NHL.com](https://www.nhl.com/news/nhl-admits-mistake-on-sabres-disallowed-goal-against-rangers-328906922) |
 | TOR @ MTL, Feb 20, 2021 | Kotkaniemi goal overturned on 2nd review (goaltender interference) | ✅ [NHL.com](https://www.nhl.com/news/toronto-maple-leafs-montreal-canadiens-situation-room-321626404) |
 | PIT @ NYR, May 3, 2022 (playoffs) | Chytil goal disallowed (goaltender interference) | ✅ [NHL.com](https://www.nhl.com/news/pittsburgh-penguins-new-york-rangers-situation-room-333721218) |
@@ -39,6 +40,8 @@ linked report.
 | NSH @ CBJ, Apr 1, 2025 | Goal 9:02 3rd now reads Oesterle (Smith, McCarron) | quoted verbatim in report | [Yardbarker/Athlon](https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037) |
 | CAR @ BOS, Apr 5, 2025 | Goal 1:28 3rd now reads Pastrnak (Geekie, Lindholm); assist added | quoted verbatim in report | [Yardbarker/Athlon](https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_hurricanes_game/s1_17615_42011070) |
 | BOS @ NJD, Apr 8, 2025 | Goal 9:38 1st now reads Pastrnak (Geekie); assist moved from Wotherspoon | ✅ [x.com/NHLPR status 1909831272047800540](https://x.com/NHLPR/status/1909831272047800540) | [Yardbarker/Athlon](https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683) |
+| NYI @ PHI, Oct 25, 2025 | Goal 7:32 3rd now reads Zegras (Brink, York) | ✅ [x.com/NHLPR status 1982185938827592055](https://x.com/NHLPR/status/1982185938827592055) | [Yardbarker/Athlon](https://www.yardbarker.com/nhl/articles/nhl_makes_scoring_change_after_flyers_islanders_game/s1_17615_42958822) |
+| NJD @ DET, Apr 11, 2026 (post Apr 13) | Goal 10:40 1st now reads Jack Hughes (Bratt, Hamilton) | ✅ [x.com/NHLPR status 2043750852360302805](https://x.com/NHLPR/status/2043750852360302805) | ✅ [NHL.com recap](https://www.nhl.com/news/new-jersey-devils-detroit-red-wings-game-recap-april-11-2026), [ESPN boxscore](https://www.espn.com/nhl/game/_/gameId/401803616/devils-red-wings) |
 
 Game dates corroborated by NHL.com recaps, e.g. ✅ [Devils–Blackhawks recap, Mar 26, 2025](https://www.nhl.com/news/new-jersey-devils-chicago-blackhawks-game-recap-march-26).
 
@@ -76,6 +79,10 @@ Game dates corroborated by NHL.com recaps, e.g. ✅ [Devils–Blackhawks recap, 
   [USA Today](https://www.usatoday.com/story/sports/nhl/2024-06-21/stanley-cup-finals-live-updates-panthers-oilers-game-6-score/74172107007/) ·
   [Wikipedia — 2024 Stanley Cup Final](https://en.wikipedia.org/wiki/2024_Stanley_Cup_Final)
   (official post names teams/period/rule; corroboration supplies scorer).
+- **Rossi goal awarded after double flip, Oct 1, 2026 (EDM @ VAN):**
+  [Scouting The Refs](https://scoutingtherefs.com/2026-10-53416/video-review-overturns-batted-puck-call-awards-rossi-goal/)
+  quotes the official NHL explanation verbatim (goal → no goal → goal; Rule 78.4 shoulder
+  deflection). *Direct NHL.com Situation Room post not located — flagged.*
 - **Rantanen goal should have counted, Oct 19, 2017 (STL @ COL):**
   [NBC Sports](https://nhl.nbcsports.com/2017-10-20/nhl-admits-off-side-challenge-error-that-cost-avalanche-a-goal) ·
   [The Denver Post](https://www.denverpost.com/2017-10-20/avalanche-disallowed-goal-nhl-mistake/) ·

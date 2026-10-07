@@ -267,6 +267,38 @@ def _dedupe_key(alert: dict) -> str:
     return json.dumps({k: alert.get(k) for k in sorted(alert)}, sort_keys=True, default=str)
 
 
+def write_issue_body(alerts_dir: Path, added: list[dict]) -> None:
+    """Write ISSUE_BODY.md when there are new alerts (consumed by CI to open
+    a GitHub Issue notification); remove the stale file otherwise."""
+    issue_path = alerts_dir / "ISSUE_BODY.md"
+    if not added:
+        if issue_path.exists():
+            issue_path.unlink()
+        return
+    lines = [
+        "The snapshot monitor detected that the NHL's official scoring record "
+        "changed for the game(s) below since the previous snapshot. These are "
+        "automatic detections — each must be reviewed against NHL.com / NHL PR "
+        "before being added to the verified database.",
+        "",
+        "| Alert | Game | Period | Time | Detail |",
+        "|---|---|---|---|---|",
+    ]
+    for a in added:
+        detail = (a.get("explanation") or "").replace("|", "/")
+        lines.append(
+            f"| {a.get('alert_type')} | {a.get('away_team')} @ {a.get('home_team')} "
+            f"(game {a.get('game_id')}) | {a.get('period') or '-'} | "
+            f"{a.get('time') or '-'} | {detail} |"
+        )
+    lines += [
+        "",
+        "Feed: `data/alerts/feed.json` · Site: GitHub Pages \"Alerts feed\" tab.",
+    ]
+    alerts_dir.mkdir(parents=True, exist_ok=True)
+    issue_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def merge_alerts(feed_path: Path, new_alerts: list[dict]) -> list[dict]:
     """Append new alerts to feed.json (deduplicated). Returns newly added."""
     existing = []
@@ -351,6 +383,7 @@ def run(days: int, data_dir: Path) -> int:
             snap_path.write_text(json.dumps(curr, indent=2) + "\n", encoding="utf-8")
 
     added = merge_alerts(data_dir / "alerts" / "feed.json", all_new_alerts)
+    write_issue_body(data_dir / "alerts", added)
     for alert in added:
         print(
             f"[ALERT] {alert['alert_type']} game={alert['game_id']} "

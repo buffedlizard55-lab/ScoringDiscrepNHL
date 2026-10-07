@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-10-07",
+  "history": "Incorporates and supersedes the seed records (NHL-SD-0001..0005) from the v0.1.0 database merged from main: four of the five were independently re-verified against their sources line-by-line on 2026-10-07 and re-recorded here with gaps fixed (game dates, clocks, direct NHL PR links); the fifth was a duplicate of record 2025-04-05-CAR-BOS-pastrnak-assists.",
   "policy": "Every record below was transcribed line-by-line from the linked source(s). Records backed by an official NHL channel statement — an NHL.com document, or an NHL Public Relations 'OFFICIAL SCORING CHANGE' notice quoted verbatim — are marked evidence_status='verified_official'; when the official notice is only preserved verbatim inside secondary reporting (no archived direct link), that is stated explicitly in evidence_notes. Records supported only by third-party coverage with no official statement are marked 'verified_secondary'. No field is filled from assumption: unknown values are null and explained in evidence_notes. This file is the single source of truth for the website.",
   "records": [
     {
@@ -309,6 +310,30 @@
       ]
     },
     {
+      "id": "2025-03-08-NYR-OTT-soucy",
+      "date": "2025-03-08",
+      "season": "2024-25",
+      "away_team": "NYR",
+      "home_team": "OTT",
+      "period": 1,
+      "game_clock": "8:37",
+      "initial_ruling": "No goal was the original call on the ice on Carson Soucy's shot.",
+      "corrected_ruling": "Goal New York. The Situation Room initiated a puck-over-goal-line video review and deemed Soucy's shot crossed the Ottawa goal line as the culmination of a continuous play.",
+      "reason": "Rule 37.3(i): apparent goals are reviewable when the puck enters the net as the culmination of a continuous play unaffected by a whistle blown when the referee lost sight of the puck.",
+      "type": ["nogoal_to_goal", "video_review"],
+      "category": "goal_total_changed",
+      "video_review": true,
+      "correction_timing": "in_game",
+      "changed_goal_total": true,
+      "attribution_changed": false,
+      "market_impact": "potential",
+      "evidence_status": "verified_official",
+      "evidence_notes": "Official NHL.com video-review post confirms type, period/clock, result and rule citation. The post does not state the final score; game outcome intentionally not recorded.",
+      "sources": [
+        {"label": "NHL.com — Video Review: NYR @ OTT – 8:37 of the First Period", "url": "https://www.nhl.com/news/new-york-rangers-ottawa-senators-video-review", "official": true}
+      ]
+    },
+    {
       "id": "2025-03-26-NJD-CHI-mercer",
       "date": "2025-03-26",
       "season": "2024-25",
@@ -432,6 +457,31 @@
       ]
     },
     {
+      "id": "2025-10-25-NYI-PHI-zegras",
+      "date": "2025-10-25",
+      "season": "2025-26",
+      "away_team": "NYI",
+      "home_team": "PHI",
+      "period": 3,
+      "game_clock": "7:32",
+      "initial_ruling": "Trevor Zegras power-play goal at 7:32 of the third period (his second of the game, tying it 3-3) stood without officially confirmed assists at the time.",
+      "corrected_ruling": "Postgame OFFICIAL SCORING CHANGE (Game 127): goal now reads Trevor Zegras from Bobby Brink and Cam York. Philadelphia won 4-3 in a shootout.",
+      "reason": "Postgame official scoring review credited Brink and York with helpers on the build-up.",
+      "type": ["assist_change"],
+      "category": "attribution_only",
+      "video_review": false,
+      "correction_timing": "postgame",
+      "changed_goal_total": false,
+      "attribution_changed": true,
+      "market_impact": "none",
+      "evidence_status": "verified_official",
+      "evidence_notes": "Direct NHL Public Relations post on X (Oct 25, 2025) archived with link; the live assist line prior to the change is not stated in the notice and is described from it rather than assumed.",
+      "sources": [
+        {"label": "NHL Public Relations on X — OFFICIAL SCORING CHANGE, Game 127", "url": "https://x.com/NHLPR/status/1982185938827592055", "official": true},
+        {"label": "Yardbarker/Athlon Sports — NHL Makes Scoring Change After Flyers-Islanders Game", "url": "https://www.yardbarker.com/nhl/articles/nhl_makes_scoring_change_after_flyers_islanders_game/s1_17615_42958822", "official": false}
+      ]
+    },
+    {
       "id": "2025-11-18-NYI-DAL-johnston",
       "date": "2025-11-18",
       "season": "2025-26",
@@ -477,6 +527,32 @@
       "evidence_notes": "Official NHL.com Situation Room post (game played Nov. 22, 2025).",
       "sources": [
         {"label": "NHL.com — Coach's Challenge: OTT @ SJS - 1:27 of the First Period", "url": "https://www.nhl.com/news/ottawa-senators-san-jose-sharks-coach-challenge", "official": true}
+      ]
+    },
+    {
+      "id": "2026-04-11-NJD-DET-hughes",
+      "date": "2026-04-11",
+      "season": "2025-26",
+      "away_team": "NJD",
+      "home_team": "DET",
+      "period": 1,
+      "game_clock": "10:40",
+      "initial_ruling": "Jack Hughes goal at 10:40 of the first period (wrist shot over John Gibson's blocker, tying it 1-1). The live assist line prior to the change is not documented in the official notice.",
+      "corrected_ruling": "Postgame OFFICIAL SCORING CHANGE (Game 1265): goal now reads Jack Hughes from Jesper Bratt and Dougie Hamilton. New Jersey won 5-3.",
+      "reason": "Official postgame scoring change announced by NHL Public Relations (post dated April 13, 2026); basis not stated in the post.",
+      "type": ["assist_change"],
+      "category": "attribution_only",
+      "video_review": false,
+      "correction_timing": "postgame",
+      "changed_goal_total": false,
+      "attribution_changed": true,
+      "market_impact": "none",
+      "evidence_status": "verified_official",
+      "evidence_notes": "Direct NHL PR post on X plus the NHL.com game recap and ESPN boxscore all confirm the game date (Apr 11, 2026), the 10:40 first-period goal, and the Bratt/Hamilton assists. Flagged gap: the original (pre-change) live assist line is unknown and is not guessed.",
+      "sources": [
+        {"label": "NHL Public Relations on X — OFFICIAL SCORING CHANGE, Game 1265", "url": "https://x.com/NHLPR/status/2043750852360302805", "official": true},
+        {"label": "NHL.com — Red Wings eliminated from playoff race with loss to Devils (Apr 11, 2026)", "url": "https://www.nhl.com/news/new-jersey-devils-detroit-red-wings-game-recap-april-11-2026", "official": true},
+        {"label": "ESPN — Devils 5-3 Red Wings boxscore (Apr 11, 2026)", "url": "https://www.espn.com/nhl/game/_/gameId/401803616/devils-red-wings", "official": false}
       ]
     },
     {
@@ -549,6 +625,30 @@
       "evidence_notes": "Official NHL.com Situation Room post (post dated May 26, 2026; game played May 25, 2026).",
       "sources": [
         {"label": "NHL.com — Coach's Challenge: CAR @ MTL – 8:28 of the Third Period", "url": "https://www.nhl.com/news/carolina-hurricanes-montreal-canadiens-game-3-coach-challenge", "official": true}
+      ]
+    },
+    {
+      "id": "2026-10-01-EDM-VAN-rossi",
+      "date": "2026-10-01",
+      "season": "2026-27",
+      "away_team": "EDM",
+      "home_team": "VAN",
+      "period": 3,
+      "game_clock": "4:43",
+      "initial_ruling": "Marco Rossi's puck in the Edmonton net was first called a goal on the ice, then changed to NO GOAL after the officials conferred and ruled Rossi had batted the puck in with his glove.",
+      "corrected_ruling": "Goal Vancouver. The Situation Room initiated a video review and determined the puck deflected off Rossi's shoulder and entered the net in a legal fashion (Rule 78.4). The goal cut Edmonton's lead to 8-5 during the third period of a game Edmonton won 9-7.",
+      "reason": "League-initiated review (Rule 37) of a disallowed batted-puck call; a puck deflected off any part of the body, shoulder included, is a legal goal under Rule 78.4.",
+      "type": ["nogoal_to_goal", "video_review", "double_review"],
+      "category": "goal_total_changed",
+      "video_review": true,
+      "correction_timing": "in_game",
+      "changed_goal_total": true,
+      "attribution_changed": false,
+      "market_impact": "potential",
+      "evidence_status": "verified_secondary",
+      "evidence_notes": "Official NHL explanation quoted verbatim by Scouting The Refs: the on-ice ruling flipped twice (goal -> no goal -> goal). A direct NHL.com Situation Room post for this review was not located and is flagged as missing. Game date confirmed as Thursday, Oct 1, 2026 (article dated Oct 2, 2026); clock 4:43 of the third stated in the report.",
+      "sources": [
+        {"label": "Scouting The Refs — Video Review Overturns Batted Puck Call, Awards Rossi Goal (quotes NHL explanation)", "url": "https://scoutingtherefs.com/2026-10-53416/video-review-overturns-batted-puck-call-awards-rossi-goal/", "official": false}
       ]
     }
   ]

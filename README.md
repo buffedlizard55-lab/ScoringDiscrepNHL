@@ -36,13 +36,14 @@ It should solve the problem of having to manually check everything ourselves and
 
 | Item | Status |
 |---|---|
-| Verified discrepancy database | ✅ **22 records**, seasons 1976-77 → 2025-26, every record source-linked |
+| Verified discrepancy database | ✅ **26 records**, seasons 1976-77 → 2026-27, every record source-linked |
 | Goal-total vs attribution split | ✅ `category` field + dedicated filters |
 | Market/settlement impact flags | ✅ `market_impact` field (none / potential / high) |
 | Evidence flags | ✅ `evidence_status`: `verified_official` / `verified_secondary` |
 | Website (GitHub Pages) | ✅ Live at **https://buffedlizard55-lab.github.io/ScoringDiscrepNHL/** |
 | Automatic monitor | ✅ `monitor/nhl_monitor.py` + GitHub Actions every 15 min |
 | Alerts feed | ✅ `data/alerts/feed.json`, rendered on the site |
+| Alert notifications | ✅ each new detection also opens a **GitHub Issue** automatically |
 | Historical coverage documentation | ✅ see "Known limitations" below and on the site |
 
 ## Repository layout
@@ -56,8 +57,15 @@ monitor/nhl_monitor.py      ← snapshot-diff detector (stdlib only, has --self-
 scripts/build_csv.py        ← regenerates the CSV from the JSON
 docs/SOURCES.md             ← line-by-line source dossier for manual review
 assets/ + index.html        ← the GitHub Pages website
-.github/workflows/nhl-monitor.yml ← scheduled monitor runs
+.github/workflows/nhl-monitor.yml ← scheduled monitor runs + issue notifications
 ```
+
+> **Consolidation note (2026-10-07):** a v0.1.0 seed system (site under `docs/`,
+> `scripts/monitor.py`) had previously been merged to main. It was merged into this
+> system: its four verifiable records were independently re-verified and re-recorded in
+> `data/discrepancies.json` (gaps fixed, direct NHL PR links added), and the duplicated
+> site/workflows/scripts were removed so there is exactly one monitor, one workflow, and
+> one website. The old files remain in git history.
 
 ## Using the site
 
@@ -82,7 +90,9 @@ play-by-play is simply rewritten in place. The monitor therefore keeps its own s
 3. It diffs against the stored snapshot and raises typed alerts:
    `score_decreased`, `goal_event_removed`, `goal_event_added`,
    `scorer_changed`, `assist_changed`, `total_mismatch_flag`.
-4. Alerts land in `data/alerts/feed.json`, are committed back to the repo, and appear on the site.
+4. Alerts land in `data/alerts/feed.json`, are committed back to the repo,
+   appear on the site, and each run with new alerts opens a GitHub Issue so
+   you get a notification without having to check anything manually.
 
 Run it locally:
 
@@ -102,18 +112,20 @@ python3 monitor/nhl_monitor.py --days 4      # real run (writes data/snapshots +
    launched 2011-12. Older discrepancies (this DB goes back to 1977) only exist when
    documentation survived (newspapers, team media, NHL.com features).
 4. **The database is a growing verified sample, not a census.** We never guess; gaps are flagged.
-5. **Some entries are secondary-source-only** (`verified_secondary`) — they are explicitly
-   flagged in the UI and in `evidence_notes` until an official document is located.
-6. **Notification delivery** currently means: commits to the repo + the website feed. Push
-   channels (email/Discord/webhook) need user-supplied credentials — see next steps.
+5. **Four entries are secondary-source-only** (`verified_secondary`: 1987 Froese,
+   2017 Subban, 2023 MacKinnon G7, 2026 Rossi) — they are explicitly flagged in the UI
+   and in `evidence_notes` until an official document is located.
+6. **Notification delivery** currently means: a GitHub Issue per detection + the website
+   feed + commits. Email/Discord/webhook push would additionally need user-supplied
+   credentials.
 
 ## Next steps (work queue for the next session)
 
 1. **Grow the historical corpus**: mine NHL.com Situation Room archive posts season-by-season
    (2011-12 onward) and NHL PR “OFFICIAL SCORING CHANGE” history to turn the sample into a
    census of the video-review era.
-2. **Find official posts for the 3 flagged records** (2017 Subban, 2023 MacKinnon G7, and the
-   1987 Froese case) or keep them flagged.
+2. **Find official posts for the 4 flagged records** (2017 Subban, 2023 MacKinnon G7,
+   2026 Rossi, and the 1987 Froese case) or keep them flagged.
 3. **Add a verified intermission-correction record** (none documented yet — the DB records
    `correction_timing`, so the slot exists).
 4. **Wire real notifications** (GitHub issue creation per alert, then optional email/webhook
