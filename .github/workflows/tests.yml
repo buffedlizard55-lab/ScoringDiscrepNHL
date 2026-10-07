@@ -70,9 +70,28 @@ jobs:
         run: |
           git config user.name  "coverage-bot"
           git config user.email "coverage-bot@users.noreply.github.com"
+          # The probe timestamp changes on every run, which would otherwise commit a new
+          # revision of this file on every push and make every open branch conflict with
+          # main. If nothing except the timestamp changed, keep the old timestamp: the
+          # file then records when the measurement last actually changed.
+          cp data/reference/coverage_report.json /tmp/new.json
+          git show HEAD:data/reference/coverage_report.json > /tmp/old.json 2>/dev/null || cp /tmp/new.json /tmp/old.json
+          python3 - <<'INNER'
+          import json
+          new = json.load(open('/tmp/new.json'))
+          old = json.load(open('/tmp/old.json'))
+          if new.get('probed_at_utc') and old.get('probed_at_utc'):
+              a, b = dict(new), dict(old)
+              a.pop('probed_at_utc'), b.pop('probed_at_utc')
+              if a == b:
+                  new['probed_at_utc'] = old['probed_at_utc']
+                  with open('data/reference/coverage_report.json', 'w') as fh:
+                      json.dump(new, fh, indent=2, ensure_ascii=False)
+                      fh.write('\n')
+          INNER
           git add data/reference/coverage_report.json
           if git diff --cached --quiet; then
-            echo "coverage report unchanged"
+            echo "coverage report unchanged apart from the probe timestamp"
           else
             git commit -m "coverage: measured per-season official-report availability [skip ci]"
             git push
