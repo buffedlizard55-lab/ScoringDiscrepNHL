@@ -41,7 +41,8 @@
         "retrieved_at_utc": "2026-10-07T00:00:00Z",
         "note": "By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
       }
-    ]
+    ],
+    "post_retrieved_at_utc": "2026-10-07T00:00:00Z"
   },
   "initial_state": {
     "ruling": "goal",

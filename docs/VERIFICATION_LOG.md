@@ -74,7 +74,17 @@ coverage was still a range instead of an answer**. Both were closed with retriev
    scratch, which would have dropped the `coverage` and `status_note` blocks — and with them the coverage
    panel on the site — the moment the first record was written. Non-owned top-level keys are now preserved,
    with a regression test.
-4. **A false-positive risk in the ingest design**: an announcement implies the previous reading without
+4. **A record made a false claim about its OWN evidence.** The first version of the announcement records
+   said the announcement "was not retrievable as plain text from this environment" — while the same post
+   *had* been read directly, and the record's own source entry said `retrievable_as_text: true`. The note is
+   now derived from the evidence (`post_retrieved_at_utc`), not typed. Fixing it exercised the revision
+   mechanism for real: each record went to revision 2 with the superseded version preserved in
+   `previous_revisions`.
+5. **A merge staged a conflicted file as if it were resolved.** `git add -A` during the merge with `main`
+   committed `.github/workflows/monitor.yml` *with its conflict markers intact*, so the scheduled monitor
+   workflow was invalid YAML on `main` and its run reported failure with zero jobs. Fixed and recorded: a
+   marker scan (`git grep -n -E "^(<<<<<<<|=======|>>>>>>>)"`) is now part of the merge routine.
+6. **A false-positive risk in the ingest design**: an announcement implies the previous reading without
    stating it. The ingest treats "the sources do not say" as *indeterminate* (a third state), never as
    "nothing changed", and flags the record.
 

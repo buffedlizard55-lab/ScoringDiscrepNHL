@@ -253,6 +253,25 @@ def _latency(announced_at: Optional[str], game_ended_at: Optional[str]) -> Optio
     return a - b
 
 
+def _announcement_note(announcement: Dict[str, object]) -> str:
+    """Say exactly how the announcement text was obtained - never a blanket claim.
+
+    A record once shipped saying the announcement "was not retrievable as plain text"
+    while its own source entry carried retrievable_as_text=true. The note must follow
+    the evidence, so it is derived from it.
+    """
+    if announcement.get("post_url_retrievable") and announcement.get("post_retrieved_at_utc"):
+        return ("Read directly from the league's own post at the stored URL on "
+                f"{announcement['post_retrieved_at_utc']}.")
+    if announcement.get("post_url_retrievable"):
+        return "Read directly from the league's own post at the stored URL."
+    if announcement.get("reproductions"):
+        return ("The announcement post itself was not retrievable as plain text when this record "
+                "was built; the text below is the wording reproduced by the outlet named in the "
+                "sources, which also stores the post URL.")
+    return "Source of the announcement text is not recorded - treat this record as unverified."
+
+
 def _sources_for_case(case: Dict[str, object], verified_at: str,
                       announcement: Dict[str, object]) -> List[dict]:
     out: List[dict] = []
@@ -455,9 +474,7 @@ def build_record(case: Dict[str, object], *, detection_mode: str = "official_sta
         "reason": {
             "category": "official_source_statement",
             "text": (announcement.get("text") or "").strip(),
-            "note": ("Text of the league's own announcement, as reproduced by the outlet named "
-                     "in the sources. The announcement channel URL is stored but was not "
-                     "retrievable as plain text from this environment."),
+            "note": _announcement_note(announcement),
             "announcement_channel": announcement.get("channel"),
             "announcement_issued_on": announcement.get("issued_on"),
         },

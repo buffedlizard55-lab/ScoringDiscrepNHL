@@ -41,7 +41,8 @@
         "note": "By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
       }
     ],
-    "post_url_note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
+    "post_url_note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself.",
+    "post_retrieved_at_utc": "2026-10-07T00:00:00Z"
   },
   "initial_state": {
     "ruling": "goal",
