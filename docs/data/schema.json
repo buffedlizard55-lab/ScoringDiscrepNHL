@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NHL Scoring Discrepancies database schema",
+  "description": "Canonical schema for docs/data/discrepancies.json. Unknown values MUST be null with a flag, never guessed.",
+  "type": "object",
+  "required": ["database", "version", "last_updated", "records"],
+  "properties": {
+    "database": { "type": "string" },
+    "version": { "type": "string" },
+    "last_updated": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "coverage_note": { "type": "string" },
+    "verification_policy": { "type": "string" },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "season", "game_date", "date_confidence", "game_id_nhl",
+          "away_team", "home_team", "period", "clock",
+          "discrepancy_type", "initial_ruling", "initial_ruling_confidence",
+          "corrected_ruling", "correction_timing",
+          "video_review", "changed_game_total", "changed_attribution_only",
+          "potential_total_market_impact", "sources", "verification_status",
+          "flags", "added_date", "last_verified"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^NHL-SD-[0-9]{4,}$" },
+          "season": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "game_date": { "type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+          "date_confidence": { "type": "string", "enum": ["verified", "inferred", "unknown"] },
+          "game_id_nhl": { "type": ["integer", "null"] },
+          "game_number": { "type": ["integer", "null"] },
+          "away_team": { "type": "string" },
+          "home_team": { "type": "string" },
+          "period": { "type": ["integer", "string", "null"] },
+          "clock": { "type": ["string", "null"] },
+          "discrepancy_type": {
+            "type": "string",
+            "enum": ["goal-added", "goal-removed", "scorer-change", "assist-change", "scorer-assist-change", "other"]
+          },
+          "initial_ruling": { "type": ["string", "null"] },
+          "initial_ruling_confidence": { "type": "string", "enum": ["verified", "reported", "unknown"] },
+          "corrected_ruling": { "type": "string" },
+          "reason": { "type": ["string", "null"] },
+          "correction_timing": { "type": "string", "enum": ["in-game", "intermission", "postgame", "unknown"] },
+          "video_review": { "type": "boolean" },
+          "review_type": { "type": ["string", "null"], "enum": ["situation-room", "coach-challenge", "on-ice", "central-review", null] },
+          "changed_game_total": { "type": "boolean" },
+          "changed_attribution_only": { "type": "boolean" },
+          "potential_total_market_impact": { "type": "boolean" },
+          "total_market_note": { "type": ["string", "null"] },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["label", "url", "type", "accessed"],
+              "properties": {
+                "label": { "type": "string" },
+                "url": { "type": "string", "pattern": "^https?://" },
+                "type": {
+                  "type": "string",
+                  "enum": ["official-nhl", "official-team", "official-pr-social", "rtss-report", "api-snapshot", "secondary"]
+                },
+                "accessed": { "type": "string" }
+              }
+            }
+          },
+          "verification_status": {
+            "type": "string",
+            "enum": ["official-direct", "official-direct-partial", "official-quoted", "secondary", "unverified"]
+          },
+          "flags": { "type": "array", "items": { "type": "string" } },
+          "added_date": { "type": "string" },
+          "last_verified": { "type": "string" }
+        }
+      }
+    }
+  }
+}
