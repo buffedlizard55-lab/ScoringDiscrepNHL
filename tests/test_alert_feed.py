@@ -216,6 +216,67 @@ class TestEngineAlertFeedProjection(unittest.TestCase):
                          {"SDN-42c8407955", "ALERT-NHL-20242025-021140-01"})
 
 
+class TestNoRecordContradictsItself(unittest.TestCase):
+    """A corrected record must not still carry the claim that was corrected.
+
+    This shipped once. The withdrawal was applied to the record but not to the
+    case file the record is rebuilt from, so the next ingest re-added
+    `official_payload_contains_two_different_clip_titles_for_the_same_goal`
+    alongside `initial_state_corroboration_withdrawn_on_reverification`, and the
+    published alert body listed both.
+    """
+
+    def test_the_guard_fires_on_a_contradictory_flag_pair(self):
+        from nhl_monitor import store
+
+        errors = store._flag_contradictions(
+            ["official_payload_contains_two_different_clip_titles_for_the_same_goal",
+             "initial_state_corroboration_withdrawn_on_reverification"])
+        self.assertEqual(len(errors), 1)
+        self.assertIn("contradictory flags", errors[0])
+
+    def test_the_guard_stays_quiet_on_a_single_sided_record(self):
+        from nhl_monitor import store
+
+        self.assertEqual(store._flag_contradictions(
+            ["initial_state_corroboration_withdrawn_on_reverification"]), [])
+        self.assertEqual(store._flag_contradictions(
+            ["official_payload_contains_two_different_clip_titles_for_the_same_goal"]), [])
+
+    def test_no_committed_record_in_either_store_contradicts_itself(self):
+        from nhl_monitor import store
+
+        offenders = []
+        for r in store.load_records():
+            offenders.extend((r.get("record_id"), e) for e in store._flag_contradictions(r.get("flags")))
+        self.assertEqual(offenders, [])
+
+        engine_path = os.path.join(ROOT, "data", "discrepancies.json")
+        engine = json.load(open(engine_path))
+        for r in engine.get("records", []):
+            offenders.extend((r.get("record_id"), e)
+                             for e in store._flag_contradictions(r.get("flags")))
+        self.assertEqual(offenders, [])
+
+    def test_the_corrected_record_carries_the_withdrawal_and_not_the_claim(self):
+        from nhl_monitor import store
+
+        rec = next(r for r in store.load_records()
+                   if r["record_id"] == "NHL-20242025-021140-01")
+        self.assertIn("initial_state_corroboration_withdrawn_on_reverification", rec["flags"])
+        self.assertNotIn("official_payload_contains_two_different_clip_titles_for_the_same_goal",
+                         rec["flags"])
+        self.assertTrue(rec.get("reverification", {}).get("not_confirmed"))
+
+    def test_no_committed_alert_body_lists_a_withdrawn_claim(self):
+        """The alert body is what a subscriber actually reads."""
+        feed = json.load(open(os.path.join(ROOT, "data", "alerts.json")))
+        for a in feed.get("alerts", []):
+            self.assertNotIn("official_payload_contains_two_different_clip_titles_for_the_same_goal",
+                             a.get("body") or "",
+                             f"alert {a.get('id')} still advertises a withdrawn claim")
+
+
 class TestCommittedAlertFeedIsNotEmpty(unittest.TestCase):
     """The committed repository state, asserted directly.
 

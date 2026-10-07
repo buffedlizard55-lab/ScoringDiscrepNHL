@@ -69,6 +69,24 @@ def _get(d: dict, path: str):
     return cur
 
 
+#: Pairs of flags that contradict each other. A record must not assert a claim and
+#: its withdrawal at the same time - that is how a corrected record ends up reading
+#: as if nothing had been corrected. This shipped once: the record for game 1140
+#: carried both `official_payload_contains_two_different_clip_titles_for_the_same_goal`
+#: and `initial_state_corroboration_withdrawn_on_reverification`, because the
+#: withdrawal was applied to the record but not to the case file it is rebuilt from.
+CONTRADICTORY_FLAG_PAIRS = (
+    ("official_payload_contains_two_different_clip_titles_for_the_same_goal",
+     "initial_state_corroboration_withdrawn_on_reverification"),
+)
+
+
+def _flag_contradictions(flags: List[str]) -> List[str]:
+    present = set(flags or [])
+    return [f"contradictory flags: {a!r} and {b!r} cannot both be set"
+            for a, b in CONTRADICTORY_FLAG_PAIRS if a in present and b in present]
+
+
 def validate(record: dict) -> List[str]:
     errors = []
     for field in REQUIRED_FIELDS:
@@ -79,6 +97,7 @@ def validate(record: dict) -> List[str]:
         errors.append("no source with a URL")
     if record.get("evidence_status") not in EVIDENCE_STATUSES:
         errors.append(f"invalid evidence_status: {record.get('evidence_status')!r}")
+    errors.extend(_flag_contradictions(record.get("flags") or []))
     return errors
 
 
