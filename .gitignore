@@ -1,11 +1,16 @@
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
 .venv/
+venv/
 
-# Local scratch / research clones outside the project
-/research/
+# Local snapshot cache — authoritative baselines live in the GitHub Actions cache,
+# not in git (snapshots are bulk-captures of official feeds, not curated content).
+data/snapshots/
 
-# OS / editor noise
+# Local dev artifacts
+site_build/
 .DS_Store
 *.swp
+_sitecheck*/
