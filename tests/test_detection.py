@@ -9,6 +9,7 @@ reading it.
 from __future__ import annotations
 
 import copy
+import csv as csv_mod
 import json
 import os
 import sys
@@ -437,6 +438,62 @@ class UpsertValidationTests(unittest.TestCase):
                              sorted(r["record_id"] for r in loaded["records"]))
             n = db_mod.write_csv(recs, os.path.join(tmp, "data", "discrepancies.csv"))
             self.assertEqual(n, 2)
+
+    def test_csv_and_json_are_written_in_the_same_order(self):
+        """The export cannot drift from the database it exports.
+
+        ``save_db`` sorted by (game date, record_id) while ``write_csv`` wrote rows
+        in whatever order it was handed, so the same 11 records appeared in
+        different orders in the two files and no sync check could ever pass.
+        """
+        a = self._record("SDN-000000000a")
+        b = self._record("SDN-000000000b")
+        b["game"]["date"] = "1999-01-01"   # sorts before a, but is handed second
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = os.path.join(tmp, "db.json")
+            csv_path = os.path.join(tmp, "db.csv")
+            db_mod.save_db({"records": [a, b]}, db_path)
+            db_mod.write_csv([a, b], csv_path)
+            json_ids = [r["record_id"] for r in json.load(open(db_path))["records"]]
+            csv_ids = [r["record_id"]
+                       for r in csv_mod.DictReader(open(csv_path, newline=""))]
+            self.assertEqual(json_ids, csv_ids)
+            self.assertEqual(csv_ids, ["SDN-000000000b", "SDN-000000000a"])
+
+    def test_canonical_order_is_by_date_then_id(self):
+        a = self._record("SDN-000000000a")
+        b = self._record("SDN-000000000b")
+        b["game"]["date"] = "1999-01-01"
+        c = self._record("SDN-000000000c")
+        c["game"]["date"] = None          # unknown dates sort first, stably
+        got = [r["record_id"] for r in db_mod.canonical_order([a, b, c])]
+        self.assertEqual(got, ["SDN-000000000c", "SDN-000000000b", "SDN-000000000a"])
+
+
+class CommittedExportIsInSyncTests(unittest.TestCase):
+    """The committed CSV must be reproducible from the committed database.
+
+    It was not: the JSON store had been rebuilt and re-sorted while the CSV kept
+    the older row order, so the published export disagreed with the database it
+    claims to export. CI now regenerates and diffs it.
+    """
+
+    def test_committed_csv_matches_the_committed_database(self):
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        db_path = os.path.join(root, "data", "discrepancies.json")
+        csv_path = os.path.join(root, "data", "discrepancies.csv")
+        if not (os.path.exists(db_path) and os.path.exists(csv_path)):
+            self.skipTest("no committed database or export")
+        recs = json.load(open(db_path, encoding="utf-8"))["records"]
+        with tempfile.TemporaryDirectory() as tmp:
+            out = os.path.join(tmp, "db.csv")
+            db_mod.write_csv(recs, out)
+            regenerated = open(out, encoding="utf-8").read()
+        committed = open(csv_path, encoding="utf-8").read()
+        self.assertEqual(
+            committed, regenerated,
+            "data/discrepancies.csv is stale: regenerate it from "
+            "data/discrepancies.json (db.write_csv) and commit")
 
 
 if __name__ == "__main__":
