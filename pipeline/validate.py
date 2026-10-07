@@ -128,7 +128,19 @@ def validate_record(rec: dict) -> list[str]:
 def validate_database() -> tuple[list[str], dict]:
     errors: list[str] = []
     db = store.load_discrepancies()
-    if db.get("schema_version") != 1:
+    # The database holds two record shapes since the two lines were consolidated:
+    # this line's (integer schema_version, "id") and the engine line's (string
+    # "1.0", "record_id"). Rather than copy the engine's rules here - a second
+    # implementation is how two validators start disagreeing - engine-shaped
+    # records are handed to the engine's own validator.
+    engine_validate = None
+    if any(isinstance(r, dict) and "record_id" in r and "id" not in r for r in (db.get("records") or [])):
+        try:
+            from .nhl_scoring import db as _engine_db
+            engine_validate = _engine_db.validate
+        except Exception as exc:  # pragma: no cover - import failure is itself a finding
+            errors.append(f"database: engine validator unavailable ({exc})")
+    if db.get("schema_version") not in (1, "1.0"):
         errors.append("database: schema_version must be 1")
     records = db.get("records")
     if not isinstance(records, list):
@@ -137,8 +149,11 @@ def validate_database() -> tuple[list[str], dict]:
 
     seen_ids = set()
     for rec in records:
-        errors.extend(validate_record(rec))
-        rid = rec.get("id")
+        rid = rec.get("id") or rec.get("record_id")
+        if "id" not in rec and "record_id" in rec and engine_validate is not None:
+            errors.extend(f"{rid}: {problem}" for problem in engine_validate(rec))
+        else:
+            errors.extend(validate_record(rec))
         if rid in seen_ids:
             errors.append(f"{rid}: duplicate record id")
         seen_ids.add(rid)

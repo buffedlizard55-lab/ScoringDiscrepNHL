@@ -42,7 +42,13 @@ the translation. `validate()` rejects a lossy or invented port: all three came o
 `verified`, with their own flags carried across
 (`assists_before_the_change_not_captured`, `initial_state_reported_by_secondary_source_only`).
 
-Combined suite: `python3 -m unittest discover -s tests -t .` -> **182 tests**
+Both validators now check the same file: `python3 -m nhl_scoring.cli validate` (engine
+contract) and `python3 -m pipeline.main validate` (monitor contract) each report
+11 records, 0 errors - the monitor line's validator dispatches engine-shaped records to
+the engine's rules instead of rejecting them, so neither line's invariants were
+weakened to reach agreement.
+
+Combined suite: `python3 -m unittest discover -s tests -t .` -> **195 tests**
 (this line 74, the monitor line 108), 0 failures.
 
 ## The database (11 records)
