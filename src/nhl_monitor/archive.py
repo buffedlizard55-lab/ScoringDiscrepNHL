@@ -47,6 +47,13 @@ class Snapshot:
                 and self.digest not in (REDIRECT_DIGEST, ERROR_DIGEST)
                 and self.mimetype in ("text/html", "application/json", "text/plain", ""))
 
+    @classmethod
+    def from_dict(cls, d: dict) -> "Snapshot":
+        """Rebuild a snapshot from :meth:`as_dict` (unknown keys are ignored)."""
+        return cls(timestamp=str(d.get("timestamp", "")), original=str(d.get("url") or d.get("original") or ""),
+                   statuscode=str(d.get("statuscode", "")), digest=str(d.get("digest", "")),
+                   mimetype=str(d.get("mimetype", "")), length=str(d.get("length", "")))
+
     def as_dict(self) -> dict:
         return {
             "timestamp": self.timestamp, "url": self.original, "statuscode": self.statuscode,
@@ -125,6 +132,138 @@ def fetch_snapshot(timestamp: str, url: str, *, timeout: float = 45.0,
     """Download the raw archived bytes of an official document."""
     return http_get(sources.snapshot_url(timestamp, url), timeout=timeout,
                     cache_dir=cache_dir, expect_status=expect_status)
+
+
+def change_windows(snaps: List[Snapshot]) -> List[dict]:
+    """Bracket every change the archive can prove, oldest first.
+
+    A change is *provable* when two adjacent usable captures carry different content
+    digests. The last capture of the older version and the first capture of the newer
+    version bracket the moment the document was rewritten: the older content
+    demonstrably existed at T1 and the newer content demonstrably existed at T2, while
+    everything between T1 and T2 is unknowable from the archive alone. Nothing outside
+    that bracket is claimed.
+
+    A digest that returns to a value seen earlier is kept but flagged: it is either a
+    genuine reversion of the ruling or a capture artefact, and the two are not
+    distinguishable from the index, so it must not be folded silently into a change.
+    """
+    usable = [s for s in snaps if s.usable]
+    first_seen: Dict[str, int] = {}
+    for i, s in enumerate(usable):
+        first_seen.setdefault(s.digest, i)
+    windows: List[dict] = []
+    for i, (older, newer) in enumerate(zip(usable, usable[1:])):
+        if older.digest == newer.digest:
+            continue
+        returned = first_seen.get(newer.digest, i + 1) <= i
+        windows.append({
+            "older_capture": older.as_dict(),
+            "newer_capture": newer.as_dict(),
+            "changed_after_capture": older.timestamp,
+            "changed_by_capture": newer.timestamp,
+            "digest_returned_to_an_earlier_version": returned,
+            "note": ("The document's content changed between these two captures. Which of "
+                     "the two states is the original ruling is decided by the content "
+                     "comparison, not by the capture order."),
+        })
+    return windows
+
+
+def scan_urls(urls: Dict[str, str], *, limit: int = 200, cache_dir: Optional[str] = None,
+              timeout: float = 45.0, delay: float = 0.0,
+              on_result=None) -> List[dict]:
+    """Ask the index, for a set of official documents, whether each one ever changed.
+
+    ``urls`` maps a label (e.g. the game id) to the canonical official URL. One CDX
+    query per URL - the index answers "how many captures, how many distinct contents,
+    and when did the content change" without downloading the documents themselves,
+    which is what makes a multi-season census affordable at all.
+
+    Returns one result dict per label with the capture counts and the proven change
+    windows, so a caller can separate "archived and never changed", "archived and
+    provably changed" (a lead) and "not archived" (unknowable) - three very different
+    answers that must never be collapsed into one.
+    """
+    import time as _time
+
+    results: List[dict] = []
+    for label, url in urls.items():
+        row: dict = {"label": label, "url": url}
+        try:
+            snaps = snapshots_for(url, limit=limit, timeout=timeout, cache_dir=cache_dir)
+            usable = [s for s in snaps if s.usable]
+            windows = change_windows(snaps)
+            row.update({
+                "captures": len(snaps),
+                "usable_captures": len(usable),
+                "distinct_content_versions": len(content_versions(snaps)),
+                "oldest_capture": usable[0].timestamp if usable else None,
+                "newest_capture": usable[-1].timestamp if usable else None,
+                "proven_change": bool(windows),
+                "change_windows": windows,
+                "verdict": ("provably_changed" if windows else
+                            "archived_but_never_changed" if usable else
+                            "no_usable_capture"),
+            })
+        except Exception as exc:  # network / index error
+            row.update({"captures": None, "usable_captures": None, "proven_change": None,
+                        "verdict": "index_error", "error": f"{type(exc).__name__}: {exc}"})
+        results.append(row)
+        if on_result is not None:
+            try:
+                on_result(row)
+            except Exception:
+                pass
+        if delay:
+            _time.sleep(delay)
+    return results
+
+
+def summarise_scan(results: List[dict]) -> dict:
+    """Aggregate a scan: how much of the sample is even answerable, and what changed.
+
+    The three outcomes are counted separately and never collapsed: an index error is a
+    failed question, a document with no usable capture is an unanswered question, and
+    only a document with a usable capture is an answered one. Reporting either of the
+    first two as "unchanged" would overstate what the archive can see.
+    """
+    verdicts: Dict[str, int] = {}
+    leads: List[dict] = []
+    archived = 0
+    for row in results:
+        verdict = row.get("verdict", "unknown")
+        verdicts[verdict] = verdicts.get(verdict, 0) + 1
+        if isinstance(row.get("usable_captures"), int) and row["usable_captures"] > 0:
+            archived += 1
+        for window in row.get("change_windows") or []:
+            leads.append({
+                "label": row["label"],
+                "url": row["url"],
+                "changed_after_capture": window["changed_after_capture"],
+                "changed_by_capture": window["changed_by_capture"],
+                "older_raw_url": sources.snapshot_url(window["older_capture"]["timestamp"],
+                                                      window["older_capture"]["url"]),
+                "newer_raw_url": sources.snapshot_url(window["newer_capture"]["timestamp"],
+                                                      window["newer_capture"]["url"]),
+                "digest_returned_to_an_earlier_version":
+                    window["digest_returned_to_an_earlier_version"],
+            })
+    return {
+        "documents_probed": len(results),
+        "verdicts": verdicts,
+        "documents_with_a_usable_capture": archived,
+        "documents_without_a_usable_capture": len(results) - archived,
+        "documents_provably_changed": len(leads),
+        "proven_change_rate_among_archived": round(len(leads) / archived, 4) if archived else None,
+        "proven_change_rate_among_probed": round(len(leads) / len(results), 4) if results else None,
+        "leads": leads,
+        "reading": ("documents_provably_changed counts documents whose archived content is "
+                    "known to have changed - each lead is a candidate scoring correction "
+                    "that still has to survive a content comparison. A document with no "
+                    "usable capture, and a document whose index query failed, are both "
+                    "UNKNOWABLE, not unchanged."),
+    }
 
 
 def coverage_probe_report(prefixes: Dict[str, str], *, limit: int = 5,

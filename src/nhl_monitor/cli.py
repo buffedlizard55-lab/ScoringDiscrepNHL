@@ -5,6 +5,8 @@
     python -m nhl_monitor monitor --date 2026-10-07
     python -m nhl_monitor backfill-era --season 20052006 --start 1 --end 25
     python -m nhl_monitor backfill-archive --game-id 2023020001
+    python -m nhl_monitor archive-scan --season 20052006 --start 1 --end 60
+    python -m nhl_monitor archive-yield --from-season 2005 --to-season 2026
     python -m nhl_monitor verify --record-id NHL-20232024-020001-01
     python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
     python -m nhl_monitor coverage --from-season 1999 --to-season 2025
@@ -29,9 +31,23 @@ import sys
 from typing import Dict, List, Optional
 
 from . import alerts as alerts_mod
-from . import archive, classify, detect, sources, store
+from . import archive, backfill, classify, detect, sources, store
 from .fetch import FetchError, http_get
 from .parse import report_era
+
+
+def _emit_alerts(records, args, *, label: str = "detection") -> dict:
+    """Alert on records from any detection route (monitor, ingest, census).
+
+    One entry point on purpose: a record that reaches the database must reach the feed,
+    otherwise a discrepancy can sit in the data while the site says there is nothing.
+    """
+    return alerts_mod.emit_for_records(
+        records,
+        github_issue=bool(getattr(args, "github_issue", False)),
+        repo=getattr(args, "repo", None),
+        dry_run=bool(getattr(args, "dry_run", False)),
+    )
 
 
 def _print(obj) -> None:
@@ -127,14 +143,10 @@ def cmd_collect(args) -> int:
     results = []
     for game_id in args.game_id:
         res = detect.collect_game(game_id, cache_dir=args.cache_dir, dry_run=args.dry_run)
-        emitted = [alerts_mod.build_alert(r) for r in res.get("records", [])]
-        if emitted and not args.dry_run:
-            alerts_mod.write_alerts(emitted)
-            if args.github_issue:
-                for a in emitted:
-                    res.setdefault("issues", []).append(
-                        alerts_mod.open_github_issue(a["title"], a["body_markdown"], repo=args.repo))
-        res["alerts"] = emitted
+        emission = _emit_alerts(res.get("records", []), args)
+        res["alerts"] = emission["alerts"]
+        if emission["issues"]:
+            res["issues"] = emission["issues"]
         results.append(res)
     _print({"command": "collect", "results": results})
     return 0
@@ -196,6 +208,7 @@ def cmd_backfill_era(args) -> int:
     """
     season_start = int(args.season[:4])
     produced, skipped, errors = [], [], []
+    emitted_alerts: List[dict] = []
     for game_no in range(args.start, args.end + 1):
         game_id = int(f"{season_start}{args.game_type:02d}{game_no:04d}")
         try:
@@ -225,6 +238,7 @@ def cmd_backfill_era(args) -> int:
              "pbp": ev},
             detection_mode="backfill_frozen_vs_api",
         )
+        emitted_alerts.extend(records)
         for rec in records:
             rec["evidence_status"] = "verified_two_official_states" if frozen else "incomplete"
             rec["flags"].append("initial_state_from_frozen_official_document")
@@ -237,8 +251,10 @@ def cmd_backfill_era(args) -> int:
             store.upsert_record(rec)
         produced.append({"game_id": game_id, "frozen_note": note, "records": len(records),
                          "changes": [c.as_dict() for c in (detect.diff_states(gs_state, api_state))]})
+    alerts = _emit_alerts(emitted_alerts, args)
     _print({"command": "backfill-era", "season": args.season,
             "games_examined": args.end - args.start + 1, "with_records": produced,
+            "alerts_raised": [a["alert_id"] for a in alerts["alerts"]],
             "skipped": skipped, "errors": errors})
     return 0
 
@@ -246,27 +262,178 @@ def cmd_backfill_era(args) -> int:
 def cmd_backfill_archive(args) -> int:
     """Census method 2 - archived snapshots of an official document.
 
-    Uses the CDX digests to find out whether the document ever changed, then
-    downloads the distinct versions so both states can be compared. Note the
-    documented limitation: if every snapshot was taken *after* the correction, both
-    versions look identical and the change is invisible to this method.
+    Uses the CDX digests to find out whether the document ever changed, then downloads
+    the two captures that bracket each change and compares them, so both states come
+    from the league's own documents. Note the documented limitation: if every snapshot
+    was taken *after* the correction, every version looks identical and the change is
+    invisible to this method - "no proven change" is not "no change".
+
+    Flags:
+      --compare / --no-compare  fetch and compare the bracketing captures (default: on)
+      --dry-run                 print the comparison without writing records
     """
-    parts = sources.split_game_id(args.game_id)
-    url = sources.report_url(sources.season_folder(args.game_id), args.kind.upper(),
-                             parts["game_type"], parts["game_no"])
-    snaps = archive.snapshots_for(url, cache_dir=args.cache_dir)
+    game_id = args.game_id
+    url = args.url or sources.report_url(
+        sources.season_folder(game_id), args.kind.upper(),
+        sources.split_game_id(game_id)["game_type"], sources.split_game_id(game_id)["game_no"])
+    index_error = None
+    try:
+        snaps = archive.snapshots_for(url, limit=args.limit, cache_dir=args.cache_dir,
+                                      timeout=args.timeout)
+    except Exception as exc:
+        # A failed index query is an unanswered question, not a clean document.
+        snaps, index_error = [], f"{type(exc).__name__}: {exc}"
     versions = archive.described_versions(snaps)
-    result = {"command": "backfill-archive", "url": url, "snapshots": [s.as_dict() for s in snaps],
-              "distinct_content_versions": versions, "comparison": None}
-    if len(versions) >= 2:
-        result["comparison"] = "multiple content versions exist - fetch the oldest and newest "
-        result["note"] = ("Run `collect`/`verify` for this game and diff the archived version "
-                          "against the live document to produce both states.")
+    windows = archive.change_windows(snaps)
+    result = {"command": "backfill-archive", "game_id": game_id, "url": url,
+              "snapshots": [s.as_dict() for s in snaps],
+              "usable_snapshots": sum(1 for s in snaps if s.usable),
+              "distinct_content_versions": versions,
+              "proven_change_windows": windows, "index_error": index_error,
+              "comparisons": [], "records_written": []}
+    if index_error:
+        result["note"] = ("The archive index could not be queried, so this document is "
+                          "UNKNOWN - not unchanged. Re-run when the index is reachable.")
+    elif not windows:
+        result["note"] = ("No change is provable from the archive for this document. That is NOT "
+                          "evidence that no change occurred: a capture taken after a correction "
+                          "shows the corrected state and looks identical to the next one.")
+    elif not args.compare:
+        result["note"] = "Change windows found; comparison disabled by --no-compare."
     else:
-        result["note"] = ("Only one content version is archived. This does NOT prove no change "
-                          "occurred: a snapshot taken after a correction shows the corrected state.")
+        comparisons = backfill.compare_change_windows(game_id, args.kind, windows,
+                                                     cache_dir=args.cache_dir,
+                                                     timeout=args.timeout)
+        result["comparisons"] = comparisons
+        if not args.dry_run:
+            for comparison in comparisons:
+                for rec in comparison.get("records") or []:
+                    result["records_written"].append(store.upsert_record(rec))
     _print(result)
     return 0
+
+
+def _scan_urls_for(season: str, kind: str, game_type: int, start: int, end: int) -> Dict[str, str]:
+    """Canonical official URLs for a game-number range, keyed by game id."""
+    year = int(season[:4])
+    urls: Dict[str, str] = {}
+    for game_no in range(start, end + 1):
+        game_id = f"{year}{game_type:02d}{game_no:04d}"
+        urls[game_id] = sources.report_url(season, kind.upper(), game_type, game_no)
+    return urls
+
+
+def cmd_archive_scan(args) -> int:
+    """Walk a range of official documents through the archive index and compare any
+    document whose content provably changed.
+
+    This is the census that finds history nobody announced: it does not need the league
+    to say a correction happened, only for two captures of its own document to disagree.
+    It also measures its own blind spot - documents with no usable capture are reported
+    as ``no_usable_capture`` and are NOT evidence that nothing changed.
+    """
+    urls = _scan_urls_for(args.season, args.kind, args.game_type, args.start, args.end)
+    if args.game_ids:
+        wanted = {g.strip() for g in args.game_ids.split(",") if g.strip()}
+        urls = {k: v for k, v in urls.items() if k in wanted} or {
+            g: sources.report_url(args.season, args.kind.upper(), args.game_type,
+                                  sources.split_game_id(int(g))["game_no"]) for g in wanted}
+
+    def progress(row):
+        print(json.dumps({"probed": row["label"], "verdict": row.get("verdict"),
+                          "captures": row.get("captures")}), flush=True)
+
+    summary = backfill.scan_and_compare(urls, args.kind, cache_dir=args.cache_dir,
+                                       timeout=args.timeout, compare=not args.no_compare,
+                                       limit=args.limit, on_result=progress)
+    summary.update({"command": "archive-scan", "season": args.season, "kind": args.kind.upper(),
+                    "game_type": args.game_type, "start": args.start, "end": args.end,
+                    "scanned_at_utc": store.utcnow()})
+    written: List[str] = []
+    if not args.dry_run and not args.no_compare:
+        for comparison in summary.get("comparisons") or []:
+            for rec in comparison.get("records") or []:
+                written.append(store.upsert_record(rec))
+    summary["records_written"] = written
+    alerts = _emit_alerts([r for c in (summary.get("comparisons") or [])
+                           for r in (c.get("records") or [])], args)
+    summary["alerts_raised"] = [a["alert_id"] for a in alerts["alerts"]]
+    if args.out:
+        _write_json(args.out, summary)
+    _print(summary)
+    return 0
+
+
+def cmd_archive_yield(args) -> int:
+    """Measure how much of history this method can even see, season by season.
+
+    For each season a fixed sample of official documents is pushed through the archive
+    index; the result is the measured rate at which documents are archived at all and
+    the measured rate at which an archived document provably changed. Both numbers are
+    measurements of the archive, not claims about the league: they are the ceiling on
+    what any archive-based census can recover, and they are reported as such.
+    """
+    seasons, results = [], []
+    sample = [int(n) for n in args.game_numbers.split(",") if n.strip()]
+    for year in range(args.from_season, args.to_season + 1):
+        season = f"{year}{year + 1}"
+        urls = _scan_urls_for(season, args.kind, args.game_type, 1, max(sample))
+        urls = {k: v for k, v in urls.items() if
+                sources.split_game_id(int(k))["game_no"] in sample}
+        scan = archive.scan_urls(urls, limit=args.limit, cache_dir=args.cache_dir,
+                                timeout=args.timeout, delay=args.delay)
+        summary = archive.summarise_scan(scan)
+        summary["season"] = season
+        summary["scanned_at_utc"] = store.utcnow()
+        results.append({"season": season, "summary": summary,
+                        "documents": [{k: v for k, v in row.items() if k != "change_windows"}
+                                      for row in scan]})
+        seasons.append({"season": season,
+                        "documents_probed": summary["documents_probed"],
+                        "documents_with_a_usable_capture":
+                            summary["documents_with_a_usable_capture"],
+                        "documents_provably_changed": summary["documents_provably_changed"]})
+        print(json.dumps(seasons[-1]), flush=True)
+
+    report = {
+        "generated_at_utc": store.utcnow(),
+        "command": "archive-yield",
+        "what_this_file_is": [
+            "A MEASUREMENT of the Internet Archive's coverage of the official NHL report path,",
+            "taken to bound how much of the scoring-change history any archive-based census can",
+            "recover. It says nothing about whether the NHL changed a ruling - a document with no",
+            "usable capture is unknowable, not unchanged.",
+        ],
+        "kind": args.kind.upper(),
+        "game_type": args.game_type,
+        "sampled_game_numbers": sample,
+        "seasons": seasons,
+        "totals": {
+            "documents_probed": sum(s["documents_probed"] for s in seasons),
+            "documents_with_a_usable_capture": sum(s["documents_with_a_usable_capture"] for s in seasons),
+            "documents_provably_changed": sum(s["documents_provably_changed"] for s in seasons),
+        },
+        "detail": results,
+    }
+    report["totals"]["archive_coverage_rate"] = (
+        round(report["totals"]["documents_with_a_usable_capture"]
+              / report["totals"]["documents_probed"], 4)
+        if report["totals"]["documents_probed"] else None)
+    report["totals"]["proven_change_rate_among_probed"] = (
+        round(report["totals"]["documents_provably_changed"]
+              / report["totals"]["documents_probed"], 4)
+        if report["totals"]["documents_probed"] else None)
+    _write_json(args.out, report)
+    _print({k: report[k] for k in ("generated_at_utc", "kind", "sampled_game_numbers", "totals")})
+    print("per-season detail written to " + args.out)
+    return 0
+
+
+def _write_json(path: str, obj) -> None:
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(obj, fh, indent=2, ensure_ascii=False)
+        fh.write("\n")
 
 
 # ----------------------------------------------------------------------------- #
@@ -380,6 +547,10 @@ def cmd_ingest(args) -> int:
         return 0
     built = ingest.ingest_cases(args.inbox, path=args.records, dry_run=args.dry_run,
                                verbose=args.verbose)
+    emitted = _emit_alerts(built, args)
+    print(f"{len(emitted['alerts'])} alert(s) "
+          + ("would be raised" if args.dry_run else "written to data/alerts/")
+          + (f", {len(emitted['issues'])} GitHub issue(s) opened" if emitted["issues"] else ""))
     print(f"{len(built)} case file(s) processed"
           + (" (dry run - nothing written)" if args.dry_run else ""))
     flagged = 0
@@ -505,12 +676,55 @@ def build_parser() -> argparse.ArgumentParser:
     sb.add_argument("--game-type", type=int, default=2)
     sb.add_argument("--start", type=int, default=1)
     sb.add_argument("--end", type=int, default=25)
+    sb.add_argument("--github-issue", action="store_true")
+    sb.add_argument("--repo", default=None)
     sb.set_defaults(func=cmd_backfill_era)
 
     sa = sub.add_parser("backfill-archive", help="archived-snapshot census for one document")
-    sa.add_argument("--game-id", type=int, required=True)
+    sa.add_argument("--game-id", type=int, default=0)
+    sa.add_argument("--url", default=None,
+                    help="canonical official URL to track (default: derived from --game-id)")
     sa.add_argument("--kind", default="GS")
-    sa.set_defaults(func=cmd_backfill_archive)
+    sa.add_argument("--limit", type=int, default=200)
+    sa.add_argument("--timeout", type=float, default=45.0)
+    sa.add_argument("--github-issue", action="store_true")
+    sa.add_argument("--repo", default=None)
+    sa.add_argument("--no-compare", dest="compare", action="store_false",
+                    help="only list the change windows; do not download the captures")
+    sa.add_argument("--dry-run", action="store_true")
+    sa.set_defaults(func=cmd_backfill_archive, compare=True)
+
+    sas = sub.add_parser("archive-scan",
+                         help="walk a game range through the archive index and compare changes")
+    sas.add_argument("--season", default="20052006", help="season folder start year+1, e.g. 20052006")
+    sas.add_argument("--kind", default="GS")
+    sas.add_argument("--game-type", type=int, default=2)
+    sas.add_argument("--start", type=int, default=1)
+    sas.add_argument("--end", type=int, default=60)
+    sas.add_argument("--game-ids", default="", help="comma-separated game ids instead of a range")
+    sas.add_argument("--limit", type=int, default=200)
+    sas.add_argument("--timeout", type=float, default=45.0)
+    sas.add_argument("--out", default=None, help="write the full scan to this JSON file")
+    sas.add_argument("--github-issue", action="store_true")
+    sas.add_argument("--repo", default=None)
+    sas.add_argument("--no-compare", dest="no_compare", action="store_true")
+    sas.add_argument("--dry-run", action="store_true")
+    sas.set_defaults(func=cmd_archive_scan)
+
+    say = sub.add_parser("archive-yield",
+                         help="measure archive coverage and proven-change yield per season")
+    say.add_argument("--from-season", type=int, default=2005)
+    say.add_argument("--to-season", type=int, default=2026)
+    say.add_argument("--kind", default="GS")
+    say.add_argument("--game-type", type=int, default=2)
+    say.add_argument("--game-numbers", default="1,500,1100",
+                     help="sampled game numbers within each season")
+    say.add_argument("--limit", type=int, default=200)
+    say.add_argument("--timeout", type=float, default=45.0)
+    say.add_argument("--delay", type=float, default=0.5, help="pause between index queries (seconds)")
+    say.add_argument("--out", default=os.path.join(store.DATA_DIR, "reference",
+                                                   "archive_yield.json"))
+    say.set_defaults(func=cmd_archive_yield)
 
     sco = sub.add_parser("coverage", help="measure per-season report availability and era")
     sco.add_argument("--from-season", type=int, default=1999)
@@ -527,6 +741,8 @@ def build_parser() -> argparse.ArgumentParser:
     si.add_argument("--records", default=store.RECORDS_PATH)
     si.add_argument("--dry-run", action="store_true")
     si.add_argument("--verbose", action="store_true")
+    si.add_argument("--github-issue", action="store_true")
+    si.add_argument("--repo", default=None)
     si.set_defaults(func=cmd_ingest)
 
     sv = sub.add_parser("verify", help="re-check a stored record against current official sources")
