@@ -1,35 +1,101 @@
-# Scoring discrepancy alerts (6)
+# Scoring discrepancy alerts (9)
 
-Run `20261007T173336Z-0.4.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261007T203856Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
-### [IMMEDIATE] EDM at VAN - 2026-10-01 (game None)
+### [IMMEDIATE] MIN at NSH - 2026-10-01 (game 2026020012)
 
-- **What changed:** Marco Rossi goal: called a goal on the ice, changed to no-goal by the referee, then reinstated by Situation Room review as a legal shoulder deflection
-- **Rule fired:** `MANUAL` Ruling change reported; official per-game artifact not yet linked (high)
-- **Initial state:** M. Rossi; assists none (period 3 None, None)
-- **Corrected state:** M. Rossi; assists none (period 3 None, None)
-- **Goal total affected:** yes (total_changed=None; attribution-only=False)
+- **What changed:** Coach's Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, MIN (period 1 15:05)
+- **Corrected state:** no_goal, MIN (period 1 15:05)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
 - **Player props affected:** yes
 - **When corrected:** in_game
-- **Record status:** pending_review / confidence medium
+- **Record status:** verified / confidence high
 
-**Why it matters for settlement:** A goal that did not exist at one moment exists at the next, inside the same game: the number of goals a live game-total market is watching moved while the game was in progress.
-
-**Flags:** `game_id_not_resolved`, `not_challengeable_league_initiated`, `requires_human_verification`, `secondary_source_only`, `three_state_ruling_sequence`, `total_change_reported_by_secondary_source_not_established`
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
 
 **Official sources**
-- [Official NHL daily scoreboard API (resolves the game id for 2026-10-01)](https://api-web.nhle.com/v1/score/2026-10-01) _(evidence: primary; retrieved: n/a)_
-- [Scouting The Refs - quote of the NHL's own explanation](https://scoutingtherefs.com/2026/10/02/nhl-oversight-goal-marco-rossi-canucks-oilers/) _(evidence: secondary; retrieved: 2026-10-07)_
-- [NHL Rule 78.4 (goal scored by legal means) / 37.3 (batted puck)](https://nhl.bamcontent.com/images/manual/NHL-Rulebook-2025-26.pdf) _(evidence: reference; retrieved: n/a)_
+- [NHL Situation Room statement - Coach’s Challenge: MIN @ NSH – 15:05 of the First Period](https://www.nhl.com/news/minnesota-wild-nashville-predators-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:02Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-nashville-predators-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:02Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:23Z; sha256 `e05cb598eab5`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM) _(evidence: reference; retrieved: n/a)_
 
-Record id: `SDN-42c8407955` - open each link and read the goal line before acting on this.
+Record id: `SDN-61ee9676e1` - open each link and read the goal line before acting on this.
+
+### [IMMEDIATE] EDM at VAN - 2026-10-01 (game 2026020015)
+
+- **What changed:** Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** no_goal, VAN (period 3 04:43)
+- **Corrected state:** goal: M. Rossi; assists A. Bains; L. Schenn (period 3 04:43, score 8-5)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
+- **Player props affected:** yes
+- **When corrected:** in_game
+- **Record status:** flagged / confidence medium
+
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+
+**Flags:** `game_id_resolved_from_schedule`, `needs_human_read_of_on_ice_call`, `on_ice_call_inferred_from_wording`
+
+**Official sources**
+- [NHL Situation Room statement - Video Review: EDM @ VAN – 4:43 of the Third Period](https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720) _(evidence: primary; retrieved: 2026-10-07T17:03:02Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720) _(evidence: primary; retrieved: 2026-10-07T17:03:02Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:23Z; sha256 `79773c33d7b1`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM) _(evidence: reference; retrieved: n/a)_
+
+Record id: `SDN-752f5a246e` - open each link and read the goal line before acting on this.
+
+### [IMMEDIATE] NYR at DET - 2026-10-02 (game 2026020017)
+
+- **What changed:** Coach's Challenge (Off-Side): on-ice goal overturned, no goal NYR at 07:08 of period 1
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, NYR (period 1 07:08)
+- **Corrected state:** no_goal, NYR (period 1 07:08)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
+- **Player props affected:** yes
+- **When corrected:** in_game
+- **Record status:** verified / confidence high
+
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+
+**Flags:** `game_id_resolved_from_schedule`
+
+**Official sources**
+- [NHL Situation Room statement - Coach’s Challenge: NYR @ DET – 7:08 of the First Period](https://www.nhl.com/news/new-york-rangers-detroit-red-wings-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:02Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-rangers-detroit-red-wings-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:02Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:22Z; sha256 `345029c72288`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM) _(evidence: reference; retrieved: n/a)_
+
+Record id: `SDN-5619ac48fc` - open each link and read the goal line before acting on this.
+
+### [IMMEDIATE] STL at DAL - 2026-10-02 (game 2026020020)
+
+- **What changed:** Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:06 of period 3
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, STL (period 3 01:06)
+- **Corrected state:** no_goal, STL (period 3 01:06)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
+- **Player props affected:** yes
+- **When corrected:** in_game
+- **Record status:** verified / confidence high
+
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+
+**Official sources**
+- [NHL Situation Room statement - Coach’s Challenge: STL @ DAL – 1:06 of the Third Period](https://www.nhl.com/news/st-louis-blues-dallas-stars-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:01Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-dallas-stars-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:01Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:22Z; sha256 `3f33fbfab231`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM) _(evidence: reference; retrieved: n/a)_
+
+Record id: `SDN-5c05cee8b5` - open each link and read the goal line before acting on this.
 
 ### [IMMEDIATE] CGY at VAN - 2026-10-03 (game None)
 
 - **What changed:** Vancouver goal waived off on the ice, then awarded after Situation Room review; a 1-0 Calgary lead became part of a 4-1 Vancouver win
 - **Rule fired:** `MANUAL` Ruling change reported; official per-game artifact not yet linked (high)
-- **Initial state:** L. Ohgren; assists none (period 3 01:30, None)
-- **Corrected state:** L. Ohgren; assists none (period 3 01:30, None)
+- **Initial state:** no_goal_on_ice, VAN (period 3 01:30)
+- **Corrected state:** goal: L. Ohgren; assists none (period 3 01:30, score 1-1)
 - **Goal total affected:** yes (total_changed=None; attribution-only=False)
 - **Player props affected:** yes
 - **When corrected:** in_game
@@ -46,99 +112,91 @@ Record id: `SDN-42c8407955` - open each link and read the goal line before actin
 
 Record id: `SDN-3916f9ce9a` - open each link and read the goal line before acting on this.
 
-### [REVIEW] NJD at CHI - 2025-03-26 (game 2024021140)
+### [IMMEDIATE] MTL at PIT - 2026-10-03 (game 2026020026)
 
-- **What changed:** goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer
-- **Rule fired:** `PARALLEL` Official scoring-change announcement, cross-checked against the corrected-state artifacts (medium)
-- **Initial state:** Timo Meier; assists none (period 1 6:50, PP)
-- **Corrected state:** Dawson Mercer; assists Luke Hughes; Nico Hischier (period 1 6:50, PP)
-- **Goal total affected:** no (total_changed=False; attribution-only=True)
+- **What changed:** Coach's Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, PIT (period 3 05:25)
+- **Corrected state:** no_goal, PIT (period 3 05:25)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
 - **Player props affected:** yes
-- **When corrected:** postgame
+- **When corrected:** in_game
 - **Record status:** verified / confidence high
 
-**Why it matters for settlement:** Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.
-
-**Flags:** `assists_before_the_change_not_captured`, `initial_state_corroboration_withdrawn_on_reverification`, `initial_state_reported_by_secondary_source_only`, `ported_from_parallel_line`, `pre_change_assist_credits_unresolved`
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
 
 **Official sources**
-- [Official Game Summary (HTML): GS021140.HTM](https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL GameCenter play-by-play](https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [Athlon Sports (syndicated via Yardbarker)](https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992) _(evidence: secondary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL Public Relations (@NHLPR)](https://x.com/NHLPR/status/1905120424146383077) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL GameCenter boxscore](https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
+- [NHL Situation Room statement - Coach’s Challenge: MTL @ PIT – 5:25 of the Third Period](https://www.nhl.com/news/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847) _(evidence: primary; retrieved: 2026-10-07T17:03:01Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847) _(evidence: primary; retrieved: 2026-10-07T17:03:01Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:22Z; sha256 `0f222c12d30e`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM) _(evidence: reference; retrieved: n/a)_
 
-Record id: `SDN-e84fc1c8ec` - open each link and read the goal line before acting on this.
+Record id: `SDN-73e0895bf7` - open each link and read the goal line before acting on this.
 
-### [INFO] COL at DAL - 2000-10-04 (game 2000020001)
+### [IMMEDIATE] WPG at PIT - 2026-10-05 (game 2026020042)
 
-- **What changed:** COL at DAL 2000-10-04: assists ['C. DRURY'] in nhl_gs_report vs ['C. Drury', 'J. Sakic'] in nhl_api_landing
-- **Rule fired:** `C11` Same goal, different assist credits between official artifacts (medium)
-- **Initial state:** A. DEADMARSH; assists C. DRURY (period 2 18:31, PP)
-- **Corrected state:** A. Deadmarsh; assists C. Drury; J. Sakic (period 2 18:31, PP)
-- **Goal total affected:** no (total_changed=False; attribution-only=True)
+- **What changed:** Video review (High-Sticking the Puck): on-ice no-goal overturned, goal awarded to PIT at 09:27 of period 2
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** no_goal, PIT (period 2 09:27)
+- **Corrected state:** goal: B. Kindel; assists D. Carlile; E. Karlsson (period 2 09:27, score 0-1)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
 - **Player props affected:** yes
-- **When corrected:** unknown (timing uncertain)
+- **When corrected:** in_game
 - **Record status:** verified / confidence high
 
-**Why it matters for settlement:** Goal total unaffected: the number of goals is identical in both records; only credit or timing moved. Player-prop exposure: anytime-scorer / points / assist markets turn on who is credited, not on how many goals were scored. NHL box scores are not a sportsbook source of record. This is an exposure flag for review, not a claim that any market was mis-settled.
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
 
-**Flags:** `pre_2007_no_video_or_clip_to_adjudicate`, `requires_human_verification`, `single_artifact_evidence`, `which_artifact_is_final_unresolved`
+**Flags:** `game_id_resolved_from_schedule`
 
 **Official sources**
-- [Official NHL Game Summary, sheet GS020001.HTM (SCORING SUMMARY, goal 4)](https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM) _(evidence: primary; retrieved: 2026-10-07)_
-- [Official NHL Game Center JSON, summary.scoring goal eventId 10060839](https://api-web.nhle.com/v1/gamecenter/2000020001/landing) _(evidence: primary; retrieved: 2026-10-07)_
-- [Game Center page (human view of the final box score)](https://www.nhl.com/gamecenter/col-vs-dal/2000/10/04/2000020001) _(evidence: primary; retrieved: n/a)_
+- [NHL Situation Room statement - Video Review: WPG @ PIT – 9:27 of the Second Period](https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review) _(evidence: primary; retrieved: 2026-10-07T17:03:00Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review) _(evidence: primary; retrieved: 2026-10-07T17:03:00Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:22Z; sha256 `850ff0fd0b75`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM) _(evidence: reference; retrieved: n/a)_
 
-Record id: `SDN-87fb3e543f` - open each link and read the goal line before acting on this.
+Record id: `SDN-26e9b24b21` - open each link and read the goal line before acting on this.
 
-### [INFO] NSH at CBJ - 2025-04-01 (game 2024021185)
+### [IMMEDIATE] STL at CHI - 2026-10-06 (game 2026020050)
 
-- **What changed:** assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron
-- **Rule fired:** `PARALLEL` Official scoring-change announcement, cross-checked against the corrected-state artifacts (medium)
-- **Initial state:** Jordan Oesterle; assists none (period 3 9:02, EV)
-- **Corrected state:** Jordan Oesterle; assists Cole Smith; Michael McCarron (period 3 9:02, EV)
-- **Goal total affected:** no (total_changed=False; attribution-only=True)
+- **What changed:** Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:05 of period 2
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, STL (period 2 01:05)
+- **Corrected state:** no_goal, STL (period 2 01:05)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
 - **Player props affected:** yes
-- **When corrected:** postgame
+- **When corrected:** in_game
 - **Record status:** verified / confidence high
 
-**Why it matters for settlement:** Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.
-
-**Flags:** `assists_before_the_change_not_captured`, `declared_change_not_confirmable_from_states:assist_change`, `initial_state_not_retrievable_from_any_source`, `ported_from_parallel_line`, `pre_change_assist_credits_undetermined`
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
 
 **Official sources**
-- [Official Game Summary (HTML): GS021185.HTM](https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [Athlon Sports (syndicated via Yardbarker)](https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037) _(evidence: secondary; retrieved: 2026-10-07T00:00:00Z)_
-- [Same Game Summary, season totals](https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL Public Relations (@NHLPR)](https://x.com/NHLPR/status/1907298847056941350) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL GameCenter play-by-play](https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
+- [NHL Situation Room statement - Coach’s Challenge: STL @ CHI – 1:05 of the Second Period](https://www.nhl.com/news/st-louis-blues-chicago-blackhawks-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:00Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-chicago-blackhawks-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:03:00Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:21Z; sha256 `b14dc662921b`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM) _(evidence: reference; retrieved: n/a)_
 
-Record id: `SDN-35d7818c51` - open each link and read the goal line before acting on this.
+Record id: `SDN-21ad557cd4` - open each link and read the goal line before acting on this.
 
-### [INFO] BOS at NJD - 2025-04-08 (game 2024021238)
+### [IMMEDIATE] NSH at TOR - 2026-10-06 (game 2026020044)
 
-- **What changed:** assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie
-- **Rule fired:** `PARALLEL` Official scoring-change announcement, cross-checked against the corrected-state artifacts (medium)
-- **Initial state:** David Pastrnak; assists Parker Wotherspoon (period 1 9:38, EV)
-- **Corrected state:** David Pastrnak; assists Morgan Geekie (period 1 9:38, EV)
-- **Goal total affected:** no (total_changed=False; attribution-only=True)
+- **What changed:** Coach's Challenge (Off-Side): on-ice goal overturned, no goal TOR at 11:49 of period 3
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, TOR (period 3 11:49)
+- **Corrected state:** no_goal, TOR (period 3 11:49)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
 - **Player props affected:** yes
-- **When corrected:** postgame
+- **When corrected:** in_game
 - **Record status:** verified / confidence high
 
-**Why it matters for settlement:** Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.
-
-**Flags:** `initial_state_citation_in_reproduction_points_at_a_different_goal`, `initial_state_reported_by_secondary_source_only`, `official_play_by_play_event_not_quoted_this_pass`, `ported_from_parallel_line`
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
 
 **Official sources**
-- [Official Game Summary (HTML): GS021238.HTM](https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [Athlon Sports (syndicated via Yardbarker)](https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683) _(evidence: secondary; retrieved: 2026-10-07T00:00:00Z)_
-- [Same Game Summary, goal 2 of the same game](https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL Public Relations (@NHLPR)](https://x.com/NHLPR/status/1909831272047800540) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
-- [NHL GameCenter play-by-play](https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play) _(evidence: primary; retrieved: 2026-10-07T00:00:00Z)_
+- [NHL Situation Room statement - Coach’s Challenge: NSH @ TOR – 11:49 of the Third Period](https://www.nhl.com/news/nashville-predators-toronto-maple-leafs-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:02:59Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge) _(evidence: primary; retrieved: 2026-10-07T17:02:59Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play) _(evidence: primary; retrieved: 2026-10-07T17:26:21Z; sha256 `e031c35348f3`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM) _(evidence: reference; retrieved: n/a)_
 
-Record id: `SDN-2247415389` - open each link and read the goal line before acting on this.
+Record id: `SDN-261948dfcd` - open each link and read the goal line before acting on this.
 
 ---
 

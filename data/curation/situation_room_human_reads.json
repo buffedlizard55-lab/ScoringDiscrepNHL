@@ -1,0 +1,58 @@
+{
+  "_about": "Documented human reads that supplement official NHL Situation Room statements the parser cannot classify on its own (outcome on_ice_call_not_stated, or a medium-confidence inference). Each read states the ON-ICE call only; the final call always comes from the statement itself. Every read must cite the source that states the on-ice call, with a verbatim quote, so a reviewer can re-check it in one click. Applied by pipeline/nhl_scoring/situation_room.py on every ingest (flag on_ice_call_from_documented_human_read); a read that contradicts an on-ice call the statement states explicitly is ignored and flagged. Remove an entry to withdraw the read; the ledger row falls back to the parser's own reading on the next run.",
+  "schema": {
+    "slug": "statement slug on forge-dapi.d3.nhle.com / nhl.com/news",
+    "on_ice_call": "goal | no_goal (what the officials signalled before the review)",
+    "basis": "one sentence saying which source states the on-ice call and how",
+    "read_at": "ISO-8601 UTC timestamp of the read (changing it re-applies the read)",
+    "read_by": "who did the read",
+    "sources": "[{label, url, kind, evidence (primary|secondary|reference), quote, note, retrieved_at}] - the page(s) that state the on-ice call"
+  },
+  "reads": [
+    {
+      "slug": "calgary-flames-vancouver-canucks-video-review",
+      "game_id": "2026020033",
+      "on_ice_call": "no_goal",
+      "basis": "The official statement gives only the result (Goal Vancouver). The league's own game recap on NHL.com states the on-ice call in words: the goal was initially waved off on the ice. The play-by-play carries a video-review stoppage and the goal at the same clock (eventIds 508 and 822, P3 01:28).",
+      "read_at": "2026-10-07T17:15:00Z",
+      "read_by": "Arena agent session 2026-10-07 (official sources only; see docs/VERIFICATION_LOG.md)",
+      "sources": [
+        {
+          "label": "NHL.com official game recap, CGY @ VAN, 2026-10-03 (states the on-ice call)",
+          "url": "https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026",
+          "kind": "official_editorial",
+          "evidence": "secondary",
+          "quote": "Ohgren's goal was initially waved off on the ice and Cooley was confident it didn't get past him, but a video review proved the puck crossed the goal line through the webbing of his glove.",
+          "note": "League-published editorial recap (NHL.com staff), not a scoring record; graded secondary for that reason. Same text via the content API: https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-game-recap-october-3-2026",
+          "retrieved_at": "2026-10-07T17:12:00Z"
+        }
+      ]
+    },
+    {
+      "slug": "edmonton-oilers-vancouver-canucks-video-review-x7720",
+      "game_id": "2026020015",
+      "on_ice_call": "no_goal",
+      "basis": "The official statement's own first sentence states the initial ruling: the referees ruled that Rossi batted the puck in with his glove, which is a disallowed goal under Rule 78.5(i) (puck directed into the net by an attacking player other than with a stick); the review then found a legal shoulder deflection and the goal stands in the play-by-play (eventId 899, P3 04:43, 8-5) with a video-review stoppage at the same clock (eventId 43). The parser inferred the same on-ice call at medium confidence; this read confirms it.",
+      "read_at": "2026-10-07T17:15:00Z",
+      "read_by": "Arena agent session 2026-10-07 (official sources only; see docs/VERIFICATION_LOG.md)",
+      "sources": [
+        {
+          "label": "NHL Situation Room statement, EDM @ VAN 4:43 of the Third Period (the sentence that states the initial ruling)",
+          "url": "https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720",
+          "kind": "official_statement",
+          "evidence": "primary",
+          "quote": "The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion.",
+          "retrieved_at": "2026-10-07T12:00:00Z"
+        },
+        {
+          "label": "Scouting The Refs - Video review overturns batted-puck call, awards Rossi goal (independent corroboration of the on-ice no-goal)",
+          "url": "https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/",
+          "kind": "third_party_officiating_site",
+          "evidence": "secondary",
+          "note": "Secondary; used only to corroborate the on-ice call, never for the result.",
+          "retrieved_at": "2026-10-07T12:00:00Z"
+        }
+      ]
+    }
+  ]
+}

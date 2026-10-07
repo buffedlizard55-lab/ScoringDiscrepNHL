@@ -2,7 +2,8 @@
 
 No bundler, no framework, no runtime dependencies: the whole point of the site
 is to be a review surface that still loads five years from now. Output is plain
-files in ``docs/`` (``.nojekyll`` included so Pages does not try to build it),
+files written to the repository root - the directory GitHub Pages serves for
+this repository (``.nojekyll`` included so Pages does not try to build it) -
 and the data is shipped as ``data.js`` rather than fetched, so the page works
 from ``file://`` and from any subpath the Pages config happens to use.
 
@@ -19,6 +20,8 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from .situation_room import normalize_review_type
+
 SITE_FILES = ("index.html", "styles.css", "app.js", "data.js", ".nojekyll")
 
 DOC_PAGES: List[Tuple[str, str, str]] = [
@@ -27,6 +30,7 @@ DOC_PAGES: List[Tuple[str, str, str]] = [
     # "Consolidation"), and hiding one line's analysis would misrepresent what the
     # project knows. Paths prefixed engine/ are this package's own documents.
     ("FEASIBILITY.md", "Can we detect it?", "Detection feasibility and limits"),
+    ("SITUATION_ROOM.md", "Situation Room source", "The official review-statement feed: what it is, how it is read, what it cannot tell"),
     ("STATUS.md", "Status & backlog", "Project status, consolidation, and open work"),
     ("engine/METHODOLOGY.md", "Methodology (engine)", "How a record gets made, validated, and promoted"),
     ("engine/SOURCES.md", "Sources (engine)", "Official endpoints, response status, what each proves"),
@@ -196,6 +200,55 @@ def summarize(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def compact_ruling(r: Dict[str, Any]) -> Dict[str, Any]:
+    """The subset of a Situation Room ruling the site table needs (keeps data.js small)."""
+    xc = r.get("crosscheck") or {}
+    return {
+        "date": r.get("game_date") or (r.get("content_date") or "")[:10],
+        "published": r.get("content_date"),
+        "season": r.get("season"),
+        "game_id": r.get("game_id"),
+        "away": r.get("away"), "home": r.get("home"),
+        "period": r.get("period"), "clock": r.get("clock"),
+        "kind": r.get("kind"), "type": r.get("review_type"),
+        "initiated_by": r.get("initiated_by"),
+        "result": r.get("result_text"),
+        "outcome": r.get("outcome"),
+        "on_ice": r.get("on_ice_call"), "final": r.get("final_call"), "team": r.get("final_team"),
+        "confidence": r.get("confidence"),
+        "xc": xc.get("status"),
+        "record_id": r.get("record_id"),
+        "url": r.get("public_url"),
+        "flags": r.get("flags") or [],
+        "group": r.get("review_type_group") or normalize_review_type(r.get("review_type")),
+    }
+
+
+def compact_record(r: Dict[str, Any]) -> Dict[str, Any]:
+    """Trim per-record text that is identical across hundreds of records
+    (templated check instructions, market-impact boilerplate, hashes) so the
+    embedded payload stays loadable. Every field the page renders is kept;
+    the full record is always one click away in data/discrepancies.json."""
+    out = json.loads(json.dumps(r))
+    disc = out.get("discrepancy") or {}
+    reason = (disc.get("reason") or {}).get("text") if isinstance(disc.get("reason"), dict) else None
+    if disc.get("detail") and reason and disc["detail"].strip() == reason.strip():
+        disc["detail"] = ""          # the page shows reason.text; no need to ship it twice
+    ver = out.get("verification") or {}
+    ver.pop("check_instructions", None)
+    for src in out.get("sources") or []:
+        src.pop("sha256", None)
+        if src.get("note") and len(src["note"]) > 240:
+            src["note"] = src["note"][:237] + "..."
+    det = out.get("detection") or {}
+    det.pop("rule", None)
+    out.pop("parallel_record", None)
+    review = disc.get("review")
+    if isinstance(review, dict) and review.get("type") and not review.get("type_group"):
+        review["type_group"] = normalize_review_type(review.get("type"))
+    return out
+
+
 def build(out_dir: str, *, db_path: str, repo_root: str,
            coverage_path: Optional[str] = None) -> List[str]:
     os.makedirs(out_dir, exist_ok=True)
@@ -223,6 +276,39 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "states": sum(int(v.get("states") or 0) for v in polls.values()),
             "games_with_changes": sum(1 for v in polls.values() if int(v.get("states") or 0) > 1),
         }
+    situation_room: Dict[str, Any] = {}
+    rulings_compact: List[Dict[str, Any]] = []
+    ledger_path = os.path.join(repo_root, "data", "situation_room", "rulings.json")
+    if os.path.exists(ledger_path):
+        with open(ledger_path, "r", encoding="utf-8") as fh:
+            ledger = json.load(fh)
+        situation_room = {
+            "summary": ledger.get("summary") or {},
+            "generated_at": ledger.get("generated_at"),
+            "feed": ledger.get("feed"),
+            "public_index": ledger.get("public_index"),
+            "last_run": (ledger.get("meta") or {}).get("last_run_at"),
+        }
+        rulings_compact = [compact_ruling(r) for r in ledger.get("rulings") or []]
+    # The flat alert feed (data/alerts.json + data/alerts.xml) is what alert
+    # consumers subscribe to; the site shows the same list so a reader can see
+    # what an alert looks like and click through to the record behind it.
+    alert_feed: Dict[str, Any] = {}
+    alerts_compact: List[Dict[str, Any]] = []
+    feed_path = os.path.join(repo_root, "data", "alerts.json")
+    if os.path.exists(feed_path):
+        try:
+            with open(feed_path, "r", encoding="utf-8") as fh:
+                feed = json.load(fh) or {}
+        except (OSError, ValueError):
+            feed = {}
+        items = feed.get("alerts") or []
+        alert_feed = {"generated_at": feed.get("generated_at"), "count": len(items),
+                      "json": "data/alerts.json", "rss": "data/alerts.xml"}
+        for a in items[:300]:
+            alerts_compact.append({k: a.get(k) for k in
+                                   ("id", "record_id", "type", "severity", "title", "body", "links",
+                                    "created_at", "first_seen_at", "affects_goal_total", "detected_by")})
     docs: Dict[str, str] = {}
     for filename, label, title in DOC_PAGES:
         path = os.path.join(repo_root, "docs", filename)
@@ -240,9 +326,13 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "repo": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL",
             "coverage": coverage,
             "snapshots": snapshot_summary,
+            "situation_room": situation_room,
+            "alert_feed": alert_feed,
         },
         "summary": summarize(records),
-        "records": records,
+        "records": [compact_record(r) for r in records],
+        "rulings": rulings_compact,
+        "alerts": alerts_compact,
         "docs": docs,
     }
     written: List[str] = []

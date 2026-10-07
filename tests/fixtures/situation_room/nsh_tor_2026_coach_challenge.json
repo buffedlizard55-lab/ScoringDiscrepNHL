@@ -1,0 +1,54 @@
+{
+ "type": "story",
+ "selfUrl": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge",
+ "slug": "nashville-predators-toronto-maple-leafs-coach-challenge",
+ "title": "Nashville Predators Toronto Maple Leafs coach challenge",
+ "tags": [
+  {
+   "slug": "2025-26",
+   "title": "2025-26"
+  },
+  {
+   "slug": "nhl",
+   "title": "NHL"
+  },
+  {
+   "slug": "nhl-created",
+   "title": "NHL Created"
+  },
+  {
+   "slug": "situation-room",
+   "title": "Situation Room"
+  },
+  {
+   "slug": "gameid-2026020044",
+   "title": "NSH@TOR 10/06/2026 07:00PM",
+   "externalSourceName": "game",
+   "extraData": {
+    "gameId": "2026020044"
+   }
+  }
+ ],
+ "fields": {},
+ "createdBy": "Ariana Ottrando",
+ "lastUpdatedBy": "Ariana Ottrando",
+ "lastUpdatedDate": "2026-10-07T01:41:37.675Z",
+ "contentDate": "2026-10-07T01:41:00Z",
+ "headline": "Coach’s Challenge: NSH @ TOR – 11:49 of the Third Period ",
+ "summary": "Challenge Initiated By: Nashville\nType of Challenge: Off-Side\nResult: Call on the ice is overturned – No Goal Toronto\nExplanation: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned",
+ "parts": [
+  {
+   "type": "photo",
+   "slug": "nhl-shield-298127792"
+  },
+  {
+   "type": "markdown",
+   "content": "**Challenge Initiated By:** Nashville\n\n**Type of Challenge**: Off-Side\n\n**Result:** Call on the ice is overturned – No Goal Toronto\n\n**Explanation:** The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states*, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”*\n\nVideo review determined that **Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal.** According to Rule 38.9, *“The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”*\n\nThe clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.",
+   "contextualFields": {}
+  },
+  {
+   "type": "customentity",
+   "slug": "2026-2027-nhl-interactive-rulebook-promo"
+  }
+ ]
+}

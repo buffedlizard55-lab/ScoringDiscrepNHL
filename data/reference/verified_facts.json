@@ -25,6 +25,11 @@
       "scope": "Internet Archive coverage of the official report path measured for 2000-01, 2005-06 and 2024-25; the archive comparison path built and tested; the alerting gap between the database and the feed closed; three defects recorded in docs/VERIFICATION_LOG.md items 6-8.",
       "record_count_after_pass": 3,
       "note": "The archive-yield / change-scan workflow runs could not be dispatched from this session: gh workflow run returned HTTP 403 'Resource not accessible by integration' (the token cannot write to Actions), and workflow_dispatch only exposes default-branch workflows. The measurements above were taken with the platform's page-fetch tool against the same CDX queries the code builds; re-running them through .github/workflows/backfill.yml needs a repo admin to start the run."
+    },
+    {
+      "date": "2026-10-07",
+      "session": "arena 4054b054",
+      "what": "Situation Room feed discovery, play-by-play review-stoppage vocabulary, GitHub cron reality; facts F30-F32; F12 superseded"
     }
   ],
   "verified_facts": [
@@ -161,7 +166,9 @@
         "typeCode seen: 502, 503, 504, 505 (goal), 506, 507, 508, 516, 520, 525",
         "stoppage reasons seen: icing, puck-in-netting, goalie-stopped-after-sog; secondaryReason: tv-timeout"
       ],
-      "consequence": "The system must NOT claim to detect video review from the feed until such events are actually observed. The vocabulary is re-measured at runtime by the collector and dumped to data/schema/observed_vocabulary.json."
+      "consequence": "SUPERSEDED 2026-10-07 (same day, later session): review stoppages DO exist in the official play-by-play (F30) and the league DOES publish an official statement for every video review / coach's challenge (F31). The original observation was made on a single game that had no review.",
+      "superseded_by": "F30",
+      "status": "superseded"
     },
     {
       "id": "F13",
@@ -360,6 +367,40 @@
       },
       "method_limitation": "Retrieved through a text proxy, not raw sockets: the build sandbox has no direct route to NHL hosts (re-measured this session). The stored text is what the proxy returned; http_status is inferred from content, not read from a response line.",
       "verified_on": "2026-10-07T00:00:00Z"
+    },
+    {
+      "id": "F30",
+      "claim": "The official play-by-play marks video reviews and coach's challenges as typeDescKey 'stoppage' with details.reason / secondaryReason values 'video-review' and 'chlg-<bench>-<type>'.",
+      "method": "Read api-web.nhle.com/v1/gamecenter/<id>/play-by-play for four games on 2026-10-07.",
+      "observations": [
+        "2026020033 (CGY@VAN 2026-10-03): eventId 508 P3 01:28 stoppage reason=video-review secondaryReason=video-review; goal eventId 822 at the same clock (Ohgren)",
+        "2026020015 (EDM@VAN 2026-10-01): eventId 43 P3 04:43 stoppage reason=referee-or-linesman secondaryReason=video-review; goal eventId 899 at the same clock (Rossi)",
+        "2026020044 (NSH@TOR 2026-10-06): eventId 454 P3 11:46 stoppage reason=chlg-vis-off-side; eventId 471 offside; NO goal event at 11:49 (the overturned Nylander goal is absent from the final record)",
+        "2016020214 (NYI@FLA 2016-11-12): eventId 292 P2 14:53 stoppage reason=chlg-vis-goal-interference; no goal event at 14:53"
+      ],
+      "consequence": "A review is detectable from the play-by-play (prefix chlg- or value video-review). A goal disallowed on review is REMOVED from the final play-by-play, so the stoppage plus the Situation Room statement are the only official evidence that it was ever signalled."
+    },
+    {
+      "id": "F31",
+      "claim": "The NHL publishes an official statement for every coach's challenge and Situation Room video review, as stories tagged 'situation-room' on its content API, continuously since February 2016.",
+      "method": "Paginated https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=N&$skip=M on 2026-10-07 and read individual stories.",
+      "observations": [
+        "$skip=0 newest item: VGK@SEA coach's challenge for game 2026020051 (contentDate 2026-10-07T02:40:24Z)",
+        "$skip=3000 -> 2018-10-27 BUF@CBJ (gameid-2018020154); $skip=4100 -> 2016-11-13 NYI@FLA (gameid-2016020214); $skip=4400 -> 2016-02-03 NYR@NJD (gameid-2015020745); $skip=4401..4404 -> OTT@PIT 2016-02-03, TOR@BOS (gameid-2015020744), 'Coach's Challenge: NHL All-Star Game' 2016-02-01; $skip>=4405 -> empty",
+        "Each story: headline 'Coach's Challenge|Video Review: AWY @ HOM - M:SS of the Nth Period', markdown body with Result / Explanation (2019+ structured; 2016-18 prose + fields.description verdict), tags gameid-<10 digits> (most) and teamid-N; public page https://www.nhl.com/news/<slug>",
+        "Latency: CGY@VAN statement contentDate 2026-10-04T04:36Z for a play in the third period of a 10:00PM ET game (minutes); EDM@VAN statement 04:34Z for a 4:43-of-the-third play (about 20 minutes)",
+        "Some statements lack the gameid tag (e.g. edmonton-oilers-vancouver-canucks-video-review-x7720) and are resolved through the daily scoreboard"
+      ],
+      "consequence": "Goal <-> no-goal reversals caused by review are covered from the league's own words from 2016-02 onward (pipeline/nhl_scoring/situation_room.py). This is NOT a corrections feed for scorer/assist changes; none exists."
+    },
+    {
+      "id": "F32",
+      "claim": "GitHub Actions cron schedules on this repository are throttled far below the requested cadence.",
+      "method": "gh run list --limit 100 filtered by event=schedule on 2026-10-07.",
+      "observations": [
+        "monitor.yml requests '*/5 * * * *'; exactly one scheduled run (scoring monitor, 2026-10-07T11:50:52Z) appeared in more than eleven hours"
+      ],
+      "consequence": "Published cadence claims ('every 5 minutes', 'every 30 minutes') are not true in practice. Minutes-level alerting needs an external trigger (workflow_dispatch from another scheduler) or a self-hosted runner."
     }
   ],
   "secondary_leads_not_evidence": [

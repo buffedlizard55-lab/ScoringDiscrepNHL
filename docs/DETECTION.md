@@ -19,6 +19,10 @@ How the monitor turns official NHL data into discrepancy records and alerts.
 4. **Corroborate** — if review/challenge events are present in the feed, attach
    them as evidence and refine the type (`video_review_overturn`,
    `coach_challenge_*`). A Situation Room link is attached when available.
+   *(2026-10-07: the engine line now does this the other way round as its primary
+   path — it ingests the official Situation Room statement feed and cross-checks
+   each overturned call against the play-by-play's `chlg-*` / `video-review`
+   stoppage; see `docs/SITUATION_ROOM.md`.)*
 5. **Classify timing** (heuristic, documented confidence):
    * change visible while game not final → `in_game` (or `intermission` when
      snapshots bracket an intermission boundary),

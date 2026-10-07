@@ -36,9 +36,11 @@ where `season` is `20232024`-style, `game_type` is 1 pre-season / 2 regular seas
 
 The brief asked to search the Situation Room and official scoring summaries. What exists:
 
-* **Situation Room**: no public machine-readable feed was located. Review *outcomes* surface as goal state
-  changes in the official record (that is detectable); the *reason* rarely appears in a machine-readable
-  place (that is not).
+* **Situation Room**: ~~no public machine-readable feed was located~~ **corrected 2026-10-07** - the
+  league publishes an official statement for every coach's challenge and video review as stories tagged
+  `situation-room` on `forge-dapi.d3.nhle.com` (about 4,400, 2016-02 to today, `gameid-` tagged, with the
+  on-ice call, result, rule and explanation). Ingested by `pipeline/nhl_scoring/situation_room.py`; see
+  `docs/SITUATION_ROOM.md`. The reason for a scorer/assist change still has no machine-readable home.
 * **Official game reports**: exactly the GS/ES/PL/RO family above, which is what this system reads.
 * **Official team reports**: club-published documents are not part of the NHL's own report family and are not
   used as evidence, because they are not stable or uniformly addressable.

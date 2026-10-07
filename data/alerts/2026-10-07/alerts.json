@@ -1,151 +1,715 @@
 {
   "date": "2026-10-07",
-  "run_id": "20261007T173336Z-0.4.0",
-  "count": 6,
-  "immediate_count": 2,
-  "review_count": 1,
-  "info_count": 3,
+  "run_id": "20261007T203856Z-0.5.0",
+  "count": 9,
+  "immediate_count": 9,
+  "review_count": 0,
+  "info_count": 0,
   "coverage": {},
   "alerts": [
     {
       "level": "immediate",
       "record": {
-        "record_id": "SDN-42c8407955",
+        "record_id": "SDN-61ee9676e1",
         "schema_version": "1.0",
-        "status": "pending_review",
-        "confidence": "medium",
-        "detected_by": "manual_research",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
         "detection": {
-          "check_id": "MANUAL",
-          "rule": "nogoal_reversed_to_goal_on_league_review",
-          "rule_label": "Ruling change reported; official per-game artifact not yet linked",
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T05:00:00Z",
-          "run_id": "seed-2026-10-07",
-          "tool_version": "0.4.0"
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-02T01:15:00Z"
         },
         "game": {
-          "game_id": null,
+          "game_id": "2026020012",
           "season": "20262027",
           "game_type": "REG",
           "date": "2026-10-01",
-          "away_team": "EDM",
-          "home_team": "VAN",
-          "venue": null,
+          "away_team": "MIN",
+          "home_team": "NSH",
+          "venue": "Bridgestone Arena",
           "final_score": {
-            "away": null,
-            "home": null
+            "away": 3,
+            "home": 1
           },
-          "gamecenter_url": null,
-          "report_urls": {},
-          "teams_note": "Reported as Edmonton at Vancouver, Rogers Arena, third period."
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020012",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM"
+          }
         },
         "discrepancy": {
-          "period": 3,
-          "clock": null,
-          "team": "VAN",
-          "field": "goal_no_goal",
-          "goal_key": null,
-          "change_type": "nogoal_reversed_to_goal_on_league_review",
-          "summary": "Marco Rossi goal: called a goal on the ice, changed to no-goal by the referee, then reinstated by Situation Room review as a legal shoulder deflection",
-          "detail": "Three states in one play: goal -> no goal (gloved puck) -> goal (deflected off the shoulder). The final record credits the goal; the two intermediate rulings leave no trace in the published box score, which is why this class is only catchable live.",
-          "total_changed": null,
+          "period": 1,
+          "period_type": "REG",
+          "clock": "15:05",
+          "team": "MIN",
+          "field": "goal_removed",
+          "goal_key": "P1@15:05",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined Minnesota’s Ryan Hartman’s presence in the crease impaired Juuse Saros’ ability to play his position prior to Yakov Trenin’s goal. The decision was made in accordance with Rule 69.1 which states, in part, “Goals should be disallowed only if: (1) an attacking player, either by his positioning or by contact, impairs the goalkeeper’s ability to move freely within his crease or defend his goal.”",
+          "total_changed": true,
           "attribution_only": false,
           "goal_no_goal_change": true,
           "video_review": true,
           "when_corrected": "in_game",
           "timing_uncertain": false,
           "market_impact": {
-            "total_changed": null,
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "initiated_by": "Nashville",
+            "type": "Goaltender Interference",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No goal Minnesota",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No goal Minnesota",
+            "clock_reset": null,
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined Minnesota’s Ryan Hartman’s presence in the crease impaired Juuse Saros’ ability to play his position prior to Yakov Trenin’s goal. The decision was made in accordance with Rule 69.1 which states, in part, “Goals should be disallowed only if: (1) an attacking player, either by his positioning or by contact, impairs the goalkeeper’s ability to move freely within his crease or defend his goal.”",
+            "rule_citation": "38, 38.1, 69.1",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 1,
+          "clock": "15:05",
+          "team": "MIN",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 1,
+          "clock": "15:05",
+          "team": "MIN",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 4,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: MIN @ NSH – 15:05 of the First Period",
+            "url": "https://www.nhl.com/news/minnesota-wild-nashville-predators-coach-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:02Z",
+            "quote": "Call on the ice is overturned – No goal Minnesota"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-nashville-predators-coach-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:02Z",
+            "note": "contentDate 2026-10-02T01:15:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:23Z",
+            "sha256": "e05cb598eab514f2e0c8c2476f458b4f959edd630f5220b8e534c291fda50ea5",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play and look at period 1 around 15:05: there must be no goal for MIN at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
+        },
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No goal Minnesota.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
+        "seen_count": 1
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-752f5a246e",
+        "schema_version": "1.0",
+        "status": "flagged",
+        "confidence": "medium",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_no_goal_overturned_to_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-02T04:34:00Z"
+        },
+        "game": {
+          "game_id": "2026020015",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-01",
+          "away_team": "EDM",
+          "home_team": "VAN",
+          "venue": "Rogers Arena",
+          "final_score": {
+            "away": 9,
+            "home": 7
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020015",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 3,
+          "period_type": "REG",
+          "clock": "04:43",
+          "team": "VAN",
+          "field": "goal_added",
+          "goal_key": "P3@04:43",
+          "change_type": "no_goal_overturned_to_goal",
+          "summary": "Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3",
+          "detail": "The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
             "affects_game_total": "yes",
             "affects_period_total": "yes",
             "affects_player_props": "yes",
             "affects_result_markets": "yes",
             "risk": "high",
-            "reason": "A goal that did not exist at one moment exists at the next, inside the same game: the number of goals a live game-total market is watching moved while the game was in progress.",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
             "rule_class": "total"
+          },
+          "review": {
+            "kind": "video_review",
+            "initiated_by": "NHL Situation Room",
+            "type": "Batted Puck",
+            "type_inferred": false,
+            "result": "Goal Vancouver",
+            "on_ice_call": "no_goal",
+            "final_call": "goal",
+            "outcome": "overturned",
+            "classification_confidence": "medium",
+            "classification_basis": "on-ice call no_goal (initial_ruling_sentence_infraction) vs final goal",
+            "clock_reset": null,
+            "statement_format": "structured"
           },
           "reason": {
             "stated_by_league": true,
-            "text": "NHL explanation as quoted by Scouting The Refs: \"The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion.\" Not a challengeable play; league-initiated under Rule 37.",
-            "rule_citation": "78.4 (deflection off body) with 37.3 (batted puck review)",
+            "text": "The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.",
+            "rule_citation": "",
             "needs_human_read": true
           }
         },
         "initial_state": {
-          "artifact": "on-ice ruling after referee's revision",
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
           "goal_present": false,
-          "ruling": "no_goal_gloved_puck",
-          "scorer": {
-            "name": "M. Rossi"
-          },
+          "ruling": "no_goal",
+          "scorer": null,
           "assists": [],
           "period": 3,
-          "clock": null,
-          "team": "VAN"
+          "clock": "04:43",
+          "team": "VAN",
+          "score_after": null,
+          "note": null
         },
         "corrected_state": {
-          "artifact": "Situation Room review outcome",
+          "artifact": "official play-by-play after review",
           "goal_present": true,
           "ruling": "goal",
           "scorer": {
-            "name": "M. Rossi"
+            "name": "M. Rossi",
+            "surname": "Rossi",
+            "initial": "M",
+            "player_id": 8482079,
+            "sweater_number": 23,
+            "team_id": 23,
+            "season_counter": 3
           },
-          "assists": [],
+          "assists": [
+            {
+              "name": "A. Bains",
+              "surname": "Bains",
+              "initial": "A",
+              "player_id": 8483395,
+              "sweater_number": 13,
+              "team_id": 23,
+              "season_counter": 1
+            },
+            {
+              "name": "L. Schenn",
+              "surname": "Schenn",
+              "initial": "L",
+              "player_id": 8474568,
+              "sweater_number": 2,
+              "team_id": 23,
+              "season_counter": 1
+            }
+          ],
           "period": 3,
-          "clock": null,
-          "team": "VAN"
+          "clock": "04:43",
+          "team": "VAN",
+          "score_after": {
+            "away": 8,
+            "home": 5
+          },
+          "event_id": 899,
+          "shot_type": "deflected"
         },
         "totals": {
           "initial_game_goals": null,
-          "corrected_game_goals": null,
-          "goal_delta": null,
-          "basis": "not yet read from an official artifact"
+          "corrected_game_goals": 16,
+          "goal_delta": 1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
         },
         "sources": [
           {
-            "label": "Official NHL daily scoreboard API (resolves the game id for 2026-10-01)",
-            "url": "https://api-web.nhle.com/v1/score/2026-10-01",
+            "label": "NHL Situation Room statement - Video Review: EDM @ VAN – 4:43 of the Third Period",
+            "url": "https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:02Z",
+            "quote": "Goal Vancouver"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "",
-            "note": "Find EDM at VAN in games[], then re-read the record against the game center landing JSON and the GS sheet for that game."
+            "retrieved_at": "2026-10-07T17:03:02Z",
+            "note": "contentDate 2026-10-02T04:34:00Z"
           },
           {
-            "label": "Scouting The Refs - quote of the NHL's own explanation",
-            "url": "https://scoutingtherefs.com/2026/10/02/nhl-oversight-goal-marco-rossi-canucks-oilers/",
-            "kind": "secondary",
-            "evidence": "secondary",
-            "retrieved_at": "2026-10-07",
-            "quote": "The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion."
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:23Z",
+            "sha256": "79773c33d7b185688436671c0fab188724b7a75c888048f62afa27a62668b642",
+            "note": "cross-check: agree; "
           },
           {
-            "label": "NHL Rule 78.4 (goal scored by legal means) / 37.3 (batted puck)",
-            "url": "https://nhl.bamcontent.com/images/manual/NHL-Rulebook-2025-26.pdf",
-            "kind": "official_document",
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM",
+            "kind": "official_report",
             "evidence": "reference",
             "retrieved_at": "",
-            "note": "Rule text governs whether a deflection off the shoulder is legal; the cited PDF is the current official rulebook."
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
           }
         ],
         "verification": {
-          "status": "pending_review",
-          "evidence_grade": "secondary",
+          "status": "flagged",
+          "evidence_grade": "primary",
           "independently_checkable": true,
-          "check_instructions": "Resolve the game id with GET https://api-web.nhle.com/v1/score/2026-10-01 (match EDM at VAN), then open gamecenter/{id}/landing and confirm the goal is present in summary.scoring at the stated period and clock. Pull the GS/PL sheets from right-rail gameReports for the frozen post-game rendering.",
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play and look at period 3 around 04:43: a goal event for VAN must be present. The GS report should show the same scoring summary.",
           "verified_by": "",
           "verified_at": ""
         },
         "flags": [
-          "game_id_not_resolved",
-          "not_challengeable_league_initiated",
-          "requires_human_verification",
-          "secondary_source_only",
-          "three_state_ruling_sequence",
-          "total_change_reported_by_secondary_source_not_established"
+          "game_id_resolved_from_schedule",
+          "needs_human_read_of_on_ice_call",
+          "on_ice_call_inferred_from_wording"
         ],
-        "notes": "Three-state ruling sequence in one play (goal -> no goal -> goal). It is the cleanest available demonstration that goal/no-goal changes are invisible in the final published record: the box score shows one goal and no trace of the two reversals.",
-        "first_seen_at": "2026-10-07T05:00:00Z",
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: on-ice call no_goal (initial_ruling_sentence_infraction) vs final goal.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
+        "seen_count": 1
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-5619ac48fc",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-02T23:12:25.85Z"
+        },
+        "game": {
+          "game_id": "2026020017",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-02",
+          "away_team": "NYR",
+          "home_team": "DET",
+          "venue": "Little Caesars Arena",
+          "final_score": {
+            "away": 2,
+            "home": 0
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020017",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 1,
+          "period_type": "REG",
+          "clock": "07:08",
+          "team": "NYR",
+          "field": "goal_removed",
+          "goal_key": "P1@07:08",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal NYR at 07:08 of period 1",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states\\, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\\\n\nVideo review determined that Detroit’s Eeli Tolvanen preceded the puck into the offensive zone and was in an off-side position prior to Oliver Bjorkstrand’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”  \nThe clock is reset to show 12:57 (7:03 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "initiated_by": "Detroit",
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal NY Rangers",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal NY Rangers",
+            "clock_reset": {
+              "shows": "12:57",
+              "elapsed": "07:03"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states\\, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\\\n\nVideo review determined that Detroit’s Eeli Tolvanen preceded the puck into the offensive zone and was in an off-side position prior to Oliver Bjorkstrand’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”  \nThe clock is reset to show 12:57 (7:03 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 1,
+          "clock": "07:08",
+          "team": "NYR",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 1,
+          "clock": "07:08",
+          "team": "NYR",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 2,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: NYR @ DET – 7:08 of the First Period",
+            "url": "https://www.nhl.com/news/new-york-rangers-detroit-red-wings-coach-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:02Z",
+            "quote": "Call on the ice is overturned – No Goal NY Rangers"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-rangers-detroit-red-wings-coach-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:02Z",
+            "note": "contentDate 2026-10-02T23:12:25.85Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:22Z",
+            "sha256": "345029c722888079fa76194ce4411eb8e2d9062a584590326c680bac266b1b4d",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play and look at period 1 around 07:08: there must be no goal for NYR at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
+        },
+        "flags": [
+          "game_id_resolved_from_schedule"
+        ],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal NY Rangers.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
+        "seen_count": 1
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-5c05cee8b5",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-03T03:29:04.463Z"
+        },
+        "game": {
+          "game_id": "2026020020",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-02",
+          "away_team": "STL",
+          "home_team": "DAL",
+          "venue": "American Airlines Center",
+          "final_score": {
+            "away": 4,
+            "home": 0
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020020",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 3,
+          "period_type": "REG",
+          "clock": "01:06",
+          "team": "STL",
+          "field": "goal_removed",
+          "goal_key": "P3@01:06",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:06 of period 3",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Pavel Buchnevich preceded the puck into the offensive zone and was in an off-side position prior to Adam Jiricek’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 19:02 (0:58 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "initiated_by": null,
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal St. Louis",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal St. Louis",
+            "clock_reset": {
+              "shows": "19:02",
+              "elapsed": "00:58"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Pavel Buchnevich preceded the puck into the offensive zone and was in an off-side position prior to Adam Jiricek’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 19:02 (0:58 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "01:06",
+          "team": "STL",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "01:06",
+          "team": "STL",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 4,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: STL @ DAL – 1:06 of the Third Period",
+            "url": "https://www.nhl.com/news/st-louis-blues-dallas-stars-coach-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:01Z",
+            "quote": "Call on the ice is overturned – No Goal St. Louis"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-dallas-stars-coach-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:01Z",
+            "note": "contentDate 2026-10-03T03:29:04.463Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:22Z",
+            "sha256": "3f33fbfab23134dcd1562cd86e1d028448cb297c2befe90601f32b167a3b1d0f",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play and look at period 3 around 01:06: there must be no goal for STL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
+        },
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal St. Louis.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
         "seen_count": 1
       }
     },
@@ -300,2328 +864,708 @@
       }
     },
     {
-      "level": "review",
+      "level": "immediate",
       "record": {
-        "record_id": "SDN-e84fc1c8ec",
+        "record_id": "SDN-73e0895bf7",
         "schema_version": "1.0",
         "status": "verified",
         "confidence": "high",
-        "detected_by": "manual_research",
+        "detected_by": "league_statement",
         "detection": {
-          "check_id": "PARALLEL",
-          "rule": "scorer_attribution_conflict",
-          "rule_label": "Official scoring-change announcement, cross-checked against the corrected-state artifacts",
-          "severity": "medium",
-          "detected_at": "2026-10-07T00:00:00Z",
-          "run_id": "ported-from:CS-2025-03-26-NJD-AT-CHI-G1140",
-          "tool_version": "official_statement_ingest:2025-03-26-njd-at-chi-g1140.json",
-          "when_corrected": "postgame",
-          "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed",
-          "sources_compared": [
-            "Official Game Summary (HTML): GS021140.HTM",
-            "NHL GameCenter play-by-play"
-          ]
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-04T01:39:13.984Z"
         },
         "game": {
-          "game_id": "2024021140",
-          "season": "20242025",
+          "game_id": "2026020026",
+          "season": "20262027",
           "game_type": "REG",
-          "date": "2025-03-26",
-          "away_team": "NJD",
-          "home_team": "CHI",
-          "venue": null,
+          "date": "2026-10-03",
+          "away_team": "MTL",
+          "home_team": "PIT",
+          "venue": "PPG Paints Arena",
           "final_score": {
             "away": 5,
-            "home": 3
+            "home": 6
           },
-          "gamecenter_url": "https://www.nhl.com/gamecenter/2024021140",
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020026",
           "report_urls": {
-            "GS021140": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM"
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM"
           }
         },
         "discrepancy": {
-          "period": 1,
-          "clock": "6:50",
-          "team": "NJD",
-          "field": "scorer",
-          "goal_key": "1|6:50|NJD",
-          "change_type": "scorer_changed_by_official_announcement",
-          "summary": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer",
-          "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer",
-          "total_changed": false,
-          "attribution_only": true,
-          "goal_no_goal_change": false,
-          "video_review": false,
-          "when_corrected": "postgame",
+          "period": 3,
+          "period_type": "REG",
+          "clock": "05:25",
+          "team": "PIT",
+          "field": "goal_removed",
+          "goal_key": "P3@05:25",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined  Erik Karlsson preceded the puck into the offensive zone and did not have possession and control of the puck as he entered the attacking zone prior to Egor Chinakhov's goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 15:06 (4:54 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
           "timing_uncertain": false,
-          "announced_at_utc": "2025-03-27T04:51:19Z",
-          "announced_on": "2025-03-27",
-          "latency_note": "Report states 'Start 6:37 CDT; End 9:02 CDT'. 21:02 CDT on 2025-03-26 = 02:02Z on 2025-03-27 (CDT = UTC-5).",
-          "counts": {
-            "goals_removed": 0,
-            "goals_added": 0,
-            "scorer_changes": 1,
-            "assist_changes": 0,
-            "other_changes": 0,
-            "team_reassignments": 0
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
           },
-          "machine_diff": {
-            "ruling": "same",
-            "scorer": "changed",
-            "assists": "indeterminate",
-            "team": "same"
+          "review": {
+            "kind": "coach_challenge",
+            "initiated_by": "Montreal",
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Pittsburgh",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Pittsburgh",
+            "clock_reset": {
+              "shows": "15:06",
+              "elapsed": "04:54"
+            },
+            "statement_format": "structured"
           },
-          "declared_changes": [
-            {
-              "change_type": "scorer_change",
-              "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
-            }
-          ],
           "reason": {
             "stated_by_league": true,
-            "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
-            "rule_citation": null,
-            "needs_human_read": false,
-            "channel": "NHL Public Relations (@NHLPR)",
-            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-            "category": "official_source_statement"
-          },
-          "market_impact": {
-            "total_changed": false,
-            "affects_game_total": "no",
-            "affects_period_total": "no",
-            "affects_player_props": "yes",
-            "affects_result_markets": "no",
-            "risk": "medium",
-            "reason": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-            "rule_class": "attribution"
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined  Erik Karlsson preceded the puck into the offensive zone and did not have possession and control of the puck as he entered the attacking zone prior to Egor Chinakhov's goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 15:06 (4:54 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
           }
         },
         "initial_state": {
-          "artifact": "monitor-line initial state",
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
           "goal_present": true,
           "ruling": "goal",
-          "scorer": {
-            "name": "Timo Meier",
-            "number": 28,
-            "team": "NJD"
-          },
-          "assists": null,
-          "period": 1,
-          "clock": "6:50",
-          "team": "NJD",
-          "strength": "PP",
-          "evidence_status": "reported_by_secondary_source",
-          "evidence_note": "Syndicated reproduction of the announcement: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.' No official artifact retaining the pre-change credit was found."
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "05:25",
+          "team": "PIT",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
         },
         "corrected_state": {
-          "artifact": "monitor-line corrected state",
-          "goal_present": true,
-          "ruling": "goal",
-          "scorer": {
-            "name": "Dawson Mercer",
-            "number": 91,
-            "team": "NJD"
-          },
-          "assists": [
-            {
-              "name": "Luke Hughes",
-              "number": 43,
-              "team": "NJD"
-            },
-            {
-              "name": "Nico Hischier",
-              "number": 13,
-              "team": "NJD"
-            }
-          ],
-          "period": 1,
-          "clock": "6:50",
-          "team": "NJD",
-          "strength": "PP",
-          "evidence_status": "verified",
-          "evidence_note": null
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "05:25",
+          "team": "PIT",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
         },
         "totals": {
           "initial_game_goals": null,
-          "corrected_game_goals": null,
-          "goal_delta": 0,
-          "basis": "official announcement changed attribution only; the goal count is unchanged in both artifacts"
+          "corrected_game_goals": 11,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
         },
         "sources": [
           {
-            "label": "Official Game Summary (HTML): GS021140.HTM",
-            "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
+            "label": "NHL Situation Room statement - Coach’s Challenge: MTL @ PIT – 5:25 of the Third Period",
+            "url": "https://www.nhl.com/news/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:01Z",
+            "quote": "Call on the ice is overturned – No Goal Pittsburgh"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:03:01Z",
+            "note": "contentDate 2026-10-04T01:39:13.984Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:22Z",
+            "sha256": "0f222c12d30edb4d45a5bda07ce2b7498c180616f2621179f7347bb8f522f613",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM",
             "kind": "official_report",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": 200,
-            "quote": "2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
-            "note": "document_generated_at=2025-03-27 8.23.23; role=corrected_state"
-          },
-          {
-            "label": "NHL GameCenter play-by-play",
-            "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
-            "kind": "official_api",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": 200,
-            "quote": "eventId 146, period 1, timeInPeriod 06:50, typeDescKey goal, scoringPlayerId 8482110 (goal 16), assist1PlayerId 8482684 (assist 31), assist2PlayerId 8480002 (assist 28), awayScore 2, homeScore 0",
-            "note": "role=corrected_state"
-          },
-          {
-            "label": "Athlon Sports (syndicated via Yardbarker)",
-            "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
-            "kind": "secondary",
-            "evidence": "secondary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=official_announcement_reproduction; note=By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
-          },
-          {
-            "label": "NHL Public Relations (@NHLPR)",
-            "url": "https://x.com/NHLPR/status/1905120424146383077",
-            "kind": "secondary",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=official_announcement; note=Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
-          },
-          {
-            "label": "NHL GameCenter boxscore",
-            "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore",
-            "kind": "official_api",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=cross_check; note=Listed as the next cross-check to run; the Game Summary and play-by-play already agree."
-          }
-        ],
-        "verification": {
-          "status": "verified",
-          "upstream_status": "verified_from_official_announcement",
-          "evidence_grade": "primary",
-          "independently_checkable": true,
-          "check_instructions": "Open each source link: the report row and the play-by-play event must match the corrected state, and the league's own announcement must state the change. The pre-change credit rests on what initial_state.evidence_note describes - read it before treating the before-state as fully evidenced.",
-          "verified_by": "nhl_monitor statement ingest + artifact cross-check (official_statement_ingest:2025-03-26-njd-at-chi-g1140.json)",
-          "verified_at": "2026-10-07",
-          "completeness": {
-            "missing_requested_fields": [],
-            "fields_present": 22,
-            "fields_requested": 22,
-            "percent_complete": 100.0
-          },
-          "revision": 2
-        },
-        "flags": [
-          "assists_before_the_change_not_captured",
-          "initial_state_corroboration_withdrawn_on_reverification",
-          "initial_state_reported_by_secondary_source_only",
-          "ported_from_parallel_line",
-          "pre_change_assist_credits_unresolved"
-        ],
-        "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets. [ported 2026-10-07 by scripts/import_parallel_records.py from data/records/discrepancies.json; the monitor line's full object is preserved under parallel_record]",
-        "parallel_record": {
-          "record_id": "NHL-20242025-021140-01",
-          "status": "verified_from_official_announcement",
-          "case_id": "CS-2025-03-26-NJD-AT-CHI-G1140",
-          "game": {
-            "game_id": 2024021140,
-            "season": "20242025",
-            "date": "2025-03-26",
-            "away": {
-              "abbrev": "NJD",
-              "score": 5
-            },
-            "home": {
-              "abbrev": "CHI",
-              "score": 3
-            },
-            "final_score": "5-3"
-          },
-          "event": {
-            "period": 1,
-            "period_type": "REG",
-            "clock": "6:50",
-            "strength": "PP",
-            "team": "NJD"
-          },
-          "initial_state": {
-            "ruling": "goal",
-            "team": "NJD",
-            "scorer": {
-              "name": "Timo Meier",
-              "sweater": 28,
-              "team": "NJD"
-            },
-            "assists": null,
-            "evidence_status": "reported_by_secondary_source",
-            "evidence": "Syndicated reproduction of the announcement: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.' No official artifact retaining the pre-change credit was found."
-          },
-          "corrected_state": {
-            "ruling": "goal",
-            "team": "NJD",
-            "scorer": {
-              "name": "Dawson Mercer",
-              "sweater": 91,
-              "team": "NJD",
-              "season_goal_total": 16
-            },
-            "assists": [
-              {
-                "name": "Luke Hughes",
-                "sweater": 43,
-                "team": "NJD",
-                "season_assist_total": 31
-              },
-              {
-                "name": "Nico Hischier",
-                "sweater": 13,
-                "team": "NJD",
-                "season_assist_total": 28
-              }
-            ],
-            "evidence_status": "verified"
-          },
-          "change": {
-            "discrepancy_type": "scorer_change",
-            "affects_goal_total": false,
-            "affects_team_assignment": false,
-            "attribution_only": true,
-            "counts": {
-              "goals_removed": 0,
-              "goals_added": 0,
-              "scorer_changes": 1,
-              "assist_changes": 0,
-              "other_changes": 0,
-              "team_reassignments": 0
-            },
-            "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer",
-            "declared_changes": [
-              {
-                "change_type": "scorer_change",
-                "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
-              }
-            ],
-            "machine_diff": {
-              "ruling": "same",
-              "scorer": "changed",
-              "assists": "indeterminate",
-              "team": "same"
-            },
-            "all_changes": [
-              {
-                "change_type": "scorer_change",
-                "period": 1,
-                "clock": "6:50",
-                "team": "NJD",
-                "before": {
-                  "scorer": {
-                    "name": "Timo Meier",
-                    "sweater": 28,
-                    "team": "NJD"
-                  },
-                  "assists": null,
-                  "ruling": "goal"
-                },
-                "after": {
-                  "scorer": {
-                    "name": "Dawson Mercer",
-                    "sweater": 91,
-                    "team": "NJD",
-                    "season_goal_total": 16
-                  },
-                  "assists": [
-                    {
-                      "name": "Luke Hughes",
-                      "sweater": 43,
-                      "team": "NJD",
-                      "season_assist_total": 31
-                    },
-                    {
-                      "name": "Nico Hischier",
-                      "sweater": 13,
-                      "team": "NJD",
-                      "season_assist_total": 28
-                    }
-                  ],
-                  "ruling": "goal"
-                },
-                "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
-              }
-            ]
-          },
-          "reason": {
-            "category": "official_source_statement",
-            "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
-            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-            "announcement_channel": "NHL Public Relations (@NHLPR)",
-            "announcement_issued_on": "2025-03-27"
-          },
-          "timing": {
-            "when": "postgame_after_publication",
-            "reasoning": "the league announced the change on 2025-03-27, after the game of 2025-03-26 had been published as final",
-            "announced_on": "2025-03-27",
-            "announced_at_utc": "2025-03-27T04:51:19Z",
-            "game_ended_at_utc": "2025-03-27T02:02:00Z",
-            "game_end_time_note": "Report states 'Start 6:37 CDT; End 9:02 CDT'. 21:02 CDT on 2025-03-26 = 02:02Z on 2025-03-27 (CDT = UTC-5).",
-            "latency_after_final_buzzer_seconds": 10159,
-            "state_captured_at_utc": "2026-10-07T00:00:00Z"
-          },
-          "sources": [
-            {
-              "role": "corrected_state",
-              "type": "official-document",
-              "name": "Official Game Summary (HTML): GS021140.HTM",
-              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
-              "http_status": 200,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "document_generated_at": "2025-03-27 8.23.23",
-              "quoted_row": "2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)"
-            },
-            {
-              "role": "corrected_state",
-              "type": "official-api",
-              "name": "NHL GameCenter play-by-play",
-              "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
-              "http_status": 200,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "quoted_row": "eventId 146, period 1, timeInPeriod 06:50, typeDescKey goal, scoringPlayerId 8482110 (goal 16), assist1PlayerId 8482684 (assist 31), assist2PlayerId 8480002 (assist 28), awayScore 2, homeScore 0"
-            },
-            {
-              "role": "initial_state_corroboration",
-              "type": "official-media-metadata",
-              "name": "Highlight clip title inside the official GameCenter payload",
-              "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
-              "evidence_status": "withdrawn",
-              "reverified_at_utc": "2026-10-07T00:00:00Z"
-            },
-            {
-              "role": "official_announcement_reproduction",
-              "type": "secondary-reproduction-of-official-statement",
-              "name": "Athlon Sports (syndicated via Yardbarker)",
-              "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
-            },
-            {
-              "role": "official_announcement",
-              "type": "official-statement",
-              "name": "NHL Public Relations (@NHLPR)",
-              "url": "https://x.com/NHLPR/status/1905120424146383077",
-              "retrievable_as_text": true,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
-            },
-            {
-              "role": "cross_check",
-              "type": "official-api",
-              "name": "NHL GameCenter boxscore",
-              "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "Listed as the next cross-check to run; the Game Summary and play-by-play already agree."
-            }
-          ],
-          "evidence_status": "verified_corrected_state_and_official_announcement",
-          "settlement": {
-            "level": "attribution",
-            "could_affect_game_total_market": false,
-            "could_affect_team_markets": false,
-            "could_affect_player_props": true,
-            "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-            "requires_book_specific_review": true
-          },
-          "detection": {
-            "detected_by": "official_statement_ingest:2025-03-26-njd-at-chi-g1140.json",
-            "detected_at_utc": "2026-10-07T00:00:00Z",
-            "state_before_fingerprint": null,
-            "state_after_fingerprint": null,
-            "source_keys_compared": [
-              "Official Game Summary (HTML): GS021140.HTM",
-              "NHL GameCenter play-by-play"
-            ],
-            "confidence": "high",
-            "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
-          },
-          "flags": [
-            "assists_before_the_change_not_captured",
-            "initial_state_corroboration_withdrawn_on_reverification",
-            "initial_state_reported_by_secondary_source_only",
-            "pre_change_assist_credits_unresolved"
-          ],
-          "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
-          "reverification": {
-            "reverified_at_utc": "2026-10-07T00:00:00Z",
-            "method": "Re-fetched GS021140.HTM and the GameCenter landing payload for 2024021140 through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts, so http_status is inferred from returned content rather than read from a response line.",
-            "confirmed": [
-              "GS021140.HTM row 2: 2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
-              "GS021140.HTM footer: 2025-03-27 8.23.23",
-              "GS021140.HTM header: Start 6:37 CDT; End 9:02 CDT",
-              "GameCenter event 146: playerId 8482110 (Mercer, goalsToDate 16), assists 8482684 (Hughes, 31) and 8480002 (Hischier, 28)"
-            ],
-            "not_confirmed": [
-              "The French highlight-clip title naming Mercer (clip 6370608420112). The payload fetched on the re-check carries a French title naming Meier (clip 6370610205112), so this corroboration of the superseded credit is withdrawn rather than disproved."
-            ],
-            "evidence": "data/evidence/reverify-2026-10-07/",
-            "effect_on_the_record": "None on the corrected state, which stands on the official report and the official announcement. The superseded credit now rests on the secondary reproduction alone, which this record already flagged."
-          },
-          "completeness": {
-            "missing_requested_fields": [],
-            "fields_present": 22,
-            "fields_requested": 22,
-            "percent_complete": 100.0
-          },
-          "revision": 5,
-          "previous_revisions": [
-            {
-              "record_id": "NHL-20242025-021140-01",
-              "status": "verified_from_official_announcement",
-              "case_id": "CS-2025-03-26-NJD-AT-CHI-G1140",
-              "game": {
-                "game_id": 2024021140,
-                "season": "20242025",
-                "date": "2025-03-26",
-                "away": {
-                  "abbrev": "NJD",
-                  "score": 5
-                },
-                "home": {
-                  "abbrev": "CHI",
-                  "score": 3
-                },
-                "final_score": "5-3"
-              },
-              "event": {
-                "period": 1,
-                "period_type": "REG",
-                "clock": "6:50",
-                "strength": "PP",
-                "team": "NJD"
-              },
-              "initial_state": {
-                "ruling": "goal",
-                "team": "NJD",
-                "scorer": {
-                  "name": "Timo Meier",
-                  "sweater": 28,
-                  "team": "NJD"
-                },
-                "assists": null,
-                "evidence_status": "reported_by_secondary_source",
-                "evidence": "Syndicated reproduction of the announcement: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.' No official artifact retaining the pre-change credit was found."
-              },
-              "corrected_state": {
-                "ruling": "goal",
-                "team": "NJD",
-                "scorer": {
-                  "name": "Dawson Mercer",
-                  "sweater": 91,
-                  "team": "NJD",
-                  "season_goal_total": 16
-                },
-                "assists": [
-                  {
-                    "name": "Luke Hughes",
-                    "sweater": 43,
-                    "team": "NJD",
-                    "season_assist_total": 31
-                  },
-                  {
-                    "name": "Nico Hischier",
-                    "sweater": 13,
-                    "team": "NJD",
-                    "season_assist_total": 28
-                  }
-                ],
-                "evidence_status": "verified"
-              },
-              "change": {
-                "discrepancy_type": "scorer_change",
-                "affects_goal_total": false,
-                "affects_team_assignment": false,
-                "attribution_only": true,
-                "counts": {
-                  "goals_removed": 0,
-                  "goals_added": 0,
-                  "scorer_changes": 1,
-                  "assist_changes": 0,
-                  "other_changes": 0,
-                  "team_reassignments": 0
-                },
-                "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer",
-                "declared_changes": [
-                  {
-                    "change_type": "scorer_change",
-                    "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
-                  }
-                ],
-                "machine_diff": {
-                  "ruling": "same",
-                  "scorer": "changed",
-                  "assists": "indeterminate",
-                  "team": "same"
-                },
-                "all_changes": [
-                  {
-                    "change_type": "scorer_change",
-                    "period": 1,
-                    "clock": "6:50",
-                    "team": "NJD",
-                    "before": {
-                      "scorer": {
-                        "name": "Timo Meier",
-                        "sweater": 28,
-                        "team": "NJD"
-                      },
-                      "assists": null,
-                      "ruling": "goal"
-                    },
-                    "after": {
-                      "scorer": {
-                        "name": "Dawson Mercer",
-                        "sweater": 91,
-                        "team": "NJD",
-                        "season_goal_total": 16
-                      },
-                      "assists": [
-                        {
-                          "name": "Luke Hughes",
-                          "sweater": 43,
-                          "team": "NJD",
-                          "season_assist_total": 31
-                        },
-                        {
-                          "name": "Nico Hischier",
-                          "sweater": 13,
-                          "team": "NJD",
-                          "season_assist_total": 28
-                        }
-                      ],
-                      "ruling": "goal"
-                    },
-                    "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
-                  }
-                ]
-              },
-              "reason": {
-                "category": "official_source_statement",
-                "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
-                "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-                "announcement_channel": "NHL Public Relations (@NHLPR)",
-                "announcement_issued_on": "2025-03-27"
-              },
-              "timing": {
-                "when": "postgame_after_publication",
-                "reasoning": "the league announced the change on 2025-03-27, after the game of 2025-03-26 had been published as final",
-                "announced_on": "2025-03-27",
-                "announced_at_utc": "2025-03-27T04:51:19Z",
-                "game_ended_at_utc": "2025-03-27T02:02:00Z",
-                "game_end_time_note": "Report states 'Start 6:37 CDT; End 9:02 CDT'. 21:02 CDT on 2025-03-26 = 02:02Z on 2025-03-27 (CDT = UTC-5).",
-                "latency_after_final_buzzer_seconds": 10159,
-                "state_captured_at_utc": "2026-10-07T00:00:00Z"
-              },
-              "sources": [
-                {
-                  "role": "corrected_state",
-                  "type": "official-document",
-                  "name": "Official Game Summary (HTML): GS021140.HTM",
-                  "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
-                  "http_status": 200,
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "document_generated_at": "2025-03-27 8.23.23",
-                  "quoted_row": "2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)"
-                },
-                {
-                  "role": "corrected_state",
-                  "type": "official-api",
-                  "name": "NHL GameCenter play-by-play",
-                  "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
-                  "http_status": 200,
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "quoted_row": "eventId 146, period 1, timeInPeriod 06:50, typeDescKey goal, scoringPlayerId 8482110 (goal 16), assist1PlayerId 8482684 (assist 31), assist2PlayerId 8480002 (assist 28), awayScore 2, homeScore 0"
-                },
-                {
-                  "role": "initial_state_corroboration",
-                  "type": "official-media-metadata",
-                  "name": "Highlight clip title inside the official GameCenter payload",
-                  "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
-                  "evidence_status": "withdrawn",
-                  "reverified_at_utc": "2026-10-07T00:00:00Z"
-                },
-                {
-                  "role": "official_announcement_reproduction",
-                  "type": "secondary-reproduction-of-official-statement",
-                  "name": "Athlon Sports (syndicated via Yardbarker)",
-                  "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
-                },
-                {
-                  "role": "official_announcement",
-                  "type": "official-statement",
-                  "name": "NHL Public Relations (@NHLPR)",
-                  "url": "https://x.com/NHLPR/status/1905120424146383077",
-                  "retrievable_as_text": true,
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
-                },
-                {
-                  "role": "cross_check",
-                  "type": "official-api",
-                  "name": "NHL GameCenter boxscore",
-                  "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "Listed as the next cross-check to run; the Game Summary and play-by-play already agree."
-                }
-              ],
-              "evidence_status": "verified_corrected_state_and_official_announcement",
-              "settlement": {
-                "level": "attribution",
-                "could_affect_game_total_market": false,
-                "could_affect_team_markets": false,
-                "could_affect_player_props": true,
-                "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-                "requires_book_specific_review": true
-              },
-              "detection": {
-                "detected_by": "official_statement_ingest:2025-03-26-njd-at-chi-g1140.json",
-                "detected_at_utc": "2026-10-07T00:00:00Z",
-                "state_before_fingerprint": null,
-                "state_after_fingerprint": null,
-                "source_keys_compared": [
-                  "Official Game Summary (HTML): GS021140.HTM",
-                  "NHL GameCenter play-by-play"
-                ],
-                "confidence": "high",
-                "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
-              },
-              "flags": [
-                "assists_before_the_change_not_captured",
-                "initial_state_corroboration_withdrawn_on_reverification",
-                "initial_state_reported_by_secondary_source_only",
-                "pre_change_assist_credits_unresolved"
-              ],
-              "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
-              "reverification": {
-                "reverified_at_utc": "2026-10-07T00:00:00Z",
-                "evidence": "data/evidence/reverify-2026-10-07/",
-                "note": "The French-clip corroboration of the superseded credit was not reproducible on re-check and is withdrawn. See data/reference/verified_facts.json F17 and F22."
-              },
-              "completeness": {
-                "missing_requested_fields": [],
-                "fields_present": 22,
-                "fields_requested": 22,
-                "percent_complete": 100.0
-              },
-              "revision": 4
-            }
-          ]
-        },
-        "first_seen_at": "2026-10-07T00:00:00Z",
-        "seen_count": 2,
-        "reverification": {
-          "reverified_at_utc": "2026-10-07T00:00:00Z",
-          "evidence": "data/evidence/reverify-2026-10-07/",
-          "confirmed": [
-            "GS021140.HTM row 2 and footer",
-            "GameCenter event 146 scorer and both assists"
-          ],
-          "not_confirmed": [
-            "French highlight-clip title naming Mercer (clip 6370608420112)"
-          ]
-        },
-        "withdrawn_sources": [
-          {
-            "label": "Highlight clip title inside the official GameCenter payload",
-            "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
-            "kind": "secondary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved."
-          }
-        ],
-        "detection_history": [
-          {
-            "run_id": "ported-from:CS-2025-03-26-NJD-AT-CHI-G1140",
-            "detected_at": "2026-10-07T00:00:00Z",
-            "machine_status": "verified"
-          }
-        ],
-        "last_seen_at": "2026-10-07T00:00:00Z"
-      }
-    },
-    {
-      "level": "info",
-      "record": {
-        "record_id": "SDN-87fb3e543f",
-        "schema_version": "1.0",
-        "status": "verified",
-        "confidence": "high",
-        "detected_by": "cross_source",
-        "detection": {
-          "check_id": "C11",
-          "rule": "assist_attribution_conflict",
-          "rule_label": "Same goal, different assist credits between official artifacts",
-          "severity": "medium",
-          "tool_version": "0.4.0",
-          "run_id": "seed-2026-10-07",
-          "detected_at": "2026-10-07T04:36:00Z"
-        },
-        "game": {
-          "game_id": "2000020001",
-          "season": "20002001",
-          "game_type": "REG",
-          "date": "2000-10-04",
-          "away_team": "COL",
-          "home_team": "DAL",
-          "venue": "Reunion Arena",
-          "final_score": {
-            "away": 2,
-            "home": 2
-          },
-          "gamecenter_url": "https://www.nhl.com/gamecenter/2000020001",
-          "report_urls": {
-            "GS": "https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM",
-            "PL": "https://www.nhl.com/scores/htmlreports/20002001/PL020001.HTM",
-            "ES": "https://www.nhl.com/scores/htmlreports/20002001/ES020001.HTM"
-          }
-        },
-        "discrepancy": {
-          "period": 2,
-          "clock": "18:31",
-          "team": "COL",
-          "field": "assists",
-          "goal_key": "2|1111|COL",
-          "change_type": "assist_attribution_conflict",
-          "summary": "COL at DAL 2000-10-04: assists ['C. DRURY'] in nhl_gs_report vs ['C. Drury', 'J. Sakic'] in nhl_api_landing",
-          "detail": "assists ['C. DRURY'] in nhl_gs_report vs ['C. Drury', 'J. Sakic'] in nhl_api_landing",
-          "total_changed": false,
-          "attribution_only": true,
-          "goal_no_goal_change": false,
-          "video_review": null,
-          "when_corrected": "unknown",
-          "timing_uncertain": true,
-          "market_impact": {
-            "total_changed": false,
-            "affects_game_total": "no",
-            "affects_period_total": "no",
-            "affects_player_props": "yes",
-            "affects_result_markets": "no",
-            "risk": "medium",
-            "reason": "Goal total unaffected: the number of goals is identical in both records; only credit or timing moved. Player-prop exposure: anytime-scorer / points / assist markets turn on who is credited, not on how many goals were scored. NHL box scores are not a sportsbook source of record. This is an exposure flag for review, not a claim that any market was mis-settled.",
-            "rule_class": "attribution"
-          },
-          "reason": {
-            "stated_by_league": false,
-            "text": "No public correction notice exists for this game. The league's two official renderings of the same goal disagree on the number of assists credited; which one reflects the scorer's final decision cannot be established from public data alone, because the JSON is edited in place while the sheet is a frozen post-game artifact. The game itself ended 2-2 (OT, no further goals), so the discrepancy is attribution-only and cannot move a goal total.",
-            "rule_citation": "NHL Rule 78.2 (credits for goals and assists)",
-            "needs_human_read": true
-          }
-        },
-        "initial_state": {
-          "artifact": "nhl_gs_report",
-          "goal_present": true,
-          "ruling": "goal",
-          "scorer": {
-            "name": "A. DEADMARSH"
-          },
-          "assists": [
-            {
-              "name": "C. DRURY"
-            }
-          ],
-          "strength": "PP",
-          "own_goal": false,
-          "empty_net": null,
-          "period": 2,
-          "clock": "18:31",
-          "clock_seconds": 1111,
-          "team": "COL",
-          "score_after": {
-            "away": null,
-            "home": null
-          },
-          "event_id": null,
-          "player_id": null,
-          "shot_type": null,
-          "goal_modifier": null,
-          "awarded": false
-        },
-        "corrected_state": {
-          "artifact": "nhl_api_landing",
-          "goal_present": true,
-          "ruling": "goal",
-          "scorer": {
-            "name": "A. Deadmarsh"
-          },
-          "assists": [
-            {
-              "name": "C. Drury"
-            },
-            {
-              "name": "J. Sakic"
-            }
-          ],
-          "strength": "PP",
-          "own_goal": false,
-          "empty_net": null,
-          "period": 2,
-          "clock": "18:31",
-          "clock_seconds": 1111,
-          "team": "COL",
-          "score_after": {
-            "away": 2,
-            "home": 2
-          },
-          "event_id": 10060839,
-          "player_id": 8459436,
-          "shot_type": "snap",
-          "goal_modifier": "none",
-          "awarded": false
-        },
-        "totals": {
-          "initial_game_goals": 4,
-          "corrected_game_goals": 4,
-          "goal_delta": 0,
-          "basis": "goal rows counted per artifact"
-        },
-        "sources": [
-          {
-            "label": "Official NHL Game Summary, sheet GS020001.HTM (SCORING SUMMARY, goal 4)",
-            "url": "https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM",
-            "kind": "official_report",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07",
-            "http_status": 200,
-            "quote": "4 | 2 | 18:31 | COL | A. DEADMARSH (1) | C. DRURY (1) |  | 18 77 37 33 21 19 | 2 24 22 20 11 | PP",
-            "note": "Report footer stamp 2000-10-04-22.14.20 - a single assist is credited on the sheet."
-          },
-          {
-            "label": "Official NHL Game Center JSON, summary.scoring goal eventId 10060839",
-            "url": "https://api-web.nhle.com/v1/gamecenter/2000020001/landing",
-            "kind": "official_api",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07",
-            "http_status": 200,
-            "quote": "{\"eventId\":10060839,\"strength\":\"pp\",\"playerId\":8459436,\"firstName\":{\"default\":\"Adam\"},\"lastName\":{\"default\":\"Deadmarsh\"},\"timeInPeriod\":\"18:31\",\"assists\":[{\"playerId\":8460562,\"lastName\":{\"default\":\"Drury\"},...},{\"playerId\":8451101,\"lastName\":{\"default\":\"Sakic\"},...}]}",
-            "note": "Two assists credited in the JSON record of the same goal."
-          },
-          {
-            "label": "Game Center page (human view of the final box score)",
-            "url": "https://www.nhl.com/gamecenter/col-vs-dal/2000/10/04/2000020001",
-            "kind": "official_page",
-            "evidence": "primary",
-            "retrieved_at": ""
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
           }
         ],
         "verification": {
           "status": "verified",
           "evidence_grade": "primary",
           "independently_checkable": true,
-          "check_instructions": "Open each source URL and compare the goal line for period 2 at 18:31 (COL).",
-          "verified_by": "line-by-line read of both official artifacts on 2026-10-07 (fixture excerpts in tests/fixtures are transcribed verbatim from them)",
-          "verified_at": "2026-10-07",
-          "residual_uncertainty": "direction of the correction is unresolved; the conflict itself is not"
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play and look at period 3 around 05:25: there must be no goal for PIT at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
         },
-        "flags": [
-          "pre_2007_no_video_or_clip_to_adjudicate",
-          "requires_human_verification",
-          "single_artifact_evidence",
-          "which_artifact_is_final_unresolved"
-        ],
-        "notes": "First record in this database. Found by the automated cross-source scan on the same fixture pair that ships as the regression test, so the claim is reproducible: python3 scripts/seed_records.py --print. Also worth noting as a class: the sheet was generated 2000-10-04 22:14 and has apparently never been regenerated, so 26 years of 'final' data still disagree with the JSON.",
-        "first_seen_at": "2026-10-07T04:36:00Z",
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Pittsburgh.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
         "seen_count": 1
       }
     },
     {
-      "level": "info",
+      "level": "immediate",
       "record": {
-        "record_id": "SDN-35d7818c51",
+        "record_id": "SDN-26e9b24b21",
         "schema_version": "1.0",
         "status": "verified",
         "confidence": "high",
-        "detected_by": "manual_research",
+        "detected_by": "league_statement",
         "detection": {
-          "check_id": "PARALLEL",
-          "rule": "assist_attribution_conflict",
-          "rule_label": "Official scoring-change announcement, cross-checked against the corrected-state artifacts",
-          "severity": "medium",
-          "detected_at": "2026-10-07T00:00:00Z",
-          "run_id": "ported-from:CS-2025-04-01-NSH-AT-CBJ-G1185",
-          "tool_version": "official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json",
-          "when_corrected": "postgame",
-          "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed",
-          "sources_compared": [
-            "Official Game Summary (HTML): GS021185.HTM"
-          ]
+          "check_id": "SR1",
+          "rule": "situation_room_no_goal_overturned_to_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-06T01:15:00Z"
         },
         "game": {
-          "game_id": "2024021185",
-          "season": "20242025",
+          "game_id": "2026020042",
+          "season": "20262027",
           "game_type": "REG",
-          "date": "2025-04-01",
-          "away_team": "NSH",
-          "home_team": "CBJ",
-          "venue": null,
+          "date": "2026-10-05",
+          "away_team": "WPG",
+          "home_team": "PIT",
+          "venue": "PPG Paints Arena",
           "final_score": {
-            "away": 4,
-            "home": 8
+            "away": 3,
+            "home": 2
           },
-          "gamecenter_url": "https://www.nhl.com/gamecenter/2024021185",
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020042",
           "report_urls": {
-            "GS021185": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM"
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM"
           }
         },
         "discrepancy": {
-          "period": 3,
-          "clock": "9:02",
-          "team": "NSH",
-          "field": "assists",
-          "goal_key": "3|9:02|NSH",
-          "change_type": "assists_changed_by_official_announcement",
-          "summary": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron",
-          "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron",
-          "total_changed": false,
-          "attribution_only": true,
-          "goal_no_goal_change": false,
-          "video_review": false,
-          "when_corrected": "postgame",
+          "period": 2,
+          "period_type": "REG",
+          "clock": "09:27",
+          "team": "PIT",
+          "field": "goal_added",
+          "goal_key": "P2@09:27",
+          "change_type": "no_goal_overturned_to_goal",
+          "summary": "Video review (High-Sticking the Puck): on-ice no-goal overturned, goal awarded to PIT at 09:27 of period 2",
+          "detail": "Video review determined that Ben Kindel's stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
           "timing_uncertain": false,
-          "announced_at_utc": "2025-04-02T05:07:35Z",
-          "announced_on": "2025-04-02",
-          "latency_note": "Report states 'Start 7:09 EDT; End 9:43 EDT'. 21:43 EDT on 2025-04-01 = 01:43Z on 2025-04-02 (EDT = UTC-4).",
-          "counts": {
-            "goals_removed": 0,
-            "goals_added": 0,
-            "scorer_changes": 0,
-            "assist_changes": 1,
-            "other_changes": 0,
-            "team_reassignments": 0
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
           },
-          "machine_diff": {
-            "ruling": "same",
-            "scorer": "same",
-            "assists": "indeterminate",
-            "team": "same"
+          "review": {
+            "kind": "video_review",
+            "initiated_by": null,
+            "type": "High-Sticking the Puck",
+            "type_inferred": false,
+            "result": "Original call is overturned – Goal Pittsburgh",
+            "on_ice_call": "no_goal",
+            "final_call": "goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Original call is overturned – Goal Pittsburgh",
+            "clock_reset": null,
+            "statement_format": "structured"
           },
-          "declared_changes": [
-            {
-              "change_type": "assist_change",
-              "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
-            }
-          ],
           "reason": {
             "stated_by_league": true,
-            "text": "OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats",
-            "rule_citation": null,
-            "needs_human_read": false,
-            "channel": "NHL Public Relations (@NHLPR)",
-            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-            "category": "official_source_statement"
-          },
-          "market_impact": {
-            "total_changed": false,
-            "affects_game_total": "no",
-            "affects_period_total": "no",
-            "affects_player_props": "yes",
-            "affects_result_markets": "no",
-            "risk": "medium",
-            "reason": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-            "rule_class": "attribution"
+            "text": "Video review determined that Ben Kindel's stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”",
+            "rule_citation": "37.5",
+            "needs_human_read": false
           }
         },
         "initial_state": {
-          "artifact": "monitor-line initial state",
-          "goal_present": true,
-          "ruling": "goal",
-          "scorer": {
-            "name": "Jordan Oesterle",
-            "number": 82,
-            "team": "NSH"
-          },
-          "assists": null,
-          "period": 3,
-          "clock": "9:02",
-          "team": "NSH",
-          "strength": "EV",
-          "evidence_status": "unavailable",
-          "evidence_note": "Not retrievable. The announcement says the goal 'now reads' Oesterle from Smith and McCarron, which shows the assist credits were touched but not what they were, and the reproduction only says the goal was 'originally credited without clear confirmation of the assists'. Whether the goal was previously unassisted, or carried a different assist list, is therefore UNKNOWN. The scorer line was not changed by the announcement."
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "09:27",
+          "team": "PIT",
+          "score_after": null,
+          "note": null
         },
         "corrected_state": {
-          "artifact": "monitor-line corrected state",
+          "artifact": "official play-by-play after review",
           "goal_present": true,
           "ruling": "goal",
           "scorer": {
-            "name": "Jordan Oesterle",
-            "number": 82,
-            "team": "NSH"
+            "name": "B. Kindel",
+            "surname": "Kindel",
+            "initial": "B",
+            "player_id": 8485414,
+            "sweater_number": 81,
+            "team_id": 5,
+            "season_counter": 2
           },
           "assists": [
             {
-              "name": "Cole Smith",
-              "number": 36,
-              "team": "NSH"
+              "name": "D. Carlile",
+              "surname": "Carlile",
+              "initial": "D",
+              "player_id": 8483398,
+              "sweater_number": 72,
+              "team_id": 5,
+              "season_counter": 2
             },
             {
-              "name": "Michael McCarron",
-              "number": 47,
-              "team": "NSH"
+              "name": "E. Karlsson",
+              "surname": "Karlsson",
+              "initial": "E",
+              "player_id": 8474578,
+              "sweater_number": 65,
+              "team_id": 5,
+              "season_counter": 4
             }
           ],
-          "period": 3,
-          "clock": "9:02",
-          "team": "NSH",
-          "strength": "EV",
-          "evidence_status": "verified",
-          "evidence_note": null
+          "period": 2,
+          "clock": "09:27",
+          "team": "PIT",
+          "score_after": {
+            "away": 0,
+            "home": 1
+          },
+          "event_id": 554,
+          "shot_type": "tip-in"
         },
         "totals": {
           "initial_game_goals": null,
-          "corrected_game_goals": null,
-          "goal_delta": 0,
-          "basis": "official announcement changed attribution only; the goal count is unchanged in both artifacts"
+          "corrected_game_goals": 5,
+          "goal_delta": 1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
         },
         "sources": [
           {
-            "label": "Official Game Summary (HTML): GS021185.HTM",
-            "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
-            "kind": "official_report",
+            "label": "NHL Situation Room statement - Video Review: WPG @ PIT – 9:27 of the Second Period",
+            "url": "https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review",
+            "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": 200,
-            "quote": "12 | 3 | 9:02 | EV | NSH | 82 J.OESTERLE(2) | 36 C.SMITH(8) | 47 M.MCCARRON(9)",
-            "note": "document_generated_at=2025-04-02 1.00.11; role=corrected_state"
+            "retrieved_at": "2026-10-07T17:03:00Z",
+            "quote": "Original call is overturned – Goal Pittsburgh"
           },
           {
-            "label": "Athlon Sports (syndicated via Yardbarker)",
-            "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
-            "kind": "secondary",
-            "evidence": "secondary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=official_announcement_reproduction; note=By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
-          },
-          {
-            "label": "Same Game Summary, season totals",
-            "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
-            "kind": "official_report",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=cross_check; note=Internal consistency with the reproduction: it states Cole Smith reached eight assists and McCarron nine; the report shows '36 C.SMITH(8)' and '47 M.MCCARRON(9)'. Two independent official numbers agree with the corrected state."
-          },
-          {
-            "label": "NHL Public Relations (@NHLPR)",
-            "url": "https://x.com/NHLPR/status/1907298847056941350",
-            "kind": "secondary",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=official_announcement"
-          },
-          {
-            "label": "NHL GameCenter play-by-play",
-            "url": "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play",
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=cross_check; note=Listed as the next cross-check to run; not quoted in this pass."
+            "retrieved_at": "2026-10-07T17:03:00Z",
+            "note": "contentDate 2026-10-06T01:15:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:22Z",
+            "sha256": "850ff0fd0b75f2596d7ac4642bc543996edea1054e056d6a8f9c423fbc710430",
+            "note": "cross-check: agree; "
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
           }
         ],
         "verification": {
           "status": "verified",
-          "upstream_status": "verified_from_official_announcement",
           "evidence_grade": "primary",
           "independently_checkable": true,
-          "check_instructions": "Open each source link: the report row and the play-by-play event must match the corrected state, and the league's own announcement must state the change. The pre-change credit rests on what initial_state.evidence_note describes - read it before treating the before-state as fully evidenced.",
-          "verified_by": "nhl_monitor statement ingest + artifact cross-check (official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json)",
-          "verified_at": "2026-10-07",
-          "completeness": {
-            "missing_requested_fields": [],
-            "fields_present": 22,
-            "fields_requested": 22,
-            "percent_complete": 100.0
-          },
-          "revision": 2
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play and look at period 2 around 09:27: a goal event for PIT must be present. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
         },
         "flags": [
-          "assists_before_the_change_not_captured",
-          "declared_change_not_confirmable_from_states:assist_change",
-          "initial_state_not_retrievable_from_any_source",
-          "ported_from_parallel_line",
-          "pre_change_assist_credits_undetermined"
+          "game_id_resolved_from_schedule"
         ],
-        "notes": "The goal, the scorer and the goal count are unchanged: this correction settles assist credits on Nashville's fourth goal, so the game total (NSH 4 - CBJ 8) is untouched and only player-prop markets can be affected. What the assists read before the change is not documented by any source reviewed, so this record explicitly does not claim to know the full scope of the correction - it is flagged for human review instead. [ported 2026-10-07 by scripts/import_parallel_records.py from data/records/discrepancies.json; the monitor line's full object is preserved under parallel_record]",
-        "parallel_record": {
-          "record_id": "NHL-20242025-021185-01",
-          "status": "verified_from_official_announcement",
-          "case_id": "CS-2025-04-01-NSH-AT-CBJ-G1185",
-          "game": {
-            "game_id": 2024021185,
-            "season": "20242025",
-            "date": "2025-04-01",
-            "away": {
-              "abbrev": "NSH",
-              "score": 4
-            },
-            "home": {
-              "abbrev": "CBJ",
-              "score": 8
-            },
-            "final_score": "4-8"
-          },
-          "event": {
-            "period": 3,
-            "period_type": "REG",
-            "clock": "9:02",
-            "strength": "EV",
-            "team": "NSH"
-          },
-          "initial_state": {
-            "ruling": "goal",
-            "team": "NSH",
-            "scorer": {
-              "name": "Jordan Oesterle",
-              "sweater": 82,
-              "team": "NSH"
-            },
-            "assists": null,
-            "evidence_status": "unavailable",
-            "evidence": "Not retrievable. The announcement says the goal 'now reads' Oesterle from Smith and McCarron, which shows the assist credits were touched but not what they were, and the reproduction only says the goal was 'originally credited without clear confirmation of the assists'. Whether the goal was previously unassisted, or carried a different assist list, is therefore UNKNOWN. The scorer line was not changed by the announcement."
-          },
-          "corrected_state": {
-            "ruling": "goal",
-            "team": "NSH",
-            "scorer": {
-              "name": "Jordan Oesterle",
-              "sweater": 82,
-              "team": "NSH",
-              "season_goal_total": 2
-            },
-            "assists": [
-              {
-                "name": "Cole Smith",
-                "sweater": 36,
-                "team": "NSH",
-                "season_assist_total": 8
-              },
-              {
-                "name": "Michael McCarron",
-                "sweater": 47,
-                "team": "NSH",
-                "season_assist_total": 9
-              }
-            ],
-            "evidence_status": "verified"
-          },
-          "change": {
-            "discrepancy_type": "assist_change",
-            "affects_goal_total": false,
-            "affects_team_assignment": false,
-            "attribution_only": true,
-            "counts": {
-              "goals_removed": 0,
-              "goals_added": 0,
-              "scorer_changes": 0,
-              "assist_changes": 1,
-              "other_changes": 0,
-              "team_reassignments": 0
-            },
-            "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron",
-            "declared_changes": [
-              {
-                "change_type": "assist_change",
-                "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
-              }
-            ],
-            "machine_diff": {
-              "ruling": "same",
-              "scorer": "same",
-              "assists": "indeterminate",
-              "team": "same"
-            },
-            "all_changes": [
-              {
-                "change_type": "assist_change",
-                "period": 3,
-                "clock": "9:02",
-                "team": "NSH",
-                "before": {
-                  "scorer": {
-                    "name": "Jordan Oesterle",
-                    "sweater": 82,
-                    "team": "NSH"
-                  },
-                  "assists": null,
-                  "ruling": "goal"
-                },
-                "after": {
-                  "scorer": {
-                    "name": "Jordan Oesterle",
-                    "sweater": 82,
-                    "team": "NSH",
-                    "season_goal_total": 2
-                  },
-                  "assists": [
-                    {
-                      "name": "Cole Smith",
-                      "sweater": 36,
-                      "team": "NSH",
-                      "season_assist_total": 8
-                    },
-                    {
-                      "name": "Michael McCarron",
-                      "sweater": 47,
-                      "team": "NSH",
-                      "season_assist_total": 9
-                    }
-                  ],
-                  "ruling": "goal"
-                },
-                "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
-              }
-            ]
-          },
-          "reason": {
-            "category": "official_source_statement",
-            "text": "OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats",
-            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-            "announcement_channel": "NHL Public Relations (@NHLPR)",
-            "announcement_issued_on": "2025-04-02"
-          },
-          "timing": {
-            "when": "postgame_after_publication",
-            "reasoning": "the league announced the change on 2025-04-02, after the game of 2025-04-01 had been published as final",
-            "announced_on": "2025-04-02",
-            "announced_at_utc": "2025-04-02T05:07:35Z",
-            "game_ended_at_utc": "2025-04-02T01:43:00Z",
-            "game_end_time_note": "Report states 'Start 7:09 EDT; End 9:43 EDT'. 21:43 EDT on 2025-04-01 = 01:43Z on 2025-04-02 (EDT = UTC-4).",
-            "latency_after_final_buzzer_seconds": 12275,
-            "state_captured_at_utc": "2026-10-07T00:00:00Z"
-          },
-          "sources": [
-            {
-              "role": "corrected_state",
-              "type": "official-document",
-              "name": "Official Game Summary (HTML): GS021185.HTM",
-              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
-              "http_status": 200,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "document_generated_at": "2025-04-02 1.00.11",
-              "quoted_row": "12 | 3 | 9:02 | EV | NSH | 82 J.OESTERLE(2) | 36 C.SMITH(8) | 47 M.MCCARRON(9)"
-            },
-            {
-              "role": "official_announcement_reproduction",
-              "type": "secondary-reproduction-of-official-statement",
-              "name": "Athlon Sports (syndicated via Yardbarker)",
-              "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
-            },
-            {
-              "role": "cross_check",
-              "type": "official-document",
-              "name": "Same Game Summary, season totals",
-              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "Internal consistency with the reproduction: it states Cole Smith reached eight assists and McCarron nine; the report shows '36 C.SMITH(8)' and '47 M.MCCARRON(9)'. Two independent official numbers agree with the corrected state."
-            },
-            {
-              "role": "official_announcement",
-              "type": "official-statement",
-              "name": "NHL Public Relations (@NHLPR)",
-              "url": "https://x.com/NHLPR/status/1907298847056941350",
-              "retrievable_as_text": true,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": null
-            },
-            {
-              "role": "cross_check",
-              "type": "official-api",
-              "name": "NHL GameCenter play-by-play",
-              "url": "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "Listed as the next cross-check to run; not quoted in this pass."
-            }
-          ],
-          "evidence_status": "verified_corrected_state_and_official_announcement",
-          "settlement": {
-            "level": "attribution",
-            "could_affect_game_total_market": false,
-            "could_affect_team_markets": false,
-            "could_affect_player_props": true,
-            "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-            "requires_book_specific_review": true
-          },
-          "detection": {
-            "detected_by": "official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json",
-            "detected_at_utc": "2026-10-07T00:00:00Z",
-            "state_before_fingerprint": null,
-            "state_after_fingerprint": null,
-            "source_keys_compared": [
-              "Official Game Summary (HTML): GS021185.HTM"
-            ],
-            "confidence": "high",
-            "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
-          },
-          "flags": [
-            "assists_before_the_change_not_captured",
-            "declared_change_not_confirmable_from_states:assist_change",
-            "initial_state_not_retrievable_from_any_source",
-            "pre_change_assist_credits_undetermined"
-          ],
-          "notes": "The goal, the scorer and the goal count are unchanged: this correction settles assist credits on Nashville's fourth goal, so the game total (NSH 4 - CBJ 8) is untouched and only player-prop markets can be affected. What the assists read before the change is not documented by any source reviewed, so this record explicitly does not claim to know the full scope of the correction - it is flagged for human review instead.",
-          "completeness": {
-            "missing_requested_fields": [],
-            "fields_present": 22,
-            "fields_requested": 22,
-            "percent_complete": 100.0
-          },
-          "revision": 2,
-          "previous_revisions": [
-            {
-              "record_id": "NHL-20242025-021185-01",
-              "status": "verified_from_official_announcement",
-              "case_id": "CS-2025-04-01-NSH-AT-CBJ-G1185",
-              "game": {
-                "game_id": 2024021185,
-                "season": "20242025",
-                "date": "2025-04-01",
-                "away": {
-                  "abbrev": "NSH",
-                  "score": 4
-                },
-                "home": {
-                  "abbrev": "CBJ",
-                  "score": 8
-                },
-                "final_score": "4-8"
-              },
-              "event": {
-                "period": 3,
-                "period_type": "REG",
-                "clock": "9:02",
-                "strength": "EV",
-                "team": "NSH"
-              },
-              "initial_state": {
-                "ruling": "goal",
-                "team": "NSH",
-                "scorer": {
-                  "name": "Jordan Oesterle",
-                  "sweater": 82,
-                  "team": "NSH"
-                },
-                "assists": null,
-                "evidence_status": "unavailable",
-                "evidence": "Not retrievable. The announcement says the goal 'now reads' Oesterle from Smith and McCarron, which shows the assist credits were touched but not what they were, and the reproduction only says the goal was 'originally credited without clear confirmation of the assists'. Whether the goal was previously unassisted, or carried a different assist list, is therefore UNKNOWN. The scorer line was not changed by the announcement."
-              },
-              "corrected_state": {
-                "ruling": "goal",
-                "team": "NSH",
-                "scorer": {
-                  "name": "Jordan Oesterle",
-                  "sweater": 82,
-                  "team": "NSH",
-                  "season_goal_total": 2
-                },
-                "assists": [
-                  {
-                    "name": "Cole Smith",
-                    "sweater": 36,
-                    "team": "NSH",
-                    "season_assist_total": 8
-                  },
-                  {
-                    "name": "Michael McCarron",
-                    "sweater": 47,
-                    "team": "NSH",
-                    "season_assist_total": 9
-                  }
-                ],
-                "evidence_status": "verified"
-              },
-              "change": {
-                "discrepancy_type": "assist_change",
-                "affects_goal_total": false,
-                "affects_team_assignment": false,
-                "attribution_only": true,
-                "counts": {
-                  "goals_removed": 0,
-                  "goals_added": 0,
-                  "scorer_changes": 0,
-                  "assist_changes": 1,
-                  "other_changes": 0,
-                  "team_reassignments": 0
-                },
-                "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron",
-                "declared_changes": [
-                  {
-                    "change_type": "assist_change",
-                    "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
-                  }
-                ],
-                "machine_diff": {
-                  "ruling": "same",
-                  "scorer": "same",
-                  "assists": "indeterminate",
-                  "team": "same"
-                },
-                "all_changes": [
-                  {
-                    "change_type": "assist_change",
-                    "period": 3,
-                    "clock": "9:02",
-                    "team": "NSH",
-                    "before": {
-                      "scorer": {
-                        "name": "Jordan Oesterle",
-                        "sweater": 82,
-                        "team": "NSH"
-                      },
-                      "assists": null,
-                      "ruling": "goal"
-                    },
-                    "after": {
-                      "scorer": {
-                        "name": "Jordan Oesterle",
-                        "sweater": 82,
-                        "team": "NSH",
-                        "season_goal_total": 2
-                      },
-                      "assists": [
-                        {
-                          "name": "Cole Smith",
-                          "sweater": 36,
-                          "team": "NSH",
-                          "season_assist_total": 8
-                        },
-                        {
-                          "name": "Michael McCarron",
-                          "sweater": 47,
-                          "team": "NSH",
-                          "season_assist_total": 9
-                        }
-                      ],
-                      "ruling": "goal"
-                    },
-                    "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
-                  }
-                ]
-              },
-              "reason": {
-                "category": "official_source_statement",
-                "text": "OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats",
-                "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
-                "announcement_channel": "NHL Public Relations (@NHLPR)",
-                "announcement_issued_on": "2025-04-02"
-              },
-              "timing": {
-                "when": "postgame_after_publication",
-                "reasoning": "the league announced the change on 2025-04-02, after the game of 2025-04-01 had been published as final",
-                "announced_on": "2025-04-02",
-                "announced_at_utc": "2025-04-02T05:07:35Z",
-                "game_ended_at_utc": "2025-04-02T01:43:00Z",
-                "game_end_time_note": "Report states 'Start 7:09 EDT; End 9:43 EDT'. 21:43 EDT on 2025-04-01 = 01:43Z on 2025-04-02 (EDT = UTC-4).",
-                "latency_after_final_buzzer_seconds": 12275,
-                "state_captured_at_utc": "2026-10-07T00:00:00Z"
-              },
-              "sources": [
-                {
-                  "role": "corrected_state",
-                  "type": "official-document",
-                  "name": "Official Game Summary (HTML): GS021185.HTM",
-                  "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
-                  "http_status": 200,
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "document_generated_at": "2025-04-02 1.00.11",
-                  "quoted_row": "12 | 3 | 9:02 | EV | NSH | 82 J.OESTERLE(2) | 36 C.SMITH(8) | 47 M.MCCARRON(9)"
-                },
-                {
-                  "role": "official_announcement_reproduction",
-                  "type": "secondary-reproduction-of-official-statement",
-                  "name": "Athlon Sports (syndicated via Yardbarker)",
-                  "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
-                },
-                {
-                  "role": "cross_check",
-                  "type": "official-document",
-                  "name": "Same Game Summary, season totals",
-                  "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "Internal consistency with the reproduction: it states Cole Smith reached eight assists and McCarron nine; the report shows '36 C.SMITH(8)' and '47 M.MCCARRON(9)'. Two independent official numbers agree with the corrected state."
-                },
-                {
-                  "role": "official_announcement",
-                  "type": "official-statement",
-                  "name": "NHL Public Relations (@NHLPR)",
-                  "url": "https://x.com/NHLPR/status/1907298847056941350",
-                  "retrievable_as_text": true,
-                  "retrieved_at_utc": null,
-                  "note": null
-                },
-                {
-                  "role": "cross_check",
-                  "type": "official-api",
-                  "name": "NHL GameCenter play-by-play",
-                  "url": "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "Listed as the next cross-check to run; not quoted in this pass."
-                }
-              ],
-              "evidence_status": "verified_corrected_state_and_official_announcement",
-              "settlement": {
-                "level": "attribution",
-                "could_affect_game_total_market": false,
-                "could_affect_team_markets": false,
-                "could_affect_player_props": true,
-                "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-                "requires_book_specific_review": true
-              },
-              "detection": {
-                "detected_by": "official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json",
-                "detected_at_utc": "2026-10-07T00:00:00Z",
-                "state_before_fingerprint": null,
-                "state_after_fingerprint": null,
-                "source_keys_compared": [
-                  "Official Game Summary (HTML): GS021185.HTM"
-                ],
-                "confidence": "high",
-                "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
-              },
-              "flags": [
-                "assists_before_the_change_not_captured",
-                "declared_change_not_confirmable_from_states:assist_change",
-                "initial_state_not_retrievable_from_any_source",
-                "pre_change_assist_credits_undetermined"
-              ],
-              "notes": "The goal, the scorer and the goal count are unchanged: this correction settles assist credits on Nashville's fourth goal, so the game total (NSH 4 - CBJ 8) is untouched and only player-prop markets can be affected. What the assists read before the change is not documented by any source reviewed, so this record explicitly does not claim to know the full scope of the correction - it is flagged for human review instead.",
-              "completeness": {
-                "missing_requested_fields": [],
-                "fields_present": 22,
-                "fields_requested": 22,
-                "percent_complete": 100.0
-              },
-              "revision": 1
-            }
-          ]
-        },
-        "first_seen_at": "2026-10-07T00:00:00Z",
-        "seen_count": 2,
-        "detection_history": [
-          {
-            "run_id": "ported-from:CS-2025-04-01-NSH-AT-CBJ-G1185",
-            "detected_at": "2026-10-07T00:00:00Z",
-            "machine_status": "verified"
-          }
-        ],
-        "last_seen_at": "2026-10-07T00:00:00Z"
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Original call is overturned – Goal Pittsburgh.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
+        "seen_count": 1
       }
     },
     {
-      "level": "info",
+      "level": "immediate",
       "record": {
-        "record_id": "SDN-2247415389",
+        "record_id": "SDN-21ad557cd4",
         "schema_version": "1.0",
         "status": "verified",
         "confidence": "high",
-        "detected_by": "manual_research",
+        "detected_by": "league_statement",
         "detection": {
-          "check_id": "PARALLEL",
-          "rule": "assist_attribution_conflict",
-          "rule_label": "Official scoring-change announcement, cross-checked against the corrected-state artifacts",
-          "severity": "medium",
-          "detected_at": "2026-10-07T00:00:00Z",
-          "run_id": "ported-from:CS-2025-04-08-BOS-AT-NJD-G1238",
-          "tool_version": "official_statement_ingest:2025-04-08-bos-at-njd-g1238.json",
-          "when_corrected": "postgame",
-          "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed",
-          "sources_compared": [
-            "Official Game Summary (HTML): GS021238.HTM"
-          ]
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-07T01:38:00Z"
         },
         "game": {
-          "game_id": "2024021238",
-          "season": "20242025",
+          "game_id": "2026020050",
+          "season": "20262027",
           "game_type": "REG",
-          "date": "2025-04-08",
-          "away_team": "BOS",
-          "home_team": "NJD",
-          "venue": null,
+          "date": "2026-10-06",
+          "away_team": "STL",
+          "home_team": "CHI",
+          "venue": "United Center",
           "final_score": {
-            "away": 7,
-            "home": 2
+            "away": 2,
+            "home": 4
           },
-          "gamecenter_url": "https://www.nhl.com/gamecenter/2024021238",
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020050",
           "report_urls": {
-            "GS021238": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM"
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM"
           }
         },
         "discrepancy": {
-          "period": 1,
-          "clock": "9:38",
-          "team": "BOS",
-          "field": "assists",
-          "goal_key": "1|9:38|BOS",
-          "change_type": "assists_changed_by_official_announcement",
-          "summary": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie",
-          "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie",
-          "total_changed": false,
-          "attribution_only": true,
-          "goal_no_goal_change": false,
-          "video_review": false,
-          "when_corrected": "postgame",
+          "period": 2,
+          "period_type": "REG",
+          "clock": "01:05",
+          "team": "STL",
+          "field": "goal_removed",
+          "goal_key": "P2@01:05",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:05 of period 2",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Jonatan Berggren preceded the puck into the offensive zone and was in an off-side position prior to Connor McMichael’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 18:59 (1:01 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
           "timing_uncertain": false,
-          "announced_at_utc": "2025-04-09T04:50:32Z",
-          "announced_on": "2025-04-09",
-          "latency_note": "Report states 'Start 7:08 EDT; End 9:27 EDT'. 21:27 EDT on 2025-04-08 = 01:27Z on 2025-04-09 (EDT = UTC-4).",
-          "counts": {
-            "goals_removed": 0,
-            "goals_added": 0,
-            "scorer_changes": 0,
-            "assist_changes": 1,
-            "other_changes": 0,
-            "team_reassignments": 0
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
           },
-          "machine_diff": {
-            "ruling": "same",
-            "scorer": "same",
-            "assists": "changed",
-            "team": "same"
+          "review": {
+            "kind": "coach_challenge",
+            "initiated_by": null,
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal St. Louis",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal St. Louis",
+            "clock_reset": {
+              "shows": "18:59",
+              "elapsed": "01:01"
+            },
+            "statement_format": "structured"
           },
-          "declared_changes": [
-            {
-              "change_type": "assist_change",
-              "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
-            }
-          ],
           "reason": {
             "stated_by_league": true,
-            "text": "OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats",
-            "rule_citation": null,
-            "needs_human_read": false,
-            "channel": "NHL Public Relations (@NHLPR)",
-            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-            "category": "official_source_statement"
-          },
-          "market_impact": {
-            "total_changed": false,
-            "affects_game_total": "no",
-            "affects_period_total": "no",
-            "affects_player_props": "yes",
-            "affects_result_markets": "no",
-            "risk": "medium",
-            "reason": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-            "rule_class": "attribution"
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Jonatan Berggren preceded the puck into the offensive zone and was in an off-side position prior to Connor McMichael’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 18:59 (1:01 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
           }
         },
         "initial_state": {
-          "artifact": "monitor-line initial state",
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
           "goal_present": true,
           "ruling": "goal",
-          "scorer": {
-            "name": "David Pastrnak",
-            "number": 88,
-            "team": "BOS"
-          },
-          "assists": [
-            {
-              "name": "Parker Wotherspoon",
-              "number": 29,
-              "team": "BOS"
-            }
-          ],
-          "period": 1,
-          "clock": "9:38",
-          "team": "BOS",
-          "strength": "EV",
-          "evidence_status": "reported_by_secondary_source",
-          "evidence_note": "Syndicated reproduction: the goal was 'initially credited to Pastrnak with an assist from Parker Whotherspoon'. Not retained by any official artifact found. The live-post link the reproduction cites for the 'initial' state (nhl_goal_bot status 1909755726387437819) is about a DIFFERENT goal of the same game (Callahan, 19:24 of P1), so that citation does not document the pre-change assist."
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "01:05",
+          "team": "STL",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
         },
         "corrected_state": {
-          "artifact": "monitor-line corrected state",
-          "goal_present": true,
-          "ruling": "goal",
-          "scorer": {
-            "name": "David Pastrnak",
-            "number": 88,
-            "team": "BOS"
-          },
-          "assists": [
-            {
-              "name": "Morgan Geekie",
-              "number": 39,
-              "team": "BOS"
-            }
-          ],
-          "period": 1,
-          "clock": "9:38",
-          "team": "BOS",
-          "strength": "EV",
-          "evidence_status": "verified",
-          "evidence_note": null
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "01:05",
+          "team": "STL",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
         },
         "totals": {
           "initial_game_goals": null,
-          "corrected_game_goals": null,
-          "goal_delta": 0,
-          "basis": "official announcement changed attribution only; the goal count is unchanged in both artifacts"
+          "corrected_game_goals": 6,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
         },
         "sources": [
           {
-            "label": "Official Game Summary (HTML): GS021238.HTM",
-            "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
-            "kind": "official_report",
+            "label": "NHL Situation Room statement - Coach’s Challenge: STL @ CHI – 1:05 of the Second Period",
+            "url": "https://www.nhl.com/news/st-louis-blues-chicago-blackhawks-coach-challenge",
+            "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": 200,
-            "quote": "1 | 1 | 9:38 | EV | BOS | 88 D.PASTRNAK(41) | 39 M.GEEKIE(23) |",
-            "note": "document_generated_at=2025-04-11 21.36.36; role=corrected_state"
+            "retrieved_at": "2026-10-07T17:03:00Z",
+            "quote": "Call on the ice is overturned – No Goal St. Louis"
           },
           {
-            "label": "Athlon Sports (syndicated via Yardbarker)",
-            "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
-            "kind": "secondary",
-            "evidence": "secondary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=official_announcement_reproduction; note=By Antonio Losada, page last updated Apr 9, 2025 6:10 AM ET. Full page fetched. States: 'initially credited to Pastrnak with an assist from Parker Whotherspoon. After review, Morgan Geekie, not Whoterspoo, was awarded a helper.' (Player-name spellings as published.) Also states the change leaves Geekie on 23 assists and drops Wotherspoon to six."
-          },
-          {
-            "label": "Same Game Summary, goal 2 of the same game",
-            "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
-            "kind": "official_report",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=cross_check; note=Internal consistency: goal 2 (19:24 of P1) reads '79 M.CALLAHAN(1) | 29 P.WOTHERSPOON(6) | 88 D.PASTRNAK(58)'. Wotherspoon's season total of 6 in the official report matches the reproduction's statement that the change dropped him to six assists, and Geekie's 23 matches the report's '39 M.GEEKIE(23)'. Two independent official numbers therefore agree with the corrected state."
-          },
-          {
-            "label": "NHL Public Relations (@NHLPR)",
-            "url": "https://x.com/NHLPR/status/1909831272047800540",
-            "kind": "secondary",
-            "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=official_announcement"
-          },
-          {
-            "label": "NHL GameCenter play-by-play",
-            "url": "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play",
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-chicago-blackhawks-coach-challenge",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T00:00:00Z",
-            "http_status": null,
-            "quote": null,
-            "note": "role=cross_check; note=Listed as the next cross-check to run. Not quoted in this pass: the retrieved chunk ended at 9:27 of P1, immediately before the goal in question."
+            "retrieved_at": "2026-10-07T17:03:00Z",
+            "note": "contentDate 2026-10-07T01:38:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:21Z",
+            "sha256": "b14dc662921b03a8d5d619b783e07220f8577ad5b20897cc1fa02a55a983e949",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
           }
         ],
         "verification": {
           "status": "verified",
-          "upstream_status": "verified_from_official_announcement",
           "evidence_grade": "primary",
           "independently_checkable": true,
-          "check_instructions": "Open each source link: the report row and the play-by-play event must match the corrected state, and the league's own announcement must state the change. The pre-change credit rests on what initial_state.evidence_note describes - read it before treating the before-state as fully evidenced.",
-          "verified_by": "nhl_monitor statement ingest + artifact cross-check (official_statement_ingest:2025-04-08-bos-at-njd-g1238.json)",
-          "verified_at": "2026-10-07",
-          "completeness": {
-            "missing_requested_fields": [],
-            "fields_present": 22,
-            "fields_requested": 22,
-            "percent_complete": 100.0
-          },
-          "revision": 2
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play and look at period 2 around 01:05: there must be no goal for STL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
         },
-        "flags": [
-          "initial_state_citation_in_reproduction_points_at_a_different_goal",
-          "initial_state_reported_by_secondary_source_only",
-          "official_play_by_play_event_not_quoted_this_pass",
-          "ported_from_parallel_line"
-        ],
-        "notes": "The goal, the scorer and the number of goals are all unchanged: this is an assist re-attribution, so the game total (BOS 7 - NJD 2) is untouched and only player-prop markets can be affected. The corrected state is verified against the official report alone in this pass; the report is internally consistent with the reproduced statement on two independent season totals (Geekie 23, Wotherspoon 6). The pre-change assist rests on the reproduction, and the reproduction's own citation for it does not support it, which is recorded as an unresolved irregularity rather than resolved by inference. [ported 2026-10-07 by scripts/import_parallel_records.py from data/records/discrepancies.json; the monitor line's full object is preserved under parallel_record]",
-        "parallel_record": {
-          "record_id": "NHL-20242025-021238-01",
-          "status": "verified_from_official_announcement",
-          "case_id": "CS-2025-04-08-BOS-AT-NJD-G1238",
-          "game": {
-            "game_id": 2024021238,
-            "season": "20242025",
-            "date": "2025-04-08",
-            "away": {
-              "abbrev": "BOS",
-              "score": 7
-            },
-            "home": {
-              "abbrev": "NJD",
-              "score": 2
-            },
-            "final_score": "7-2"
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal St. Louis.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
+        "seen_count": 1
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-261948dfcd",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T17:33:05Z",
+          "run_id": "20261007T170259Z-0.4.0",
+          "tool_version": "0.4.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-07T01:41:00Z"
+        },
+        "game": {
+          "game_id": "2026020044",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-06",
+          "away_team": "NSH",
+          "home_team": "TOR",
+          "venue": "Scotiabank Arena",
+          "final_score": {
+            "away": 4,
+            "home": 5
           },
-          "event": {
-            "period": 1,
-            "period_type": "REG",
-            "clock": "9:38",
-            "strength": "EV",
-            "team": "BOS"
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020044",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 3,
+          "period_type": "REG",
+          "clock": "11:49",
+          "team": "TOR",
+          "field": "goal_removed",
+          "goal_key": "P3@11:49",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal TOR at 11:49 of period 3",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
           },
-          "initial_state": {
-            "ruling": "goal",
-            "team": "BOS",
-            "scorer": {
-              "name": "David Pastrnak",
-              "sweater": 88,
-              "team": "BOS"
+          "review": {
+            "kind": "coach_challenge",
+            "initiated_by": null,
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Toronto",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Toronto",
+            "clock_reset": {
+              "shows": "08:14",
+              "elapsed": "11:46"
             },
-            "assists": [
-              {
-                "name": "Parker Wotherspoon",
-                "sweater": 29,
-                "team": "BOS"
-              }
-            ],
-            "evidence_status": "reported_by_secondary_source",
-            "evidence": "Syndicated reproduction: the goal was 'initially credited to Pastrnak with an assist from Parker Whotherspoon'. Not retained by any official artifact found. The live-post link the reproduction cites for the 'initial' state (nhl_goal_bot status 1909755726387437819) is about a DIFFERENT goal of the same game (Callahan, 19:24 of P1), so that citation does not document the pre-change assist."
-          },
-          "corrected_state": {
-            "ruling": "goal",
-            "team": "BOS",
-            "scorer": {
-              "name": "David Pastrnak",
-              "sweater": 88,
-              "team": "BOS",
-              "season_goal_total": 41
-            },
-            "assists": [
-              {
-                "name": "Morgan Geekie",
-                "sweater": 39,
-                "team": "BOS",
-                "season_assist_total": 23
-              }
-            ],
-            "evidence_status": "verified"
-          },
-          "change": {
-            "discrepancy_type": "assist_change",
-            "affects_goal_total": false,
-            "affects_team_assignment": false,
-            "attribution_only": true,
-            "counts": {
-              "goals_removed": 0,
-              "goals_added": 0,
-              "scorer_changes": 0,
-              "assist_changes": 1,
-              "other_changes": 0,
-              "team_reassignments": 0
-            },
-            "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie",
-            "declared_changes": [
-              {
-                "change_type": "assist_change",
-                "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
-              }
-            ],
-            "machine_diff": {
-              "ruling": "same",
-              "scorer": "same",
-              "assists": "changed",
-              "team": "same"
-            },
-            "all_changes": [
-              {
-                "change_type": "assist_change",
-                "period": 1,
-                "clock": "9:38",
-                "team": "BOS",
-                "before": {
-                  "scorer": {
-                    "name": "David Pastrnak",
-                    "sweater": 88,
-                    "team": "BOS"
-                  },
-                  "assists": [
-                    {
-                      "name": "Parker Wotherspoon",
-                      "sweater": 29,
-                      "team": "BOS"
-                    }
-                  ],
-                  "ruling": "goal"
-                },
-                "after": {
-                  "scorer": {
-                    "name": "David Pastrnak",
-                    "sweater": 88,
-                    "team": "BOS",
-                    "season_goal_total": 41
-                  },
-                  "assists": [
-                    {
-                      "name": "Morgan Geekie",
-                      "sweater": 39,
-                      "team": "BOS",
-                      "season_assist_total": 23
-                    }
-                  ],
-                  "ruling": "goal"
-                },
-                "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
-              }
-            ]
+            "statement_format": "structured"
           },
           "reason": {
-            "category": "official_source_statement",
-            "text": "OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats",
-            "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
-            "announcement_channel": "NHL Public Relations (@NHLPR)",
-            "announcement_issued_on": "2025-04-09"
-          },
-          "timing": {
-            "when": "postgame_after_publication",
-            "reasoning": "the league announced the change on 2025-04-09, after the game of 2025-04-08 had been published as final",
-            "announced_on": "2025-04-09",
-            "announced_at_utc": "2025-04-09T04:50:32Z",
-            "game_ended_at_utc": "2025-04-09T01:27:00Z",
-            "game_end_time_note": "Report states 'Start 7:08 EDT; End 9:27 EDT'. 21:27 EDT on 2025-04-08 = 01:27Z on 2025-04-09 (EDT = UTC-4).",
-            "latency_after_final_buzzer_seconds": 12212,
-            "state_captured_at_utc": "2026-10-07T00:00:00Z"
-          },
-          "sources": [
-            {
-              "role": "corrected_state",
-              "type": "official-document",
-              "name": "Official Game Summary (HTML): GS021238.HTM",
-              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
-              "http_status": 200,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "document_generated_at": "2025-04-11 21.36.36",
-              "quoted_row": "1 | 1 | 9:38 | EV | BOS | 88 D.PASTRNAK(41) | 39 M.GEEKIE(23) |"
-            },
-            {
-              "role": "official_announcement_reproduction",
-              "type": "secondary-reproduction-of-official-statement",
-              "name": "Athlon Sports (syndicated via Yardbarker)",
-              "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "By Antonio Losada, page last updated Apr 9, 2025 6:10 AM ET. Full page fetched. States: 'initially credited to Pastrnak with an assist from Parker Whotherspoon. After review, Morgan Geekie, not Whoterspoo, was awarded a helper.' (Player-name spellings as published.) Also states the change leaves Geekie on 23 assists and drops Wotherspoon to six."
-            },
-            {
-              "role": "cross_check",
-              "type": "official-document",
-              "name": "Same Game Summary, goal 2 of the same game",
-              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "Internal consistency: goal 2 (19:24 of P1) reads '79 M.CALLAHAN(1) | 29 P.WOTHERSPOON(6) | 88 D.PASTRNAK(58)'. Wotherspoon's season total of 6 in the official report matches the reproduction's statement that the change dropped him to six assists, and Geekie's 23 matches the report's '39 M.GEEKIE(23)'. Two independent official numbers therefore agree with the corrected state."
-            },
-            {
-              "role": "official_announcement",
-              "type": "official-statement",
-              "name": "NHL Public Relations (@NHLPR)",
-              "url": "https://x.com/NHLPR/status/1909831272047800540",
-              "retrievable_as_text": true,
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": null
-            },
-            {
-              "role": "cross_check",
-              "type": "official-api",
-              "name": "NHL GameCenter play-by-play",
-              "url": "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play",
-              "retrieved_at_utc": "2026-10-07T00:00:00Z",
-              "note": "Listed as the next cross-check to run. Not quoted in this pass: the retrieved chunk ended at 9:27 of P1, immediately before the goal in question."
-            }
-          ],
-          "evidence_status": "verified_corrected_state_and_official_announcement",
-          "settlement": {
-            "level": "attribution",
-            "could_affect_game_total_market": false,
-            "could_affect_team_markets": false,
-            "could_affect_player_props": true,
-            "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-            "requires_book_specific_review": true
-          },
-          "detection": {
-            "detected_by": "official_statement_ingest:2025-04-08-bos-at-njd-g1238.json",
-            "detected_at_utc": "2026-10-07T00:00:00Z",
-            "state_before_fingerprint": null,
-            "state_after_fingerprint": null,
-            "source_keys_compared": [
-              "Official Game Summary (HTML): GS021238.HTM"
-            ],
-            "confidence": "high",
-            "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
-          },
-          "flags": [
-            "initial_state_citation_in_reproduction_points_at_a_different_goal",
-            "initial_state_reported_by_secondary_source_only",
-            "official_play_by_play_event_not_quoted_this_pass"
-          ],
-          "notes": "The goal, the scorer and the number of goals are all unchanged: this is an assist re-attribution, so the game total (BOS 7 - NJD 2) is untouched and only player-prop markets can be affected. The corrected state is verified against the official report alone in this pass; the report is internally consistent with the reproduced statement on two independent season totals (Geekie 23, Wotherspoon 6). The pre-change assist rests on the reproduction, and the reproduction's own citation for it does not support it, which is recorded as an unresolved irregularity rather than resolved by inference.",
-          "completeness": {
-            "missing_requested_fields": [],
-            "fields_present": 22,
-            "fields_requested": 22,
-            "percent_complete": 100.0
-          },
-          "revision": 2,
-          "previous_revisions": [
-            {
-              "record_id": "NHL-20242025-021238-01",
-              "status": "verified_from_official_announcement",
-              "case_id": "CS-2025-04-08-BOS-AT-NJD-G1238",
-              "game": {
-                "game_id": 2024021238,
-                "season": "20242025",
-                "date": "2025-04-08",
-                "away": {
-                  "abbrev": "BOS",
-                  "score": 7
-                },
-                "home": {
-                  "abbrev": "NJD",
-                  "score": 2
-                },
-                "final_score": "7-2"
-              },
-              "event": {
-                "period": 1,
-                "period_type": "REG",
-                "clock": "9:38",
-                "strength": "EV",
-                "team": "BOS"
-              },
-              "initial_state": {
-                "ruling": "goal",
-                "team": "BOS",
-                "scorer": {
-                  "name": "David Pastrnak",
-                  "sweater": 88,
-                  "team": "BOS"
-                },
-                "assists": [
-                  {
-                    "name": "Parker Wotherspoon",
-                    "sweater": 29,
-                    "team": "BOS"
-                  }
-                ],
-                "evidence_status": "reported_by_secondary_source",
-                "evidence": "Syndicated reproduction: the goal was 'initially credited to Pastrnak with an assist from Parker Whotherspoon'. Not retained by any official artifact found. The live-post link the reproduction cites for the 'initial' state (nhl_goal_bot status 1909755726387437819) is about a DIFFERENT goal of the same game (Callahan, 19:24 of P1), so that citation does not document the pre-change assist."
-              },
-              "corrected_state": {
-                "ruling": "goal",
-                "team": "BOS",
-                "scorer": {
-                  "name": "David Pastrnak",
-                  "sweater": 88,
-                  "team": "BOS",
-                  "season_goal_total": 41
-                },
-                "assists": [
-                  {
-                    "name": "Morgan Geekie",
-                    "sweater": 39,
-                    "team": "BOS",
-                    "season_assist_total": 23
-                  }
-                ],
-                "evidence_status": "verified"
-              },
-              "change": {
-                "discrepancy_type": "assist_change",
-                "affects_goal_total": false,
-                "affects_team_assignment": false,
-                "attribution_only": true,
-                "counts": {
-                  "goals_removed": 0,
-                  "goals_added": 0,
-                  "scorer_changes": 0,
-                  "assist_changes": 1,
-                  "other_changes": 0,
-                  "team_reassignments": 0
-                },
-                "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie",
-                "declared_changes": [
-                  {
-                    "change_type": "assist_change",
-                    "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
-                  }
-                ],
-                "machine_diff": {
-                  "ruling": "same",
-                  "scorer": "same",
-                  "assists": "changed",
-                  "team": "same"
-                },
-                "all_changes": [
-                  {
-                    "change_type": "assist_change",
-                    "period": 1,
-                    "clock": "9:38",
-                    "team": "BOS",
-                    "before": {
-                      "scorer": {
-                        "name": "David Pastrnak",
-                        "sweater": 88,
-                        "team": "BOS"
-                      },
-                      "assists": [
-                        {
-                          "name": "Parker Wotherspoon",
-                          "sweater": 29,
-                          "team": "BOS"
-                        }
-                      ],
-                      "ruling": "goal"
-                    },
-                    "after": {
-                      "scorer": {
-                        "name": "David Pastrnak",
-                        "sweater": 88,
-                        "team": "BOS",
-                        "season_goal_total": 41
-                      },
-                      "assists": [
-                        {
-                          "name": "Morgan Geekie",
-                          "sweater": 39,
-                          "team": "BOS",
-                          "season_assist_total": 23
-                        }
-                      ],
-                      "ruling": "goal"
-                    },
-                    "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
-                  }
-                ]
-              },
-              "reason": {
-                "category": "official_source_statement",
-                "text": "OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats",
-                "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
-                "announcement_channel": "NHL Public Relations (@NHLPR)",
-                "announcement_issued_on": "2025-04-09"
-              },
-              "timing": {
-                "when": "postgame_after_publication",
-                "reasoning": "the league announced the change on 2025-04-09, after the game of 2025-04-08 had been published as final",
-                "announced_on": "2025-04-09",
-                "announced_at_utc": "2025-04-09T04:50:32Z",
-                "game_ended_at_utc": "2025-04-09T01:27:00Z",
-                "game_end_time_note": "Report states 'Start 7:08 EDT; End 9:27 EDT'. 21:27 EDT on 2025-04-08 = 01:27Z on 2025-04-09 (EDT = UTC-4).",
-                "latency_after_final_buzzer_seconds": 12212,
-                "state_captured_at_utc": "2026-10-07T00:00:00Z"
-              },
-              "sources": [
-                {
-                  "role": "corrected_state",
-                  "type": "official-document",
-                  "name": "Official Game Summary (HTML): GS021238.HTM",
-                  "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
-                  "http_status": 200,
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "document_generated_at": "2025-04-11 21.36.36",
-                  "quoted_row": "1 | 1 | 9:38 | EV | BOS | 88 D.PASTRNAK(41) | 39 M.GEEKIE(23) |"
-                },
-                {
-                  "role": "official_announcement_reproduction",
-                  "type": "secondary-reproduction-of-official-statement",
-                  "name": "Athlon Sports (syndicated via Yardbarker)",
-                  "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "By Antonio Losada, page last updated Apr 9, 2025 6:10 AM ET. Full page fetched. States: 'initially credited to Pastrnak with an assist from Parker Whotherspoon. After review, Morgan Geekie, not Whoterspoo, was awarded a helper.' (Player-name spellings as published.) Also states the change leaves Geekie on 23 assists and drops Wotherspoon to six."
-                },
-                {
-                  "role": "cross_check",
-                  "type": "official-document",
-                  "name": "Same Game Summary, goal 2 of the same game",
-                  "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "Internal consistency: goal 2 (19:24 of P1) reads '79 M.CALLAHAN(1) | 29 P.WOTHERSPOON(6) | 88 D.PASTRNAK(58)'. Wotherspoon's season total of 6 in the official report matches the reproduction's statement that the change dropped him to six assists, and Geekie's 23 matches the report's '39 M.GEEKIE(23)'. Two independent official numbers therefore agree with the corrected state."
-                },
-                {
-                  "role": "official_announcement",
-                  "type": "official-statement",
-                  "name": "NHL Public Relations (@NHLPR)",
-                  "url": "https://x.com/NHLPR/status/1909831272047800540",
-                  "retrievable_as_text": true,
-                  "retrieved_at_utc": null,
-                  "note": null
-                },
-                {
-                  "role": "cross_check",
-                  "type": "official-api",
-                  "name": "NHL GameCenter play-by-play",
-                  "url": "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play",
-                  "retrieved_at_utc": "2026-10-07T00:00:00Z",
-                  "note": "Listed as the next cross-check to run. Not quoted in this pass: the retrieved chunk ended at 9:27 of P1, immediately before the goal in question."
-                }
-              ],
-              "evidence_status": "verified_corrected_state_and_official_announcement",
-              "settlement": {
-                "level": "attribution",
-                "could_affect_game_total_market": false,
-                "could_affect_team_markets": false,
-                "could_affect_player_props": true,
-                "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
-                "requires_book_specific_review": true
-              },
-              "detection": {
-                "detected_by": "official_statement_ingest:2025-04-08-bos-at-njd-g1238.json",
-                "detected_at_utc": "2026-10-07T00:00:00Z",
-                "state_before_fingerprint": null,
-                "state_after_fingerprint": null,
-                "source_keys_compared": [
-                  "Official Game Summary (HTML): GS021238.HTM"
-                ],
-                "confidence": "high",
-                "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
-              },
-              "flags": [
-                "initial_state_citation_in_reproduction_points_at_a_different_goal",
-                "initial_state_reported_by_secondary_source_only",
-                "official_play_by_play_event_not_quoted_this_pass"
-              ],
-              "notes": "The goal, the scorer and the number of goals are all unchanged: this is an assist re-attribution, so the game total (BOS 7 - NJD 2) is untouched and only player-prop markets can be affected. The corrected state is verified against the official report alone in this pass; the report is internally consistent with the reproduced statement on two independent season totals (Geekie 23, Wotherspoon 6). The pre-change assist rests on the reproduction, and the reproduction's own citation for it does not support it, which is recorded as an unresolved irregularity rather than resolved by inference.",
-              "completeness": {
-                "missing_requested_fields": [],
-                "fields_present": 22,
-                "fields_requested": 22,
-                "percent_complete": 100.0
-              },
-              "revision": 1
-            }
-          ]
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
         },
-        "first_seen_at": "2026-10-07T00:00:00Z",
-        "seen_count": 2,
-        "detection_history": [
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "11:49",
+          "team": "TOR",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "11:49",
+          "team": "TOR",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 9,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
           {
-            "run_id": "ported-from:CS-2025-04-08-BOS-AT-NJD-G1238",
-            "detected_at": "2026-10-07T00:00:00Z",
-            "machine_status": "verified"
+            "label": "NHL Situation Room statement - Coach’s Challenge: NSH @ TOR – 11:49 of the Third Period",
+            "url": "https://www.nhl.com/news/nashville-predators-toronto-maple-leafs-coach-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:02:59Z",
+            "quote": "Call on the ice is overturned – No Goal Toronto"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:02:59Z",
+            "note": "contentDate 2026-10-07T01:41:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T17:26:21Z",
+            "sha256": "e031c35348f34f850798ee9a019032150802f06f73ec1b744df974c768d099c2",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
           }
         ],
-        "last_seen_at": "2026-10-07T00:00:00Z"
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play and look at period 3 around 11:49: there must be no goal for TOR at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-07T17:33:05Z"
+        },
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Toronto.",
+        "first_seen_at": "2026-10-07T17:33:05Z",
+        "seen_count": 1
       }
     }
   ]

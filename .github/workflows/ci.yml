@@ -17,23 +17,26 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Validate data files
         run: python3 -m pipeline.main validate
-      - name: Site asset sanity
+      - name: Site asset sanity (repo root is what GitHub Pages serves)
         run: |
           test -f index.html
-          test -f js/normalize.js
-          test -f js/app.js
-          test -f css/style.css
+          test -f app.js
+          test -f styles.css
+          test -f data.js
           test -f .nojekyll
           test -f data/discrepancies.json
           test -f data/records/discrepancies.json
           test -f data/alerts.json
-          node --check js/normalize.js
-          node --check js/app.js
+          node --check app.js
+          node --check pipeline/nhl_scoring/site_assets/app.js
+      - name: Site is in sync with the database
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out /tmp/site_check
+          for f in index.html app.js styles.css; do cmp "/tmp/site_check/$f" "$f"; done
       # The published site is the repository root (Pages: branch main, path /).
-      # `node --check` only proves the file parses, which is how a renderer that
-      # printed "? @ ?" for every record reached main. This runs the real client
-      # against the real committed data.
-      - name: Smoke-test the PUBLISHED site client against the committed data
-        run: node tools/check_root_site.mjs
+      # `node --check` only proves the file parses. This runs the real client
+      # against the real committed payload and asserts on what it renders.
+      - name: Smoke-test the published site client against the committed data
+        run: node tools/check_engine_site.mjs
       - name: The alert feed the site reads must not be empty while alerts exist
         run: PYTHONPATH=src:pipeline python3 -m unittest tests.test_alert_feed -v

@@ -163,3 +163,24 @@ that a failed query yields `documents_with_a_usable_capture == 0`.
 The command let a fetch failure propagate, so a single unreachable index query killed a
 long census run instead of reporting that document as unknown. It now records the error,
 states in the output that the document is UNKNOWN rather than unchanged, and continues.
+
+
+## Session 2026-10-07 (later) - Situation Room source, human reads
+
+Facts F30-F32 in `data/reference/verified_facts.json` record the evidence; this is the
+read log for the two curated on-ice calls in
+`data/curation/situation_room_human_reads.json`.
+
+| Statement (official) | What the statement says | On-ice call, and where it is stated | Play-by-play check |
+|---|---|---|---|
+| [Video Review: CGY @ VAN - 1:28 of the Third Period](https://www.nhl.com/news/calgary-flames-vancouver-canucks-video-review), published 2026-10-04T04:36Z | "Type of Review: Puck Over Goal Line. Result: Goal Vancouver. ... Video determined that the puck did cross the Calgary goal line." - the on-ice call is not stated | `no_goal` - [NHL.com game recap](https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026): "Ohgren's goal was initially waved off on the ice and Cooley was confident it didn't get past him, but a video review proved the puck crossed the goal line through the webbing of his glove." (league-published editorial; graded secondary) | `2026020033`: eventId 508 stoppage `video-review` at P3 01:28; eventId 822 goal P3 01:28 VAN Ohgren (Cotter, Willander) 1-1, goalie Cooley. GS020033.HTM line 2 agrees. |
+| [Video Review: EDM @ VAN - 4:43 of the Third Period](https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720), published 2026-10-02T04:34Z, **not** tagged with a game id | "The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review ... determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion." | `no_goal` - the statement's own first sentence (a glove-batted puck is no goal, Rule 78.5(i)); the parser infers the same at medium confidence; [Scouting The Refs](https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/) (secondary) reports the on-ice no-goal | `2026020015` (resolved from the 2026-10-01 scoreboard): eventId 43 stoppage `referee-or-linesman`/`video-review` at P3 04:43; eventId 899 goal P3 04:43 VAN Rossi (Bains, Schenn) 8-5, `shotType deflected`. GS020015.HTM line 13 agrees. |
+
+The two hand-typed seed records for these plays (`SDN-42c8407955`, `SDN-3916f9ce9a`:
+no game id, clock `01:30` instead of `01:28`, one dead third-party link) were retired in
+favour of the ingest's reproducible records.
+
+What was **not** verified: the Scouting The Refs page for Ohgren that the old record cited
+(`.../2026/10/04/canucks-flames-ohgren-controversy/`) could not be confirmed to exist and
+was dropped; the statement's claim that the review was league-initiated is taken from the
+statement itself and not independently checked.

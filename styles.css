@@ -91,3 +91,25 @@ table.md th,table.grid th{background:var(--chip);font-size:12px;text-transform:u
 @media (max-width:760px){.compare{grid-template-columns:1fr}.card>summary{grid-template-columns:1fr;gap:6px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{body{background:#fff;color:#000}.filters,nav#nav,.skip{display:none}.card{break-inside:avoid}.panel{border:0}}
+
+/* Situation Room additions */
+.badge.overturned{background:rgba(239,71,111,.16);color:var(--bad);border-color:rgba(239,71,111,.4)}
+.badge.upheld{color:#04121a;background:var(--good);border-color:transparent}
+.badge.on_ice_call_not_stated,.badge.unclassified{background:rgba(255,183,3,.16);color:var(--warn);border-color:rgba(255,183,3,.4)}
+.review{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:10px 0;background:var(--chip)}
+.review .row span:first-child{min-width:190px;color:var(--muted)}
+table.rul td{vertical-align:top;font-size:13px}
+table.rul td small{color:var(--muted)}
+
+/* alerts view */
+.alert { border: 1px solid var(--line); border-left-width: 5px; border-radius: 8px; padding: .6rem .9rem; margin: .7rem 0; background: var(--panel); color: var(--ink); }
+.alert.sev-high { border-left-color: #e5484d; }
+.alert.sev-medium { border-left-color: #e8a33d; }
+.alert.sev-low { border-left-color: #7c8ba1; }
+.alert h3 { margin: 0 0 .3rem; font-size: 1rem; }
+.alert .meta { margin: 0 0 .4rem; color: var(--muted); font-size: .9rem; }
+.alert pre.body { white-space: pre-wrap; font: inherit; font-size: .92rem; margin: 0 0 .4rem; color: var(--ink); }
+.alert ul.links { margin: 0; padding-left: 1.1rem; font-size: .88rem; word-break: break-all; }
+.badge.high { background: #e5484d; color: #fff; }
+.badge.medium { background: #e8a33d; color: #1a1a1a; }
+.badge.low { background: #7c8ba1; color: #fff; }

@@ -4,8 +4,9 @@
     python -m nhl_scoring.cli snap   --date 2026-10-07 --live
     python -m nhl_scoring.cli merge  --findings out/findings.json
     python -m nhl_scoring.cli alerts --write
-    python -m nhl_scoring.cli site   --out docs
+    python -m nhl_scoring.cli site            # writes index.html/app.js/styles.css/data.js at the repo root
     python -m nhl_scoring.cli probe   --out docs/source-probe.json
+    python -m nhl_scoring.cli situation-room --mode incremental --apply
 
 Nothing here writes to ``data/discrepancies.json`` unless you pass ``--apply``,
 so a scan is always reviewable before it becomes part of the database.
@@ -22,6 +23,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from . import __version__, alerts as alerts_mod, db as db_mod, site as site_mod
+from . import situation_room as sr_mod
 from .checks import check_record, compare_sources
 from .fetch import FetchResult, Fetcher, utcnow
 from .parsers import parse_api_landing, parse_api_right_rail, parse_gs_report
@@ -450,9 +452,16 @@ def validate_cmd(args: argparse.Namespace) -> int:
 def alerts_cmd(args: argparse.Namespace) -> int:
     payload = db_mod.load_db(args.db)
     triaged = alerts_mod.triage(payload.get("records", []))
-    if args.since:
+    since = args.since
+    if getattr(args, "recent_days", None):
+        # Backfills create hundreds of historical records in one run. Alerts are
+        # for what is new to a subscriber, so the digest is bounded by game date.
+        from datetime import datetime, timedelta, timezone
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=args.recent_days)).strftime("%Y-%m-%d")
+        since = max(since or "", cutoff)
+    if since:
         triaged = [t for t in triaged
-                   if ((t["record"].get("game") or {}).get("date") or "") >= args.since]
+                   if ((t["record"].get("game") or {}).get("date") or "") >= since]
     print(f"alerts: {len(triaged)} alert(s)")
     for item in triaged[: args.limit]:
         game = item["record"].get("game") or {}
@@ -506,7 +515,11 @@ def probe_cmd(args: argparse.Namespace) -> int:
         ("right_rail_reports", GameRef("2026020001").gamecenter_right_rail, 200),
         ("no_correction_feed_v1", "https://api-web.nhle.com/v1/corrections", 404),
         ("no_correction_feed_v2", "https://api-web.nhle.com/v1/gamecenter/2026020001/situations", 404),
-        ("no_situation_room_api", "https://api-web.nhle.com/v1/situation-room", 404),
+        # api-web has no Situation Room endpoint - but that is NOT "no feed": the
+        # official statements ARE published, as tagged stories on the league
+        # content API (verified 2026-10-07; see situation_room.py / docs/SITUATION_ROOM.md).
+        ("api_web_has_no_situation_room_endpoint", "https://api-web.nhle.com/v1/situation-room", 404),
+        ("situation_room_feed", "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=1", 200),
     ]
     results = []
     for name, url, expect in probes:
@@ -521,6 +534,47 @@ def probe_cmd(args: argparse.Namespace) -> int:
         json.dump({"probed_at": utcnow(), "tool_version": __version__, "probes": results},
                   fh, indent=2, ensure_ascii=False)
     print(f"probe: wrote {args.out}")
+    return 0
+
+
+def situation_room_cmd(args: argparse.Namespace) -> int:
+    """Ingest the official Situation Room feed into the ledger and the database."""
+    fetcher = Fetcher(cache_dir=args.cache, offline=args.offline, throttle_s=args.throttle)
+    result = sr_mod.ingest(
+        fetcher, ledger_path=args.ledger, mode=args.mode, max_pages=args.max_pages,
+        page_size=args.page_size, start_skip=args.start_skip, crosscheck=not args.no_crosscheck,
+        max_crosscheck=args.max_crosscheck, run_id=_run_id(), verbose=args.verbose,
+        resolve_ids=not args.no_resolve_ids,
+    )
+    stats, records = result["stats"], result["records"]
+    summary = result["summary"]
+    print(f"situation-room: {stats}")
+    print(f"situation-room: ledger {summary['rulings']} rulings "
+          f"{summary['earliest_statement']} -> {summary['latest_statement']}; outcomes {summary['by_outcome']}; "
+          f"cross-check {summary['overturned_crosscheck']}")
+    payload = {"generated_at": _now(), "tool_version": __version__, "run_id": _run_id(),
+               "source": "situation_room", "record_count": len(records), "records": records}
+    os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+    with open(args.out, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, indent=2, ensure_ascii=False)
+    print(f"situation-room: {len(records)} record(s) for overturned rulings -> {args.out}")
+    bad = {r["record_id"]: db_mod.validate(r) for r in records if db_mod.validate(r)}
+    if bad:
+        print(f"situation-room: {len(bad)} record(s) failed validation; not merged", file=sys.stderr)
+        for rid, problems in list(bad.items())[:10]:
+            print(f"  {rid}: {'; '.join(problems)}", file=sys.stderr)
+        return 1
+    if args.apply:
+        existing = db_mod.load_db(args.db) if os.path.exists(args.db) else {"records": []}
+        merged, mstats = db_mod.upsert(existing.get("records", []), records)
+        retired = sr_mod.retire_stale_records(merged, result.get("stale") or [])
+        mstats["retired_stale"] = retired
+        db_mod.save_db({"schema_version": existing.get("schema_version", "1.0"), "records": merged}, args.db)
+        csv_path = os.path.join(os.path.dirname(args.db) or ".", "discrepancies.csv")
+        count = db_mod.write_csv(merged, csv_path)
+        print(f"situation-room: merge {mstats} -> {args.db} ({len(merged)} records), {csv_path} ({count} rows)")
+    else:
+        print("situation-room: dry run - pass --apply to merge into the database")
     return 0
 
 
@@ -571,14 +625,16 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("alerts", help="render the alert set from the database")
     s.add_argument("--db", default=os.path.join(REPO_ROOT, "data", "discrepancies.json"))
     s.add_argument("--since", help="only alert on games on/after this date")
+    s.add_argument("--recent-days", type=int, default=0,
+                   help="only alert on games in the last N days (bounds backfill noise; 0 = no bound)")
     s.add_argument("--limit", type=int, default=25)
     s.add_argument("--write", action="store_true")
     s.add_argument("--out-dir", default=os.path.join(REPO_ROOT, "data", "alerts"))
     s.add_argument("--webhook", default=os.environ.get("SDN_WEBHOOK") or None)
     s.set_defaults(func=alerts_cmd)
 
-    s = sub.add_parser("site", help="build the GitHub Pages site from the database")
-    s.add_argument("--out", default=os.path.join(REPO_ROOT, "docs"))
+    s = sub.add_parser("site", help="build the GitHub Pages site from the database (repo root = what Pages serves)")
+    s.add_argument("--out", default=REPO_ROOT)
     s.add_argument("--db", default=os.path.join(REPO_ROOT, "data", "discrepancies.json"))
     s.add_argument("--coverage", default="out/findings.json")
     s.set_defaults(func=site_cmd)
@@ -586,6 +642,23 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("probe", help="re-verify documented source-availability claims")
     s.add_argument("--out", default=os.path.join(REPO_ROOT, "docs", "source-probe.json"))
     s.set_defaults(func=probe_cmd)
+
+    s = sub.add_parser("situation-room", help="ingest the official NHL Situation Room statement feed")
+    s.add_argument("--mode", choices=("incremental", "full", "reparse"), default="incremental",
+                   help="incremental stops at the first page with nothing new; full walks --max-pages from --start-skip; "
+                        "reparse re-runs the parser over the raw statements already in the ledger (no feed fetch)")
+    s.add_argument("--max-pages", type=int, default=2)
+    s.add_argument("--page-size", type=int, default=sr_mod.DEFAULT_PAGE_SIZE)
+    s.add_argument("--start-skip", type=int, default=0)
+    s.add_argument("--no-crosscheck", action="store_true", help="skip the play-by-play cross-check")
+    s.add_argument("--max-crosscheck", type=int, default=150, help="play-by-play fetches allowed this run")
+    s.add_argument("--no-resolve-ids", action="store_true", help="do not look up untagged statements on the scoreboard")
+    s.add_argument("--ledger", default=os.path.join(REPO_ROOT, "data", "situation_room", "rulings.json"))
+    s.add_argument("--db", default=os.path.join(REPO_ROOT, "data", "discrepancies.json"))
+    s.add_argument("--out", default="out/situation_room_findings.json")
+    s.add_argument("--apply", action="store_true", help="merge the records into the database")
+    s.add_argument("--verbose", action="store_true")
+    s.set_defaults(func=situation_room_cmd)
     return p
 
 

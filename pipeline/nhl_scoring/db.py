@@ -401,6 +401,15 @@ def save_db(payload: Dict[str, Any], path: str) -> None:
         fh.write("\n")
 
 
+def is_machine_verified(record: Dict[str, Any]) -> bool:
+    """True when ``verified`` was set by a machine cross-check (the Situation
+    Room ingest) rather than a person. Machine verdicts may be refreshed by the
+    machine; human verdicts stay sticky."""
+    ver = record.get("verification") or {}
+    by = str(ver.get("verified_by") or "")
+    return record.get("status") == "verified" and by.startswith("nhl_scoring.situation_room") and "human read" not in by
+
+
 def upsert(existing: List[Dict[str, Any]], incoming: List[Dict[str, Any]],
            *, protect_manual: bool = True) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """Merge new findings into the store, keeping human-set status sticky.
@@ -430,7 +439,7 @@ def upsert(existing: List[Dict[str, Any]], incoming: List[Dict[str, Any]],
         # Only statuses a person (or an agent doing a documented read) chose are
         # protected. "flagged"/"pending_review" are machine states, so protecting
         # them would freeze the queue and make every re-run look like an override.
-        human = protect_manual and cur.get("status") in HUMAN_STATUSES
+        human = protect_manual and cur.get("status") in HUMAN_STATUSES and not is_machine_verified(cur)
         if human:
             merged = dict(cur)
             stats["skipped_human"] += 1

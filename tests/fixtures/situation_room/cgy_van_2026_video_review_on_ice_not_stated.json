@@ -1,0 +1,54 @@
+{
+ "type": "story",
+ "selfUrl": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-video-review",
+ "slug": "calgary-flames-vancouver-canucks-video-review",
+ "title": "Calgary Flames Vancouver Canucks video review",
+ "tags": [
+  {
+   "slug": "2026-27",
+   "title": "2026-27"
+  },
+  {
+   "slug": "nhl",
+   "title": "NHL"
+  },
+  {
+   "slug": "nhl-created",
+   "title": "NHL Created"
+  },
+  {
+   "slug": "situation-room",
+   "title": "Situation Room"
+  },
+  {
+   "slug": "gameid-2026020033",
+   "title": "CGY@VAN 10/03/2026 10:00PM",
+   "externalSourceName": "game",
+   "extraData": {
+    "gameId": "2026020033"
+   }
+  }
+ ],
+ "fields": {},
+ "createdBy": "Brian Eller",
+ "lastUpdatedBy": "Brian Eller",
+ "lastUpdatedDate": "2026-10-04T04:36:03.187Z",
+ "contentDate": "2026-10-04T04:36:03.187Z",
+ "headline": "Video Review: CGY @ VAN – 1:28 of the Third Period",
+ "summary": "Type of Review: Puck Over Goal Line\nResult: Goal Vancouver\nExplanation: The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal",
+ "parts": [
+  {
+   "type": "photo",
+   "slug": "nhl-shield-298127792"
+  },
+  {
+   "type": "markdown",
+   "content": "**Type of Review:** Puck Over Goal Line\n\n**Result:** Goal Vancouver\n\n**Explanation:** The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that **the puck did cross the Calgary goal line**.",
+   "contextualFields": {}
+  },
+  {
+   "type": "customentity",
+   "slug": "2026-2027-nhl-interactive-rulebook-promo"
+  }
+ ]
+}

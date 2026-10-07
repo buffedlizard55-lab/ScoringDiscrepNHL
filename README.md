@@ -26,50 +26,44 @@ original and the corrected state preserved.
 > gaps are owned in the data (`status`, `flags`, `pending_review`) and in
 > [docs/STATUS.md](docs/STATUS.md), never smoothed over.
 
-> **Status, stated plainly (2026-10-07, re-verified this session).** The toolkit, the website and all
-> three detection paths are built and wired to a scheduler. `PYTHONPATH=src:pipeline python3 -m pytest tests -q`
-> reports **209 passed, 3 subtests passed**; `node tools/check_root_site.mjs` and `node tools/check_site.mjs`
-> both pass; `python3 -m nhl_scoring.cli validate` reports **11 records, 0 invalid** and the monitor-line
-> schema validator reports 3 records, 0 invalid.
+> **Status, stated plainly (2026-10-07, after the first full Situation Room backfill).** The league publishes
+> an official **Situation Room statement for every Coach's Challenge and video review** (NHL content API,
+> tag `situation-room`, February 2016 → today, minutes after the play). This repository now ingests that
+> feed end to end: **4,406 statements** are in the ledger
+> ([`data/situation_room/rulings.json`](data/situation_room/rulings.json)); **1,470 are rulings that changed
+> the on-ice call** (goal→no goal or no goal→goal), 1,921 upheld the call, 897 give the result but not the
+> on-ice call (kept, no change inferred), and 118 are not goal reviews at all (officiating-crew updates,
+> penalty-only challenges, non-reviewable plays). Every changed call with a resolvable game id was
+> cross-checked against the official play-by-play: **1,394 agree, 51 inconclusive, 12 conflict, 13 not
+> checked** - the conflicts and inconclusives are *flagged*, not hidden.
 >
-> The database holds **3 verified records** (all 2024-25, all attribution-only) plus **8 quarantined or
-> pending-review rows** — 5 third-party goal-clock leads, 2 secondary-source ruling-change leads and 1
-> single-artifact assist conflict. Every verified record was rebuilt from the league's own scoring-change
-> announcement *and* re-checked this session against the official report it names; the transcripts are
-> committed at [`data/evidence/reverify-2026-10-07/`](data/evidence/reverify-2026-10-07/). It is **not** a
-> census of NHL scoring changes: three records from one season is a proof of method, not coverage, and each
-> record states in its own flags which part of its evidence is missing. Two things still require a networked
-> machine: the mass backfill and the live monitor (the build sandbox has no direct route to NHL hosts —
-> re-measured this session, artifacts at
-> [`docs/evidence/sandbox_network_probe.json`](docs/evidence/sandbox_network_probe.json) and
-> [`data/reference/probe_report.json`](data/reference/probe_report.json)). Nothing is seeded from memory,
-> media reporting or assumptions, which is why every row below can be opened and re-checked.
+> The database ([`data/discrepancies.json`](data/discrepancies.json)) holds **1,469 records**: 1,448 live
+> Situation Room records (1,327 goal→no goal, 121 no goal→goal; **1,393 verified** by statement + play-by-play
+> agreement, 55 flagged for a human), 3 verified scorer/assist corrections from official scoring-change
+> announcements, 1 single-artifact assist conflict, 1 pending hand-typed record awaiting its documented
+> on-ice read, and **16 retired** rows (records a parser correction no longer supports - kept, marked, never
+> silently deleted). Five third-party goal-clock leads were moved out of the database to
+> [`data/leads/third_party_clock_claims.json`](data/leads/third_party_clock_claims.json) because no official
+> source states a correction. `PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate` → **1,469 records,
+> 0 invalid**; `python3 -m unittest discover -s tests -t .` → **259 tests OK**; `node tools/check_engine_site.mjs`
+> runs the published client against the committed payload and passes.
 >
-> **One stored claim failed re-verification this session and has been corrected.** Record
-> `NHL-20242025-021140-01` asserted that the official GameCenter payload carried two different clip titles
-> for the same goal. The payload fetched on the re-check reads "meier" in both languages. The corroboration
-> is withdrawn, fact F17 is amended rather than deleted, and the record carries
-> `initial_state_corroboration_withdrawn_on_reverification`. See
-> [`data/evidence/reverify-2026-10-07/README.md`](data/evidence/reverify-2026-10-07/README.md).
-
-> **The two parallel implementations are now joined at the presentation layer (2026-10-07).** Two
-> independently built lines were merged by PR #9 and both were kept: `pipeline/` (engine) writes
-> `data/discrepancies.json` (**11 records**) and `src/nhl_monitor/` (monitor line) writes
-> `data/records/discrepancies.json` (**3 verified records**). Neither database was deleted, so the
-> published site **merges them**: `js/normalize.js` maps both record shapes onto one view model and
-> de-duplicates the three corrections that exist in both stores, so the page shows **11 distinct
-> corrections** and names the store each card came from.
+> **What is live.** One site at the repository root (GitHub Pages: `main`, `/`): Database (filters for season,
+> date, team, period, type, goal-count vs attribution-only, video review, when corrected, market impact),
+> Situation Room log (all 4,406 statements, grouped review types, PBP cross-check column), Alerts
+> ([`data/alerts.json`](data/alerts.json) + [`data/alerts.xml`](data/alerts.xml), bounded to the last 14 days
+> of games so a backfill cannot flood subscribers), Market view, Coverage, Monitor, and every document in
+> `docs/`. [`situation-room.yml`](.github/workflows/situation-room.yml) polls the feed twice an hour on `main`
+> (cron on GitHub Actions is best-effort - measured, see fact F32) and commits ledger, database, alerts and site.
 >
-> The same joining was applied to alerting, because it was broken: GitHub Pages serves the repository
-> root, the root page reads `data/alerts.json`, and both detection routes wrote their alerts somewhere
-> else — so the live Alerts tab said *"No alerts yet"* while three alerts were committed. Both routes now
-> project into `data/alerts.json` + `data/alerts.xml` (de-duplicated by record id, `created_at` preserved
-> on re-emit), and [`tools/check_root_site.mjs`](tools/check_root_site.mjs) runs the published page against
-> the real committed data in CI so this class of break cannot ship again.
->
-> **Still owed: one database, not two.** The merge is at the view layer only. See
-> [`docs/parallel_line/PARALLEL_LINE.md`](docs/parallel_line/PARALLEL_LINE.md) for what differs, what each
-> line is good at, and the exact steps to keep either one.
+> **What this is not, yet.** Scorer/assist-only corrections still come only from the league's scoring-change
+> announcements (3 records); pre-2016 reviews have no statement feed (documented limit); 897 statements state
+> the result without the on-ice call and become records only through a *documented* human read
+> ([`data/curation/situation_room_human_reads.json`](data/curation/situation_room_human_reads.json)); the
+> ledger committed by the first run was parsed by version 0.4.0 - the 0.5.0 parser in this tree re-reads the
+> 2016-17 prose forms, files non-goal statements, captures raw statement text and retires records it no
+> longer supports, and is applied on the next full run. Open items are listed at the end of this file and in
+> [`docs/STATUS.md`](docs/STATUS.md).
 
 ---
 
@@ -112,7 +106,7 @@ artifact on **2026-10-07**. The full ledger, including the observations and the 
 | The Wayback CDX index exposes a content **digest per snapshot**. | One snapshot for `20232024/GS020001.HTM` (digest `TE24NPUUMSEV3LQEBNQE2TN3NO5GNATJ`), so "did this document ever change?" is answerable without downloading every version. |
 | Archive coverage is sparse and noisy. | 2006-era captures of 2005-06 reports are HTTP 302 redirects with the empty digest `3I42H3S6NNFQ2MSVX7XZKYAYSCX5QBYJ`; these are rejected as evidence. |
 | A **negative control** passed. | The archived copy of `20232024/GS020001.HTM` (2025-01-25) has the same eight-goal scoring summary and the same footer as the live document, so the method produced no false positive on that game — and it proves a regenerated footer is *not* by itself a change. |
-| No machine-readable Situation Room / video-review feed was located. | The observed event vocabulary (committed at `data/schema/observed_vocabulary.json`) contains no review event type, so the project does **not** claim to detect video review from the feed. |
+| ~~No machine-readable Situation Room / video-review feed was located.~~ **Corrected 2026-10-07:** the league publishes an official statement for every challenge and video review. | `forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room` - ~4,400 statements, 2016-02 to today, with `gameid-` tags; the play-by-play marks reviews as `chlg-*` / `video-review` stoppages. Ingested by `pipeline/nhl_scoring/situation_room.py`; evidence in `docs/SITUATION_ROOM.md` and facts F30-F32. The earlier claim was measured on a single game that had no review. |
 
 ## The first three records
 
@@ -276,8 +270,10 @@ disagreement between two official renderings of the same game.
 
 **Cannot be detected automatically** (and the project does not pretend otherwise):
 
-* **The reason** — no machine-readable Situation Room / review feed was located, so "video review" is only
-  recorded when an official artifact says so in words. Everything else keeps `reason.text = null` plus a flag.
+* **The reason for a scorer / assist change** — there is no official feed for those, so it is only recorded
+  when an official artifact says so in words; everything else keeps `reason.text = null` plus a flag. (The
+  reason for a *review* decision **is** available: the Situation Room statement feed, see
+  `docs/SITUATION_ROOM.md`.)
 * **A change that happened and was superseded between two of our polls**, when no archive snapshot exists
   from before the change. The archive method cannot see it either if every snapshot postdates the correction.
 * **Whether a bookmaker regraded anything** — house rules are private.
@@ -441,10 +437,10 @@ it is, taken without deleting either line's work:
 
 | Question | Decision |
 | --- | --- |
-| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema, now **11 records**: the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
-| What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it, and it stays the root site's data source. It is now provenance for the port, not a competing database. |
-| Which site is the site of record? | **`docs/`** (built by `python3 -m nhl_scoring.cli site --out docs`) - it renders all 11 records with the filters and both lines' documentation as tabs. The root site keeps working and is not modified. |
-| Which scheduler runs? | The monitor line's `monitor.yml` / `backfill.yml` keep the only crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
+| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema (1,469 records after the Situation Room backfill; it started as 11): the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
+| What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it. It is provenance for the port, not a competing database, and no published page reads it any more. |
+| Which site is the site of record? | **The repository root** (`index.html`, `app.js`, `styles.css`, `data.js`), built by `PYTHONPATH=pipeline python3 -m nhl_scoring.cli site`. GitHub Pages serves `main` at `/`. The former `docs/` build and the legacy root client were removed (2026-10-07); `docs/` holds documentation only. |
+| Which scheduler runs? | `situation-room.yml` (feed poll, twice hourly) plus the monitor line's `monitor.yml` / `backfill.yml` crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
 | Which docs win where they collided? | `docs/DATA_MODEL.md`, `docs/METHODOLOGY.md`, `docs/SOURCES.md` stayed the monitor line's, verbatim. This line's are at `docs/engine/*.md` and published as "engine" tabs. Nothing was overwritten. |
 | Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> **182 tests, 0 failures**. |
 

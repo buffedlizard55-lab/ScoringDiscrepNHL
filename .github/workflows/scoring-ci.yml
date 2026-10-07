@@ -32,11 +32,13 @@ jobs:
         run: python3 -m pipeline.main validate
       - name: Source claims table (network not required)
         run: python3 scripts/verify_sources.py --offline
-      - name: Site is in sync with the database
+      - name: Site is in sync with the database (repository root is what GitHub Pages serves)
         run: |
-          PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
-          git diff --exit-code docs/ || {
-            echo "::error::docs/ is stale - run: python3 -m nhl_scoring.cli site --out docs and commit"; exit 1; }
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out /tmp/site_check
+          for f in index.html app.js styles.css; do
+            cmp "/tmp/site_check/$f" "$f" || {
+              echo "::error::$f is stale - run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site and commit"; exit 1; }
+          done
       - name: CSV export is in sync with the database
         run: |
           python3 - <<'PY'

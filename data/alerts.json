@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-07T17:33:36Z",
+  "generated_at": "2026-10-07T20:38:56Z",
   "alerts": [
     {
       "id": "ALERT-NHL-20242025-021140-01",
@@ -90,6 +90,7 @@
         "https://www.nhl.com/news/frozen-frenzy-nhl-situation-room-live-blog-october-22-2024"
       ],
       "created_at": "2026-10-07T05:00:00Z",
+      "detected_at": "2026-10-07T05:00:00Z",
       "affects_goal_total": false,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-07T05:00:00Z"
@@ -110,6 +111,44 @@
       "affects_goal_total": false,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-07T04:36:00Z"
+    },
+    {
+      "id": "SDN-261948dfcd",
+      "record_id": "SDN-261948dfcd",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-06 NSH @ TOR - Coach's Challenge (Off-Side): on-ice goal overturned, no goal TOR at 11:49 of period 3",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal TOR at 11:49 of period 3\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.\nRecord SDN-261948dfcd - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Toronto’s William Nylander preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:14 (11:46 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/nashville-predators-toronto-maple-leafs-coach-challenge",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge",
+        "https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM"
+      ],
+      "created_at": "2026-10-07T01:41:00Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-07T01:41:00Z"
+    },
+    {
+      "id": "SDN-21ad557cd4",
+      "record_id": "SDN-21ad557cd4",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-06 STL @ CHI - Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:05 of period 2",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:05 of period 2\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Jonatan Berggren preceded the puck into the offensive zone and was in an off-side position prior to Connor McMichael’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 18:59 (1:01 elapsed time), when the off-side infraction occurred.\nRecord SDN-21ad557cd4 - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Jonatan Berggren preceded the puck into the offensive zone and was in an off-side position prior to Connor McMichael’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 18:59 (1:01 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/st-louis-blues-chicago-blackhawks-coach-challenge",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-chicago-blackhawks-coach-challenge",
+        "https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM"
+      ],
+      "created_at": "2026-10-07T01:38:00Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-07T01:38:00Z"
     },
     {
       "id": "SDN-e84fc1c8ec",
@@ -167,6 +206,120 @@
       "affects_goal_total": false,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-07T00:00:00Z"
+    },
+    {
+      "id": "SDN-26e9b24b21",
+      "record_id": "SDN-26e9b24b21",
+      "type": "no_goal_overturned_to_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-05 WPG @ PIT - Video review (High-Sticking the Puck): on-ice no-goal overturned, goal awarded to PIT at 09:27 of period 2",
+      "body": "Video review (High-Sticking the Puck): on-ice no-goal overturned, goal awarded to PIT at 09:27 of period 2\nVideo review determined that Ben Kindel's stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”\nRecord SDN-26e9b24b21 - status verified - confidence high\nChange type: no_goal_overturned_to_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nFlags: game_id_resolved_from_schedule\nOfficial reason: Video review determined that Ben Kindel's stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”",
+      "links": [
+        "https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review",
+        "https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM"
+      ],
+      "created_at": "2026-10-06T01:15:00Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-06T01:15:00Z"
+    },
+    {
+      "id": "SDN-73e0895bf7",
+      "record_id": "SDN-73e0895bf7",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-03 MTL @ PIT - Coach's Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined  Erik Karlsson preceded the puck into the offensive zone and did not have possession and control of the puck as he entered the attacking zone prior to Egor Chinakhov's goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 15:06 (4:54 elapsed time), when the off-side infraction occurred.\nRecord SDN-73e0895bf7 - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined  Erik Karlsson preceded the puck into the offensive zone and did not have possession and control of the puck as he entered the attacking zone prior to Egor Chinakhov's goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 15:06 (4:54 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847",
+        "https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM"
+      ],
+      "created_at": "2026-10-04T01:39:13.984Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-04T01:39:13.984Z"
+    },
+    {
+      "id": "SDN-5c05cee8b5",
+      "record_id": "SDN-5c05cee8b5",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-02 STL @ DAL - Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:06 of period 3",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal STL at 01:06 of period 3\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Pavel Buchnevich preceded the puck into the offensive zone and was in an off-side position prior to Adam Jiricek’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 19:02 (0:58 elapsed time), when the off-side infraction occurred.\nRecord SDN-5c05cee8b5 - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that St. Louis’ Pavel Buchnevich preceded the puck into the offensive zone and was in an off-side position prior to Adam Jiricek’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 19:02 (0:58 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/st-louis-blues-dallas-stars-coach-challenge",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-dallas-stars-coach-challenge",
+        "https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM"
+      ],
+      "created_at": "2026-10-03T03:29:04.463Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-03T03:29:04.463Z"
+    },
+    {
+      "id": "SDN-5619ac48fc",
+      "record_id": "SDN-5619ac48fc",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-02 NYR @ DET - Coach's Challenge (Off-Side): on-ice goal overturned, no goal NYR at 07:08 of period 1",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal NYR at 07:08 of period 1\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states\\, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\\\n\nVideo review determined that Detroit’s Eeli Tolvanen preceded the puck into the offensive zone and was in an off-side position prior to Oliver Bjorkstrand’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”  \nThe clock is reset to show 12:57 (7:03 elapsed time), when the off-side infraction occurred.\nRecord SDN-5619ac48fc - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nFlags: game_id_resolved_from_schedule\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states\\, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\\\n\nVideo review determined that Detroit’s Eeli Tolvanen preceded the puck into the offensive zone and was in an off-side position prior to Oliver Bjorkstrand’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”  \nThe clock is reset to show 12:57 (7:03 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/new-york-rangers-detroit-red-wings-coach-challenge",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-rangers-detroit-red-wings-coach-challenge",
+        "https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM"
+      ],
+      "created_at": "2026-10-02T23:12:25.85Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-02T23:12:25.85Z"
+    },
+    {
+      "id": "SDN-752f5a246e",
+      "record_id": "SDN-752f5a246e",
+      "type": "no_goal_overturned_to_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-01 EDM @ VAN - Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3",
+      "body": "Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3\nThe Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.\nRecord SDN-752f5a246e - status flagged - confidence medium\nChange type: no_goal_overturned_to_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nFlags: game_id_resolved_from_schedule, needs_human_read_of_on_ice_call, on_ice_call_inferred_from_wording\nOfficial reason: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.",
+      "links": [
+        "https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720",
+        "https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM"
+      ],
+      "created_at": "2026-10-02T04:34:00Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-02T04:34:00Z"
+    },
+    {
+      "id": "SDN-61ee9676e1",
+      "record_id": "SDN-61ee9676e1",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-01 MIN @ NSH - Coach's Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1",
+      "body": "Coach's Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined Minnesota’s Ryan Hartman’s presence in the crease impaired Juuse Saros’ ability to play his position prior to Yakov Trenin’s goal. The decision was made in accordance with Rule 69.1 which states, in part, “Goals should be disallowed only if: (1) an attacking player, either by his positioning or by contact, impairs the goalkeeper’s ability to move freely within his crease or defend his goal.”\nRecord SDN-61ee9676e1 - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined Minnesota’s Ryan Hartman’s presence in the crease impaired Juuse Saros’ ability to play his position prior to Yakov Trenin’s goal. The decision was made in accordance with Rule 69.1 which states, in part, “Goals should be disallowed only if: (1) an attacking player, either by his positioning or by contact, impairs the goalkeeper’s ability to move freely within his crease or defend his goal.”",
+      "links": [
+        "https://www.nhl.com/news/minnesota-wild-nashville-predators-coach-challenge",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-nashville-predators-coach-challenge",
+        "https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM"
+      ],
+      "created_at": "2026-10-02T01:15:00Z",
+      "detected_at": "2026-10-07T17:33:05Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-02T01:15:00Z"
     }
   ]
 }

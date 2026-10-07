@@ -59,8 +59,10 @@ check by hand"). Effort is a rough estimate for one focused session.
 
 1. **No networked machine has run the collector yet.** The build sandbox is network-isolated from NHL hosts
    (evidence committed). Until items 1-2 run, the database has no rows — by design, not by oversight.
-2. **No machine-readable Situation Room feed exists**, so "reason" can never be fully automated. This is a
-   permanent limitation of the sources, not a bug to fix.
+2. ~~**No machine-readable Situation Room feed exists**, so "reason" can never be fully automated.~~
+   **Corrected 2026-10-07:** it exists (content API, tag `situation-room`, every challenge and video review
+   since 2016-02) and is ingested; see `docs/SITUATION_ROOM.md`. What stays permanent: no official feed
+   states the reason for a **scorer / assist** change.
 3. **The modern era's original bytes are gone** once a document is regenerated, so the archive census will
    always under-count changes that were made before the first snapshot.
 

@@ -47,13 +47,13 @@ jobs:
       - name: Validate and project to CSV
         run: |
           PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
-      - name: Rebuild site
-        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
+      - name: Rebuild site (repository root is what GitHub Pages serves)
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
       - name: Commit progress
         run: |
           git config user.name  "scoring-discrepancy-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data docs || true
+          git add data index.html app.js styles.css data.js .nojekyll || true
           if ! git diff --cached --quiet; then
             git commit -m "backfill: $(date -u +%FT%TZ) scan pass"
             git push origin HEAD:main
