@@ -126,15 +126,51 @@ def _title(record: dict) -> str:
 
 
 def write_alerts(alerts: List[dict], *, root: str = ALERTS_DIR) -> List[str]:
+    """Write one file per alert, preserving the first time the alert was raised.
+
+    Re-detecting the same change (a backfill re-run, a re-ingest) must not make the
+    alert look new: ``created_at_utc`` is kept from the existing file and the re-emit
+    is recorded separately, so the feed cannot be used to fake recency.
+    """
     os.makedirs(root, exist_ok=True)
     paths = []
     for a in alerts:
         path = os.path.join(root, f"{a['alert_id']}.json")
+        if os.path.exists(path):
+            try:
+                with open(path, encoding="utf-8") as fh:
+                    existing = json.load(fh)
+                if existing.get("created_at_utc"):
+                    a.setdefault("first_seen_at_utc", existing["created_at_utc"])
+                    a["created_at_utc"] = existing["created_at_utc"]
+                a["last_emitted_at_utc"] = store.utcnow()
+            except Exception:
+                pass
         with open(path, "w") as fh:
             json.dump(a, fh, indent=2, ensure_ascii=False)
             fh.write("\n")
         paths.append(path)
     return paths
+
+
+def emit_for_records(records, *, root: str = ALERTS_DIR, github_issue: bool = False,
+                     repo: Optional[str] = None, dry_run: bool = False) -> dict:
+    """One alert per record, index refreshed - the single alerting entry point.
+
+    Every detection route (live monitor, the league's own announcements, and both
+    backfill methods) calls this, so a discrepancy cannot reach the database without
+    reaching the feed. See docs/DETECTION.md.
+    """
+    emitted = [build_alert(r) for r in records]
+    out = {"alerts": emitted, "paths": [], "issues": [], "index": None}
+    if not emitted or dry_run:
+        return out
+    out["paths"] = write_alerts(emitted, root=root)
+    out["index"] = write_alert_index(root=root)
+    if github_issue:
+        for a in emitted:
+            out["issues"].append(open_github_issue(a["title"], a["body_markdown"], repo=repo))
+    return out
 
 
 def write_alert_index(*, root: str = ALERTS_DIR) -> List[str]:

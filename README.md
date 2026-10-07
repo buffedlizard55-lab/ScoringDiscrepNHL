@@ -141,8 +141,8 @@ Two census methods recover history:
    night (verified for 2005-06 and 2016-17), the live document holds the *original* ruling and the API holds
    the *current* record. `nhl_monitor backfill-era` walks a game-number range and records every difference.
 2. **Archived snapshots of the same document** — the only method that works for the modern era, where the
-   document is regenerated in place. `nhl_monitor backfill-archive` reports how many distinct content
-   versions exist and their digests.
+   document is regenerated in place. `nhl_monitor backfill-archive` compares the two captures that
+   bracket a proven change, so both states come from the league's own documents.
 
 ## Quickstart
 
@@ -159,11 +159,13 @@ python -m nhl_monitor monitor --date 2026-10-07   # capture the slate, detect + 
 python -m nhl_monitor collect --game-id 2023020001 --dry-run
 python -m nhl_monitor backfill-era    --season 20052006 --start 1 --end 1065
 python -m nhl_monitor backfill-archive --game-id 2023020001 --kind GS
+python -m nhl_monitor archive-scan    --season 20242025 --start 1 --end 60 --out /tmp/scan.json
+python -m nhl_monitor archive-yield   --from-season 2005 --to-season 2026
 python -m nhl_monitor verify --record-id NHL-20232024-020001-01
 python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
 python -m nhl_monitor sources                     # the source registry with verification status
 
-python -m unittest discover -s tests -v           # 43 tests
+python -m unittest discover -s tests -v           # 121 tests
 python tools/build_site.py && python -m http.server 8080 --directory _site   # local site
 ```
 
@@ -180,6 +182,7 @@ PYTHONPATH=src python -m nhl_monitor ingest
 
 # 2. history: a frozen report (the original record) vs the current official database
 PYTHONPATH=src python -m nhl_monitor backfill-era --season 20052006 --start 1 --end 1065
+PYTHONPATH=src python -m nhl_monitor archive-yield --from-season 2005 --to-season 2026  # measured archive ceiling
 
 # 3. live: poll, diff, alert
 PYTHONPATH=src python -m nhl_monitor monitor --date 2026-10-07 --github-issue
@@ -197,7 +200,7 @@ official URL. The shipped case files are the template.
 |---|---|---|
 | [`tests.yml`](.github/workflows/tests.yml) | every push | 73 unit tests, a browser-less site smoke test, JS syntax check, site build, JSON record-schema validation, source reachability probe (which also measures per-season coverage on the runner) |
 | [`monitor.yml`](.github/workflows/monitor.yml) | every 5 minutes | captures the slate, diffs against the stored state, commits the evidence timeline, opens a GitHub issue for every detected discrepancy |
-| [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method, or measures per-season coverage, and commits the results |
+| [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method, scans the archive for provable changes, measures the archive's coverage ceiling, and commits the results |
 | [`pages.yml`](.github/workflows/pages.yml) | on push to `main` | builds and deploys the site |
 
 GitHub Actions is the right home for this because a runner has unrestricted outbound network access, a
@@ -273,7 +276,7 @@ data/                records/discrepancies.json  inbox/statements/ (one case fil
                      schema/observed_vocabulary.json  games/ evidence/ alerts/ exports/
 tests/               73 unittest cases + provenance-documented fixtures from real official documents
 tools/build_site.py  assembles _site/ (static files + committed JSON)
-docs/                LIMITATIONS.md DATA_MODEL.md SOURCES.md OPERATIONS.md ROADMAP.md
+docs/                LIMITATIONS.md BACKFILL.md DATA_MODEL.md SOURCES.md OPERATIONS.md ROADMAP.md
                      VERIFICATION_LOG.md  evidence/
 .github/workflows/   tests.yml monitor.yml backfill.yml pages.yml
 ```

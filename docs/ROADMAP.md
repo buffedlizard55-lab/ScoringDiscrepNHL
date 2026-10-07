@@ -33,7 +33,7 @@ check by hand"). Effort is a rough estimate for one focused session.
 
 | # | Task | Why | Notes |
 |---|---|---|---|
-| 10 | Archive census over a season's worth of reports | the only method for the modern era; today it is implemented but unexercised at scale | `backfill-archive` per game, one CDX query each, politely throttled |
+| 10 | Archive census over a season's worth of reports | the method is now complete end to end (`archive-scan` compares the captures it proves; `archive-yield` measures the ceiling) and the remaining work is scale: one CDX query per document, ~1,300 documents per season | run `backfill.yml` with `method=change-scan` season by season; `method=archive-yield` says how much of each season is reachable at all |
 | 11 | Snapshot-bracket heuristics | a snapshot taken after a correction is useless; prefer snapshots close to the game | use CDX `from`/`to` windows around the game date and prefer the earliest usable snapshot |
 | 12 | Post-final change watch | the highest-value alert class is a change *after* the record was final (settlement exposure) | the monitor already classifies this; add a dedicated, higher-severity notification path and a "changed after final" filter on the site |
 
