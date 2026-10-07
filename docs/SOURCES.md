@@ -17,6 +17,9 @@ game number (e.g. `020001`).
 | 6 | Official Play-by-Play (PDF) | `https://www.nhl.com/scores/htmlreports/{season}/PL{report}.PDF` | Official chronological event list | Reserved for content-diff phase |
 | 7 | Situation Room topic page | `https://www.nhl.com/news/topic/situation-room` | Official posts explaining review outcomes | Link captured per relevant game |
 | 8 | NHL Records | `https://records.nhl.com/` | Historical official records | Manual/historical verification only |
+| 9 | nhle web API — scoreboard | `https://api-web.nhle.com/scoreboard/{date}` (or `/scoreboard/now`) | Current NHL.com scores/schedule | Second official endpoint family; probed for corroboration |
+| 10 | nhle web API — play-by-play | `https://api-web.nhle.com/gamecenter/{gameId}/play-by-play` | Event stream incl. goals (player ids, scores) | Corroboration / planned second snapshot source |
+| 11 | nhle web API — boxscore | `https://api-web.nhle.com/gamecenter/{gameId}/boxscore` | Final boxscore + linescore | Corroboration |
 
 > Report number mapping (expected, verified at runtime by the probe): for gamePk
 > `YYYYTTNNNN` the report file number is `TTNNNN` (e.g. gamePk `2026020001` →

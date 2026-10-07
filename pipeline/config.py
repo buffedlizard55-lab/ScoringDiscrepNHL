@@ -61,3 +61,9 @@ TEAMS_URL = STATSAPI_BASE + "/api/v1/teams"
 REPORT_URL = "https://www.nhl.com/scores/htmlreports/{season}/{rtype}{report}.PDF"
 SITUATION_ROOM_URL = "https://www.nhl.com/news/topic/situation-room"
 RECORDS_SITE_URL = "https://records.nhl.com/"
+# Second official endpoint family (api-web.nhle.com — powers the current NHL.com).
+# Probed for coverage and usable as a corroboration/second-snapshot source.
+NHLE_BASE = "https://api-web.nhle.com"
+NHLE_SCOREBOARD_NOW_URL = NHLE_BASE + "/scoreboard/now"
+NHLE_GAME_PBP_URL = NHLE_BASE + "/gamecenter/{game_id}/play-by-play"
+NHLE_GAME_BOXSCORE_URL = NHLE_BASE + "/gamecenter/{game_id}/boxscore"

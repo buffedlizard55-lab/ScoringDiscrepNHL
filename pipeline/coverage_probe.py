@@ -36,6 +36,10 @@ REPORT_SEASONS = ["20252026", "20212022", "20192020", "20152016", "20102011",
 OTHER_PROBES = [
     {"label": "NHL Records site (records.nhl.com)", "url": config.RECORDS_SITE_URL},
     {"label": "Situation Room topic page", "url": config.SITUATION_ROOM_URL},
+    # Second official API family (used by the current NHL.com web client).
+    # Probed for corroboration and as a future second snapshot source.
+    {"label": "nhle web API — today's scoreboard",
+     "url": config.NHLE_SCOREBOARD_NOW_URL},
 ]
 
 

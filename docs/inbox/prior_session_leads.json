@@ -1,0 +1,209 @@
+{
+  "status": "QUARANTINED LEADS - NOT PART OF THE VERIFIED DATABASE",
+  "quarantined_at": "2026-10-07",
+  "reason": "These 5 records were hand-entered in a prior session. They cannot be line-by-line verified against official NHL sources from the current working environment (NHL endpoints unreachable here), some rely on secondary sources only, and at least one citation carries a date inconsistency. Per the project charter (no hallucinations; no manual input into the database), they are quarantined here as RESEARCH LEADS. Each must be independently verified against the cited official source before it may be re-entered into data/discrepancies.json via the standard schema, or deleted if it cannot be verified.",
+  "verification_required_per_record": true,
+  "original_file": "docs/data/discrepancies.json on main (commit ff5be40)",
+  "records": [
+    {
+      "id": "NHL-SD-0001",
+      "season": "2024-25",
+      "game_date": "2025-03-08",
+      "date_confidence": "verified",
+      "game_id_nhl": null,
+      "game_number": null,
+      "away_team": "NYR",
+      "home_team": "OTT",
+      "period": 1,
+      "clock": "8:37",
+      "discrepancy_type": "goal-added",
+      "initial_ruling": "No goal (original call on the ice).",
+      "initial_ruling_confidence": "verified",
+      "corrected_ruling": "Goal New York — Carson Soucy's shot deemed to have crossed the Ottawa goal line as the culmination of a continuous play.",
+      "reason": "Puck-over-goal-line video review. Situation Room determined the puck crossed the line; Rule 37.3(i) continuous-play provision cited.",
+      "correction_timing": "in-game",
+      "video_review": true,
+      "review_type": "situation-room",
+      "changed_game_total": true,
+      "changed_attribution_only": false,
+      "potential_total_market_impact": true,
+      "total_market_note": "A goal was added after the on-ice ruling of no goal. Any market settled on the live score before the review completed would have shown one fewer goal.",
+      "sources": [
+        {
+          "label": "NHL.com — Video Review: NYR @ OTT, 8:37 of the First Period (Mar 8, 2025)",
+          "url": "https://www.nhl.com/news/new-york-rangers-ottawa-senators-video-review",
+          "type": "official-nhl",
+          "accessed": "2026-10-07"
+        }
+      ],
+      "verification_status": "official-direct",
+      "flags": [
+        "nhl-game-id-not-yet-verified: 10-digit game ID should be added from the NHL API schedule for 2025-03-08",
+        "final-score-effect-not-verified: goal added, but final score line not yet cross-checked against the official game summary"
+      ],
+      "added_date": "2026-10-07",
+      "last_verified": "2026-10-07"
+    },
+    {
+      "id": "NHL-SD-0002",
+      "season": "2024-25",
+      "game_date": "2025-04-05",
+      "date_confidence": "inferred",
+      "game_id_nhl": null,
+      "game_number": 1214,
+      "away_team": "CAR",
+      "home_team": "BOS",
+      "period": 3,
+      "clock": "1:28",
+      "discrepancy_type": "assist-change",
+      "initial_ruling": "Goal: David Pastrnak from Morgan Geekie (as announced in live play, per secondary report).",
+      "initial_ruling_confidence": "reported",
+      "corrected_ruling": "Goal at 1:28 of the third period now reads David Pastrnak from Morgan Geekie and Elias Lindholm.",
+      "reason": "Official postgame scoring review credited a second assist (Lindholm) that was not awarded live.",
+      "correction_timing": "postgame",
+      "video_review": false,
+      "review_type": null,
+      "changed_game_total": false,
+      "changed_attribution_only": true,
+      "potential_total_market_impact": false,
+      "total_market_note": "Attribution-only change. Goal total unchanged, so game-total markets are unaffected (player-point markets could be affected).",
+      "sources": [
+        {
+          "label": "Yardbarker report quoting @NHLPR: 'NHL Issues Scoring Change After Bruins-Hurricanes Game' (Apr 6, 2025)",
+          "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_hurricanes_game/s1_17615_42011070",
+          "type": "secondary",
+          "accessed": "2026-10-07"
+        }
+      ],
+      "verification_status": "official-quoted",
+      "flags": [
+        "direct-NHLPR-post-URL-needed: secondary article quotes the Apr 6, 2025 @NHLPR post verbatim but the direct post URL has not been captured yet",
+        "game-date-inferred: Apr 5, 2025 inferred from 'Saturday night' game + Apr 6 post; confirm against RTSS game summary",
+        "initial-ruling-reported-not-verified: live 'Geekie only' assist line comes from the secondary report; confirm against the RTSS Event Summary / play-by-play snapshot"
+      ],
+      "added_date": "2026-10-07",
+      "last_verified": "2026-10-07"
+    },
+    {
+      "id": "NHL-SD-0003",
+      "season": "2025-26",
+      "game_date": null,
+      "date_confidence": "unknown",
+      "game_id_nhl": null,
+      "game_number": 1265,
+      "away_team": "NJD",
+      "home_team": "DET",
+      "period": 1,
+      "clock": "10:40",
+      "discrepancy_type": "assist-change",
+      "initial_ruling": null,
+      "initial_ruling_confidence": "unknown",
+      "corrected_ruling": "Goal at 10:40 of the first period now reads Jack Hughes from Jesper Bratt and Dougie Hamilton.",
+      "reason": "Official scoring change announced by NHL Public Relations. Basis for the change not stated in the post.",
+      "correction_timing": "unknown",
+      "video_review": false,
+      "review_type": null,
+      "changed_game_total": false,
+      "changed_attribution_only": true,
+      "potential_total_market_impact": false,
+      "total_market_note": "Attribution-only change. Goal total unchanged.",
+      "sources": [
+        {
+          "label": "@NHLPR on X: OFFICIAL SCORING CHANGE, Game 1265 NJD at DET (post dated 2026-04-13 per index)",
+          "url": "https://x.com/NHLPR/status/2043750852360302805",
+          "type": "official-pr-social",
+          "accessed": "2026-10-07"
+        }
+      ],
+      "verification_status": "official-direct-partial",
+      "flags": [
+        "initial-ruling-unknown: the post states the corrected reading only; original assist line must be recovered from RTSS reports or an API snapshot",
+        "game-date-unknown: post is dated 2026-04-13 per search index; actual game date must be verified against the schedule/RTSS before use",
+        "correction-timing-unknown: do not assume postgame until the game date is confirmed"
+      ],
+      "added_date": "2026-10-07",
+      "last_verified": "2026-10-07"
+    },
+    {
+      "id": "NHL-SD-0004",
+      "season": "2025-26",
+      "game_date": "2025-10-25",
+      "date_confidence": "inferred",
+      "game_id_nhl": null,
+      "game_number": 127,
+      "away_team": "NYI",
+      "home_team": "PHI",
+      "period": 3,
+      "clock": "7:32",
+      "discrepancy_type": "assist-change",
+      "initial_ruling": null,
+      "initial_ruling_confidence": "unknown",
+      "corrected_ruling": "Goal at 7:32 of the third period now reads Trevor Zegras from Bobby Brink and Cam York.",
+      "reason": "Official postgame scoring review; assists credited to Brink and York on Zegras' power-play goal.",
+      "correction_timing": "postgame",
+      "video_review": false,
+      "review_type": null,
+      "changed_game_total": false,
+      "changed_attribution_only": true,
+      "potential_total_market_impact": false,
+      "total_market_note": "Attribution-only change on a regulation goal. Goal total unchanged.",
+      "sources": [
+        {
+          "label": "Yardbarker report quoting @NHLPR: 'NHL Makes Scoring Change After Flyers-Islanders Game' (Oct 25, 2025)",
+          "url": "https://www.yardbarker.com/nhl/articles/nhl_makes_scoring_change_after_flyers_islanders_game/s1_17615_42958822",
+          "type": "secondary",
+          "accessed": "2026-10-07"
+        }
+      ],
+      "verification_status": "official-quoted",
+      "flags": [
+        "direct-NHLPR-post-URL-needed: secondary article quotes the @NHLPR post verbatim but the direct post URL has not been captured yet",
+        "initial-ruling-unknown: original assist line must be recovered from RTSS reports or an API snapshot",
+        "game-date-inferred: Oct 25, 2025 inferred from 'Saturday afternoon' game + article date; confirm against RTSS game summary"
+      ],
+      "added_date": "2026-10-07",
+      "last_verified": "2026-10-07"
+    },
+    {
+      "id": "NHL-SD-0005",
+      "season": "2026-27",
+      "game_date": "2026-10-01",
+      "date_confidence": "inferred",
+      "game_id_nhl": null,
+      "game_number": null,
+      "away_team": "EDM",
+      "home_team": "VAN",
+      "period": 3,
+      "clock": null,
+      "discrepancy_type": "goal-added",
+      "initial_ruling": "No goal — after conference, on-ice officials ruled Marco Rossi batted the puck into the net with his glove (overturning the referee's initial goal call).",
+      "initial_ruling_confidence": "reported",
+      "corrected_ruling": "Goal Vancouver — Situation Room review determined the puck deflected off Rossi's shoulder and entered legally (Rule 78.4).",
+      "reason": "League-initiated video review (Rule 37) overturned the revised on-ice no-goal ruling; deflection off shoulder/body is a legal goal.",
+      "correction_timing": "in-game",
+      "video_review": true,
+      "review_type": "situation-room",
+      "changed_game_total": true,
+      "changed_attribution_only": false,
+      "potential_total_market_impact": true,
+      "total_market_note": "Goal awarded on review after officials announced no goal. Live score briefly showed one fewer goal. Requires official confirmation before any market analysis.",
+      "sources": [
+        {
+          "label": "Scouting the Refs: 'Video Review Overturns Batted Puck Call, Awards Rossi Goal' (Oct 2, 2026) — quotes NHL explanation",
+          "url": "https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/",
+          "type": "secondary",
+          "accessed": "2026-10-07"
+        }
+      ],
+      "verification_status": "secondary",
+      "flags": [
+        "needs-official-source: no NHL.com Situation Room page captured yet; find the official video-review explanation before treating as confirmed",
+        "game-date-inferred: Oct 1, 2026 inferred from 'Thursday night' + Oct 2 article date; confirm against schedule/RTSS",
+        "clock-unknown: exact game clock of the play not stated in the secondary report",
+        "single-source: only one secondary report captured so far"
+      ],
+      "added_date": "2026-10-07",
+      "last_verified": "2026-10-07"
+    }
+  ]
+}

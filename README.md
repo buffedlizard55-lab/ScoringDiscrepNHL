@@ -80,6 +80,15 @@ hand-invented; see the honesty note below.
 
 ---
 
+## Research leads inbox
+
+`docs/inbox/prior_session_leads.json` contains 5 scoring-change **leads** carried
+over from a prior session's seed database. They are **quarantined**: they were
+hand-entered, cannot be line-by-line verified from this environment, and some rely
+on secondary sources only. They are NOT part of the verified database. Each lead
+must be independently re-verified against its cited official source (or deleted)
+before it may enter `data/discrepancies.json` via the standard schema.
+
 ## Honesty note — current status
 
 * The pipeline, schema, site, and documentation are complete and tested.

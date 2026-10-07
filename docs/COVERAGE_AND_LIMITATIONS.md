@@ -43,6 +43,7 @@ All are public, no API key. Catalog with URL templates: [SOURCES.md](SOURCES.md)
 | `statsapi.web.nhl.com` live feed (`/api/v1/game/{gamePk}/feed/live`) | Authoritative play-by-play, goals, review events | `unverified` (same) |
 | `nhl.com/scores/htmlreports/...` official PDF reports (GS/ES) | Hash-based change detection of official reports | `unverified` (same) |
 | Situation Room posts (`nhl.com`, topic "situation-room") | Corroboration + reason text for reviews | `unverified` (same); v1 captures links only, parsing is a planned enhancement |
+| `api-web.nhle.com` (scoreboard, gamecenter play-by-play/boxscore) | Second official endpoint family: corroboration and planned second snapshot source | `unverified` (same); probed by the coverage probe |
 
 ## 3. Latency & timeliness
 
