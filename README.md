@@ -437,10 +437,10 @@ it is, taken without deleting either line's work:
 
 | Question | Decision |
 | --- | --- |
-| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema, now **11 records**: the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
-| What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it, and it stays the root site's data source. It is now provenance for the port, not a competing database. |
-| Which site is the site of record? | **`docs/`** (built by `python3 -m nhl_scoring.cli site --out docs`) - it renders all 11 records with the filters and both lines' documentation as tabs. The root site keeps working and is not modified. |
-| Which scheduler runs? | The monitor line's `monitor.yml` / `backfill.yml` keep the only crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
+| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema (1,469 records after the Situation Room backfill; it started as 11): the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
+| What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it. It is provenance for the port, not a competing database, and no published page reads it any more. |
+| Which site is the site of record? | **The repository root** (`index.html`, `app.js`, `styles.css`, `data.js`), built by `PYTHONPATH=pipeline python3 -m nhl_scoring.cli site`. GitHub Pages serves `main` at `/`. The former `docs/` build and the legacy root client were removed (2026-10-07); `docs/` holds documentation only. |
+| Which scheduler runs? | `situation-room.yml` (feed poll, twice hourly) plus the monitor line's `monitor.yml` / `backfill.yml` crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
 | Which docs win where they collided? | `docs/DATA_MODEL.md`, `docs/METHODOLOGY.md`, `docs/SOURCES.md` stayed the monitor line's, verbatim. This line's are at `docs/engine/*.md` and published as "engine" tabs. Nothing was overwritten. |
 | Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> **182 tests, 0 failures**. |
 

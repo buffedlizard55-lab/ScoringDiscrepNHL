@@ -139,7 +139,7 @@ python3 -m nhl_scoring.cli snapfind --out out/temporal.json
 python3 -m nhl_scoring.cli merge --findings out/findings.json --db data/discrepancies.json --apply
 python3 -m nhl_scoring.cli validate
 python3 -m nhl_scoring.cli alerts --write --webhook "$SDN_WEBHOOK"
-python3 -m nhl_scoring.cli site --out docs
+python3 -m nhl_scoring.cli site                 # writes the published site to the repository root
 python3 scripts/verify_sources.py            # re-check the documented source claims
 python3 scripts/seed_records.py              # rebuild the seed database from fixtures
 python3 -m unittest discover -s tests -t .   # 74 tests, offline
