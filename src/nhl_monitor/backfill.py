@@ -11,9 +11,13 @@ directly comparable with a record produced by polling the live endpoint.
 
 Honesty rules enforced here (see docs/BACKFILL.md and docs/LIMITATIONS.md):
 
-* Capture order does NOT decide which state is the original. A document regenerated
-  for an unrelated reason can change twice; the pair is only turned into a record when
-  the *content comparison* shows a scoring change.
+* The pair is only turned into a record when the *content comparison* shows a scoring
+  change; a rewrite that did not touch the scoring record is a finding.
+* When it does, the older capture is recorded as the initial state and the newer as the
+  corrected state, because that is the only ordering the archive actually proves. The
+  record says so: the capture bracket is stored, ``correction_time_bounded_not_known`` is
+  flagged, and a digest that returns to an earlier value is flagged as a possible
+  reversion rather than presented as a chronological correction.
 * A pair whose only difference is the document footer (regeneration) produces a
   finding, never a record.
 * The correction time is recorded as the capture bracket, and the timing is labelled

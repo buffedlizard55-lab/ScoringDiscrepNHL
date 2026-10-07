@@ -84,6 +84,15 @@ Everything else is reconstruction:
 | 1999-2000 | 404 (verified) | not available in this document family |
 | earliest serving season | between 1999-2000 and 2005-06 | measured by the coverage job, never assumed |
 
+Measured archive reach (2026-10-07, facts F19–F21 in `data/reference/verified_facts.json`):
+the Internet Archive holds 2000-01 Game Summaries but its earliest capture of that season
+is from 2012, so for the first seasons of the documented era a correction made before
+2012 cannot be recovered from any capture. Where two or more captures straddle a change,
+the comparison now yields both states from the league's own documents, and the rewrite is
+bracketed between capture timestamps rather than assigned an invented moment. The
+per-season ceiling is what `archive-yield` measures; the full mechanism is in
+[`docs/BACKFILL.md`](BACKFILL.md).
+
 ## 6. Cases that still require human verification
 
 1. **A reason that exists only in a press conference, a broadcast or a beat-writer's feed.** The system will
