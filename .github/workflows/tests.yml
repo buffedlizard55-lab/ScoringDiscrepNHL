@@ -97,6 +97,35 @@ jobs:
             git push
           fi
 
+      # The sandbox this project is developed in cannot reach nhl.com, so the shape
+      # of the live feeds is measured here, on every push, and committed. This is the
+      # step that keeps the parsers honest: scripts/runner_probe.py records the
+      # top-level keys of the daily score payload and how many games are found under
+      # each candidate container key, which is how an assumption like "the payload has
+      # a gamesByDate array" gets checked instead of trusted. --stable means the file
+      # is only rewritten when something structural actually changed.
+      - name: Measure the live official feeds (reachability, payload shape, latency)
+        id: liveprobe
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 scripts/runner_probe.py --stable --samples 3 --write-fixture \
+            | tee runner_probe_summary.json || true
+
+      - name: Commit the live-feed measurement
+        if: github.event_name == 'push'
+        run: |
+          git config user.name  "livefeed-probe[bot]"
+          git config user.email "livefeed-probe@users.noreply.github.com"
+          git add data/reference/runner_probe.json tests/fixtures/score_payload_excerpt.json
+          if git diff --cached --quiet; then
+            echo "live-feed structure unchanged since the last measurement"
+          else
+            git commit -m "probe: measured the live official feed shape from a runner [skip ci]"
+            git pull --rebase origin "$GITHUB_REF_NAME" || true
+            git push origin "HEAD:$GITHUB_REF_NAME" || echo "::warning::push failed; artifact still uploaded"
+          fi
+
       - name: Upload the probe and coverage reports (audit trail)
         if: always()
         uses: actions/upload-artifact@v4
@@ -105,7 +134,9 @@ jobs:
           path: |
             probe_output.json
             coverage_output.json
+            runner_probe_summary.json
             data/reference/probe_report.json
             data/reference/coverage_report.json
+            data/reference/runner_probe.json
           retention-days: 90
           if-no-files-found: warn

@@ -223,11 +223,86 @@ def score_fixture(payload: object, url: str) -> dict | None:
     }
 
 
+def _fixture_unchanged(new: dict, path: str) -> bool:
+    """True when the committed fixture already proves the same live SHAPE.
+
+    The fixture exists to pin the parser to the real payload structure, so the
+    comparison is on keys, not on tonight's scores: rewriting it every run would
+    churn a test fixture with values no test depends on.
+    """
+    if not os.path.exists(path):
+        return False
+    try:
+        with open(path, encoding="utf-8") as fh:
+            old = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return False
+    old_shape = old.get("payload_excerpt")
+    new_shape = new.get("payload_excerpt")
+    if not isinstance(old_shape, dict) or not isinstance(new_shape, dict):
+        return False
+    return (sorted(old_shape) == sorted(new_shape)
+            and old.get("_provenance", {}).get("container_key")
+            == new.get("_provenance", {}).get("container_key"))
+
+
+def stable_projection(report: dict) -> dict:
+    """The part of a probe report that should not change between runs.
+
+    Latencies, byte counts and timestamps move on every run; HTTP statuses, the
+    payload's top-level keys and the game counts under each candidate container do
+    not. Projecting onto the stable part is what lets CI commit a measurement only
+    when something real changed, instead of churning a file every hour.
+    """
+    out = {}
+    for name, res in (report.get("results") or {}).items():
+        entry = {"ok": res.get("ok"), "http_status": res.get("http_status")}
+        structure = res.get("structure")
+        if isinstance(structure, dict):
+            entry["top_level_keys"] = sorted(k for k in structure if not k.startswith("_"))
+        if res.get("error"):
+            entry["error_kind"] = str(res["error"]).split(":")[0]
+        out[name] = entry
+    out["score_payload_shape"] = report.get("score_payload_shape")
+    return out
+
+
+def keep_volatile_values(new: dict, old: dict) -> dict:
+    """If nothing structural changed, reuse the previous run's volatile numbers.
+
+    Then ``git diff`` is empty and no commit is produced - the file records when
+    the measurement last actually changed, which is the same trick
+    ``.github/workflows/tests.yml`` already uses for the coverage report.
+    """
+    if stable_projection(new) != stable_projection(old):
+        return new
+    merged = json.loads(json.dumps(new))
+    for keep in ("probed_at_utc",):
+        if old.get(keep):
+            merged[keep] = old[keep]
+    if old.get("runner"):
+        merged["runner"] = old["runner"]
+    if old.get("latency"):
+        merged["latency"] = old["latency"]
+    for name, res in (old.get("results") or {}).items():
+        if name in merged["results"]:
+            for field in ("elapsed_seconds", "bytes"):
+                if field in res:
+                    merged["results"][name][field] = res[field]
+    merged["unchanged_since_utc"] = old.get("probed_at_utc")
+    merged["note"] = ("Structure identical to the previous probe, so the previous run's "
+                      "timestamps and latency samples are retained; see unchanged_since_utc.")
+    return merged
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--out", default=DEFAULT_OUT)
     ap.add_argument("--fixture-out", default=FIXTURE_OUT)
     ap.add_argument("--samples", type=int, default=3, help="latency samples per endpoint")
+    ap.add_argument("--stable", action="store_true",
+                    help="if nothing structural changed since the existing report, keep its "
+                         "timestamps and latency numbers so the file does not churn")
     ap.add_argument("--date", default=None, help="YYYY-MM-DD to treat as 'today'")
     ap.add_argument("--game-id", default="2026020001",
                     help="a current-season game id to probe (default 2026020001)")
@@ -279,7 +354,7 @@ def main(argv: list[str] | None = None) -> int:
                         "url": url, "game_counts": game_counts(payload)}
                     if name == "score.today" and args.write_fixture:
                         fixture = score_fixture(payload, url)
-                        if fixture:
+                        if fixture and not _fixture_unchanged(fixture, args.fixture_out):
                             os.makedirs(os.path.dirname(args.fixture_out), exist_ok=True)
                             with open(args.fixture_out, "w", encoding="utf-8") as fh:
                                 json.dump(fixture, fh, indent=2, ensure_ascii=False)
@@ -305,6 +380,14 @@ def main(argv: list[str] | None = None) -> int:
         "all probed endpoints reachable from the runner" if unreachable == 0 else
         f"{unreachable} of {len(ENDPOINTS)} endpoints were NOT reachable or returned an "
         "error status - see results; any detector depending on them must flag, not guess")
+
+    if args.stable and os.path.exists(args.out):
+        try:
+            with open(args.out, encoding="utf-8") as fh:
+                previous = json.load(fh)
+            report = keep_volatile_values(report, previous)
+        except (json.JSONDecodeError, OSError):
+            pass  # an unreadable previous report must never stop a new measurement
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as fh:

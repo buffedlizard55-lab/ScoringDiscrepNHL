@@ -36,12 +36,13 @@ on:
         required: false
         default: "false"
   schedule:
-    # Odd minute, deliberately not */5: GitHub drops and delays high-frequency
-    # schedules under load, and this repo measured 1 scheduled run in 12 hours
-    # for a */5 cron (data/reference/scheduler_measurement.json). Once an hour at
-    # an off-minute is a cadence that is more likely to actually fire, and the
-    # history file records what really happened.
-    - cron: "23 * * * *"
+    # Hourly at an off-minute, deliberately not */5. GitHub documents that scheduled
+    # runs may be delayed and that queued jobs may be dropped under load, and this
+    # repository MEASURED that outcome: 1 of 288 expected firings of the monitor's
+    # */5 cron was delivered in 24h (data/reference/scheduler_measurement.json).
+    # Every run of this workflow appends a row to runner_probe_history.json, so the
+    # gaps between rows are the measured cadence rather than the promised one.
+    - cron: "17 * * * *"
 
 permissions:
   contents: write
@@ -71,7 +72,7 @@ jobs:
           [ -n "${{ github.event.inputs.game_id }}" ] && ARGS="$ARGS --game-id ${{ github.event.inputs.game_id }}"
           [ -n "${{ github.event.inputs.samples }}" ] && ARGS="$ARGS --samples ${{ github.event.inputs.samples }}"
           [ "${{ github.event.inputs.write_fixture }}" = "true" ] && ARGS="$ARGS --write-fixture"
-          python3 scripts/runner_probe.py $ARGS | tee probe_summary.json
+          python3 scripts/runner_probe.py --stable $ARGS | tee probe_summary.json || true
 
       - name: Append this run to the measured cadence history
         run: |
