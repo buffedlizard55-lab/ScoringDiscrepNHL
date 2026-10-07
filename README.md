@@ -33,7 +33,7 @@ Settings → Pages, or the deployed site link in the sidebar).
 
 ## What this repository contains
 
-| Path | Purpose |
+| Item | Status |
 |---|---|
 | `site/` | The GitHub Pages website (clean UI, filters, alert feed, docs pages) |
 | `data/` | The database itself: `discrepancies.json`, `alerts.json`, `coverage_report.json`, plus the JSON Schema |
