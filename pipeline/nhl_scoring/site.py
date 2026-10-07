@@ -20,6 +20,7 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from .notify import describe_channels
 from .situation_room import normalize_review_type
 
 SITE_FILES = ("index.html", "styles.css", "app.js", "data.js", ".nojekyll")
@@ -30,6 +31,8 @@ DOC_PAGES: List[Tuple[str, str, str]] = [
     # "Consolidation"), and hiding one line's analysis would misrepresent what the
     # project knows. Paths prefixed engine/ are this package's own documents.
     ("FEASIBILITY.md", "Can we detect it?", "Detection feasibility and limits"),
+    ("ALERTING.md", "Alerting analysis", "What can and cannot be alerted on, with the evidence"),
+    ("NOTIFICATIONS.md", "Notifications", "What is delivered, how, how fast, and what never can be"),
     ("SITUATION_ROOM.md", "Situation Room source", "The official review-statement feed: what it is, how it is read, what it cannot tell"),
     ("STATUS.md", "Status & backlog", "Project status, consolidation, and open work"),
     ("engine/METHODOLOGY.md", "Methodology (engine)", "How a record gets made, validated, and promoted"),
@@ -308,7 +311,46 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
         for a in items[:300]:
             alerts_compact.append({k: a.get(k) for k in
                                    ("id", "record_id", "type", "severity", "title", "body", "links",
-                                    "created_at", "first_seen_at", "affects_goal_total", "detected_by")})
+                                    "created_at", "first_seen_at", "affects_goal_total", "detected_by",
+                                    "settlement_risk", "settlement_window", "settlement_reason",
+                                    "when_corrected", "attribution_only", "game_date", "teams")})
+    # The notification panel on the Alerts tab is generated from the delivery
+    # code and from the last committed delivery report, so the site can only
+    # describe channels that exist and can only claim deliveries that happened.
+    notifications: Dict[str, Any] = {"channels": describe_channels()}
+    # The newest committed delivery report, whichever run wrote it. Reading only
+    # last_run.json would hide a delivery that happened before the scheduled runs
+    # started, which is exactly the kind of gap this site is not allowed to have.
+    notify_dir = os.path.join(repo_root, "data", "notifications")
+    report: Dict[str, Any] = {}
+    report_name = ""
+    if os.path.isdir(notify_dir):
+        candidates = []
+        for name in sorted(os.listdir(notify_dir)):
+            if not name.endswith(".json"):
+                continue
+            try:
+                with open(os.path.join(notify_dir, name), "r", encoding="utf-8") as fh:
+                    candidate = json.load(fh) or {}
+            except (OSError, ValueError):
+                continue
+            if isinstance(candidate, dict) and candidate.get("deliveries") is not None:
+                candidates.append((candidate.get("generated_at") or "", name, candidate))
+        if candidates:
+            _, report_name, report = sorted(candidates)[-1]
+    if report:
+            notifications["last_run"] = {
+                "report": report_name,
+                "generated_at": report.get("generated_at"),
+                "run": report.get("run"),
+                "mode": report.get("mode"),
+                "delivered": len(report.get("delivered_alert_ids") or []),
+                "failed_channels": report.get("failed_channels") or [],
+                "deliveries": [{"channel": d.get("channel"), "status": d.get("status"),
+                                "alerts": len(d.get("alert_ids") or []), "url": d.get("url") or "",
+                                "error": d.get("error") or ""}
+                               for d in (report.get("deliveries") or [])],
+            }
     docs: Dict[str, str] = {}
     for filename, label, title in DOC_PAGES:
         path = os.path.join(repo_root, "docs", filename)
@@ -328,6 +370,7 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "snapshots": snapshot_summary,
             "situation_room": situation_room,
             "alert_feed": alert_feed,
+            "notifications": notifications,
         },
         "summary": summarize(records),
         "records": [compact_record(r) for r in records],

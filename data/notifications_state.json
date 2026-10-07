@@ -1,4 +1,235 @@
 {
-  "notified_record_ids": [],
-  "notified_alert_hashes": []
+  "last_run": {
+    "at": "2026-10-07T21:25:51Z",
+    "delivered": 1,
+    "failed_channels": [],
+    "note": "one-alert proof run; the full feed was then primed from data/alerts.json",
+    "run": "first-delivery-proof"
+  },
+  "notified": {
+    "ALERT-NHL-20242025-021140-01": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "2ccaa4844f61a3e3",
+      "first_delivered_at": "2026-10-07T05:21:27Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "NHL-20242025-021140-01"
+    },
+    "ALERT-NHL-20242025-021185-01": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "b5674689d0bc4198",
+      "first_delivered_at": "2026-10-07T05:21:27Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "NHL-20242025-021185-01"
+    },
+    "ALERT-NHL-20242025-021238-01": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "8a5c0e6e4986f928",
+      "first_delivered_at": "2026-10-07T05:21:27Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "NHL-20242025-021238-01"
+    },
+    "SDN-21ad557cd4": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "c6c0c495aeead1c4",
+      "first_delivered_at": "2026-10-07T01:38:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-21ad557cd4"
+    },
+    "SDN-2247415389": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "4eebf019012590c1",
+      "first_delivered_at": "2026-10-07T00:00:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-2247415389"
+    },
+    "SDN-261948dfcd": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18"
+      },
+      "delivered_by": "pipeline/nhl_scoring/notify.py run 'first-delivery-proof' (HTTP 201)",
+      "fingerprint": "7ece4e1fbb84a1f1",
+      "first_delivered_at": "2026-10-07T21:25:51Z",
+      "last_delivered_at": "2026-10-07T21:25:51Z",
+      "notices": 1,
+      "record_id": "SDN-261948dfcd"
+    },
+    "SDN-26e9b24b21": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "35bed1c401c799ba",
+      "first_delivered_at": "2026-10-06T01:15:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-26e9b24b21"
+    },
+    "SDN-35d7818c51": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "c06baa7eed73eb30",
+      "first_delivered_at": "2026-10-07T00:00:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-35d7818c51"
+    },
+    "SDN-3916f9ce9a": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "18b24abb5c2bb686",
+      "first_delivered_at": "2026-10-07T05:00:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-3916f9ce9a"
+    },
+    "SDN-42c8407955": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "e30e8a8fd301f187",
+      "first_delivered_at": "2026-10-07T05:00:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-42c8407955"
+    },
+    "SDN-5619ac48fc": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "6fe85a2a7f9c053d",
+      "first_delivered_at": "2026-10-02T23:12:25.85Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-5619ac48fc"
+    },
+    "SDN-5c05cee8b5": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "4d2427e6bc4e4c8b",
+      "first_delivered_at": "2026-10-03T03:29:04.463Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-5c05cee8b5"
+    },
+    "SDN-61ee9676e1": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "901bbacc0fae6d29",
+      "first_delivered_at": "2026-10-02T01:15:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-61ee9676e1"
+    },
+    "SDN-73e0895bf7": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "bef4e5d387bfd16a",
+      "first_delivered_at": "2026-10-04T01:39:13.984Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-73e0895bf7"
+    },
+    "SDN-752f5a246e": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "b3fc78642de5dcb4",
+      "first_delivered_at": "2026-10-02T04:34:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-752f5a246e"
+    },
+    "SDN-87fb3e543f": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "b2b5db97a09a8a95",
+      "first_delivered_at": "2026-10-07T04:36:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-87fb3e543f"
+    },
+    "SDN-d967bb12d3": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "547ef5c987224edf",
+      "first_delivered_at": "2026-10-04T04:36:03.187Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-d967bb12d3"
+    },
+    "SDN-e84fc1c8ec": {
+      "channels": {
+        "feed": "primed_from_committed_feed"
+      },
+      "fingerprint": "9aa0d1a5f3c9ca1c",
+      "first_delivered_at": "2026-10-07T00:00:00Z",
+      "last_delivered_at": "2026-10-07T21:28:36Z",
+      "notices": 0,
+      "record_id": "SDN-e84fc1c8ec"
+    }
+  },
+  "notified_alert_hashes": [
+    "ALERT-NHL-20242025-021140-01",
+    "ALERT-NHL-20242025-021185-01",
+    "ALERT-NHL-20242025-021238-01",
+    "SDN-21ad557cd4",
+    "SDN-2247415389",
+    "SDN-261948dfcd",
+    "SDN-26e9b24b21",
+    "SDN-35d7818c51",
+    "SDN-3916f9ce9a",
+    "SDN-42c8407955",
+    "SDN-5619ac48fc",
+    "SDN-5c05cee8b5",
+    "SDN-61ee9676e1",
+    "SDN-73e0895bf7",
+    "SDN-752f5a246e",
+    "SDN-87fb3e543f",
+    "SDN-d967bb12d3",
+    "SDN-e84fc1c8ec"
+  ],
+  "notified_record_ids": [
+    "NHL-20242025-021140-01",
+    "NHL-20242025-021185-01",
+    "NHL-20242025-021238-01",
+    "SDN-21ad557cd4",
+    "SDN-2247415389",
+    "SDN-261948dfcd",
+    "SDN-26e9b24b21",
+    "SDN-35d7818c51",
+    "SDN-3916f9ce9a",
+    "SDN-42c8407955",
+    "SDN-5619ac48fc",
+    "SDN-5c05cee8b5",
+    "SDN-61ee9676e1",
+    "SDN-73e0895bf7",
+    "SDN-752f5a246e",
+    "SDN-87fb3e543f",
+    "SDN-d967bb12d3",
+    "SDN-e84fc1c8ec"
+  ],
+  "schema_version": 1,
+  "updated_at": "2026-10-07T21:28:36Z"
 }

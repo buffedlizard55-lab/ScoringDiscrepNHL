@@ -48,7 +48,10 @@ jobs:
           set -o pipefail
           ARGS=""
           if [ -n "${{ github.event.inputs.date }}" ]; then ARGS="--date ${{ github.event.inputs.date }}"; fi
-          PYTHONPATH=src python -m nhl_monitor monitor $ARGS --github-issue --repo "$GITHUB_REPOSITORY" | tee monitor_output.json
+          # --github-issue is deliberately NOT passed: opening issues here had no
+          # memory of what it had already sent, and this job runs every five
+          # minutes. Delivery is one deduplicated path - see the notify step below.
+          PYTHONPATH=src python -m nhl_monitor monitor $ARGS | tee monitor_output.json
           echo "alerts=$(python - <<'PY'
           import json
           try:
@@ -73,6 +76,24 @@ jobs:
             PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
             PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
           fi
+
+      - name: Notify subscribers about alerts that are new since the last run
+        # Reads the shared feed (data/alerts.json), so an alert raised by this
+        # monitor and one raised by the Situation Room ingest are delivered by the
+        # same code, deduplicated against the same state file.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SDN_WEBHOOK_URL: ${{ secrets.SDN_WEBHOOK_URL }}
+          SDN_SMTP_HOST: ${{ secrets.SDN_SMTP_HOST }}
+          SDN_SMTP_PORT: ${{ secrets.SDN_SMTP_PORT }}
+          SDN_SMTP_USER: ${{ secrets.SDN_SMTP_USER }}
+          SDN_SMTP_PASSWORD: ${{ secrets.SDN_SMTP_PASSWORD }}
+          SDN_SMTP_FROM: ${{ secrets.SDN_SMTP_FROM }}
+          SDN_SMTP_TO: ${{ secrets.SDN_SMTP_TO }}
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli notify \
+            --channels feed,issue,webhook,email --allow-failure \
+            --run-label "monitor-${GITHUB_RUN_ID}"
 
       - name: Commit the evidence timeline and any new records
         run: |

@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   poll:
@@ -56,52 +57,36 @@ jobs:
           PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 40
       - name: Rebuild the site from the updated database (repository root is what GitHub Pages serves)
         run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
+      - name: Notify subscribers about alerts that are new since the last run
+        # Replaces the previous `gh issue create --label detection` step, which
+        # could never have worked: the repository has no `detection` label, `gh`
+        # fails on an unknown label, and a `|| echo` swallowed the failure. The
+        # delivery layer creates any label it needs and records the outcome in
+        # data/notifications/last_run.json instead of pretending.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SDN_WEBHOOK_URL: ${{ secrets.SDN_WEBHOOK_URL }}
+          SDN_SMTP_HOST: ${{ secrets.SDN_SMTP_HOST }}
+          SDN_SMTP_PORT: ${{ secrets.SDN_SMTP_PORT }}
+          SDN_SMTP_USER: ${{ secrets.SDN_SMTP_USER }}
+          SDN_SMTP_PASSWORD: ${{ secrets.SDN_SMTP_PASSWORD }}
+          SDN_SMTP_FROM: ${{ secrets.SDN_SMTP_FROM }}
+          SDN_SMTP_TO: ${{ secrets.SDN_SMTP_TO }}
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli notify \
+            --channels feed,issue,webhook,email --allow-failure \
+            --run-label "engine-monitor-${GITHUB_RUN_ID}"
       - name: Commit what changed
         run: |
           git config user.name  "scoring-discrepancy-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/discrepancies.json data/discrepancies.csv data/snapshots data/alerts index.html app.js styles.css data.js .nojekyll || true
+          # `data` (not a list of paths) so the shared feed, the RSS file, the
+          # deliver-once state and the delivery report are all committed with the
+          # records they describe.
+          git add data index.html app.js styles.css data.js .nojekyll || true
           if ! git diff --cached --quiet; then
             git commit -m "monitor: $(date -u +%FT%TZ) snapshot + alert pass"
             git push origin HEAD:main
           else
             echo "no state change captured this run"
-          fi
-      - name: Open an issue if a goal total moved
-        if: ${{ always() }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          latest=$(ls -1 data/alerts 2>/dev/null | tail -1)
-          [ -n "$latest" ] || exit 0
-          python3 - <<'PYEOF' > out/issue-env
-          import json, os, sys
-          sys.path.insert(0, "pipeline")
-          from nhl_scoring import alerts
-          latest = sorted(os.listdir("data/alerts"))[-1] if os.path.isdir("data/alerts") else ""
-          if not latest:
-              raise SystemExit(0)
-          path = os.path.join("data/alerts", latest, "alerts.json")
-          if not os.path.exists(path):
-              raise SystemExit(0)
-          payload = json.load(open(path, encoding="utf-8"))
-          items = payload.get("alerts") or []
-          immediate = [i for i in items if i.get("level") == "immediate"]
-          if not immediate:
-              raise SystemExit(0)
-          title = alerts.issue_title(immediate)
-          body = ("Automated monitor run found immediate-severity scoring discrepancies "
-                  "(a goal total or an official artifact that disagrees with another official "
-                  "artifact about a goal). Open the record links before acting; "
-                  "the league edits its own JSON in place.\n\n"
-                  f"Digest: `data/alerts/{latest}/alerts.md`\n")
-          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
-              fh.write("SDN_ISSUE_TITLE<<" + "SDNEOF" + "\n" + title + "\nSDNEOF\n")
-              fh.write("SDN_ISSUE_BODY<<" + "SDNEOF" + "\n" + body + "SDNEOF\n")
-          PYEOF
-          if [ -n "$SDN_ISSUE_TITLE" ]; then
-            gh issue create --title "$SDN_ISSUE_TITLE" --body "$SDN_ISSUE_BODY" --label "detection" \
-              || echo "::warning::issue creation failed (label may not exist yet)"
-          else
-            echo "no immediate-severity alerts; no issue opened"
           fi

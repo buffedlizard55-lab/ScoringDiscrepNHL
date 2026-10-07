@@ -1,5 +1,15 @@
 # Roadmap — what still needs to be done
 
+**Closed in the notification-delivery pass (2026-10-07).** The alert path is no longer
+detection-only: `pipeline/nhl_scoring/notify.py` delivers alerts over four channels,
+deduplicated by a committed fingerprint, with a committed delivery report; one real
+notification has been sent ([issue #18](https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18),
+HTTP 201, 2026-10-07T21:25:51Z). In the same pass: the scheduled monitor stopped
+opening an issue per alert per run; the engine monitor's issue step stopped asking for
+a label that does not exist; the backfill workflow stopped writing records the
+published site never showed; and the Alerts tab now renders the channel table and the
+last delivery run. Details in [NOTIFICATIONS.md](NOTIFICATIONS.md).
+
 **Done since the first draft (2026-10-07, pass 3):** the earliest serving season is answered (**2000-01**;
 1999-2000 is a 404) and its reports are frozen; the frozen/regenerated behaviour is established for seven
 seasons; the database is no longer empty — three records were built through the announcement-ingest path and
@@ -16,8 +26,8 @@ check by hand"). Effort is a rough estimate for one focused session.
 |---|---|---|---|---|
 | 1 | Run `python -m nhl_monitor probe` on a networked machine | proves the sources AND that the parser understands the live report layout; everything downstream depends on it | `PYTHONPATH=src python -m nhl_monitor probe` (also runs, non-blocking, in `tests.yml`) | minutes |
 | 2 | First backfill slice | the announcement path is proven (3 records); the frozen-era census path has never run against live sources | `backfill-era --season 20052006 --start 1 --end 200` via `backfill.yml`, then review each produced record against its two links | 1 session |
-| 3 | Label creation + workflow permissions | `gh issue create` fails without the labels/permissions, so alerts would be written to disk but nobody would be told | Settings → Actions → Read/write; create labels `scoring-discrepancy`, `auto-detected` | minutes |
-| 4 | Confirm Pages deployment | the site must actually publish | Settings → Pages → Source: GitHub Actions, then run `pages.yml` | minutes |
+| 3 | ~~Label creation + workflow permissions~~ **DONE** | labels and permissions are no longer a hand-maintained precondition | the delivery layer creates any label it needs over the API and the workflows declare `issues: write`; the `detection` label the old step asked for never existed, which is why it never opened an issue | closed |
+| 4 | ~~Confirm Pages deployment~~ **DONE** | the site publishes | Pages is live at <https://buffedlizard55-lab.github.io/ScoringDiscrepNHL/> from `main` `/` (legacy build); status `built` | closed |
 
 ## P1 — completeness and trust
 
@@ -54,6 +64,16 @@ check by hand"). Effort is a rough estimate for one focused session.
 * An "own goal" annotation view once the own-goal semantics are verified from an official source.
 * A settlement-timeline view: for each change, the wall-clock time of each capture relative to typical
   publication times, to make the "was this already graded?" question easier to answer.
+
+## P0 (new in the notification pass) — closing the delivery loop
+
+| # | Task | Why | How | Effort |
+|---|---|---|---|---|
+| 21 | Let a week of scheduled runs accumulate, then publish the measured latency distribution | "how late do we see a statement" is currently bounded by the cron slot, not measured; the site should carry a real number | every record already stores `content_date` and `detected_at`; add a report + a site column | 1 session, after the runs exist |
+| 22 | Prove the webhook and e-mail channels against real endpoints | both are unit-tested with injected transports only; the GitHub issue channel is the one proven live | add the secrets, dispatch `Situation Room ingest`, read `data/notifications/last_run.json` | minutes once secrets exist |
+| 23 | Route notifications by team / market / severity | a subscriber who cares about one club or only goal-total changes still gets everything | the feed already carries `teams`, `settlement_window`, `affects_goal_total`; add `--only-team` / `--only-goal-total` filters to `notify` | 1 session |
+| 24 | Populate `evidence_status` on engine records | the schema and `docs/DATA_MODEL.md` describe it, but **all 1,470 records leave it null** — the information exists in `status` + `flags`, so the field is either filled or removed | derive it from `status`/`flags` in `db.validate()` and fail a record that has neither | 1 session |
+| 25 | Retire or merge the third alerting implementation | `pipeline/alerts.py` (queue_issue + its own notify state) is dead code next to `pipeline/nhl_scoring/notify.py`; two states is how a duplicate notification eventually happens | delete or re-point `pipeline/monitor.py` at the delivery layer, keeping `data/pending_issues.json` readers working | 1 session |
 
 ## Known blockers, plainly
 

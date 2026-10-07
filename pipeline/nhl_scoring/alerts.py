@@ -244,6 +244,15 @@ def site_shape(item: Dict[str, Any]) -> Dict[str, Any]:
     game = record.get("game") or {}
     disc = record.get("discrepancy") or {}
     links = [s.get("url") for s in (record.get("sources") or []) if s.get("url")]
+    mi = disc.get("market_impact") or {}
+    # The settlement wording is the record's own, quoted. A notification that
+    # paraphrases "a market may have settled wrong" is how this project would
+    # start overstating itself; the record already distinguishes an in-game
+    # exposure from a post-final one, so the feed carries that distinction too.
+    settlement = " ".join(x for x in [
+        (f"Settlement exposure: {mi.get('risk')}" if mi.get("risk") else ""),
+        (f"(window: {mi.get('settlement_window')})" if mi.get("settlement_window") else ""),
+    ] if x)
     body = "\n".join(x for x in [
         disc.get("summary") or "",
         disc.get("detail") if disc.get("detail") != disc.get("summary") else "",
@@ -254,6 +263,8 @@ def site_shape(item: Dict[str, Any]) -> Dict[str, Any]:
         f"Goal total changed: {disc.get('total_changed')}",
         f"Attribution only: {disc.get('attribution_only')}",
         f"Corrected: {disc.get('when_corrected')}",
+        settlement,
+        mi.get("reason") or "",
         f"Flags: {', '.join(record.get('flags') or [])}" if record.get("flags") else "",
         f"Official reason: {((disc.get('reason') or {}).get('text')) or 'none stated'}",
     ] if x)
@@ -273,6 +284,13 @@ def site_shape(item: Dict[str, Any]) -> Dict[str, Any]:
                        or (record.get("detection") or {}).get("detected_at")),
         "detected_at": (record.get("detection") or {}).get("detected_at"),
         "affects_goal_total": bool(disc.get("total_changed")),
+        "settlement_risk": mi.get("risk") or "",
+        "settlement_window": mi.get("settlement_window") or "",
+        "settlement_reason": mi.get("reason") or "",
+        "when_corrected": disc.get("when_corrected") or "",
+        "attribution_only": bool(disc.get("attribution_only")),
+        "game_date": game.get("date") or "",
+        "teams": f"{game.get('away_team') or '?'} @ {game.get('home_team') or '?'}",
         "detected_by": "nhl_scoring",
     }
 

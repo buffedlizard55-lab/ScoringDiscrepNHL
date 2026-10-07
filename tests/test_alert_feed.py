@@ -354,5 +354,51 @@ class TestCommittedAlertFeedIsNotEmpty(unittest.TestCase):
         self.assertIn("<item>", rss, "the advertised RSS feed must carry the committed alerts")
 
 
+class MonitorLineIssueDedupeTests(unittest.TestCase):
+    """The five-minute monitor must not open the same issue twice.
+
+    ``monitor.yml`` runs on a schedule and a detectable change stays detectable, so
+    an issue path with no memory of what it already sent would open a new issue on
+    every pass. The canonical delivery path is ``nhl_scoring.notify``; this guards
+    the legacy ``--github-issue`` flag against flooding while it still exists.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.root = os.path.join(self.tmp, "alerts")
+        os.makedirs(self.root, exist_ok=True)
+        self.calls = []
+        self._real = monitor_alerts.open_github_issue
+        monitor_alerts.open_github_issue = lambda title, body, labels=None, repo=None: (
+            self.calls.append(title) or {"created": True, "url": f"https://github.example/issues/{len(self.calls)}",
+                                         "reason": ""})
+
+    def tearDown(self):
+        monitor_alerts.open_github_issue = self._real
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_one_issue_per_alert_id_however_many_times_it_is_emitted(self):
+        for _ in range(3):
+            monitor_alerts.emit_for_records([MONITOR_RECORD], root=self.root, github_issue=True)
+        self.assertEqual(len(self.calls), 1, "the same alert id must not open a second issue")
+        state = json.load(open(os.path.join(self.root, "notified_issues.json"), encoding="utf-8"))
+        self.assertEqual(len(state), 1)
+        self.assertTrue(next(iter(state.values()))["url"])
+
+    def test_a_failed_issue_creation_is_retried_next_run(self):
+        monitor_alerts.open_github_issue = lambda *a, **k: {"created": False, "url": None,
+                                                            "reason": "gh CLI not available"}
+        monitor_alerts.emit_for_records([MONITOR_RECORD], root=self.root, github_issue=True)
+        self.assertFalse(os.path.exists(os.path.join(self.root, "notified_issues.json")),
+                         "an issue that was not created must not be remembered as delivered")
+
+    def test_the_monitor_alert_route_reaches_the_published_feed(self):
+        """Regression: the scheduled monitor wrote per-date files only."""
+        monitor_alerts.emit_for_records([MONITOR_RECORD], root=self.root)
+        data_dir = os.path.dirname(self.root)
+        feed = json.load(open(os.path.join(data_dir, "alerts.json"), encoding="utf-8"))
+        self.assertTrue(feed.get("alerts"), "emit_for_records must project into the site feed")
+
+
 if __name__ == "__main__":
     unittest.main()

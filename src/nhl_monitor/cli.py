@@ -180,13 +180,16 @@ def cmd_monitor(args) -> int:
         if not g.get("id"):
             continue
         res = detect.collect_game(int(g["id"]), cache_dir=args.cache_dir, dry_run=args.dry_run)
-        emitted = [alerts_mod.build_alert(r) for r in res.get("records", [])]
-        if emitted and not args.dry_run:
-            alerts_mod.write_alerts(emitted)
-            if args.github_issue:
-                for a in emitted:
-                    res.setdefault("issues", []).append(
-                        alerts_mod.open_github_issue(a["title"], a["body_markdown"], repo=args.repo))
+        # Go through the single alerting entry point. This loop used to call
+        # write_alerts() directly and then open a GitHub issue per alert per run:
+        # the published feed (data/alerts.json) never saw the monitor line's
+        # alerts, and a change that stayed detectable would have re-opened an
+        # issue every five minutes. Delivery is now one deduplicated path
+        # (pipeline/nhl_scoring/notify.py) that reads the shared feed.
+        emitted_out = _emit_alerts(res.get("records", []), args)
+        emitted = emitted_out.get("alerts") or []
+        if emitted_out.get("issues"):
+            res["issues"] = emitted_out["issues"]
         res["alerts"] = emitted
         summary["results"].append(res)
     _print(summary)
