@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ScoringDiscrepNHL discrepancy database schema",
+  "definitions": {
+    "team": {
+      "type": "object",
+      "required": ["tri", "name"],
+      "properties": {
+        "tri": { "type": "string", "minLength": 2, "maxLength": 4 },
+        "name": { "type": "string" },
+        "score": { "type": ["integer", "null"] }
+      }
+    },
+    "goal_state": {
+      "type": "object",
+      "description": "One side of a discrepancy: the goal as recorded at a point in time. ruling=no_goal means the event was disallowed/removed.",
+      "required": ["ruling"],
+      "properties": {
+        "ruling": { "type": "string", "enum": ["goal", "no_goal", "unknown"] },
+        "scorer": { "type": ["string", "null"] },
+        "assists": { "type": "array", "items": { "type": "string" } },
+        "strength": { "type": ["string", "null"], "description": "EV/PP/SH/EN/PS or null" },
+        "empty_net": { "type": ["boolean", "null"] },
+        "clock": { "type": ["string", "null"], "description": "Period time remaining, MM:SS" },
+        "description": { "type": ["string", "null"] }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["label", "url", "kind", "status"],
+      "properties": {
+        "label": { "type": "string" },
+        "url": { "type": "string", "pattern": "^https?://" },
+        "archive_url": { "type": ["string", "null"] },
+        "kind": { "type": "string", "enum": ["live_feed", "official_report", "situation_room", "schedule", "archive", "secondary", "other"] },
+        "status": { "type": "string", "enum": ["verified", "incomplete", "conflicting", "unavailable"] },
+        "captured_at": { "type": ["string", "null"], "description": "ISO-8601 UTC" },
+        "note": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "type": "object",
+  "required": ["schema_version", "records"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "generated_at": { "type": ["string", "null"] },
+    "generator": { "type": ["string", "null"] },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "status", "game", "event", "original", "corrected",
+          "classification", "detection", "evidence", "flags"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9]+#P[0-9]+#[A-Z]{2,4}#[0-9]+#[a-z_]+$" },
+          "status": { "type": "string", "enum": ["pending_review", "confirmed", "conflicting"] },
+          "game": {
+            "type": "object",
+            "required": ["game_pk", "season", "date", "away", "home"],
+            "properties": {
+              "game_pk": { "type": "integer" },
+              "season": { "type": "string", "pattern": "^[0-9]{8}$" },
+              "game_type": { "type": ["string", "null"] },
+              "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+              "away": { "$ref": "#/definitions/team" },
+              "home": { "$ref": "#/definitions/team" },
+              "venue": { "type": ["string", "null"] },
+              "links": { "type": "object" }
+            }
+          },
+          "event": {
+            "type": "object",
+            "required": ["period", "team"],
+            "properties": {
+              "period": { "type": "integer", "minimum": 0, "description": "0 is used for game-level records such as official report edits" },
+              "period_type": { "type": ["string", "null"] },
+              "team": { "type": ["string", "null"] },
+              "goal_ordinal": { "type": ["integer", "null"] },
+              "description": { "type": ["string", "null"] }
+            }
+          },
+          "original": { "$ref": "#/definitions/goal_state" },
+          "corrected": { "$ref": "#/definitions/goal_state" },
+          "classification": {
+            "type": "object",
+            "required": ["changes_game_total", "attribution_only", "types", "timing", "settlement_risk"],
+            "properties": {
+              "changes_game_total": { "type": "boolean" },
+              "attribution_only": { "type": "boolean" },
+              "types": { "type": "array", "items": { "type": "string", "enum": [
+                "goal_to_no_goal", "no_goal_to_goal", "video_review_overturn",
+                "coach_challenge", "scorer_change", "assist_change",
+                "strength_change", "official_report_changed", "other"
+              ]}, "minItems": 1 },
+              "timing": { "type": "string", "enum": ["in_game", "intermission", "postgame", "unknown"] },
+              "timing_confidence": { "type": "string", "enum": ["direct", "heuristic", "unknown"] },
+              "reason": { "type": ["string", "null"] },
+              "settlement_risk": { "type": "boolean" }
+            }
+          },
+          "detection": {
+            "type": "object",
+            "required": ["method", "first_detected_at"],
+            "properties": {
+              "method": { "type": "string", "enum": ["snapshot_diff", "review_marker", "report_hash_change", "manual_verified"] },
+              "first_detected_at": { "type": "string" },
+              "detector_version": { "type": "string" }
+            }
+          },
+          "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidence" }, "minItems": 1 },
+          "flags": { "type": "array", "items": { "type": "string" } },
+          "revisions": { "type": "array", "items": {
+            "type": "object", "required": ["at", "note"],
+            "properties": { "at": { "type": "string" }, "note": { "type": "string" } }
+          }}
+        }
+      }
+    }
+  }
+}

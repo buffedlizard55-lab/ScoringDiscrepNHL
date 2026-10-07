@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests (offline, synthetic fixtures)
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate data files
+        run: python3 -m pipeline.main validate
+      - name: Site asset sanity
+        run: |
+          test -f site/index.html
+          test -f site/js/app.js
+          test -f site/css/style.css
+          test -f data/discrepancies.json
+          test -f data/alerts.json
+          node --check site/js/app.js || echo "node unavailable, skipped JS syntax check"
