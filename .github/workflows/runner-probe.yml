@@ -1,0 +1,167 @@
+name: runner source probe
+
+# Measures the official NHL sources from a place that can actually reach them.
+#
+# The sandbox this project is written in has no route to nhl.com / api-web.nhle.com
+# (measured, artifact: docs/evidence/sandbox_network_probe.json), so every claim
+# about the live feeds - reachability, payload shape, request latency - has to be
+# measured on a runner and committed as an artifact. This is the workflow that
+# turns "we believe the feed looks like this" into "here is the measurement, with
+# the timestamp and the command that produced it".
+#
+# It also acts as the scheduler-reliability witness: every run appends one row to
+# data/reference/runner_probe_history.json, so the gap between successive rows is
+# a MEASURED GitHub Actions cadence rather than the cadence the cron string
+# promises. See docs/ALERTING.md section "Latency budget".
+#
+# Safe by construction: read-only against public endpoints, no issues opened, no
+# records written, 1s between requests, 3 latency samples per endpoint.
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "YYYY-MM-DD to treat as today (default: today UTC)"
+        required: false
+      game_id:
+        description: "Current-season game id to probe"
+        required: false
+        default: "2026020001"
+      samples:
+        description: "Latency samples per endpoint"
+        required: false
+        default: "3"
+      write_fixture:
+        description: "Also write tests/fixtures/score_payload_excerpt.json from the live payload"
+        required: false
+        default: "false"
+  schedule:
+    # Odd minute, deliberately not */5: GitHub drops and delays high-frequency
+    # schedules under load, and this repo measured 1 scheduled run in 12 hours
+    # for a */5 cron (data/reference/scheduler_measurement.json). Once an hour at
+    # an off-minute is a cadence that is more likely to actually fire, and the
+    # history file records what really happened.
+    - cron: "23 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: runner-source-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Probe the official sources and measure latency
+        id: probe
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ARGS=""
+          [ -n "${{ github.event.inputs.date }}" ] && ARGS="$ARGS --date ${{ github.event.inputs.date }}"
+          [ -n "${{ github.event.inputs.game_id }}" ] && ARGS="$ARGS --game-id ${{ github.event.inputs.game_id }}"
+          [ -n "${{ github.event.inputs.samples }}" ] && ARGS="$ARGS --samples ${{ github.event.inputs.samples }}"
+          [ "${{ github.event.inputs.write_fixture }}" = "true" ] && ARGS="$ARGS --write-fixture"
+          python3 scripts/runner_probe.py $ARGS | tee probe_summary.json
+
+      - name: Append this run to the measured cadence history
+        run: |
+          python3 - <<'PY'
+          import json, os, datetime
+          path = "data/reference/runner_probe_history.json"
+          hist = {"schema_version": 1,
+                  "what_this_file_is": ("One row per completed runner probe. The gap between "
+                                        "successive rows is the MEASURED scheduler cadence for "
+                                        "this repository, which is the only honest latency "
+                                        "figure to publish. Appended by .github/workflows/"
+                                        "runner-probe.yml."),
+                  "runs": []}
+          if os.path.exists(path):
+              with open(path, encoding="utf-8") as fh:
+                  hist = json.load(fh)
+          summary = {}
+          if os.path.exists("data/reference/runner_probe.json"):
+              with open("data/reference/runner_probe.json", encoding="utf-8") as fh:
+                  summary = json.load(fh).get("summary", {})
+          hist.setdefault("runs", []).append({
+              "run_id": os.environ.get("GITHUB_RUN_ID"),
+              "run_attempt": os.environ.get("GITHUB_RUN_NUMBER"),
+              "event": os.environ.get("GITHUB_EVENT_NAME"),
+              "branch": os.environ.get("GITHUB_REF_NAME"),
+              "started_at_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "workflow_url": f"https://github.com/{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ.get('GITHUB_RUN_ID')}",
+              "endpoints_reachable": summary.get("reachable"),
+              "endpoints_probed": summary.get("endpoints_probed"),
+          })
+          hist["runs"] = hist["runs"][-500:]
+          hist["updated_at_utc"] = hist["runs"][-1]["started_at_utc"]
+          gaps = []
+          for a, b in zip(hist["runs"], hist["runs"][1:]):
+              try:
+                  t0 = datetime.datetime.strptime(a["started_at_utc"], "%Y-%m-%dT%H:%M:%SZ")
+                  t1 = datetime.datetime.strptime(b["started_at_utc"], "%Y-%m-%dT%H:%M:%SZ")
+                  gaps.append((t1 - t0).total_seconds() / 60.0)
+              except (KeyError, ValueError):
+                  continue
+          if gaps:
+              gaps_sorted = sorted(gaps)
+              hist["measured_cadence_minutes"] = {
+                  "samples": len(gaps),
+                  "min": round(gaps_sorted[0], 1),
+                  "median": round(gaps_sorted[len(gaps_sorted) // 2], 1),
+                  "max": round(gaps_sorted[-1], 1),
+                  "note": ("Computed from the gaps between successive runs of THIS workflow. "
+                           "A cron string is a request, not a guarantee."),
+              }
+          with open(path, "w", encoding="utf-8") as fh:
+              json.dump(hist, fh, indent=2, ensure_ascii=False)
+              fh.write("\n")
+          print(json.dumps(hist.get("measured_cadence_minutes", {"samples": 0}), indent=2))
+          PY
+
+      - name: Step summary (published on the run page)
+        if: always()
+        run: |
+          {
+            echo "## Official source probe from a GitHub runner"
+            echo ""
+            echo '```json'
+            cat probe_summary.json 2>/dev/null || echo "probe did not produce a summary"
+            echo '```'
+            echo ""
+            echo "Artifact: \`data/reference/runner_probe.json\` (committed on this branch)."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit the measurement
+        run: |
+          git config user.name  "runner-probe[bot]"
+          git config user.email "runner-probe@users.noreply.github.com"
+          git add data/reference/runner_probe.json data/reference/runner_probe_history.json \
+                  tests/fixtures/score_payload_excerpt.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "measurement unchanged"
+          else
+            git commit -m "probe: measured official-source reachability and latency from a runner [skip ci]"
+            git pull --rebase origin "$GITHUB_REF_NAME" || true
+            git push origin "HEAD:$GITHUB_REF_NAME" || echo "::warning::push failed; the artifact is still uploaded below"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: runner-probe-${{ github.run_id }}
+          path: |
+            data/reference/runner_probe.json
+            data/reference/runner_probe_history.json
+            probe_summary.json
+          retention-days: 90
+          if-no-files-found: warn
