@@ -1,0 +1,39 @@
+{
+  "_provenance": {
+    "captured_from": "https://api-web.nhle.com/v1/score/2026-10-07",
+    "captured_at_utc": "2026-10-07T17:23:59Z",
+    "captured_by": "scripts/runner_probe.py on a GitHub Actions runner",
+    "note": "Structural excerpt of a live official payload, trimmed to the first game. Field values are verbatim from the response; nothing is reconstructed. Used by tests/test_runner_probe_contract.py.",
+    "container_key": "games",
+    "top_level_keys": [
+      "currentDate",
+      "gameWeek",
+      "games",
+      "nextDate",
+      "oddsPartners",
+      "prevDate"
+    ]
+  },
+  "payload_excerpt": {
+    "id": 2026020053,
+    "startTimeUTC": "2026-10-07T23:30:00Z",
+    "gameState": "FUT",
+    "season": 20262027,
+    "gameType": 2,
+    "awayTeam": {
+      "abbrev": "PIT",
+      "name": {
+        "default": "Penguins"
+      }
+    },
+    "homeTeam": {
+      "abbrev": "WSH",
+      "name": {
+        "default": "Capitals"
+      }
+    },
+    "periodDescriptor": null,
+    "clock": null,
+    "venue": "Capital One Arena"
+  }
+}

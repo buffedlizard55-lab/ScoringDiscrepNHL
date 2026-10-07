@@ -1,0 +1,725 @@
+{
+  "schema_version": 1,
+  "what_this_file_is": "Measurement of the official NHL sources taken from a GitHub Actions runner (real network), by scripts/runner_probe.py. Latency figures in this file are the only ones the project is allowed to quote, because they are the only ones measured.",
+  "probed_at_utc": "2026-10-07T17:23:58Z",
+  "runner": {
+    "hostname": "runnervmmprz5",
+    "python": "3.11.17",
+    "utc_offset_seconds": 0,
+    "tls": "OpenSSL 3.0.13 30 Jan 2024"
+  },
+  "parameters": {
+    "today": "2026-10-07",
+    "yesterday": "2026-10-06",
+    "game_id": "2026020001",
+    "season": "2026",
+    "season_folder": "20262027",
+    "game_no": "020001",
+    "game_pk": "2026020001"
+  },
+  "results": {
+    "score.today": {
+      "ok": true,
+      "url": "https://api-web.nhle.com/v1/score/2026-10-07",
+      "http_status": 200,
+      "final_url": "https://api-web.nhle.com/v1/score/2026-10-07",
+      "content_type": "application/json",
+      "bytes": 12294,
+      "elapsed_seconds": 0.038,
+      "structure": {
+        "prevDate": "str",
+        "currentDate": "str",
+        "nextDate": "str",
+        "gameWeek": [
+          "list[7]",
+          {
+            "date": "str",
+            "dayAbbrev": "str",
+            "numberOfGames": "int"
+          }
+        ],
+        "oddsPartners": [
+          "list[7]",
+          {
+            "partnerId": "int",
+            "country": "str",
+            "name": "str",
+            "imageUrl": "str",
+            "siteUrl": "str",
+            "bgColor": "str",
+            "textColor": "str",
+            "accentColor": "str"
+          }
+        ],
+        "games": [
+          "list[3]",
+          {
+            "id": "int",
+            "season": "int",
+            "gameType": "int",
+            "gameDate": "str",
+            "venue": {
+              "default": "str"
+            },
+            "startTimeUTC": "str",
+            "easternUTCOffset": "str",
+            "venueUTCOffset": "str",
+            "tvBroadcasts": [
+              "list[2]",
+              "..."
+            ],
+            "gameState": "str",
+            "gameScheduleState": "str",
+            "awayTeam": {
+              "id": "int",
+              "name": "...",
+              "abbrev": "str",
+              "record": "str",
+              "logo": "str",
+              "odds": "..."
+            },
+            "homeTeam": {
+              "id": "int",
+              "name": "...",
+              "abbrev": "str",
+              "record": "str",
+              "logo": "str",
+              "odds": "..."
+            },
+            "gameCenterLink": "str",
+            "neutralSite": "bool",
+            "venueTimezone": "str",
+            "ticketsLink": "str",
+            "ticketsLinkFr": "str",
+            "teamLeaders": [
+              "list[6]",
+              "..."
+            ]
+          }
+        ]
+      }
+    },
+    "score.yesterday": {
+      "ok": true,
+      "url": "https://api-web.nhle.com/v1/score/2026-10-06",
+      "http_status": 200,
+      "final_url": "https://api-web.nhle.com/v1/score/2026-10-06",
+      "content_type": "application/json",
+      "bytes": 73609,
+      "elapsed_seconds": 0.118,
+      "structure": {
+        "prevDate": "str",
+        "currentDate": "str",
+        "nextDate": "str",
+        "gameWeek": [
+          "list[7]",
+          {
+            "date": "str",
+            "dayAbbrev": "str",
+            "numberOfGames": "int"
+          }
+        ],
+        "oddsPartners": [
+          "list[7]",
+          {
+            "partnerId": "int",
+            "country": "str",
+            "name": "str",
+            "imageUrl": "str",
+            "siteUrl": "str",
+            "bgColor": "str",
+            "textColor": "str",
+            "accentColor": "str"
+          }
+        ],
+        "games": [
+          "list[9]",
+          {
+            "id": "int",
+            "season": "int",
+            "gameType": "int",
+            "gameDate": "str",
+            "venue": {
+              "default": "str"
+            },
+            "startTimeUTC": "str",
+            "easternUTCOffset": "str",
+            "venueUTCOffset": "str",
+            "tvBroadcasts": [
+              "list[2]",
+              "..."
+            ],
+            "gameState": "str",
+            "gameScheduleState": "str",
+            "awayTeam": {
+              "id": "int",
+              "name": "...",
+              "abbrev": "str",
+              "score": "int",
+              "sog": "int",
+              "logo": "str"
+            },
+            "homeTeam": {
+              "id": "int",
+              "name": "...",
+              "abbrev": "str",
+              "score": "int",
+              "sog": "int",
+              "logo": "str"
+            },
+            "gameCenterLink": "str",
+            "threeMinRecap": "str",
+            "threeMinRecapFr": "str",
+            "condensedGame": "str",
+            "clock": {
+              "timeRemaining": "str",
+              "secondsRemaining": "int",
+              "running": "bool",
+              "inIntermission": "bool"
+            },
+            "neutralSite": "bool",
+            "venueTimezone": "str",
+            "period": "int",
+            "periodDescriptor": {
+              "number": "int",
+              "periodType": "str",
+              "maxRegulationPeriods": "int"
+            },
+            "gameOutcome": {
+              "lastPeriodType": "str",
+              "otPeriods": "int"
+            },
+            "goals": [
+              "list[9]",
+              "..."
+            ]
+          }
+        ]
+      }
+    },
+    "scoreboard.now": {
+      "ok": true,
+      "url": "https://api-web.nhle.com/v1/scoreboard/now",
+      "http_status": 200,
+      "final_url": "https://api-web.nhle.com/v1/scoreboard/now",
+      "content_type": "application/json",
+      "bytes": 119624,
+      "elapsed_seconds": 0.112,
+      "structure": {
+        "focusedDate": "str",
+        "focusedDateCount": "int",
+        "gamesByDate": [
+          "list[11]",
+          {
+            "date": "str",
+            "games": [
+              "list[5]",
+              "..."
+            ]
+          }
+        ]
+      }
+    },
+    "club.schedule": {
+      "ok": false,
+      "url": "https://api-web.nhle.com/v1/club-schedule-season/2026",
+      "http_status": 404,
+      "elapsed_seconds": 0.119,
+      "bytes": 257,
+      "error": "HTTPError 404",
+      "reason": "a 404 here is data: the document does not exist"
+    },
+    "gamecenter.landing": {
+      "ok": true,
+      "url": "https://api-web.nhle.com/v1/gamecenter/2026020001/landing",
+      "http_status": 200,
+      "final_url": "https://api-web.nhle.com/v1/gamecenter/2026020001/landing",
+      "content_type": "application/json",
+      "bytes": 8488,
+      "elapsed_seconds": 0.45,
+      "structure": {
+        "id": "int",
+        "season": "int",
+        "gameType": "int",
+        "limitedScoring": "bool",
+        "gameDate": "str",
+        "venue": {
+          "default": "str"
+        },
+        "venueLocation": {
+          "default": "str"
+        },
+        "startTimeUTC": "str",
+        "easternUTCOffset": "str",
+        "venueUTCOffset": "str",
+        "venueTimezone": "str",
+        "periodDescriptor": {
+          "number": "int",
+          "periodType": "str",
+          "maxRegulationPeriods": "int"
+        },
+        "tvBroadcasts": [
+          "list[1]",
+          {
+            "id": "int",
+            "market": "str",
+            "countryCode": "str",
+            "network": "str",
+            "sequenceNumber": "int"
+          }
+        ],
+        "gameState": "str",
+        "gameScheduleState": "str",
+        "awayTeam": {
+          "id": "int",
+          "commonName": {
+            "default": "str"
+          },
+          "abbrev": "str",
+          "placeName": {
+            "default": "str",
+            "fr": "str"
+          },
+          "placeNameWithPreposition": {
+            "default": "str",
+            "fr": "str"
+          },
+          "score": "int",
+          "sog": "int",
+          "logo": "str",
+          "darkLogo": "str"
+        },
+        "homeTeam": {
+          "id": "int",
+          "commonName": {
+            "default": "str"
+          },
+          "abbrev": "str",
+          "placeName": {
+            "default": "str",
+            "fr": "str"
+          },
+          "placeNameWithPreposition": {
+            "default": "str",
+            "fr": "str"
+          },
+          "score": "int",
+          "sog": "int",
+          "logo": "str",
+          "darkLogo": "str"
+        },
+        "shootoutInUse": "bool",
+        "maxPeriods": "int",
+        "regPeriods": "int",
+        "otInUse": "bool",
+        "tiesInUse": "bool",
+        "summary": {
+          "scoring": [
+            "list[4]",
+            {
+              "periodDescriptor": "...",
+              "goals": "..."
+            }
+          ],
+          "threeStars": [
+            "list[3]",
+            {
+              "star": "int",
+              "playerId": "int",
+              "teamAbbrev": "str",
+              "headshot": "str",
+              "name": "...",
+              "sweaterNo": "int",
+              "position": "str",
+              "goals": "int",
+              "assists": "int",
+              "points": "int"
+            }
+          ],
+          "penalties": [
+            "list[4]",
+            {
+              "periodDescriptor": "...",
+              "penalties": "..."
+            }
+          ]
+        },
+        "clock": {
+          "timeRemaining": "str",
+          "secondsRemaining": "int",
+          "running": "bool",
+          "inIntermission": "bool"
+        }
+      }
+    },
+    "gamecenter.pbp": {
+      "ok": true,
+      "url": "https://api-web.nhle.com/v1/gamecenter/2026020001/play-by-play",
+      "http_status": 200,
+      "final_url": "https://api-web.nhle.com/v1/gamecenter/2026020001/play-by-play",
+      "content_type": "application/json",
+      "bytes": 134115,
+      "elapsed_seconds": 0.105,
+      "structure": {
+        "id": "int",
+        "season": "int",
+        "gameType": "int",
+        "limitedScoring": "bool",
+        "gameDate": "str",
+        "venue": {
+          "default": "str"
+        },
+        "venueLocation": {
+          "default": "str"
+        },
+        "startTimeUTC": "str",
+        "easternUTCOffset": "str",
+        "venueUTCOffset": "str",
+        "tvBroadcasts": [
+          "list[1]",
+          {
+            "id": "int",
+            "market": "str",
+            "countryCode": "str",
+            "network": "str",
+            "sequenceNumber": "int"
+          }
+        ],
+        "gameState": "str",
+        "gameScheduleState": "str",
+        "periodDescriptor": {
+          "number": "int",
+          "periodType": "str",
+          "maxRegulationPeriods": "int"
+        },
+        "awayTeam": {
+          "id": "int",
+          "commonName": {
+            "default": "str"
+          },
+          "abbrev": "str",
+          "score": "int",
+          "sog": "int",
+          "logo": "str",
+          "darkLogo": "str",
+          "placeName": {
+            "default": "str",
+            "fr": "str"
+          },
+          "placeNameWithPreposition": {
+            "default": "str",
+            "fr": "str"
+          }
+        },
+        "homeTeam": {
+          "id": "int",
+          "commonName": {
+            "default": "str"
+          },
+          "abbrev": "str",
+          "score": "int",
+          "sog": "int",
+          "logo": "str",
+          "darkLogo": "str",
+          "placeName": {
+            "default": "str",
+            "fr": "str"
+          },
+          "placeNameWithPreposition": {
+            "default": "str",
+            "fr": "str"
+          }
+        },
+        "shootoutInUse": "bool",
+        "otInUse": "bool",
+        "clock": {
+          "timeRemaining": "str",
+          "secondsRemaining": "int",
+          "running": "bool",
+          "inIntermission": "bool"
+        },
+        "displayPeriod": "int",
+        "maxPeriods": "int",
+        "gameOutcome": {
+          "lastPeriodType": "str",
+          "otPeriods": "int"
+        },
+        "plays": [
+          "list[337]",
+          {
+            "eventId": "int",
+            "periodDescriptor": {
+              "number": "int",
+              "periodType": "str",
+              "maxRegulationPeriods": "int"
+            },
+            "timeInPeriod": "str",
+            "timeRemaining": "str",
+            "situationCode": "str",
+            "homeTeamDefendingSide": "str",
+            "typeCode": "int",
+            "typeDescKey": "str",
+            "sortOrder": "int"
+          }
+        ],
+        "rosterSpots": [
+          "list[40]",
+          {
+            "teamId": "int",
+            "playerId": "int",
+            "firstName": {
+              "default": "str"
+            },
+            "lastName": {
+              "default": "str"
+            },
+            "sweaterNumber": "int",
+            "positionCode": "str",
+            "headshot": "str"
+          }
+        ],
+        "regPeriods": "int",
+        "summary": {}
+      }
+    },
+    "gamecenter.boxscore": {
+      "ok": true,
+      "url": "https://api-web.nhle.com/v1/gamecenter/2026020001/boxscore",
+      "http_status": 200,
+      "final_url": "https://api-web.nhle.com/v1/gamecenter/2026020001/boxscore",
+      "content_type": "application/json",
+      "bytes": 13206,
+      "elapsed_seconds": 0.3,
+      "structure": {
+        "id": "int",
+        "season": "int",
+        "gameType": "int",
+        "limitedScoring": "bool",
+        "gameDate": "str",
+        "venue": {
+          "default": "str"
+        },
+        "venueLocation": {
+          "default": "str"
+        },
+        "startTimeUTC": "str",
+        "easternUTCOffset": "str",
+        "venueUTCOffset": "str",
+        "tvBroadcasts": [
+          "list[1]",
+          {
+            "id": "int",
+            "market": "str",
+            "countryCode": "str",
+            "network": "str",
+            "sequenceNumber": "int"
+          }
+        ],
+        "gameState": "str",
+        "gameScheduleState": "str",
+        "periodDescriptor": {
+          "number": "int",
+          "periodType": "str",
+          "maxRegulationPeriods": "int"
+        },
+        "regPeriods": "int",
+        "awayTeam": {
+          "id": "int",
+          "commonName": {
+            "default": "str"
+          },
+          "abbrev": "str",
+          "score": "int",
+          "sog": "int",
+          "logo": "str",
+          "darkLogo": "str",
+          "placeName": {
+            "default": "str",
+            "fr": "str"
+          },
+          "placeNameWithPreposition": {
+            "default": "str",
+            "fr": "str"
+          }
+        },
+        "homeTeam": {
+          "id": "int",
+          "commonName": {
+            "default": "str"
+          },
+          "abbrev": "str",
+          "score": "int",
+          "sog": "int",
+          "logo": "str",
+          "darkLogo": "str",
+          "placeName": {
+            "default": "str",
+            "fr": "str"
+          },
+          "placeNameWithPreposition": {
+            "default": "str",
+            "fr": "str"
+          }
+        },
+        "clock": {
+          "timeRemaining": "str",
+          "secondsRemaining": "int",
+          "running": "bool",
+          "inIntermission": "bool"
+        },
+        "playerByGameStats": {
+          "awayTeam": {
+            "forwards": [
+              "list[12]",
+              "..."
+            ],
+            "defense": [
+              "list[6]",
+              "..."
+            ],
+            "goalies": [
+              "list[2]",
+              "..."
+            ]
+          },
+          "homeTeam": {
+            "forwards": [
+              "list[12]",
+              "..."
+            ],
+            "defense": [
+              "list[6]",
+              "..."
+            ],
+            "goalies": [
+              "list[2]",
+              "..."
+            ]
+          }
+        },
+        "gameOutcome": {
+          "lastPeriodType": "str",
+          "otPeriods": "int"
+        }
+      }
+    },
+    "report.GS": {
+      "ok": true,
+      "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020001.HTM",
+      "http_status": 200,
+      "final_url": "https://www.nhl.com/scores/htmlreports/20262027/GS020001.HTM",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 32887,
+      "elapsed_seconds": 0.12
+    },
+    "report.PL": {
+      "ok": true,
+      "url": "https://www.nhl.com/scores/htmlreports/20262027/PL020001.HTM",
+      "http_status": 200,
+      "final_url": "https://www.nhl.com/scores/htmlreports/20262027/PL020001.HTM",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 1284401,
+      "elapsed_seconds": 0.312
+    },
+    "statsapi.feed": {
+      "ok": false,
+      "url": "https://statsapi.web.nhl.com/api/v1/game/2026020001/feed/live",
+      "http_status": null,
+      "elapsed_seconds": 0.043,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    },
+    "statsapi.schedule": {
+      "ok": false,
+      "url": "https://statsapi.web.nhl.com/api/v1/schedule?startDate=2026-10-07&endDate=2026-10-07",
+      "http_status": null,
+      "elapsed_seconds": 0.051,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    }
+  },
+  "latency": {
+    "score.today": {
+      "url": "https://api-web.nhle.com/v1/score/2026-10-07",
+      "samples": 3,
+      "ok_samples": 3,
+      "http_statuses": [
+        200,
+        200,
+        200
+      ],
+      "min_seconds": 0.036,
+      "median_seconds": 0.04,
+      "max_seconds": 0.042
+    },
+    "gamecenter.pbp": {
+      "url": "https://api-web.nhle.com/v1/gamecenter/2026020001/play-by-play",
+      "samples": 3,
+      "ok_samples": 3,
+      "http_statuses": [
+        200,
+        200,
+        200
+      ],
+      "min_seconds": 0.04,
+      "median_seconds": 0.043,
+      "max_seconds": 0.046
+    },
+    "report.GS": {
+      "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020001.HTM",
+      "samples": 3,
+      "ok_samples": 3,
+      "http_statuses": [
+        200,
+        200,
+        200
+      ],
+      "min_seconds": 0.112,
+      "median_seconds": 0.125,
+      "max_seconds": 0.131
+    }
+  },
+  "score_payload_shape": {
+    "score.today": {
+      "url": "https://api-web.nhle.com/v1/score/2026-10-07",
+      "game_counts": {
+        "games": 3,
+        "gamesByDate": "absent",
+        "gameWeek": 7,
+        "dates": "absent",
+        "data": "absent",
+        "top_level_keys": [
+          "currentDate",
+          "gameWeek",
+          "games",
+          "nextDate",
+          "oddsPartners",
+          "prevDate"
+        ]
+      }
+    },
+    "score.yesterday": {
+      "url": "https://api-web.nhle.com/v1/score/2026-10-06",
+      "game_counts": {
+        "games": 9,
+        "gamesByDate": "absent",
+        "gameWeek": 7,
+        "dates": "absent",
+        "data": "absent",
+        "top_level_keys": [
+          "currentDate",
+          "gameWeek",
+          "games",
+          "nextDate",
+          "oddsPartners",
+          "prevDate"
+        ]
+      }
+    }
+  },
+  "verdict": "3 of 11 endpoints were NOT reachable or returned an error status - see results; any detector depending on them must flag, not guess",
+  "fixture_written": "tests/fixtures/score_payload_excerpt.json",
+  "summary": {
+    "endpoints_probed": 11,
+    "reachable": 8,
+    "unreachable": 3
+  }
+}
