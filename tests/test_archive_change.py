@@ -38,7 +38,8 @@ def _rows(*specs):
 
 
 def _snaps(*specs):
-    return archive.parse_cdx(_rows(*specs), url_filter="GS020001")
+    # the filter is a document path: pass the real URL, as snapshots_for() does
+    return archive.parse_cdx(_rows(*specs), url_filter=URL)
 
 
 class ChangeWindowTests(unittest.TestCase):
@@ -241,3 +242,34 @@ class AlertEmissionTests(unittest.TestCase):
             self.assertEqual(second["created_at_utc"], first["created_at_utc"],
                              "a re-detection must not restamp the alert as new")
             self.assertIn("last_emitted_at_utc", second)
+
+
+class UrlVariantTests(unittest.TestCase):
+    """Regression: captures under a different scheme/port are the same document.
+
+    Measured 2026-10-07: the only archived captures of the 2000-01 season are
+    ``http://www.nhl.com:80/...``; filtering on the full URL string discarded every one
+    of them and made a well-archived season look unarchived.
+    """
+
+    def test_scheme_and_port_variants_of_the_same_document_are_kept(self):
+        payload = [HEADER,
+                   ["20130701044936", "http://www.nhl.com:80/scores/htmlreports/20002001/GS020001.HTM",
+                    "200", "text/html", "MO7NXQMG3VXPD7BKEDRGLCC4KBBZPLXZ", "5942"],
+                   ["20151029204855", "http://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM",
+                    "200", "text/html", "MO7NXQMG3VXPD7BKEDRGLCC4KBBZPLXZ", "5942"],
+                   ["20120816020450", "http://www.nhl.com/scores/htmlreports/20002001/GS020002.HTM",
+                    "200", "text/html", "N2OKYXEFASPDS5WWSLD6M7POC7Z42B25", "5942"]]
+        snaps = archive.parse_cdx(
+            payload, url_filter="https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM")
+        self.assertEqual(len(snaps), 2, "both captures of game 1, and not game 2")
+        self.assertEqual({s.original for s in snaps},
+                         {"http://www.nhl.com:80/scores/htmlreports/20002001/GS020001.HTM",
+                          "http://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM"})
+
+    def test_a_different_document_in_the_same_folder_is_still_excluded(self):
+        payload = [HEADER,
+                   ["20130701044936", "http://www.nhl.com/scores/htmlreports/20002001/GS020002.HTM",
+                    "200", "text/html", "N2OKYXEFASPDS5WWSLD6M7POC7Z42B25", "5942"]]
+        self.assertEqual(archive.parse_cdx(
+            payload, url_filter="https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM"), [])

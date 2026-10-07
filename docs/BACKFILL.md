@@ -109,3 +109,31 @@ The job commits what it measured and uploads the run output as an artifact.
 5. **Nothing here proves a market was affected.** A corrected game total is a fact about
    the official record; whether a specific book had graded it is a separate question,
    flagged for review and never assumed.
+
+## Measured reach (2026-10-07)
+
+Taken through the platform's page-fetch tool against the same CDX queries the code builds
+(`matchType=prefix`, fields `original,timestamp,digest,statuscode`); the full rows are in
+`data/reference/verified_facts.json` (facts F19–F21).
+
+| Season | What the index shows | Consequence |
+| --- | --- | --- |
+| 2000-01 | Game Summaries are archived, but the earliest capture is **2012-07-01** — twelve years after the games. | Every correction made between 2000-01 and 2012 is invisible to method 2 for that season. Method 1 (frozen document vs the database) is the method that works there. |
+| 2000-01 | `GS020011.HTM` has six captures with one digest, then two with two different digests, then one back to the original digest. | A digest that returns to an earlier value is **observed on a real official document**, which is why `change_windows()` flags it instead of folding it into a change. |
+| 2005-06 | `ES020024.HTM` was captured three times with one digest and once, in 2015, with a different one. | Provable changes exist outside the Game Summary too — but only the Game Summary carries the scoring record in a form that can be attributed to a goal (`backfill.COMPARABLE_KINDS`). |
+| all | The same document is captured under `http://www.nhl.com:80/...`, `http://www.nhl.com/...` and `https://www.nhl.com/...`; 302 redirects, `301` image captures and `-` (no status recorded) rows are common. | Captures are matched by **document path**, not by URL string (a whole-URL match discarded every 2000-01 capture and made an archived season look unarchived — fact F21), and redirect/error digests are rejected as evidence. |
+
+**The honest summary:** the archive can prove *that* and *when* some official documents
+changed, and its comparison now produces both states from the league's own documents —
+but a correction that happened before a document's first capture is unrecoverable, and
+for the earliest seasons that blind spot is more than a decade. Nothing in this file
+should be read as "therefore no correction happened".
+
+## Running the full census: a permission blocker (measured, not assumed)
+
+`gh workflow run backfill.yml …` returns **HTTP 403 `Resource not accessible by
+integration`** from this session's token — dispatching a workflow requires `actions:
+write`, which the integration does not have. `workflow_dispatch` additionally only
+exposes default-branch workflows, so the runs must be started from the repository's
+Actions tab or by an admin granting the permission. Dispatch inputs and expected
+artifacts are in the table above; each run commits what it measured.
