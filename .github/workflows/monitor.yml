@@ -42,6 +42,24 @@ jobs:
         run: |
           python3 -m pipeline.main update --days 3 || echo "monitor_degraded=true" >> "$GITHUB_OUTPUT"
 
+      - name: Daily coverage probe (verified source reachability)
+        run: |
+          python3 - <<'PY' || true
+          import json, datetime, pathlib
+          cov = pathlib.Path("data/coverage_report.json")
+          today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+          need = True
+          try:
+              data = json.loads(cov.read_text())
+              need = (data.get("probed_at") or "")[:10] != today
+          except Exception:
+              pass
+          if need:
+              import subprocess, sys
+              sys.exit(subprocess.call(["python3", "-m", "pipeline.main", "probe"]))
+          print("coverage probe already ran today; skipping")
+          PY
+
       - name: Validate data files
         run: python3 -m pipeline.main validate
 
