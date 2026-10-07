@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Machine-readable vocabulary for the website filters. Any value the detector cannot yet produce is marked detectable:false so the UI does not offer a filter that can never match, and any value that is inherently not machine-detectable is marked needs_human:true.",
+  "discrepancy_types": [
+    {"value": "goal_to_no_goal", "label": "Goal -> no goal", "affects_goal_total": true, "detectable": true, "needs_human": false, "description": "A goal that appeared in the official record was later removed."},
+    {"value": "no_goal_to_goal", "label": "No goal -> goal", "affects_goal_total": true, "detectable": true, "needs_human": false, "description": "A goal absent from the official record was later added."},
+    {"value": "scorer_change", "label": "Scorer change", "affects_goal_total": false, "detectable": true, "needs_human": false, "description": "The credited goal scorer changed."},
+    {"value": "assist_change", "label": "Assist change", "affects_goal_total": false, "detectable": true, "needs_human": false, "description": "The credited assists changed."},
+    {"value": "strength_change", "label": "Strength change", "affects_goal_total": false, "detectable": true, "needs_human": false, "description": "EV/PP/SH classification of a goal changed."},
+    {"value": "own_goal_flag_change", "label": "Own-goal annotation change", "affects_goal_total": false, "detectable": true, "needs_human": false, "description": "The own-goal annotation of a goal changed."},
+    {"value": "multi_change", "label": "Multiple changes on one goal", "affects_goal_total": true, "detectable": true, "needs_human": false, "description": "More than one category of change on the same goal."},
+    {"value": "metadata_change", "label": "Non-scoring metadata change", "affects_goal_total": false, "detectable": true, "needs_human": true, "description": "Score or state changed without a matching goal-set change (inconsistent feed). Always flagged for review."},
+    {"value": "no_change", "label": "No change detected", "affects_goal_total": false, "detectable": true, "needs_human": false, "description": "Control value; used in state comparisons, never stored as a discrepancy record."}
+  ],
+  "timing": [
+    {"value": "in_game", "label": "During the game", "detectable": true},
+    {"value": "intermission", "label": "During an intermission", "detectable": true},
+    {"value": "postgame_before_validation", "label": "After the final horn, before the record was published as final", "detectable": true},
+    {"value": "postgame_after_publication", "label": "After the record was published as final", "detectable": true},
+    {"value": "unknown", "label": "Timing not derivable", "detectable": true}
+  ],
+  "settlement_levels": [
+    {"value": "critical", "label": "Critical - goal total changed after publication", "detectable": true},
+    {"value": "high", "label": "High - goal total changed", "detectable": true},
+    {"value": "medium", "label": "Medium - goal total changed while live", "detectable": true},
+    {"value": "attribution", "label": "Attribution only - cannot move a game total", "detectable": true},
+    {"value": "low", "label": "Low", "detectable": true}
+  ],
+  "evidence_statuses": [
+    {"value": "verified_two_official_states", "label": "Verified: both states from official artifacts"},
+    {"value": "verified_corrected_state", "label": "Verified corrected state only"},
+    {"value": "official_announcement_only", "label": "Official announcement only"},
+    {"value": "conflicting", "label": "Conflicting official sources - unresolved"},
+    {"value": "incomplete", "label": "Incomplete evidence"},
+    {"value": "unverifiable", "label": "Unverifiable"}
+  ],
+  "reason_categories": [
+    {"value": "official_source_statement", "label": "Stated verbatim inside an official artifact", "detectable": true},
+    {"value": "unknown", "label": "Not stated in any retrieved official artifact", "detectable": true}
+  ],
+  "not_detectable_automatically": [
+    "Why a change happened (video review, statistician correction, post-game review) unless an official artifact states it in words.",
+    "Any change that occurred entirely between two of our own polls of a source that we did not capture, when no archive snapshot exists from before the change.",
+    "Changes to sportsbook settlement behaviour, which is governed by private house rules.",
+    "Discrepancies in leagues, competitions or feeds that are not published by the NHL's own endpoints."
+  ]
+}

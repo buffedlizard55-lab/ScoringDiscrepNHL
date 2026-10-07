@@ -1,0 +1,43 @@
+name: tests
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run unit tests (stdlib only, no dependencies)
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Check the JS client parses
+        run: node --check site/app.js
+      - name: Build the static site
+        run: python tools/build_site.py
+      - name: Validate the committed data files against the record schema
+        run: |
+          PYTHONPATH=src python - <<'PY'
+          import json, sys
+          sys.path.insert(0, "src")
+          from nhl_monitor import store
+          records = store.load_records()
+          errors = []
+          for r in records:
+              errs = store.validate(r)
+              if errs:
+                  errors.append((r.get("record_id"), errs))
+          print(f"records: {len(records)}")
+          if errors:
+              print("INVALID RECORDS:", errors)
+              sys.exit(1)
+          print("all records valid")
+          PY
+      - name: Verify official sources are reachable and the parser understands the live report layout
+        continue-on-error: true
+        run: PYTHONPATH=src python -m nhl_monitor probe

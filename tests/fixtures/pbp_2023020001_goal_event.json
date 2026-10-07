@@ -1,0 +1,41 @@
+{
+  "_provenance": {
+    "note": "VERBATIM excerpt. This is the exact 'goal' event object as retrieved from the official NHL GameCenter play-by-play payload, reformatted only with indentation.",
+    "source_url": "https://api-web.nhle.com/v1/gamecenter/2023020001/play-by-play",
+    "retrieved_on": "2026-10-07",
+    "game": "2023-10-10 NSH @ TBL (game id 2023020001)",
+    "cross_check": "Matches official Game Summary 20232024/GS020001.HTM goal #1 '86 N.KUCHEROV(1) | 77 V.HEDMAN(1) | 21 B.POINT(1)' and Play-by-Play report PL020001.HTM ('NSH #2 SCHENN HIT TBL #86 KUCHEROV' -> scoringPlayerId 8476453 is Kucherov)."
+  },
+  "awayTeamId": 18,
+  "homeTeamId": 14,
+  "event": {
+    "eventId": 154,
+    "periodDescriptor": {"number": 1, "periodType": "REG", "maxRegulationPeriods": 3},
+    "timeInPeriod": "09:48",
+    "timeRemaining": "10:12",
+    "situationCode": "1551",
+    "homeTeamDefendingSide": "left",
+    "typeCode": 505,
+    "typeDescKey": "goal",
+    "sortOrder": 151,
+    "details": {
+      "xCoord": 50,
+      "yCoord": -16,
+      "zoneCode": "O",
+      "shotType": "slap",
+      "scoringPlayerId": 8476453,
+      "scoringPlayerTotal": 1,
+      "assist1PlayerId": 8475167,
+      "assist1PlayerTotal": 1,
+      "assist2PlayerId": 8478010,
+      "assist2PlayerTotal": 1,
+      "eventOwnerTeamId": 14,
+      "goalieInNetId": 8477424,
+      "awayScore": 0,
+      "homeScore": 1,
+      "highlightClipSharingUrl": "https://nhl.com/video/nikita-kucherov-with-a-goal-vs-nashville-predators-6338805211112",
+      "highlightClip": 6338805211112
+    },
+    "pptReplayUrl": "https://wsr.nhle.com/sprites/20232024/2023020001/ev154.json"
+  }
+}

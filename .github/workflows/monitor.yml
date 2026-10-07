@@ -1,0 +1,79 @@
+name: scoring monitor
+
+# Continuous detection. Runs every 5 minutes; the collector only writes when the
+# official record for a game has actually changed, so most runs commit nothing.
+# GitHub cron is UTC and can be delayed a few minutes at busy times - treat the
+# schedule as "at least every ~10 minutes", not as a real-time feed.
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "UTC date to monitor (YYYY-MM-DD). Default: today"
+        required: false
+
+concurrency:
+  group: scoring-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Collect the slate and detect changes
+        id: collect
+        run: |
+          set -o pipefail
+          ARGS=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then ARGS="--date ${{ github.event.inputs.date }}"; fi
+          PYTHONPATH=src python -m nhl_monitor monitor $ARGS --github-issue --repo "$GITHUB_REPOSITORY" | tee monitor_output.json
+          echo "alerts=$(python - <<'PY'
+          import json
+          try:
+              blob = json.load(open("monitor_output.json"))
+          except Exception:
+              print(0); raise SystemExit
+          total = sum(len(r.get("alerts", [])) for r in blob.get("results", []))
+          print(total)
+          PY
+          )" >> "$GITHUB_OUTPUT"
+
+      - name: Commit the evidence timeline and any new records
+        run: |
+          git config user.name  "scoring-monitor[bot]"
+          git config user.email "scoring-monitor@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "no changes in the official records this run"
+          else
+            git commit -m "monitor: capture official state $(date -u +'%Y-%m-%dT%H:%MZ') (alerts: ${{ steps.collect.outputs.alerts }})"
+            git push
+          fi
+
+      - name: Publish the site with the new data
+        if: steps.collect.outputs.alerts != '0'
+        run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" || true
+
+      - name: Upload the run output for auditing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitor-output-${{ github.run_id }}
+          path: monitor_output.json
+          retention-days: 30

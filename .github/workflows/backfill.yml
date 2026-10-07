@@ -1,0 +1,93 @@
+name: historical backfill
+
+# Builds the historical census. Two methods (see docs/LIMITATIONS.md):
+#   era     - frozen-era official document vs the league's current database
+#   archive - archived snapshots of the same official document
+#
+# This job is deliberately manual: it walks thousands of games, so it should be run
+# in slices (a game-number range or one season at a time) and its output reviewed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      method:
+        description: "era | archive"
+        required: true
+        default: "era"
+      season:
+        description: "Season folder start year, e.g. 20052006 (method=era)"
+        required: false
+        default: "20052006"
+      game_type:
+        description: "1 pre-season, 2 regular season, 3 playoffs"
+        required: false
+        default: "2"
+      start:
+        description: "first game number (method=era)"
+        required: false
+        default: "1"
+      end:
+        description: "last game number (method=era)"
+        required: false
+        default: "50"
+      game_id:
+        description: "single game id (method=archive)"
+        required: false
+        default: "2023020001"
+      kind:
+        description: "report kind for method=archive: GS | ES | PL | RO"
+        required: false
+        default: "GS"
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run the selected census method
+        run: |
+          set -o pipefail
+          if [ "${{ github.event.inputs.method }}" = "archive" ]; then
+            PYTHONPATH=src python -m nhl_monitor backfill-archive \
+              --game-id "${{ github.event.inputs.game_id }}" \
+              --kind "${{ github.event.inputs.kind }}" | tee backfill_output.json
+          else
+            PYTHONPATH=src python -m nhl_monitor backfill-era \
+              --season "${{ github.event.inputs.season }}" \
+              --game-type "${{ github.event.inputs.game_type }}" \
+              --start "${{ github.event.inputs.start }}" \
+              --end "${{ github.event.inputs.end }}" | tee backfill_output.json
+          fi
+
+      - name: Rebuild the site data and export CSV
+        if: always()
+        run: |
+          python tools/build_site.py
+          PYTHONPATH=src python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
+
+      - name: Commit the evidence
+        run: |
+          git config user.name  "scoring-backfill[bot]"
+          git config user.email "scoring-backfill@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "no new records from this slice"
+          else
+            git commit -m "backfill: ${{ github.event.inputs.method }} ${{ github.event.inputs.season }} games ${{ github.event.inputs.start }}-${{ github.event.inputs.end }}"
+            git push
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backfill-output-${{ github.run_id }}
+          path: backfill_output.json
+          retention-days: 30

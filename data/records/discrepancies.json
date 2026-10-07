@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "updated_at_utc": "2026-10-07T00:00:00Z",
+  "count": 0,
+  "status_note": [
+    "This database is intentionally EMPTY on the day the system was built.",
+    "A scoring discrepancy is only ever written here by the detector, and only when it has two",
+    "captured official states (or one official artifact plus a documented official statement) that",
+    "differ. Nothing is seeded from memory, media reports or assumptions, so there are no",
+    "placeholder rows to mistake for verified history.",
+    "",
+    "To populate it with the historical census, run (from a machine with normal internet access,",
+    "e.g. the scheduled GitHub workflow `backfill.yml`):",
+    "  python -m nhl_monitor backfill-era   --season 20052006 --start 1 --end 1065",
+    "  python -m nhl_monitor backfill-archive --game-id <id>   # archived-snapshot census",
+    "and for going-forward coverage:",
+    "  python -m nhl_monitor monitor --date $(date -u +%F)     # run every few minutes on game days"
+  ],
+  "coverage": {
+    "official_sources_verified": [
+      "api-web play-by-play",
+      "api-web boxscore",
+      "official Game Summary (GS)",
+      "Event Summary (ES)",
+      "Play-by-Play (PL)",
+      "Club Playing Roster (RO)",
+      "Wayback CDX + archived copies of the official documents"
+    ],
+    "sources_not_available_as_machine_readable": [
+      "NHL Situation Room rulings feed (not located)"
+    ],
+    "season_coverage_measured": {
+      "20232024": "verified: GS/ES/PL/RO retrievable; reports regenerated (not original-state)",
+      "20242025": "verified: report path archived in the Wayback CDX index",
+      "20162017": "verified: GS retrievable and frozen at game time (original state preserved)",
+      "20052006": "verified: GS/ES retrievable and frozen at game time",
+      "19992000": "verified ABSENT: 19992000/GS020001.HTM returns 404; earliest season not yet bounded"
+    },
+    "known_evidence_gaps": [
+      "No record has been produced yet: the build sandbox has no network route to NHL hosts.",
+      "The exact season where reports stopped being regenerated is measured but not yet bracketed tighter than 2016-17 .. 2023-24.",
+      "Archive snapshot density is low for most games, so most historical changes will only be recoverable via the frozen-era method, not via archives."
+    ]
+  },
+  "records": []
+}

@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "what_this_file_is": [
+    "Every factual claim this project makes about its own sources is recorded here with the",
+    "exact URL, the retrieval date and the observation that supports it. Anything not listed",
+    "here is either an assumption (forbidden) or explicitly marked as an unverified lead.",
+    "This file is the anti-hallucination ledger: if a claim is not in here and not in a",
+    "record's `sources`, it must not appear on the website or in the README."
+  ],
+  "verification_sessions": [
+    {
+      "date_utc": "2026-10-07",
+      "environment": "Arena Agent Mode sandbox: direct HTTP from the sandbox to all *.nhl.com hosts is BLOCKED (curl returned 000). Verification was performed through the platform's page-fetch tool, which could reach www.nhl.com, api-web.nhle.com and web.archive.org.",
+      "network_probe_artifact": "docs/evidence/sandbox_network_probe.json"
+    }
+  ],
+  "verified_facts": [
+    {
+      "id": "F01",
+      "claim": "The official HTML report family exists for season 20232024 with report kinds GS (Game Summary), ES (Event Summary), PL (Play-by-Play) and RO (Club Playing Roster).",
+      "method": "Direct retrieval of each document.",
+      "observations": [
+        "GS020001.HTM parsed: 8 goals, NSH 3 - TBL 5, footer '2024-02-06 11.19.44'",
+        "ES020001.HTM parsed: per-player G/A/P table, shots summary 3-31 / 5-34",
+        "PL020001.HTM parsed: chronological events with on-ice skaters",
+        "RO020001.HTM parsed: lineups, scratches, coaches, referees Rooney/Brenk, linespersons Alphonso/Brisebois"
+      ],
+      "urls": {
+        "GS": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+        "ES": "https://www.nhl.com/scores/htmlreports/20232024/ES020001.HTM",
+        "PL": "https://www.nhl.com/scores/htmlreports/20232024/PL020001.HTM",
+        "RO": "https://www.nhl.com/scores/htmlreports/20232024/RO020001.HTM"
+      }
+    },
+    {
+      "id": "F02",
+      "claim": "There is no 'SC' report family. https://www.nhl.com/scores/htmlreports/20232024/SC020001.HTM returned HTTP 404 on 2026-10-07.",
+      "method": "Direct retrieval.",
+      "urls": {"SC": "https://www.nhl.com/scores/htmlreports/20232024/SC020001.HTM"}
+    },
+    {
+      "id": "F03",
+      "claim": "The report index page https://www.nhl.com/scores/htmlreports/ returns HTTP 403 and cannot be used to enumerate seasons.",
+      "method": "Direct retrieval, 2026-10-07."
+    },
+    {
+      "id": "F04",
+      "claim": "Official reports carry a generation timestamp in the document footer, and it distinguishes two eras: documents generated on game night (frozen originals) and documents regenerated long afterwards (current state).",
+      "observations": [
+        "2005-06 GS020001 (game 2005-10-05): footer '2005-10-05-21.40.47' -> 4h after the 17:00 local start; FROZEN",
+        "2005-06 ES010025 (game 2005-09-21): footer '2005-09-21-21.27.03'; FROZEN",
+        "2016-17 GS020001 (game 2016-10-12): footer '2016-10-12-22.08.17'; FROZEN",
+        "2023-24 GS020001 (game 2023-10-10): footer '2024-02-06 11.19.44' -> ~119 days later; REGENERATED",
+        "2023-24 RO020001: footer '2024-02-06 11.20.12' -> same regeneration batch as the GS (28 seconds apart)"
+      ],
+      "conclusion": "Through at least 2016-17 the live document preserves the original game-night record; by 2023-24 documents are regenerated. The exact transition season is NOT established and must be measured by `python -m nhl_monitor probe` / the coverage job.",
+      "urls": {
+        "frozen_2005": "https://www.nhl.com/scores/htmlreports/20052006/GS020001.HTM",
+        "frozen_2016": "https://www.nhl.com/scores/htmlreports/20162017/GS020001.HTM",
+        "regenerated_2023": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM"
+      }
+    },
+    {
+      "id": "F05",
+      "claim": "Historic coverage of the official HTML report path is bounded: https://www.nhl.com/scores/htmlreports/19992000/GS020001.HTM returned HTTP 404 on 2026-10-07, while 2005-06 documents are served normally.",
+      "method": "Direct retrieval of both paths.",
+      "conclusion": "Earliest reliable season still to be established between 1999-2000 (absent) and 2005-06 (present) - the coverage job must probe each season folder."
+    },
+    {
+      "id": "F06",
+      "claim": "The GameCenter JSON API serves historical seasons, including 2005-06.",
+      "observations": [
+        "GET /v1/gamecenter/2005020001/boxscore -> HTTP 200, season 20052006, MTL 2 - BOS 1, shots 21/30",
+        "GET /v1/gamecenter/2023020001/boxscore -> HTTP 200, NSH 3 - TBL 5, shots 31/34",
+        "GET /v1/gamecenter/2023020001/play-by-play -> HTTP 200 with full event list"
+      ],
+      "urls": {
+        "old_game": "https://api-web.nhle.com/v1/gamecenter/2005020001/boxscore",
+        "new_game": "https://api-web.nhle.com/v1/gamecenter/2023020001/play-by-play"
+      }
+    },
+    {
+      "id": "F07",
+      "claim": "The JSON API and the HTML reports are the same official data rendered twice: player identifiers and the scoring record agree between them.",
+      "observations": [
+        "Play-by-play goal event for 2023020001 goal #1 has scoringPlayerId=8476453, assist1PlayerId=8475167, assist2PlayerId=8478010, awayScore=0, homeScore=1 at 09:48 P1",
+        "Official Game Summary GS020001.HTM goal #1 reads '1 | 1 | 9:48 | EV | TBL | 86 N.KUCHEROV(1) | 77 V.HEDMAN(1) | 21 B.POINT(1)'",
+        "Independent id check from the Play-by-Play report text: 'NSH #2 SCHENN HIT TBL #86 KUCHEROV' pairs sweater 86 with 8476453"
+      ],
+      "consequence": "Disagreement between the two is therefore a real change signal, but the two sources are NOT independent - they must not be treated as two witnesses in the record's evidence.",
+      "urls": ["https://api-web.nhle.com/v1/gamecenter/2023020001/play-by-play",
+               "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+               "https://www.nhl.com/scores/htmlreports/20232024/PL020001.HTM"]
+    },
+    {
+      "id": "F08",
+      "claim": "Negative control for the archive method: the archived copy of GS020001.HTM (20232024) taken 2025-01-25 shows the same scoring summary and the same document footer as the live document retrieved 2026-10-07.",
+      "observations": [
+        "Wayback snapshot 20250125005135 (id_ raw) contains the identical eight-goal scoring summary and the same footer '2024-02-06 11.19.44'",
+        "Therefore no scoring change is detectable for that game from that pair of observations"
+      ],
+      "consequence": "The digest/diff method produced zero false positives on this control. It also proves that a document regeneration (footer change) is not by itself evidence of a scoring change - a content diff is required. And it demonstrates the reverse risk: a snapshot taken AFTER a correction cannot reveal it.",
+      "urls": ["https://web.archive.org/web/20250125005135id_/https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+               "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM"]
+    },
+    {
+      "id": "F09",
+      "claim": "The Wayback CDX index exposes a content digest per snapshot of an official document, which makes 'did this official document ever change?' an answerable question without downloading every version.",
+      "observations": [
+        "Exact-URL query for 20232024/GS020001.HTM -> one row: statuscode 200, digest TE24NPUUMSEV3LQEBNQE2TN3NO5GNATJ, timestamp 20250125005135, length 4435",
+        "Prefix query for 20242025/ returned rows with digests, e.g. ES010026.HTM digest CBOFKLR7ECD2HM5O3K74TQ7RM5O7TEUM at 20250115055117"
+      ],
+      "urls": ["http://web.archive.org/cdx/search/cdx?url=nhl.com/scores/htmlreports/20232024/GS020001.HTM&output=json"]
+    },
+    {
+      "id": "F10",
+      "claim": "Archive coverage is sparse and noisy and must be filtered before it can be used as evidence.",
+      "observations": [
+        "The 2005-06 prefix sample contains 2006-era captures that are HTTP 302 redirects with digest 3I42H3S6NNFQ2MSVX7XZKYAYSCX5QBYJ (no body)",
+        "The same prefix contains http:// captures of images whose digest is OQ3OBNFR7DBCFQ4ANGEQW5P2FOXZZJRA (error page)",
+        "Only the 2015-10-09 capture of ES010025.HTM was a real 200 document (4602 bytes)"
+      ],
+      "consequence": "archive.content_versions() only accepts statuscode 200 with a real mime type and rejects both digests above."
+    },
+    {
+      "id": "F11",
+      "claim": "Method validation for the frozen-era census (frozen official document vs current official database), sample size 1: they agree.",
+      "observations": [
+        "Frozen GS020001.HTM (2005-10-05, MTL 2 - BOS 1) credits J. BULIS, P. BERGERON and M. RYDER with the goals",
+        "Current API boxscore for the same game credits J. Bulis (1G), M. Ryder (1G), and assists Koivu/Kovalev/Bonk/Sundstrom - consistent for every player visible in the retrieved chunk; team totals and shots agree",
+        "Bergeron's individual line was NOT visible in the retrieved chunk of the boxscore and is therefore NOT verified"
+      ],
+      "consequence": "The census method is plausible but NOT proven to find anything. A full-season run is required; do not describe the method as validated."
+    },
+    {
+      "id": "F12",
+      "claim": "The play-by-play event vocabulary observed on 2026-10-07 for game 2023020001 does not include any video-review event type.",
+      "observations": [
+        "typeDescKey values seen in the retrieved chunks: period-start, faceoff, stoppage, hit, giveaway, takeaway, shot-on-goal, missed-shot, blocked-shot, goal",
+        "typeCode seen: 502, 503, 504, 505 (goal), 506, 507, 508, 516, 520, 525",
+        "stoppage reasons seen: icing, puck-in-netting, goalie-stopped-after-sog; secondaryReason: tv-timeout"
+      ],
+      "consequence": "The system must NOT claim to detect video review from the feed until such events are actually observed. The vocabulary is re-measured at runtime by the collector and dumped to data/schema/observed_vocabulary.json."
+    }
+  ],
+  "secondary_leads_not_evidence": [
+    {
+      "id": "L01",
+      "lead": "Media reports (2026-05-19) state the NHL changed the Sabres' first goal in a 2026 playoff Game 7 from Mattias Samuelsson to Jordan Greenway after the puck deflected off Greenway's leg.",
+      "status": "NOT VERIFIED. Reported by a secondary site quoting two beat writers. No official artifact has been retrieved by this project. It is listed as a candidate to verify, never as a record.",
+      "source": "https://www.montrealhockeyfanatics.com/nhl-team/buffalo-sabres/nhl-announces-official-change-to-controversial-goal-in-canadiens-sabres-game-7"
+    },
+    {
+      "id": "L02",
+      "lead": "A blog post states the NHL has tracked an 'own goal' distinction since 2008-09, and that an own goal is still credited to an attacking player (Kyle Connor, WPG-COL, May 2024).",
+      "status": "NOT VERIFIED against an official source. Relevant to classification (an own goal is not an attribution change), so it must be confirmed from official documents before use.",
+      "source": "https://www.shapshotshockey.com/p/yes-own-goals-officially-exist-in"
+    }
+  ]
+}
