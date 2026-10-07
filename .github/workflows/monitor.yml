@@ -1,10 +1,15 @@
-<<<<<<< HEAD
 name: scoring monitor
 
 # Continuous detection. Runs every 5 minutes; the collector only writes when the
 # official record for a game has actually changed, so most runs commit nothing.
 # GitHub cron is UTC and can be delayed a few minutes at busy times - treat the
 # schedule as "at least every ~10 minutes", not as a real-time feed.
+#
+# REPAIR NOTE (2026-10-07): this file was pushed to main with unresolved merge
+# conflict markers, breaking every run. It has been reconstructed verbatim from
+# the HEAD side of that conflicted merge — the active implementation of the
+# parallel line (src/nhl_monitor). The other line's monitor (pipeline/) remains
+# parked at monitor_root_site.yml.disabled. See docs/parallel_line/PARALLEL_LINE.md.
 
 on:
   schedule:
@@ -14,29 +19,11 @@ on:
       date:
         description: "UTC date to monitor (YYYY-MM-DD). Default: today"
         required: false
-=======
-name: Scoring monitor
-
-# Runs the discrepancy monitor on a schedule. It snapshots official NHL data,
-# diffs against previous snapshots (kept in the Actions cache), writes any new
-# discrepancy records/alerts to data/, commits them to main, and opens a GitHub
-# Issue for each new alert. The Pages workflow redeploys automatically on push.
-
-on:
-  schedule:
-    - cron: "*/30 * * * *"
-  workflow_dispatch: {}
-
-permissions:
-  contents: write
-  issues: write
->>>>>>> origin/main
 
 concurrency:
   group: scoring-monitor
   cancel-in-progress: false
 
-<<<<<<< HEAD
 permissions:
   contents: write
   issues: write
@@ -97,89 +84,3 @@ jobs:
           name: monitor-output-${{ github.run_id }}
           path: monitor_output.json
           retention-days: 30
-=======
-jobs:
-  monitor:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Restore snapshot baselines
-        uses: actions/cache@v4
-        with:
-          path: data/snapshots
-          key: sdnhl-snapshots-${{ github.run_id }}
-          restore-keys: |
-            sdnhl-snapshots-
-
-      - name: Run monitor cycle
-        id: monitor
-        run: |
-          python3 -m pipeline.main update --days 3 || echo "monitor_degraded=true" >> "$GITHUB_OUTPUT"
-
-      - name: Daily coverage probe (verified source reachability)
-        run: |
-          python3 - <<'PY' || true
-          import json, datetime, pathlib
-          cov = pathlib.Path("data/coverage_report.json")
-          today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
-          need = True
-          try:
-              data = json.loads(cov.read_text())
-              need = (data.get("probed_at") or "")[:10] != today
-          except Exception:
-              pass
-          if need:
-              import subprocess, sys
-              sys.exit(subprocess.call(["python3", "-m", "pipeline.main", "probe"]))
-          print("coverage probe already ran today; skipping")
-          PY
-
-      - name: Validate data files
-        run: python3 -m pipeline.main validate
-
-      - name: Commit data changes
-        run: |
-          git config user.name "scoring-monitor-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/discrepancies.json data/alerts.json data/alerts.xml \
-                  data/notifications_state.json data/coverage_report.json || true
-          if ! git diff --cached --quiet; then
-            git commit -m "monitor: update discrepancy data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            # Pushing to main re-triggers the legacy GitHub Pages build
-            # automatically (Pages is configured to deploy from the main branch).
-            git push
-          else
-            echo "No data changes to commit."
-          fi
-
-      - name: Open GitHub Issues for new alerts
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -f data/pending_issues.json ]; then
-            gh label create "scoring-alert" --color "D93F0B" \
-              --description "Automated scoring discrepancy alert" 2>/dev/null || true
-            gh label create "automated" --color "1D76DB" \
-              --description "Created by automation" 2>/dev/null || true
-            python3 - <<'PY'
-            import json, subprocess
-            with open("data/pending_issues.json") as fh:
-                payload = json.load(fh)
-            for issue in payload.get("issues", []):
-                cmd = ["gh", "issue", "create", "--title", issue["title"], "--body", issue["body"]]
-                for label in issue.get("labels", []):
-                    cmd += ["--label", label]
-                subprocess.run(cmd, check=False)
-            PY
-            echo '{"issues": []}' > data/pending_issues.json
-            git add data/pending_issues.json
-            git diff --cached --quiet || { git commit -m "monitor: clear queued issue payloads" && git push; }
-          fi
->>>>>>> origin/main
