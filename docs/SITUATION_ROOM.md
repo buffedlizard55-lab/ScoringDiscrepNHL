@@ -160,8 +160,10 @@ not claim any market was mis-settled.
 pages until nothing new), validates, renders alerts (`data/alerts/`), rebuilds the
 site and commits. It is scheduled twice an hour, but GitHub's cron is best-effort
 and this repository measured **one scheduled run in eleven hours** against a
-`*/5` request (F32). Anyone who needs minutes-level alerts should trigger the
-workflow from an external scheduler:
+`*/5` request (F32), re-measured the same evening as **two scheduled runs in a
+whole day**, with the `11,41` cron on this workflow not firing at all (F33).
+**The published cadence is a request, not a guarantee.** Anyone who needs
+minutes-level alerts should trigger the workflow from an external scheduler:
 
 ```
 gh workflow run "Situation Room ingest" --ref main

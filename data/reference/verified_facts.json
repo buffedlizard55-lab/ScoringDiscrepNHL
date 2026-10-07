@@ -401,6 +401,18 @@
         "monitor.yml requests '*/5 * * * *'; exactly one scheduled run (scoring monitor, 2026-10-07T11:50:52Z) appeared in more than eleven hours"
       ],
       "consequence": "Published cadence claims ('every 5 minutes', 'every 30 minutes') are not true in practice. Minutes-level alerting needs an external trigger (workflow_dispatch from another scheduler) or a self-hosted runner."
+    },
+    {
+      "id": "F33",
+      "claim": "GitHub's scheduler has still not fired the primary alert path: the `11,41 * * * *` cron on `situation-room.yml` produced zero scheduled runs on the day it was on the default branch, and the `*/5` cron on `monitor.yml` fired twice in a full day.",
+      "method": "`gh run list -L 100 --json name,event,createdAt,headBranch` at 2026-10-07T22:19:43Z, filtered to event=schedule; merged_at read from `gh pr view 17` / `gh pr view 20`.",
+      "observations": [
+        "Of the last 100 runs, exactly two were schedule-triggered: `scoring monitor` (monitor.yml, */5) at 2026-10-07T11:50:52Z and 2026-10-07T18:15:51Z.",
+        "`Situation Room ingest` has never run from a schedule; its two runs today (17:02:46Z, 20:43:21Z) were push-triggered on a working branch.",
+        "The `11,41` cron reached `main` with PR #17 at 2026-10-07T21:06:22Z; the 21:11 and 21:41 slots both passed before this measurement at 22:19:43Z with no run - a two-slot sample, reported as such.",
+        "This is the same phenomenon as F32, measured again four hours later on a repository that was being actively pushed to, so 'idle repository' does not explain it."
+      ],
+      "consequence": "The detection and delivery code is proven end to end (issue #18, HTTP 201), but the *trigger* is not: on GitHub-hosted runners this repository cannot be relied on for a fixed cadence. Latency claims must be stated as 'best-effort, unmeasured' until a distribution exists. A dependable cadence needs an external trigger - a scheduler calling the dispatch endpoint, a self-hosted runner, or a committed `data/situation_room/run_request.json` from another source."
     }
   ],
   "secondary_leads_not_evidence": [
