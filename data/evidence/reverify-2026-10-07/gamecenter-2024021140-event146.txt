@@ -1,0 +1,32 @@
+Source URL : https://api-web.nhle.com/v1/gamecenter/2024021140/landing
+Retrieved  : 2026-10-07 (Arena page-fetch text proxy; direct HTTP blocked in sandbox)
+Status     : 200 (inferred: JSON body returned)
+
+Game header: id 2024021140, season 20242025, gameDate 2025-03-26,
+startTimeUTC 2025-03-26T23:30:00Z, gameState OFF,
+awayTeam NJD score 5 sog 21, homeTeam CHI score 3 sog 24.
+
+summary.scoring, period 1, the goal at 06:50 (verbatim excerpt):
+
+  {"situationCode":"1541","eventId":146,"strength":"pp","playerId":8482110,
+   "firstName":{"default":"Dawson"},"lastName":{"default":"Mercer"},
+   "name":{"default":"D. Mercer"},"teamAbbrev":{"default":"NJD"},
+   "highlightClipSharingUrl":"https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+   "highlightClipSharingUrlFr":"https://nhl.com/fr/video/njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112",
+   "highlightClip":6370610304112,"highlightClipFr":6370610205112,
+   "discreteClip":6370611575112,"discreteClipFr":6370610888112,
+   "goalsToDate":16,"awayScore":2,"homeScore":0,
+   "leadingTeamAbbrev":{"default":"NJD"},"timeInPeriod":"06:50","shotType":"wrist",
+   "goalModifier":"none",
+   "assists":[{"playerId":8482684,"firstName":{"default":"Luke"},
+               "lastName":{"default":"Hughes"},"name":{"default":"L. Hughes"},
+               "assistsToDate":31,"sweaterNumber":43},
+              {"playerId":8480002,"firstName":{"default":"Nico"},
+               "lastName":{"default":"Hischier"},"name":{"default":"N. Hischier"},
+               "assistsToDate":28,"sweaterNumber":13}],
+   "pptReplayUrl":"https://wsr.nhle.com/sprites/20242025/2024021140/ev146.json",
+   "homeTeamDefendingSide":"right","isHome":false}
+
+FINDING: both clip titles in this payload read "meier". The database previously
+claimed the French title read "mercer" (clip 6370608420112). That claim is not
+reproducible from this payload. See README.md in this directory.

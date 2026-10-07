@@ -1,0 +1,37 @@
+Source URL : https://api-web.nhle.com/v1/gamecenter/2024021238/landing
+Retrieved  : 2026-10-07 (Arena page-fetch text proxy; direct HTTP blocked in sandbox)
+Status     : 200 (inferred: JSON body returned)
+
+Game header: id 2024021238, season 20242025, gameDate 2025-04-08,
+startTimeUTC 2025-04-08T23:00:00Z, gameState OFF,
+awayTeam BOS score 7 sog 25, homeTeam NJD score 2 sog 21.
+
+summary.scoring, period 1, the goal at 09:38 (verbatim excerpt):
+
+  {"situationCode":"1551","eventId":324,"strength":"ev","playerId":8477956,
+   "firstName":{"default":"David"},"lastName":{"default":"Pastrnak", ...},
+   "name":{"default":"D. Pastrnak", ...},"teamAbbrev":{"default":"BOS"},
+   "highlightClipSharingUrl":"https://nhl.com/video/bos-njd-pastrnak-scores-goal-against-jacob-markstrom-6371240979112",
+   "highlightClipSharingUrlFr":"https://nhl.com/fr/video/bos-njd-pastrnak-marque-un-but-contre-jacob-markstrom-6371243257112",
+   "highlightClip":6371240979112,"highlightClipFr":6371243257112,
+   "discreteClip":6371240980112,"discreteClipFr":6371241994112,
+   "goalsToDate":41,"awayScore":1,"homeScore":0,
+   "leadingTeamAbbrev":{"default":"BOS"},"timeInPeriod":"09:38","shotType":"snap",
+   "goalModifier":"none",
+   "assists":[{"playerId":8479987,"firstName":{"default":"Morgan"},
+               "lastName":{"default":"Geekie"},"name":{"default":"M. Geekie"},
+               "assistsToDate":23,"sweaterNumber":39}],
+   "pptReplayUrl":"https://wsr.nhle.com/sprites/20242025/2024021238/ev324.json",
+   "homeTeamDefendingSide":"left","isHome":false}
+
+Corroborating excerpt from the same payload, period 1, the goal at 19:24
+(eventId 495, M. Callahan), which shows the superseded assist holder's season total:
+
+  "assists":[{"playerId":8478450,"firstName":{"default":"Parker"},
+              "lastName":{"default":"Wotherspoon"},"name":{"default":"P. Wotherspoon"},
+              "assistsToDate":6,"sweaterNumber":29},
+             {"playerId":8477956, ... "assistsToDate":58,"sweaterNumber":88}]
+
+So the corrected state (Geekie, 23 assists) and the corroborating season totals
+(Geekie 23, Wotherspoon 6) recorded for NHL-20242025-021238-01 are both confirmed
+against the live official payload.

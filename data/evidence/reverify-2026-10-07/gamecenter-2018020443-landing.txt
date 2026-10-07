@@ -1,0 +1,24 @@
+Source URL : https://api-web.nhle.com/v1/gamecenter/2018020443/landing
+Retrieved  : 2026-10-07 (Arena page-fetch text proxy; direct HTTP blocked in sandbox)
+Status     : 200 (inferred: JSON body returned)
+Fetched for: record SDN-0bb32245dc, a third-party audit-log lead (pending_review)
+
+Game header: id 2018020443, season 20182019, gameType 2, gameDate 2018-12-07,
+venue Honda Center (Anaheim), startTimeUTC 2018-12-08T03:00:00Z, gameState OFF,
+awayTeam CAR (id 12) score 4 sog 36, homeTeam ANA (id 24) score 1 sog 19.
+
+Every goal in summary.scoring, in order (eventId, period, timeInPeriod, scorer, team):
+
+   97 | 1 | 11:47 | J. Silfverberg (8475164)  | ANA | sh | assist J. Dotchin
+  244 | 2 | 01:53 | C. Bishop    (8478056)    | CAR | ev | unassisted
+  476 | 3 | 01:56 | B. Pesce     (8477488)    | CAR | ev | assist T. Teravainen
+  484 | 3 | 02:57 | J. Williams  (8468508)    | CAR | ev | assists C. Bishop, A. Svechnikov
+  689 | 3 | 18:46 | S. Aho       (8478427)    | CAR | ev | empty-net, assist T. Teravainen
+
+FINDING: period 2 contains exactly ONE goal, at 01:53. There is no goal at 18:07 in
+any period of this game. Record SDN-0bb32245dc asserts, on the authority of a
+third-party PBP audit log, that "the period 2 goal at 18:07 should be 18:05". The
+clock value it disputes does not appear in the current official record, so the lead
+cannot be confirmed and stays pending_review. The team names and date, which the
+record was missing, are now established from this official payload: CAR at ANA,
+2018-12-07, final 4-1.

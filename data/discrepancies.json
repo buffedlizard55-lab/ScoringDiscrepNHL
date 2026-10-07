@@ -22,10 +22,13 @@
         "game_id": "2018020443",
         "season": "20182019",
         "game_type": "REG",
-        "date": null,
-        "away_team": null,
-        "home_team": null,
-        "final_score": null,
+        "date": "2018-12-07",
+        "away_team": "CAR",
+        "home_team": "ANA",
+        "final_score": {
+          "away": 4,
+          "home": 1
+        },
         "gamecenter_url": "https://www.nhl.com/gamecenter/2018020443",
         "report_urls": {
           "GS": "https://www.nhl.com/scores/htmlreports/20182019/GS020443.HTM",
@@ -111,20 +114,31 @@
           "evidence": "secondary",
           "retrieved_at": "2026-10-07",
           "quote": "- 2018020443\n\t- Change GOAL from 1313 to 1315"
+        },
+        {
+          "label": "NHL GameCenter landing payload for game 2018020443 (retrieved to establish the teams, date and final score, and to check the disputed clock)",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2018020443/landing",
+          "kind": "official_api",
+          "evidence": "primary",
+          "retrieved_at": "2026-10-07T00:00:00Z",
+          "http_status": 200,
+          "quote": "id 2018020443, season 20182019, gameDate 2018-12-07, gameState OFF, awayTeam CAR score 4, homeTeam ANA score 1; period 2 contains exactly one goal: eventId 244, timeInPeriod 01:53, C. Bishop (8478056), CAR, ev, unassisted",
+          "note": "Retrieved through the platform page-fetch tool; the build sandbox has no direct route to NHL hosts. ADVERSE FINDING: no goal at 18:07 exists in any period of this game, so the clock value this lead disputes is not present in the current official record. Transcript committed at data/evidence/reverify-2026-10-07/gamecenter-2018020443-landing.txt."
         }
       ],
       "verification": {
         "status": "pending_review",
         "evidence_grade": "secondary",
         "independently_checkable": true,
-        "check_instructions": "Open the two official sheets above, compare the goal row with game time, and check video of the goal; the clock value is only wrong if the feed disagrees with the tape.",
+        "check_instructions": "The official GameCenter payload for this game lists one period-2 goal, at 01:53. The audit log's 18:07 does not appear in any period. Either the log refers to a different game/season numbering or the official record was corrected in a way that also moved the goal. Open the payload and the two official sheets before promoting this record.",
         "verified_by": "",
         "verified_at": ""
       },
       "flags": [
+        "disputed_clock_value_not_present_in_current_official_record",
+        "no_goal_count_or_attribution_impact",
         "requires_human_verification",
-        "third_party_claim_only",
-        "no_goal_count_or_attribution_impact"
+        "third_party_claim_only"
       ],
       "notes": "Kept in this database because it is the one class of official error that both official artifacts share, so no cross-source check can ever find it. 560 games are affected per that log; five are entered here as representatives.",
       "first_seen_at": "2026-10-07T05:00:00Z",
@@ -988,16 +1002,6 @@
           "note": "role=corrected_state"
         },
         {
-          "label": "Highlight clip title inside the official GameCenter payload",
-          "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
-          "kind": "secondary",
-          "evidence": "secondary",
-          "retrieved_at": "2026-10-07T00:00:00Z",
-          "http_status": null,
-          "quote": null,
-          "note": "role=initial_state_corroboration; note=The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
-        },
-        {
           "label": "Athlon Sports (syndicated via Yardbarker)",
           "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
           "kind": "secondary",
@@ -1046,8 +1050,8 @@
       },
       "flags": [
         "assists_before_the_change_not_captured",
+        "initial_state_corroboration_withdrawn_on_reverification",
         "initial_state_reported_by_secondary_source_only",
-        "official_payload_contains_two_different_clip_titles_for_the_same_goal",
         "ported_from_parallel_line",
         "pre_change_assist_credits_unresolved"
       ],
@@ -1529,7 +1533,29 @@
         ]
       },
       "first_seen_at": "2026-10-07T00:00:00Z",
-      "seen_count": 1
+      "seen_count": 1,
+      "reverification": {
+        "reverified_at_utc": "2026-10-07T00:00:00Z",
+        "evidence": "data/evidence/reverify-2026-10-07/",
+        "confirmed": [
+          "GS021140.HTM row 2 and footer",
+          "GameCenter event 146 scorer and both assists"
+        ],
+        "not_confirmed": [
+          "French highlight-clip title naming Mercer (clip 6370608420112)"
+        ]
+      },
+      "withdrawn_sources": [
+        {
+          "label": "Highlight clip title inside the official GameCenter payload",
+          "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+          "kind": "secondary",
+          "retrieved_at": "2026-10-07T00:00:00Z",
+          "http_status": null,
+          "quote": null,
+          "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved."
+        }
+      ]
     },
     {
       "record_id": "SDN-35d7818c51",
