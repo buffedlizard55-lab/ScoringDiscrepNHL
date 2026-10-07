@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "measured_on": "2026-10-07",
+  "measured_from": [
+    "https://api-web.nhle.com/v1/gamecenter/2023020001/play-by-play"
+  ],
+  "note": "Regenerated at runtime by the collector across every game it touches. It exists so the classifier can never claim to detect an event type that has not actually been observed.",
+  "observed_type_desc_keys": [
+    "period-start",
+    "faceoff",
+    "stoppage",
+    "hit",
+    "giveaway",
+    "takeaway",
+    "shot-on-goal",
+    "missed-shot",
+    "blocked-shot",
+    "goal"
+  ],
+  "observed_type_codes": {
+    "502": "faceoff",
+    "503": "hit",
+    "504": "giveaway",
+    "505": "goal",
+    "506": "shot-on-goal",
+    "507": "missed-shot",
+    "508": "blocked-shot",
+    "516": "stoppage",
+    "520": "period-start",
+    "525": "takeaway"
+  },
+  "observed_stoppage_reasons": [
+    "icing",
+    "puck-in-netting",
+    "goalie-stopped-after-sog"
+  ],
+  "observed_secondary_reasons": [
+    "tv-timeout"
+  ],
+  "review_event_types_found": [],
+  "consequence": "No video-review event type was observed, so no automated 'video review' filter is offered. Review-driven goal changes are still detectable as goal_removed / no_goal_to_goal state changes; the *reason* stays unknown unless an official artifact states it in words."
+}

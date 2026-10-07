@@ -1,0 +1,55 @@
+<!--
+  TEST FIXTURE - provenance
+  =========================
+  Cell text is VERBATIM from the official Game Summary retrieved on 2026-10-07:
+      https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM
+      game 2023020001, 2023-10-10, NSH 3 @ TBL 5
+  The surrounding HTML markup is a TEST HARNESS RECONSTRUCTION written to mirror the
+  documented structure of the official report (a table whose header row contains
+  "Goal Scorer" and "Assist" columns with the strength column third). It is NOT a copy
+  of the official file's byte stream, and passing this fixture does NOT prove the HTML
+  layer of the parser is correct - that is what `python -m nhl_monitor probe` does,
+  by fetching the live document and comparing the parsed goal count with the score in
+  the document header.
+-->
+<html>
+<body>
+<table>
+<tr><td>VISITOR</td></tr>
+<tr><td><img src="http://www.nhl.com/scores/htmlreports/images/logocnsh.gif" alt="NASHVILLE PREDATORS"> 3 <img src="http://www.nhl.com/scores/htmlreports/images/logocnhl.gif"></td></tr>
+<tr><td>NASHVILLE PREDATORS<br>Game 1 Away Game 1</td></tr>
+<tr><td>Game Summary</td></tr>
+<tr><td>Tuesday, October 10, 2023</td></tr>
+<tr><td>Attendance 19,092 at Amalie Arena</td></tr>
+<tr><td>Start 5:32 EDT; End 8:05 EDT</td></tr>
+<tr><td>Game 0001</td></tr>
+<tr><td>Final</td></tr>
+<tr><td>HOME</td></tr>
+<tr><td><img src="http://www.nhl.com/scores/htmlreports/images/logocnhl.gif"> 5 <img src="http://www.nhl.com/scores/htmlreports/images/logoctbl.gif" alt="TAMPA BAY LIGHTNING"></td></tr>
+<tr><td>TAMPA BAY LIGHTNING<br>Game 1 Home Game 1</td></tr>
+</table>
+<table>
+<tr>
+  <th>G</th><th>Per</th><th>Time</th><th>Str</th><th>Team</th><th>Goal Scorer</th><th>Assist</th><th>Assist</th><th>NSH on Ice</th><th>TBL on Ice</th>
+</tr>
+<tr><td>1</td><td>1</td><td>9:48</td><td>EV</td><td>TBL</td><td>86 N.KUCHEROV(1)</td><td>77 V.HEDMAN(1)</td><td>21 B.POINT(1)</td><td>2, 9, 59, 74, 75, 90</td><td>21, 31, 48, 77, 86, 91</td></tr>
+<tr><td>2</td><td>2</td><td>16:15</td><td>EV</td><td>NSH</td><td>90 R.O'REILLY(1)</td><td>9 F.FORSBERG(1)</td><td>27 R.MCDONAGH(1)</td><td>2, 3, 9, 74, 75, 90</td><td>31, 38, 48, 71, 73, 77</td></tr>
+<tr><td>3</td><td>3</td><td>0:11</td><td>EV</td><td>NSH</td><td>75 J.PARSSINEN(1)</td><td>9 F.FORSBERG(2)</td><td>90 R.O'REILLY(1)</td><td>9, 27, 45, 74, 75, 90</td><td>21, 31, 48, 77, 86, 91</td></tr>
+<tr><td>4</td><td>3</td><td>2:25</td><td>PP</td><td>TBL</td><td>20 N.PAUL(1)</td><td>21 B.POINT(2)</td><td>91 S.STAMKOS(1)</td><td>10, 27, 36, 45, 74</td><td>20, 21, 31, 77, 86, 91</td></tr>
+<tr><td>5</td><td>3</td><td>3:07</td><td>EV-PS</td><td>TBL</td><td>38 B.HAGEL(1)</td><td colspan="2">Penalty Shot</td><td>74</td><td>38</td></tr>
+<tr><td>6</td><td>3</td><td>8:48</td><td>PP</td><td>NSH</td><td>82 T.NOVAK(1)</td><td>26 P.TOMASINO(1)</td><td>14 G.NYQUIST(1)</td><td>14, 26, 45, 74, 77, 82</td><td>11, 20, 31, 44, 77</td></tr>
+<tr><td>7</td><td>3</td><td>10:52</td><td>PP</td><td>TBL</td><td>20 N.PAUL(2)</td><td>98 M.SERGACHEV(1)</td><td>21 B.POINT(3)</td><td>2, 10, 36, 59, 74</td><td>20, 21, 31, 86, 91, 98</td></tr>
+<tr><td>8</td><td>3</td><td>19:58</td><td>EV-EN</td><td>TBL</td><td>86 N.KUCHEROV(2)</td><td>20 N.PAUL(1)</td><td></td><td>9, 10, 22, 59, 82, 90</td><td>20, 21, 31, 43, 86, 98</td></tr>
+</table>
+<table>
+<tr><td>Per</td><td>Goals</td><td>Shots</td><td>PN</td><td>PIM</td></tr>
+<tr><td>1</td><td>0</td><td>2</td><td>2</td><td>4</td></tr>
+<tr><td>TOT</td><td>3</td><td>31</td><td>5</td><td>10</td></tr>
+</table>
+<table>
+<tr><td>Referee</td><td>Linesperson</td></tr>
+<tr><td>#5 Chris Rooney</td><td>#52 Shandor Alphonso</td></tr>
+</table>
+<p>&copy; Copyright 2024, National Hockey League<br> 2024-02-06 11.19.44</p>
+</body>
+</html>

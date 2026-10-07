@@ -1,0 +1,11 @@
+{
+  "generated_at_utc": "2026-10-07T05:05:53Z",
+  "count": 0,
+  "counts_by_severity": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "alerts": []
+}

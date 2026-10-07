@@ -1,0 +1,92 @@
+name: tests
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # only so the coverage step below can commit the measured report
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run unit tests (stdlib only, no dependencies)
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Check the JS client parses
+        run: node --check site/app.js
+      - name: Smoke-test the site client without a browser
+        run: node tools/check_site.mjs
+      - name: Build the static site
+        run: python tools/build_site.py
+      - name: Validate the committed data files against the record schema
+        run: |
+          PYTHONPATH=src python - <<'PY'
+          import json, sys
+          sys.path.insert(0, "src")
+          from nhl_monitor import store
+          records = store.load_records()
+          errors = []
+          for r in records:
+              errs = store.validate(r)
+              if errs:
+                  errors.append((r.get("record_id"), errs))
+          print(f"records: {len(records)}")
+          if errors:
+              print("INVALID RECORDS:", errors)
+              sys.exit(1)
+          print("all records valid")
+          PY
+      - name: Verify official sources are reachable and the parser understands the live report layout
+        id: probe
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          PYTHONPATH=src python -m nhl_monitor probe | tee probe_output.json || true
+          {
+            echo "## Official source probe"
+            echo ""
+            echo '```json'
+            cat probe_output.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Measure per-season report coverage and the frozen/regenerated era
+        id: coverage
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          PYTHONPATH=src python -m nhl_monitor coverage --from-season 1999 --to-season 2026 \
+            | tee coverage_output.json || true
+
+      - name: Commit the measured coverage report
+        if: github.event_name == 'push'
+        run: |
+          git config user.name  "coverage-bot"
+          git config user.email "coverage-bot@users.noreply.github.com"
+          git add data/reference/coverage_report.json
+          if git diff --cached --quiet; then
+            echo "coverage report unchanged"
+          else
+            git commit -m "coverage: measured per-season official-report availability [skip ci]"
+            git push
+          fi
+
+      - name: Upload the probe and coverage reports (audit trail)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-audit-${{ github.run_id }}
+          path: |
+            probe_output.json
+            coverage_output.json
+            data/reference/probe_report.json
+            data/reference/coverage_report.json
+          retention-days: 90
+          if-no-files-found: warn
