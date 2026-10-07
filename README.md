@@ -49,6 +49,7 @@ artifact on **2026-10-07**. The full ledger, including the observations and the 
 | **The API and the HTML reports agree, down to player ids.** | The play-by-play goal event for 2023020001 goal #1 carries `scoringPlayerId=8476453`, which the Play-by-Play report text independently identifies as Kucherov (`NSH #2 SCHENN HIT TBL #86 KUCHEROV`), matching `86 N.KUCHEROV(1)` in the Game Summary. They are the same data rendered twice — **not** two independent witnesses. |
 | **Old reports are frozen at game time; new reports are regenerated.** | `20052006/GS020001.HTM` footer `2005-10-05-21.40.47` (game night), `20162017/GS020001.HTM` footer `2016-10-12-22.08.17` (game night), but `20232024/GS020001.HTM` footer `2024-02-06 11.19.44` — 119 days after the game. |
 | The frozen era preserves the **original** ruling; the regenerated era does not. | Consequence of the row above: for 2005-06 and 2016-17 the live document *is* the game-night record, so diffing it against the league's current database exposes any later scoring change with both states official. |
+| **Coverage was measured for all 28 seasons, 1999-2000 → 2026-27, on a CI runner.** | `data/reference/coverage_report.json`: no report for 1999-2000 or 2004-05 (that season was not played), and a report for every season from 2000-01 on. 12 seasons are still game-night documents, 11 have been regenerated, 4 have a footer that cannot be read, and **the two sets interleave** — 2003-04 and 2012-13..2014-15 are regenerated while 2016-17, 2018-19 and 2019-20 are frozen. |
 | **The earliest season served is 2000-01.** | `19992000/GS020001.HTM` → 404, `20002001/GS020001.HTM` → 200 (COL 2 - DAL 2, 2000-10-04, frozen footer `2000-10-04-22.14.20`), `20012002/GS020001.HTM` → 200 (OTT 5 - TOR 4, frozen footer `2001-10-03-22.27.18`). The 2000-2004 reports are **frozen at game time**, so the original record for a 25-year-old game is still retrievable. |
 | The 2000-2004 report layout is different and is parsed. | On-ice skaters sit inside the scoring summary, the strength column is last, there is no league-shield logo, and bench penalties appear as a player cell literally reading `Team`. Fixture: `tests/fixtures/gs_20002001_020001.html`. |
 | **The NHL publishes scoring changes in a fixed, machine-parseable form.** | `OFFICIAL SCORING CHANGE: Game <n> @<away> at @<home> Goal at <M:SS> of the <ordinal> period now reads <scorer> from <assist1> and <assist2>. #NHLStats` — retrieved and parsed for three games; each resolves to a specific goal in the official report (F16). |
@@ -255,8 +256,10 @@ Ranked by how much they block the goal (details in [`docs/ROADMAP.md`](docs/ROAD
    (they name the game, the period, the clock and the new credit), and they were retrieved here through the
    platform's page-fetch tool, not through a supported API. A runner needs either an X API tier or a
    documented, polite fetch of the announcement account; until then the monitoring path is the game feeds.
-3. **Bracket the frozen→regenerated transition season** more tightly than 2000-01..2023-24 (known frozen:
-   2000-01, 2001-02, 2005-06, 2016-17; known regenerated: 2023-24, 2024-25).
+3. **Decide how to treat a 1–4 day rebuild.** Footers 1–4 days after the game (2003-04, 2012-13..2014-15,
+   2020-21, 2026-27) are neither a game-night record nor a late batch rebuild, and may already contain corrections.
+   They are currently marked regenerated; whether they deserve their own, weaker evidence class is an open design
+   question.
 4. **Hunt for a goal-count change.** All three records are attribution-only, so the highest-value class —
    a goal added or removed *after* the record was final — is still unobserved. It should be rare by
    construction; proving that claim, rather than asserting it, is the next research step.

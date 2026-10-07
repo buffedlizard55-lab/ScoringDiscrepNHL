@@ -329,16 +329,31 @@ def cmd_coverage(args) -> int:
         "earliest_season_with_report": min((r["season"] for r in available), default=None),
         "latest_frozen_original_season": max((r["season"] for r in frozen), default=None),
         "earliest_regenerated_season": min((r["season"] for r in regenerated), default=None),
+        "frozen_seasons": sorted(r["season"] for r in frozen),
+        "regenerated_seasons": sorted(r["season"] for r in regenerated),
+        "undetermined_seasons": sorted(r["season"] for r in available
+                                       if r.get("report_is_frozen_original") is None),
+        "seasons_without_a_report": sorted(r["season"] for r in rows if r.get("available") is False),
+        "eras_overlap": bool(frozen) and bool(regenerated)
+        and min(r["season"] for r in regenerated) < max(r["season"] for r in frozen),
         "interpretation": (
-            "In frozen seasons the live document preserves the ORIGINAL game-night ruling, so it "
-            "can be diffed against the current database to recover scoring changes with both "
-            "states official. From the earliest regenerated season onward the original bytes are "
-            "overwritten and only archived snapshots can reveal what changed."),
+            "The two behaviours are NOT a single era transition and must be measured per season. "
+            "Where the live document is still the game-night document (footer on the game's own "
+            "date) it preserves the ORIGINAL ruling, so it can be diffed against the current "
+            "database to recover a scoring change with both states official. Where the document "
+            "has been regenerated, the original bytes are gone and only archived snapshots can "
+            "show what changed - which is why the per-season column, not a cut-off year, is what "
+            "the backfill should read."),
         "caveats": [
-            "One game per season is probed: a season is only reported as frozen if that game's "
-            "footer timestamp is on the game's own date.",
+            "One game per season is probed: a season is classified from a single document's "
+            "footer, so a single season can contain both behaviours.",
+            "A footer a few days after the game (1-4 days) is neither a game-night record nor a "
+            "late batch rebuild: it may already contain corrections. Treated as weak evidence, "
+            "not as an original record.",
             "A missing report for a mid-season game does not prove the season is absent - re-run "
             "with a different --game-no before drawing a conclusion.",
+            "20042005 returns 404; that season was not played, so the absence is not a coverage "
+            "gap. It is listed so the hole is visible rather than silently missing.",
         ],
     }
     path = os.path.join(store.DATA_DIR, "reference", "coverage_report.json")

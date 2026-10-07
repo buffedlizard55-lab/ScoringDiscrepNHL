@@ -238,6 +238,52 @@
         "play-by-play": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
         "record": "data/records/discrepancies.json (NHL-20242025-021140-01)"
       }
+    },
+    {
+      "id": "F18",
+      "claim": "Per-season official-report availability was MEASURED for every season from 1999-2000 to 2026-27 by the CI runner, and it does not show a single frozen-to-regenerated transition.",
+      "method": "The `coverage` command probes GS020001.HTM (regular-season game 1) for each season folder and compares the document footer with the game date. Run on a GitHub runner (which can reach the official hosts, unlike the build sandbox) and committed by the workflow to data/reference/coverage_report.json.",
+      "observations": [
+        "19992000: http 404, frozen=None, goals=None, footer absent",
+        "20002001: http 200, frozen=True, goals=4, footer 2000-10-04 22:14:20",
+        "20012002: http 200, frozen=True, goals=9, footer 2001-10-03 22:27:18",
+        "20022003: http 200, frozen=True, goals=5, footer 2002-10-09 22:40:05",
+        "20032004: http 200, frozen=False, goals=6, footer 2003-10-09 14:02:10",
+        "20042005: http 404, frozen=None, goals=None, footer absent",
+        "20052006: http 200, frozen=True, goals=3, footer 2005-10-05 21:40:47",
+        "20062007: http 200, frozen=True, goals=4, footer 2006-10-04 22:12:44",
+        "20072008: http 200, frozen=None, goals=5, footer absent",
+        "20082009: http 200, frozen=True, goals=3, footer 2008-10-04 20:57:56",
+        "20092010: http 200, frozen=True, goals=5, footer 2009-10-01 21:34:56",
+        "20102011: http 200, frozen=True, goals=5, footer 2010-10-07 21:56:31",
+        "20112012: http 200, frozen=True, goals=3, footer 2011-10-06 22:04:09",
+        "20122013: http 200, frozen=False, goals=4, footer 2013-01-21 10:10:13",
+        "20132014: http 200, frozen=False, goals=7, footer 2013-10-02 13:14:28",
+        "20142015: http 200, frozen=False, goals=7, footer 2014-10-09 10:35:04",
+        "20152016: http 200, frozen=None, goals=4, footer absent",
+        "20162017: http 200, frozen=True, goals=9, footer 2016-10-12 22:08:17",
+        "20172018: http 200, frozen=None, goals=9, footer absent",
+        "20182019: http 200, frozen=True, goals=5, footer 2018-10-03 22:10:58",
+        "20192020: http 200, frozen=True, goals=8, footer 2019-10-02 22:27:48",
+        "20202021: http 200, frozen=False, goals=9, footer 2021-01-16 14:04:07",
+        "20212022: http 200, frozen=False, goals=8, footer 2021-11-02 17:11:17",
+        "20222023: http 200, frozen=None, goals=5, footer absent",
+        "20232024: http 200, frozen=False, goals=8, footer 2024-02-06 11:19:44",
+        "20242025: http 200, frozen=False, goals=5, footer 2025-02-12 16:54:33",
+        "20252026: http 200, frozen=False, goals=5, footer 2026-01-06 10:07:53",
+        "20262027: http 200, frozen=False, goals=1, footer 2026-09-30 11:59:44",
+        "Frozen (footer on the game's own date): 20002001, 20012002, 20022003, 20052006, 20062007, 20082009, 20092010, 20102011, 20112012, 20162017, 20182019, 20192020",
+        "Regenerated (footer well after the game): 20032004, 20122013, 20132014, 20142015, 20202021, 20212022, 20232024, 20242025, 20252026, 20262027",
+        "Footer absent or unreadable, era undetermined for: 20072008, 20152016, 20172018, 20222023",
+        "No report at all: 19992000, 20042005",
+        "The sets INTERLEAVE (regenerated in 2003-04 and 2012-13..2014-15, frozen in 2016-17, 2018-19, 2019-20), so 'the frozen era' is a per-season property, not a cut-off year",
+        "Four seasons carry a footer 1-4 days after the game, which is neither a game-night record nor a late batch rebuild"
+      ],
+      "urls": {
+        "measured report": "data/reference/coverage_report.json",
+        "command": "python -m nhl_monitor coverage --from-season 1999 --to-season 2026"
+      },
+      "consequence": "The backfill must read the per-season classification instead of assuming a cut-off season - the assumption would have treated a regenerated 2003-04 document as the original record."
     }
   ],
   "secondary_leads_not_evidence": [

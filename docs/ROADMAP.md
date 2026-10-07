@@ -23,7 +23,7 @@ check by hand"). Effort is a rough estimate for one focused session.
 
 | # | Task | Why | Notes |
 |---|---|---|---|
-| 5 | Bracket the frozen→regenerated transition season | the census method for history depends on it; today only known to lie between 2016-17 and 2023-24 | scan `GS020001.HTM` footers for a handful of seasons; cheap |
+| 5 | ~~Bracket the frozen→regenerated transition season~~ **DONE, and the premise was wrong** | the measured table (F18) shows the two behaviours INTERLEAVE across 28 seasons, so there is no transition season to bracket | the per-season table in `data/reference/coverage_report.json` is what the backfill must read |
 | 6 | ~~Determine the earliest serving season~~ **DONE** | answered by retrieval: **2000-01** (`19992000` → 404, `20002001` → 200, frozen footer) | recorded as F13; the `coverage` job re-measures it per season on a runner |
 | 7 | Player id resolution for frozen-era documents | frozen documents have sweater numbers + surnames but no ids, so a name→id map is needed to compare them with the API reliably | use the API roster for that season; **must refuse to guess on ambiguity** and flag instead |
 | 8 | Full-season backfill with resumability | tens of thousands of fetches; needs a checkpoint so a rate-limited run resumes instead of restarting | store per-game progress; back off on 429 |
