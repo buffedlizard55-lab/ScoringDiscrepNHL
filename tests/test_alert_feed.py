@@ -276,6 +276,54 @@ class TestNoRecordContradictsItself(unittest.TestCase):
                              a.get("body") or "",
                              f"alert {a.get('id')} still advertises a withdrawn claim")
 
+    def test_no_derived_artifact_republishes_a_withdrawn_claim(self):
+        """Every artifact the site or a subscriber reads, not just the alert feed.
+
+        Fixing the record and the feed was not enough: the engine store embeds a
+        verbatim copy of the parallel line's object under ``parallel_record``, that
+        copy was frozen while the record was protected, and ``docs/data.js`` - the
+        payload the published site actually renders - republished the stale flags
+        from it. History is allowed to retain a withdrawn claim; a *current* flags
+        list is not.
+        """
+        stale = "official_payload_contains_two_different_clip_titles_for_the_same_goal"
+
+        def current_flags(obj):
+            """Every flags list that asserts the present state, skipping history."""
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if key in ("previous_revisions", "withdrawn_flags", "detection_history"):
+                        continue  # an audit trail is supposed to keep superseded claims
+                    if key == "flags" and isinstance(value, list):
+                        yield value
+                    else:
+                        yield from current_flags(value)
+            elif isinstance(obj, list):
+                for item in obj:
+                    yield from current_flags(item)
+
+        checked = 0
+        for rel in ("data/discrepancies.json", "data/records/discrepancies.json",
+                    "data/alerts.json", "data/alerts/index.json",
+                    "data/alerts/2026-10-07/alerts.json"):
+            path = os.path.join(ROOT, rel)
+            if not os.path.exists(path):
+                continue
+            checked += 1
+            for flags in current_flags(json.load(open(path, encoding="utf-8"))):
+                self.assertNotIn(stale, flags, f"{rel} still asserts a withdrawn claim")
+
+        # docs/data.js is the published site's payload: window.SDN = {...}
+        site = os.path.join(ROOT, "docs", "data.js")
+        if os.path.exists(site):
+            checked += 1
+            payload = json.loads(open(site, encoding="utf-8").read()
+                                 .split("=", 1)[1].strip().rstrip(";"))
+            for flags in current_flags(payload):
+                self.assertNotIn(stale, flags, "docs/data.js still asserts a withdrawn claim")
+
+        self.assertGreaterEqual(checked, 4, "expected to scan the shipped artifacts")
+
 
 class TestCommittedAlertFeedIsNotEmpty(unittest.TestCase):
     """The committed repository state, asserted directly.

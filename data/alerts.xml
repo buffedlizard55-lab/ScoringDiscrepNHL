@@ -4,7 +4,7 @@
     <title>ScoringDiscrepNHL alerts</title>
     <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>
     <description>Automated alerts for detected NHL scoring discrepancies and corrections. Every alert links to official-source evidence.</description>
-    <lastBuildDate>Wed, 07 Oct 2026 17:22:55 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2026 17:33:36 GMT</lastBuildDate>
     <item>
       <title>[MEDIUM] Goal scorer changed: NJD @ CHI 2025-03-26 — REG P1 6:50</title>
       <guid isPermaLink="false">sdnhl-ALERT-NHL-20242025-021140-01</guid>

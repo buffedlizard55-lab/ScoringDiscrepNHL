@@ -399,7 +399,8 @@ def upsert(existing: List[Dict[str, Any]], incoming: List[Dict[str, Any]],
     blocks and record that they did.
     """
     by_id = {r.get("record_id"): r for r in existing if r.get("record_id")}
-    stats = {"added": 0, "updated": 0, "unchanged": 0, "skipped_human": 0}
+    stats = {"added": 0, "updated": 0, "unchanged": 0, "skipped_human": 0,
+             "mirror_refreshed": 0}
     for record in incoming:
         rid = record.get("record_id")
         cur = by_id.get(rid)
@@ -421,6 +422,16 @@ def upsert(existing: List[Dict[str, Any]], incoming: List[Dict[str, Any]],
         if human:
             merged = dict(cur)
             stats["skipped_human"] += 1
+            # A protected status freezes the *judgement*, not the evidence. The
+            # embedded mirror of the parallel line's object is evidence: README and
+            # STATUS both describe it as the verbatim original kept "so a reviewer
+            # can diff". If it never refreshes, a claim withdrawn upstream stays
+            # asserted here forever, and the record ends up contradicting itself -
+            # its own flags say withdrawn while the mirror still lists the claim.
+            incoming_mirror = record.get("parallel_record")
+            if incoming_mirror is not None and merged.get("parallel_record") != incoming_mirror:
+                merged["parallel_record"] = incoming_mirror
+                stats["mirror_refreshed"] += 1
         else:
             merged = dict(record)
             merged["first_seen_at"] = cur.get("first_seen_at") \
