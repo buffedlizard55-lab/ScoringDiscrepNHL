@@ -140,6 +140,25 @@ class SiteTests(unittest.TestCase):
     def test_markdown_escapes_html(self):
         self.assertNotIn("<script>", site.md_to_html("<script>alert(1)</script>"))
 
+    def test_markdown_strikethrough_and_multiline_list(self):
+        # Regression: `~~struck~~` must render as <del>, and an indented
+        # continuation line must stay inside its list item (it used to escape as
+        # a separate <p> and split one list into several, leaving literal `~~`).
+        html = site.md_to_html(
+            "1. ~~old claim~~ **Corrected:** new fact\n"
+            "   continues on the next line.\n"
+            "2. Second item.\n")
+        self.assertIn("<del>old claim</del>", html)
+        self.assertNotIn("~~", html)
+        # One <ol>, two <li>, and the continuation folded into the first item.
+        self.assertEqual(html.count("<ol>"), 1)
+        self.assertEqual(html.count("<li>"), 2)
+        self.assertIn("<li><del>old claim</del> <strong>Corrected:</strong> new fact continues on the next line.</li>", html)
+        # A `~~` inside a fenced code block must NOT be struck.
+        code = site.md_to_html("```\nkeep ~~this~~ literal\n```")
+        self.assertIn("~~this~~", code)
+        self.assertNotIn("<del>", code)
+
     def test_summarize_counts(self):
         summary = site.summarize([RECORD])
         self.assertEqual(summary["record_count"], 1)

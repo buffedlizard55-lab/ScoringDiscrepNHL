@@ -11,6 +11,20 @@ Everything asserted here was checked on **2026-10-07** in this repository. Where
 claim rests on a retrieval, the artifact is committed. Where it could not be
 checked in this environment, it says so instead of asserting.
 
+> **Revision 2026-10-07 (later session, after the Situation Room backfill).**
+> Sections 3.1, 3.2 and 5 below were written *before* the league's official
+> Situation Room statement feed was found and ingested, and they no longer match
+> the delivered system. The false claims are struck inline and corrected where
+> they appear. Headline correction: the feed **does** exist
+> (content API, tag `situation-room`, every coach's challenge and video review
+> since 2016-02, ~4,400 statements), the site **does** carry a "video review"
+> filter backed by those statements, and the database now holds **1,470 records**
+> (1,465 goal-count-changing, 4 attribution-only, 1 total-change-unknown),
+> not 3. See [`SITUATION_ROOM.md`](SITUATION_ROOM.md) and
+> [`LIMITATIONS.md`](LIMITATIONS.md) §2, which were corrected the same way. The
+> verdict in the opening paragraph — *possible as change detection, not as cause
+> detection* — is unchanged and is still the honest bottom line.
+
 ---
 
 ## 1. What "detect a scoring discrepancy" can and cannot mean
@@ -69,18 +83,34 @@ cannot make an old alert look new. Regression tests:
 
 ## 3. What cannot be detected automatically — measured, not assumed
 
-1. **Video review as a cause.** The observed event vocabulary
-   ([`data/schema/observed_vocabulary.json`](../data/schema/observed_vocabulary.json))
-   lists 10 `typeDescKey` values — `period-start, faceoff, stoppage, hit, giveaway,
-   takeaway, shot-on-goal, missed-shot, blocked-shot, goal` — and
-   `review_event_types_found: []`. There is no review event to read. An overturned
-   goal is still detectable *as a state change*; the reason stays empty and the
-   record is flagged. **The site deliberately offers no "video review" filter**,
-   because a filter that can never match honestly is a lie about capability.
-2. **Why the league changed anything.** No machine-readable Situation Room feed was
-   located. `reason.text` is filled only when an official artifact states it in
-   words — which, for the three verified records, it did (the `OFFICIAL SCORING
-   CHANGE` posts).
+1. **Video review as a cause — corrected 2026-10-07.** ~~The observed event
+   vocabulary lists 10 `typeDescKey` values … and `review_event_types_found: []`.
+   There is no review event to read. An overturned goal is still detectable *as a
+   state change*; the reason stays empty and the record is flagged. **The site
+   deliberately offers no "video review" filter**, because a filter that can never
+   match honestly is a lie about capability.~~ All of that is now **false** and is
+   struck. The play-by-play marks reviews as `chlg-*` / `video-review` stoppages,
+   and — decisively — the league publishes an **official statement for every
+   coach's challenge and video review** through its content API (tag
+   `situation-room`, continuous since 2016-02). The site's **"Video review /
+   challenge"** toggle and the **"Review kind"** / **"Challenge / review type"**
+   selectors are backed by those statements, not by inference; a filter that
+   matches 1,465 records is not a lie about capability. What remains genuinely
+   unautomated is the *reason for a scorer/assist change*, which has no feed and
+   stays `reason.text = null` plus a flag unless an official artifact states it in
+   words (see [SITUATION_ROOM.md](SITUATION_ROOM.md), verified facts F30–F32).
+2. **Why the league changed anything — corrected 2026-10-07.** ~~No
+   machine-readable Situation Room feed was located. `reason.text` is filled only
+   when an official artifact states it in words — which, for the three verified
+   records, it did (the `OFFICIAL SCORING CHANGE` posts).~~ The first sentence was
+   measured on one game that had no review and is **false**; it is struck. The feed
+   exists and is ingested: for every challenge/video review since 2016-02 the
+   statement's result, rule and explanation are stored **verbatim** on the record,
+   so for review decisions the reason *is* automated. What stays true: for
+   **scorer/assist** corrections there is no such feed, so `reason.text` is filled
+   only when an official artifact states it in words — which, for the
+   announcement-based records, the league's own `OFFICIAL SCORING CHANGE` posts
+   did.
 3. **Changes between two polls with no earlier capture.** If every capture
    post-dates the correction, the original state is unrecoverable from any source
    this project can read. This is the structural false negative, and it is the
@@ -124,8 +154,19 @@ settles in that window is exposed regardless of how good the detector is.
 
 ## 5. What has actually been detected, and what that proves
 
-The database holds **3 verified records**, all from 2024-25, all **attribution-only**.
-Re-verified line by line on 2026-10-07 (transcripts in
+After the Situation Room backfill the database holds **1,470 records**: **1,465
+goal-count-changing** (1,342 goal→no-goal and 123 no-goal→goal), **4 attribution-only**,
+and **1 total-change-unknown**; by status, 1,400 `verified`, 53 `flagged`,
+17 `retired` (a superseded parser's rows, kept and marked).
+Each goal-count-changing record is backed by an official Situation Room statement
+and cross-checked against the play-by-play where the game id resolves — 1,396
+agree, 55 inconclusive, 12 conflict, 12 not checked; the conflicts and inconclusives
+are flagged, not hidden.
+The three **announcement-based** records below — the only ones built through the
+league's `OFFICIAL SCORING CHANGE` announcement path (1 scorer change, 2 assist
+changes) — remain verified and are a small subset of that total; in the canonical
+database they carry `SDN-…` ids with the originals preserved under
+`parallel_record`. Re-verified line by line on 2026-10-07 (transcripts in
 [`data/evidence/reverify-2026-10-07/`](../data/evidence/reverify-2026-10-07/)):
 
 | Record | Change | Confirmed today against |
@@ -136,10 +177,16 @@ Re-verified line by line on 2026-10-07 (transcripts in
 
 Two honest consequences:
 
-- **No goal-count-changing correction has ever been found.** The class that would
-  move a game total is *unobserved*, not disproved. The detector handles it
-  (`goal_added` / `goal_removed` are the only change types that set
-  `affects_goal_total`) and the site keeps a separate, currently-empty view for it.
+- **No *post-final* goal-count correction has been found via change detection.**
+  The class that would move a game total *after* the record was published as final
+  — the settlement-critical one — is still *unobserved* through the
+  snapshot-diff / announcement path, not disproved. The 1,465 goal-count-changing
+  records are a different, well-documented class: **in-game video-review
+  overturns** stated by the league's own Situation Room feed (2016-02 onward).
+  They move the goal total, but they are decided during the game and announced by
+  the league, not corrected after publication. The detector handles both
+  (`goal_added` / `goal_removed` are the change types that set `affects_goal_total`)
+  and the site separates them.
 - **One stored claim did not survive re-verification.** The record for game 1140
   asserted that the official payload carried two different clip titles for the same
   goal (English "meier", French "mercer"). The payload fetched on the re-check reads
