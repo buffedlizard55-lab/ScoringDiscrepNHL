@@ -113,3 +113,10 @@ table.rul td small{color:var(--muted)}
 .badge.high { background: #e5484d; color: #fff; }
 .badge.medium { background: #e8a33d; color: #1a1a1a; }
 .badge.low { background: #7c8ba1; color: #fff; }
+
+/* ---- alert delivery panel (Alerts tab) ---------------------------------- */
+.subscribe{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0;background:var(--chip)}
+.subscribe h3{margin:0 0 6px}
+.badge.on{color:#04121a;background:var(--good);border-color:transparent}
+.badge.off{background:rgba(239,71,111,.14);color:var(--bad);border-color:rgba(239,71,111,.35)}
+.badge.skip{background:rgba(124,139,161,.18);color:var(--muted);border-color:var(--line)}

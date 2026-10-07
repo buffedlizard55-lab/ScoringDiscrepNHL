@@ -43,6 +43,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: situation-room-${{ github.ref }}
@@ -86,6 +87,25 @@ jobs:
         run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
       - name: Render alerts
         run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 50 --recent-days 14
+      - name: Notify subscribers about alerts that are new since the last run
+        # Detection is only half the job: without this step the feed updates and
+        # nobody hears about it. Delivery is deduplicated through
+        # data/notifications_state.json, so a run that finds nothing new sends
+        # nothing, and a run that finds one overturned goal opens exactly one
+        # issue. Unconfigured channels are reported as skipped, never as sent.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SDN_WEBHOOK_URL: ${{ secrets.SDN_WEBHOOK_URL }}
+          SDN_SMTP_HOST: ${{ secrets.SDN_SMTP_HOST }}
+          SDN_SMTP_PORT: ${{ secrets.SDN_SMTP_PORT }}
+          SDN_SMTP_USER: ${{ secrets.SDN_SMTP_USER }}
+          SDN_SMTP_PASSWORD: ${{ secrets.SDN_SMTP_PASSWORD }}
+          SDN_SMTP_FROM: ${{ secrets.SDN_SMTP_FROM }}
+          SDN_SMTP_TO: ${{ secrets.SDN_SMTP_TO }}
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli notify \
+            --channels feed,issue,webhook,email --allow-failure \
+            --run-label "situation-room-${GITHUB_RUN_ID}"
       - name: Rebuild the site (repository root is what GitHub Pages serves)
         run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
       - name: Commit and push
@@ -104,6 +124,23 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" || exit 1
           done
           exit 1
+      - name: Fail the run if a notification channel failed
+        # Runs after the commit so the data is never lost to a notification
+        # outage, but the outage is still surfaced instead of sitting in a file.
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          path = "data/notifications/last_run.json"
+          if not os.path.exists(path):
+              print("no delivery report written this run"); sys.exit(0)
+          report = json.load(open(path, encoding="utf-8"))
+          failed = report.get("failed_channels") or []
+          print(f"delivery: {len(report.get('delivered_alert_ids') or [])} alert(s), failures: {failed}")
+          for d in report.get("deliveries") or []:
+              print(f"  {d.get('channel')}: {d.get('status')} {d.get('error') or d.get('url') or ''}")
+          sys.exit(1 if failed else 0)
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -45,7 +45,7 @@ original and the corrected state preserved.
 > silently deleted). Five third-party goal-clock leads were moved out of the database to
 > [`data/leads/third_party_clock_claims.json`](data/leads/third_party_clock_claims.json) because no official
 > source states a correction. `PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate` → **1,470 records,
-> 0 invalid**; `python3 -m unittest discover -s tests -t .` → **260 tests OK**; `node tools/check_engine_site.mjs`
+> 0 invalid**; `python3 -m unittest discover -s tests -t .` → **304 tests OK**; `node tools/check_engine_site.mjs`
 > runs the published client against the committed payload and passes.
 >
 > **What is live.** One site at the repository root (GitHub Pages: `main`, `/`): Database (filters for season,
@@ -55,6 +55,18 @@ original and the corrected state preserved.
 > of games so a backfill cannot flood subscribers), Market view, Coverage, Monitor, and every document in
 > `docs/`. [`situation-room.yml`](.github/workflows/situation-room.yml) polls the feed twice an hour on `main`
 > (cron on GitHub Actions is best-effort - measured, see fact F32) and commits ledger, database, alerts and site.
+>
+> **What is notified.** Detection alone was not enough: the feed updated and nobody was told. Every detection
+> workflow now ends with `nhl_scoring.cli notify`, which delivers over four channels - the committed feed + RSS,
+> a GitHub issue (one per goal-total change, one digest for attribution-only, capped per run), a webhook
+> (Slack/Discord-shaped), and an e-mail digest - deduplicated by a committed fingerprint per alert
+> ([`data/notifications_state.json`](data/notifications_state.json)) so a run that finds nothing new sends
+> nothing, and reporting every delivery to
+> [`data/notifications/`](data/notifications/) so an outage is visible in git. It has been proven against the
+> real GitHub API: [issue #18](https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18), HTTP 201,
+> 2026-10-07T21:25:51Z. Webhook and e-mail are implemented and unit-tested but off until their secrets exist.
+> The full account - channels, latency, failure modes, what can never be notified - is
+> [`docs/NOTIFICATIONS.md`](docs/NOTIFICATIONS.md).
 >
 > **What this is not, yet.** Scorer/assist-only corrections still come only from the league's scoring-change
 > announcements (3 records); pre-2016 reviews have no statement feed (documented limit); 902 statements state
@@ -76,6 +88,7 @@ original and the corrected state preserved.
 - [The website](#the-website)
 - [Data model](#data-model)
 - [What can and cannot be detected automatically](#what-can-and-cannot-be-detected-automatically)
+- [Notifications: getting told instead of checking](#notifications-getting-told-instead-of-checking)
 - [Repository layout](#repository-layout)
 - [Open items for the next session](#open-items-for-the-next-session)
 - [The original brief (verbatim)](#the-original-brief-verbatim)
@@ -179,7 +192,10 @@ python -m nhl_monitor verify --record-id NHL-20232024-020001-01
 python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
 python -m nhl_monitor sources                     # the source registry with verification status
 
-python3 -m unittest discover -s tests -t .       # 260 tests (engine + monitor lines)
+PYTHONPATH=pipeline python -m nhl_scoring.cli notify --describe    # which notification channels are on
+PYTHONPATH=pipeline python -m nhl_scoring.cli notify --dry-run     # what would be sent, sending nothing
+
+python3 -m unittest discover -s tests -t .       # 304 tests (engine + monitor lines)
 python3 -m nhl_scoring.cli site && python3 -m http.server 8080   # rebuild + serve the live site at the repo root
 ```
 
@@ -212,24 +228,18 @@ official URL. The shipped case files are the template.
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | every push / PR | the full combined suite (`python3 -m unittest discover -s tests` → 260 tests), validates the database under **both** contracts, rebuilds the site and asserts it is byte-identical to the committed one, smoke-tests the published client against the real payload (`tools/check_engine_site.mjs`), and checks the alert feed |
-| [`situation-room.yml`](.github/workflows/situation-room.yml) | twice hourly (`:11`,`:41`) | ingests the official Situation Room statement feed, cross-checks overturned calls against the play-by-play, and commits ledger + database + alerts + rebuilt site |
-| [`monitor.yml`](.github/workflows/monitor.yml) | every 5 minutes | the monitor line's live slate capture: diffs captured states, opens a GitHub issue per detected discrepancy, ports new records into the canonical database |
-| [`scoring-monitor.yml`](.github/workflows/scoring-monitor.yml) · [`scoring-backfill.yml`](.github/workflows/scoring-backfill.yml) · [`scoring-ci.yml`](.github/workflows/scoring-ci.yml) | schedule / dispatch | the engine line's monitor, backfill and CI |
-| [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method, scans the archive for provable changes, measures the archive's coverage ceiling, and commits the results |
-| [`tests.yml`](.github/workflows/tests.yml) | every push | monitor-line tests + a source-reachability probe and per-season coverage measurement, committed to `data/reference/coverage_report.json` |
-
-**Pages.** The site *is* the repository root (`index.html`, `app.js`, `styles.css`,
-`data.js`, `.nojekyll`), served by GitHub Pages from `main` at `/` (legacy
-branch deployment — nothing is built at serve time). The ingest/monitor workflows
-rebuild and commit those files. An Actions-based `pages.yml` deploy is parked as
-[`pages.yml.disabled`](.github/workflows/pages.yml.disabled) because this repo's
-Pages setting is branch-root, not "GitHub Actions"; rename it back only after
-switching that setting (repo-admin).
+| [`ci.yml`](.github/workflows/ci.yml) | every push / PR | the full combined suite, validates the database under **both** contracts, rebuilds the site and asserts it is byte-identical to the committed one, smoke-tests the published client against the real payload (`tools/check_engine_site.mjs`), and checks the alert feed |
+| [`situation-room.yml`](.github/workflows/situation-room.yml) | twice hourly (`:11`,`:41`) + dispatch + a committed request file | **the primary alert path**: ingests the official Situation Room statement feed, cross-checks overturned calls against the play-by-play, **delivers notifications**, and commits ledger + database + alerts + rebuilt site |
+| [`monitor.yml`](.github/workflows/monitor.yml) | every 5 minutes | the monitor line's live slate capture: diffs captured states, ports new records into the canonical database, then delivers anything new through the same deduplicated notification path |
+| [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method, scans the archive for provable changes, ports records, rebuilds the published site, delivers alerts, and commits the results |
+| [`scoring-monitor.yml`](.github/workflows/scoring-monitor.yml) · [`scoring-backfill.yml`](.github/workflows/scoring-backfill.yml) · [`scoring-ci.yml`](.github/workflows/scoring-ci.yml) | dispatch / weekly offset / push | the engine line's monitor, backfill and CI, kept off the monitor line's timers so nothing commits to `main` twice |
+| [`tests.yml`](.github/workflows/tests.yml) | every push | the suite (304 tests, including the 41 delivery tests), a browser-less site smoke test, JS syntax check, site build, record-schema validation, source reachability probe (which also measures per-season coverage on the runner) |
+| ~~`pages.yml`~~ | — | **disabled**: Pages is a legacy build of `main` at `/`, so the commit *is* the deploy |
 
 GitHub Actions is the right home for this because a runner has unrestricted outbound network access, a
 scheduler, durable storage (git history) and a notification channel (issues) — none of which the build
-sandbox had.
+sandbox had. Every one of those workflows ends with the same `notify` step, so there is exactly one delivery
+path and one deduplication state.
 
 > GitHub scheduled workflows can be delayed at busy times. Treat the cadence as "within ~10 minutes", and
 > note that a correction published and superseded inside one polling interval is only recoverable from an
@@ -287,9 +297,33 @@ disagreement between two official renderings of the same game.
 * **A change that happened and was superseded between two of our polls**, when no archive snapshot exists
   from before the change. The archive method cannot see it either if every snapshot postdates the correction.
 * **Whether a bookmaker regraded anything** — house rules are private.
-* **Pre-2005-ish history** until the coverage job pins the earliest season that actually serves reports.
+* **Reviews before February 2016** — the statement feed starts there. Scoring *differences* still reach back
+  to 2000-01 through the frozen-era census; review *rulings* do not.
+* **Anything before 2000-01** — measured: `19992000/GS020001.HTM` → 404, `20002001/GS020001.HTM` → 200.
 
 Full detail, including latency and coverage limits: [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md).
+
+## Notifications: getting told instead of checking
+
+The brief asks for an alert *and* a notification, plus an honest account of whether that is even possible.
+Both halves are written down: the analysis in [`docs/ALERTING.md`](docs/ALERTING.md) and
+[`docs/FEASIBILITY.md`](docs/FEASIBILITY.md), the operation in
+[`docs/NOTIFICATIONS.md`](docs/NOTIFICATIONS.md). The short version:
+
+| | |
+|---|---|
+| **Detect** | the league publishes an official statement for every challenge and video review, minutes after the play; 4,406 are ingested, 1,471 of them changed the on-ice call, 1,465 became records |
+| **Deliver** | `nhl_scoring.cli notify` — feed/RSS (always on), GitHub issue (on in Actions), webhook and e-mail (off until secrets exist). Deliver-once per alert, one issue per goal-total change, a digest for the rest, a committed report per run |
+| **Proven** | [issue #18](https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18), HTTP 201, 2026-10-07T21:25:51Z; 40 offline tests assert on the wire (URL, headers, payload, dedupe, retry-after-401, workflow wiring) |
+| **Impossible** | why a *scoring credit* changed (no official corrections feed — probed 404), a correction made and overwritten between two polls, pre-2016 review rulings, and whether any bookmaker regraded a market |
+
+```bash
+PYTHONPATH=pipeline python3 -m nhl_scoring.cli notify --describe   # the channel table, as the site renders it
+PYTHONPATH=pipeline python3 -m nhl_scoring.cli notify --dry-run    # what would be sent, sending nothing
+```
+
+Subscribe without touching code: watch the repository (Custom → Issues), or point a reader at
+[`data/alerts.xml`](data/alerts.xml), or add the `SDN_WEBHOOK_URL` / `SDN_SMTP_*` secrets.
 
 ## Repository layout
 
@@ -297,48 +331,72 @@ Full detail, including latency and coverage limits: [`docs/LIMITATIONS.md`](docs
 src/nhl_monitor/     sources.py fetch.py parse.py state.py classify.py detect.py archive.py store.py
                      ingest.py alerts.py cli.py   (standard library only)
 site/                index.html app.js styles.css   (static, GitHub Pages)
-data/                records/discrepancies.json  inbox/statements/ (one case file per record)
-                     reference/verified_facts.json  taxonomy.json
-                     schema/observed_vocabulary.json  games/ evidence/ alerts/ exports/
-tests/               260 unittest cases (engine + monitor lines) + provenance-documented fixtures from real official documents
-tools/build_site.py  assembles _site/ (static files + committed JSON)
-docs/                LIMITATIONS.md BACKFILL.md DATA_MODEL.md SOURCES.md OPERATIONS.md ROADMAP.md
-                     VERIFICATION_LOG.md  evidence/
-.github/workflows/   tests.yml monitor.yml backfill.yml pages.yml
+data/                discrepancies.json (canonical)  situation_room/rulings.json (4,406 statements)
+                     alerts.json + alerts.xml (the feed subscribers read)  alerts/ notifications/
+                     notifications_state.json (deliver-once fingerprints)
+                     records/discrepancies.json  inbox/statements/  reference/verified_facts.json
+                     taxonomy.json  schema/observed_vocabulary.json  games/ evidence/ exports/
+tests/               304 unittest cases (engine + monitor lines) + provenance-documented fixtures
+index.html app.js styles.css data.js   the published site (Pages serves the repository root)
+tools/               build_site.py (legacy _site build) + check_engine_site.mjs / check_site.mjs
+docs/                NOTIFICATIONS.md ALERTING.md FEASIBILITY.md SITUATION_ROOM.md LIMITATIONS.md
+                     STATUS.md ROADMAP.md DATA_MODEL.md METHODOLOGY.md SOURCES.md OPERATIONS.md
+                     VERIFICATION_LOG.md  engine/  evidence/
+.github/workflows/   ci.yml tests.yml scoring-ci.yml situation-room.yml monitor.yml backfill.yml
+                     scoring-monitor.yml scoring-backfill.yml
 ```
 
 ## Open items for the next session
 
-Ranked by how much they block the goal (details in [`docs/ROADMAP.md`](docs/ROADMAP.md)):
+> **Revised 2026-10-07, twice.** First after the Situation Room backfill (the database
+> is no longer "three records": 1,470 records, 1,465 of them goal-count-changing in-game
+> overturns), and again in the notification pass, which is what items 1-4 below are.
 
-> **Revised 2026-10-07 after the Situation Room backfill.** The database is no
-> longer "three records": the official review-statement feed was ingested and the
-> database holds 1,470 records (1,465 goal-count-changing in-game overturns). Items
-> 1 and 4 below are corrected for that; the rest stand.
-
-1. **Run the frozen-era cross-source census at scale** (`backfill-era --season 20052006 --start 1 --end 200`,
-   or via `backfill.yml`). The Situation Room feed already covers 2016-02 onward, so this is now a
-   *historical-coverage* task (pre-2016 + post-final change detection), not initial population. The census path
-   is built and unit-tested but has never run against live sources at scale. Expect the first slice to be the
-   slowest: markup drift, missing games and archive redirects all surface at once.
-2. **Turn the announcement watch into a scheduled job.** The announcements are the sharpest signal that exists
-   (they name the game, the period, the clock and the new credit), and they were retrieved here through the
-   platform's page-fetch tool, not through a supported API. A runner needs either an X API tier or a
-   documented, polite fetch of the announcement account; until then the monitoring path is the game feeds.
-3. **Decide how to treat a 1–4 day rebuild.** Footers 1–4 days after the game (2003-04, 2012-13..2014-15,
-   2020-21, 2026-27) are neither a game-night record nor a late batch rebuild, and may already contain corrections.
-   They are currently marked regenerated; whether they deserve their own, weaker evidence class is an open design
-   question.
-4. **Hunt for a *post-final* goal-count change.** The 1,465 goal-count-changing records are all in-game
-   video-review overturns stated by the league; the highest-value class — a goal added or removed *after* the
-   record was final — is still unobserved through change detection. It should be rare by
-   construction; proving that claim, rather than asserting it, is the next research step.
-5. **Recover pre-change states from the archive** where a frozen or early snapshot exists, which would
-   upgrade a record from "superseded credit is secondary" to two official states.
-6. **Verify the four secondary leads** (L01–L04 in `data/reference/verified_facts.json`) or drop them; none
-   may become a record without an official artifact.
-7. **Player-id resolution for HTML reports** — frozen documents carry sweater numbers and surnames but no
-   ids, so name→id matching must go through the season's roster and must refuse to guess on ambiguity.
+1. **Publish a measured end-to-end latency.** The league's statement appears minutes
+   after the play (three samples measured), but "how late do *we* see it" is still
+   bounded by the cron slot rather than measured. Every record stores the statement's
+   `content_date` and our `detected_at`, so this is a report away once a week of
+   scheduled runs exists. Until then no latency figure is quoted anywhere.
+2. **Prove the webhook and e-mail channels against real endpoints.** Both are
+   implemented and unit-tested with injected transports; only the GitHub issue channel
+   has been proven live. Turning either on is a secret, not a change - and the first
+   real run should be checked against `data/notifications/last_run.json`.
+3. **Run the frozen-era cross-source census at scale, and hunt for a post-final
+   goal-count change.** The Situation Room feed covers 2016-02 onward, so the census is
+   now a *historical-coverage and post-final-detection* task, not initial population.
+   A goal added or removed **after the game was final** is the only class that can move
+   a settled market and it is still unobserved at 1,470 records - unobserved, not
+   disproved. `backfill-era --season 20052006 --start 1 --end 200` via `backfill.yml`;
+   expect the first slice to be the slowest (markup drift, missing games, archive
+   redirects all surface at once).
+4. **Route notifications by team, market or severity.** A subscriber who cares about
+   one club, or only about goal totals, currently gets everything. The feed already
+   carries `teams`, `settlement_window` and `affects_goal_total`; `notify` needs the
+   filters.
+5. **Turn the announcement watch into a scheduled job.** The league's scoring-change
+   posts are the sharpest signal that exists for attribution corrections (they name the
+   game, period, clock and new credit, and arrive 2h49m-3h25m after the final buzzer),
+   and there is still no supported API for them.
+6. **Fill or remove `evidence_status`.** The schema and `docs/DATA_MODEL.md` describe
+   it; **all 1,470 records leave it null**, with the same information living in
+   `status` + `flags`. Either derive it and enforce it in `validate()`, or delete it -
+   a documented field that nothing populates is a lie about the model.
+7. **Retire the third alerting implementation.** `pipeline/alerts.py` still carries its
+   own issue queue and its own notify state beside the delivery layer. Two states is
+   how a duplicate notification eventually happens.
+8. **Recover pre-change states from the archive** where a frozen or early snapshot
+   exists, which upgrades a record from "superseded credit is secondary" to two
+   official states.
+9. **Verify the four secondary leads** (L01-L04 in
+   [`data/reference/verified_facts.json`](data/reference/verified_facts.json)) or drop
+   them; none may become a record without an official artifact.
+10. **Player-id resolution for HTML reports** - frozen documents carry sweater numbers
+    and surnames but no ids, so name→id matching must go through the season's roster
+    and must refuse to guess on ambiguity.
+11. **Decide how to treat a 1-4 day report rebuild.** Footers 1-4 days after the game
+    (2003-04, 2012-13..2014-15, 2020-21, 2026-27) are neither a game-night record nor a
+    late batch rebuild and may already contain corrections; whether they deserve their
+    own, weaker evidence class is an open design question.
 
 ## The original brief (verbatim)
 
@@ -433,8 +491,9 @@ satisfies the original request. Work line by line verify everything no hallucina
 ## How this project applies those values
 
 * **Maximize P(Win)** — the decision that matters is *what to trust*. Anything that could not be fetched and
-  cross-checked against a second official artifact is a **lead**, not a record. That is why the database is
-  empty rather than plausible-looking, and why `probe` exists to fail loudly.
+  cross-checked against a second official artifact is a **lead**, not a record; that is why 5 third-party
+  goal-clock claims sit in `data/leads/` instead of the database, why 53 records are `flagged` rather than
+  smoothed into `verified`, and why `probe` exists to fail loudly.
 * **Own the outcome** — the pipeline does not stop at "detected something": it stores the evidence timeline,
   writes an alert, opens an issue, re-verifies records, and publishes the site. If a source is unreachable
   the record says so in `evidence_status` instead of quietly degrading.
@@ -454,12 +513,12 @@ it is, taken without deleting either line's work:
 
 | Question | Decision |
 | --- | --- |
-| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema (1,470 records after the Situation Room backfill; it started as 11): the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
+| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema (1,470 records after the 0.5.0 re-read; it started as 11, and stood at 1,469 after the first Situation Room backfill): the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
 | What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it. It is provenance for the port, not a competing database, and no published page reads it any more. |
 | Which site is the site of record? | **The repository root** (`index.html`, `app.js`, `styles.css`, `data.js`), built by `PYTHONPATH=pipeline python3 -m nhl_scoring.cli site`. GitHub Pages serves `main` at `/`. The former `docs/` build and the legacy root client were removed (2026-10-07); `docs/` holds documentation only. |
 | Which scheduler runs? | `situation-room.yml` (feed poll, twice hourly) plus the monitor line's `monitor.yml` / `backfill.yml` crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
 | Which docs win where they collided? | `docs/DATA_MODEL.md`, `docs/METHODOLOGY.md`, `docs/SOURCES.md` stayed the monitor line's, verbatim. This line's are at `docs/engine/*.md` and published as "engine" tabs. Nothing was overwritten. |
-| Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> **182 tests, 0 failures** at consolidation; **260 tests, 0 failures** after the Situation Room line's suite was added. |
+| Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> 182 tests at consolidation, 260 after the Situation Room line's suite, **304 today** (41 of them the notification-delivery suite), 0 failures. |
 
 Still owed, and not decided here: whether one engine is eventually retired. The two
 answer the same brief through different mechanisms (statement-ingest vs cross-source

@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-10-07T21:25:51Z",
+  "run": "first-delivery-proof",
+  "mode": "deliver",
+  "repo": "buffedlizard55-lab/ScoringDiscrepNHL",
+  "candidates": 1,
+  "unchanged_skipped": 0,
+  "deliveries": [
+    {
+      "channel": "issue",
+      "target": "buffedlizard55-lab/ScoringDiscrepNHL",
+      "alert_ids": [
+        "SDN-261948dfcd"
+      ],
+      "status": "sent",
+      "http_status": 201,
+      "url": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18",
+      "error": "",
+      "dry_run": false
+    },
+    {
+      "channel": "feed",
+      "target": "data/alerts.json + data/alerts.xml",
+      "alert_ids": [
+        "SDN-261948dfcd"
+      ],
+      "status": "published",
+      "http_status": null,
+      "url": "https://buffedlizard55-lab.github.io/ScoringDiscrepNHL/#view=alerts",
+      "error": "",
+      "dry_run": false
+    }
+  ],
+  "failed_channels": [],
+  "delivered_alert_ids": [
+    "SDN-261948dfcd"
+  ],
+  "retry_next_run": [],
+  "state_entries": 1,
+  "feed": {
+    "path": "/tmp/one_alert.json",
+    "generated_at": "2026-10-07T21:17:54Z",
+    "count": 1
+  },
+  "state_path": "/tmp/proof_state.json",
+  "note": "The issue URL was empty when this report was written: the response body was capped at 4000 characters, so json.loads failed on the truncated document. extract_url() now falls back to a regex, and the URL below was read back from GET /repos/buffedlizard55-lab/ScoringDiscrepNHL/issues/18 (HTTP 200)."
+}

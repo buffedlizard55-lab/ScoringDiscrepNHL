@@ -488,6 +488,61 @@
     return wrap;
   }
 
+  function notificationsPanel() {
+    var n = (SDN.meta || {}).notifications || {};
+    var channels = n.channels || [];
+    var wrap = h('div', {class: 'subscribe'});
+    wrap.appendChild(h('h3', {text: 'Get notified instead of checking'}));
+    wrap.appendChild(h('p', {class: 'note', html:
+      'Detection runs on a schedule and writes this feed; the channels below are what actually push an alert to a ' +
+      'person. Each row is generated from the delivery code, so a channel shown as <em>not configured</em> is ' +
+      'genuinely off rather than quietly broken. Nothing is delivered twice: ' +
+      '<code>data/notifications_state.json</code> records a fingerprint per alert, and every delivery is written ' +
+      'to <code>data/notifications/last_run.json</code> so an outage is visible in git.'}));
+    if (!channels.length) {
+      wrap.appendChild(h('p', {class: 'empty', text: 'No delivery channels are described by this build.'}));
+      return wrap;
+    }
+    var table = h('table', {class: 'grid'});
+    table.appendChild(h('thead', {html: '<tr><th>Channel</th><th>State</th><th>What it needs</th><th>How to subscribe</th></tr>'}));
+    var tb = h('tbody');
+    channels.forEach(function (c) {
+      tb.appendChild(h('tr', {html:
+        '<td><strong>' + esc(c.name) + '</strong><div class="meta">' + esc(c.latency || '') + '</div></td>' +
+        '<td><span class="badge ' + (c.configured ? 'on' : 'off') + '">' + (c.configured ? 'on' : 'not configured') + '</span></td>' +
+        '<td><code>' + esc(c.requires || '') + '</code></td>' +
+        '<td>' + esc(c.how_to_subscribe || '') + '<div class="meta">' + esc(c.notes || '') + '</div></td>'}));
+    });
+    table.appendChild(tb);
+    wrap.appendChild(table);
+    var last = n.last_run;
+    if (last) {
+      var failed = (last.failed_channels || []).length;
+      wrap.appendChild(h('p', {class: 'note', html:
+        'Last delivery run <strong>' + esc(last.generated_at || '?') + '</strong> (' + esc(last.run || '?') + ', ' +
+        esc(last.mode || '?') + '): ' + esc(String(last.delivered || 0)) + ' alert(s) delivered, ' +
+        (failed ? '<strong>' + esc(failed) + ' channel(s) failed</strong>' : 'no channel failures') + '.'}));
+      var rows = (last.deliveries || []).map(function (d) {
+        return [d.channel, d.status, String(d.alerts || 0), d.url || d.error || ''];
+      });
+      var dt = h('table', {class: 'grid'});
+      dt.appendChild(h('thead', {html: '<tr><th>Channel</th><th>Result</th><th>Alerts</th><th>Detail</th></tr>'}));
+      var dtb = h('tbody');
+      rows.forEach(function (r) {
+        dtb.appendChild(h('tr', {html: '<td>' + esc(r[0]) + '</td><td><span class="badge ' +
+          (r[1] === 'sent' ? 'on' : (r[1] === 'failed' ? 'off' : 'skip')) + '">' + esc(r[1]) + '</span></td><td>' +
+          esc(r[2]) + '</td><td class="meta">' + esc(r[3]) + '</td>'}));
+      });
+      dt.appendChild(dtb);
+      wrap.appendChild(dt);
+    } else {
+      wrap.appendChild(h('p', {class: 'note', text:
+        'No delivery run has been recorded yet. The scheduled ingest runs `nhl_scoring.cli notify` after every ' +
+        'detection pass; its report appears here once one has run.'}));
+    }
+    return wrap;
+  }
+
   function alertsView() {
     var wrap = h('div');
     var feed = (SDN.meta || {}).alert_feed || {};
@@ -500,6 +555,7 @@
       'or a human read is needed; <strong>low</strong> = informational. ' +
       (feed.generated_at ? 'Feed generated ' + esc(feed.generated_at) + '. ' : '') +
       'Latency is bounded by the run cadence, not by the source - see the Live monitor tab.'}));
+    wrap.appendChild(notificationsPanel());
     if (!AL.length) {
       wrap.appendChild(h('p', {class: 'empty', text: 'No alerts in the feed yet. The feed is written by: python -m nhl_scoring.cli alerts --write'}));
       return wrap;
@@ -514,7 +570,10 @@
         (a.first_seen_at && a.first_seen_at !== a.created_at ? ' (first seen ' + esc(a.first_seen_at) + ')' : '') +
         ' by <code>' + esc(a.detected_by || '?') + '</code>' +
         (a.record_id ? ' - record <a href="#view=database&q=' + encodeURIComponent(a.record_id) + '">' + esc(a.record_id) + '</a>' : '') +
-        (a.affects_goal_total ? ' - <strong>goal total affected</strong>' : '')}));
+        (a.affects_goal_total ? ' - <strong>goal total affected</strong>' : '') +
+        (a.settlement_window ? ' - settlement window <code>' + esc(a.settlement_window) + '</code>' : '') +
+        (a.settlement_risk ? ' - risk <code>' + esc(a.settlement_risk) + '</code>' : '')}));
+      if (a.settlement_reason) card.appendChild(h('p', {class: 'note', text: a.settlement_reason}));
       if (a.body) card.appendChild(h('pre', {class: 'body', text: a.body}));
       if ((a.links || []).length) {
         var ul = h('ul', {class: 'links'});

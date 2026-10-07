@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from . import __version__, alerts as alerts_mod, db as db_mod, site as site_mod
+from .notify import DEFAULT_REPO as notify_DEFAULT_REPO
 from . import situation_room as sr_mod
 from .checks import check_record, compare_sources
 from .fetch import FetchResult, Fetcher, utcnow
@@ -490,6 +491,94 @@ def alerts_cmd(args: argparse.Namespace) -> int:
     return 0
 
 
+def notify_cmd(args: argparse.Namespace) -> int:
+    """Deliver the alerts that are new since the last delivery.
+
+    This is the step that turns detection into a notification. It reads the
+    *published* feed (``data/alerts.json``) so what a subscriber receives is
+    always what the website shows, consults ``data/notifications_state.json`` so
+    an unchanged alert is never sent twice, and writes a report next to the data
+    so a notification outage is visible in git rather than silent.
+    """
+    from . import notify as notify_mod
+
+    if args.describe:
+        print(json.dumps(notify_mod.describe_channels(), indent=2, ensure_ascii=False))
+        return 0
+
+    alerts, meta = notify_mod.read_feed(args.feed)
+    if meta.get("error"):
+        print(f"notify: cannot read the alert feed {args.feed}: {meta['error']}", file=sys.stderr)
+        return 1
+    state = notify_mod.load_state(args.state)
+    now = _now()
+    run_label = args.run_label or os.environ.get("GITHUB_RUN_ID") or f"manual-{now}"
+    channels = [c.strip() for c in (args.channels or "").split(",") if c.strip()]
+    unknown = [c for c in channels if c not in notify_mod.CHANNELS]
+    if unknown:
+        print(f"notify: unknown channel(s) {', '.join(unknown)}; known: {', '.join(notify_mod.CHANNELS)}",
+              file=sys.stderr)
+        return 2
+
+    if args.prime:
+        count = notify_mod.prime(alerts, state, now=now, channel="feed")
+        if not args.dry_run:
+            notify_mod.save_state(args.state, state)
+        print(f"notify: primed {count} alert(s) from the committed feed "
+              f"({'dry run - state not written' if args.dry_run else args.state})")
+        return 0
+
+    if not alerts:
+        print(f"notify: the alert feed {args.feed} is empty - nothing to deliver "
+              "(the feed is written by: nhl_scoring.cli alerts --write)")
+        return 0
+
+    parts = notify_mod.partition(alerts, state)
+    # --all re-delivers the whole feed (used to re-announce after a channel is
+    # fixed); the normal path is new + revised alerts only.
+    pending = alerts if args.all else parts["new"] + parts["updated"]
+    print(f"notify: feed has {len(alerts)} alert(s) - {len(parts['new'])} new, "
+          f"{len(parts['updated'])} updated, {len(parts['unchanged'])} already delivered")
+    report = notify_mod.deliver(
+        pending, state=state, channels=channels,
+        updated_ids=[a.get("id") for a in parts["updated"]],
+        now=now, run_label=run_label, repo=args.repo,
+        token=args.token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or "",
+        webhook_url=args.webhook or os.environ.get("SDN_WEBHOOK_URL") or os.environ.get("SDN_WEBHOOK") or "",
+        smtp_config={"host": os.environ.get("SDN_SMTP_HOST", ""),
+                     "port": os.environ.get("SDN_SMTP_PORT", "587"),
+                     "user": os.environ.get("SDN_SMTP_USER", ""),
+                     "password": os.environ.get("SDN_SMTP_PASSWORD", ""),
+                     "from": os.environ.get("SDN_SMTP_FROM", ""),
+                     "to": os.environ.get("SDN_SMTP_TO", "")},
+        dry_run=args.dry_run, max_issues=args.max_issues,
+        unchanged=0 if args.all else len(parts["unchanged"]), min_severity=args.min_severity)
+    report["feed"] = meta
+    report["state_path"] = args.state
+    for delivery in report["deliveries"]:
+        print(f"  [{delivery['channel']:8}] {delivery['status']:8} "
+              f"{len(delivery['alert_ids'])} alert(s) -> {delivery['target']}"
+              + (f" ({delivery['url']})" if delivery.get("url") else "")
+              + (f" - {delivery['error']}" if delivery.get("error") else ""))
+    if not args.dry_run:
+        notify_mod.save_state(args.state, state)
+        os.makedirs(os.path.dirname(args.report) or ".", exist_ok=True)
+        with open(args.report, "w", encoding="utf-8") as fh:
+            json.dump(report, fh, indent=2, ensure_ascii=False)
+            fh.write("\n")
+        print(f"notify: report -> {args.report}; state -> {args.state}")
+    else:
+        print("notify: dry run - no state written, nothing sent")
+    if report["failed_channels"] and not args.allow_failure:
+        print(f"notify: delivery failed on {', '.join(sorted(set(report['failed_channels'])))}",
+              file=sys.stderr)
+        return 1
+    if report["failed_channels"]:
+        print(f"notify: WARNING delivery failed on {', '.join(sorted(set(report['failed_channels'])))} "
+              "(--allow-failure: continuing)")
+    return 0
+
+
 def site_cmd(args: argparse.Namespace) -> int:
     result = site_mod.build(args.out, db_path=args.db, repo_root=REPO_ROOT,
                             coverage_path=args.coverage)
@@ -632,6 +721,32 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--out-dir", default=os.path.join(REPO_ROOT, "data", "alerts"))
     s.add_argument("--webhook", default=os.environ.get("SDN_WEBHOOK") or None)
     s.set_defaults(func=alerts_cmd)
+
+    s = sub.add_parser("notify", help="deliver new alerts to subscribers (issue / webhook / email / feed)")
+    s.add_argument("--feed", default=os.path.join(REPO_ROOT, "data", "alerts.json"),
+                   help="the published alert feed to deliver from")
+    s.add_argument("--state", default=os.path.join(REPO_ROOT, "data", "notifications_state.json"),
+                   help="deliver-once state; committed so a schedule cannot re-send an old alert")
+    s.add_argument("--report", default=os.path.join(REPO_ROOT, "data", "notifications", "last_run.json"),
+                   help="delivery report written after a real run")
+    s.add_argument("--channels", default="feed,issue,webhook,email",
+                   help="comma-separated subset of " + ",".join(("feed", "issue", "webhook", "email")))
+    s.add_argument("--min-severity", choices=("high", "medium", "low"), default="low",
+                   help="drop everything below this severity (high = goal-total changes only)")
+    s.add_argument("--max-issues", type=int, default=10,
+                   help="cap on per-alert issues per run; the rest go into one digest")
+    s.add_argument("--all", action="store_true", help="re-deliver the whole feed, not just what is new")
+    s.add_argument("--prime", action="store_true",
+                   help="mark the current feed as already delivered (switch-on helper; sends nothing)")
+    s.add_argument("--dry-run", action="store_true")
+    s.add_argument("--allow-failure", action="store_true",
+                   help="exit 0 even if a channel failed (the report still records it)")
+    s.add_argument("--describe", action="store_true", help="print the channel table as JSON and exit")
+    s.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY") or notify_DEFAULT_REPO)
+    s.add_argument("--token", default="", help="defaults to $GITHUB_TOKEN / $GH_TOKEN")
+    s.add_argument("--webhook", default="", help="defaults to $SDN_WEBHOOK_URL / $SDN_WEBHOOK")
+    s.add_argument("--run-label", default="")
+    s.set_defaults(func=notify_cmd)
 
     s = sub.add_parser("site", help="build the GitHub Pages site from the database (repo root = what Pages serves)")
     s.add_argument("--out", default=REPO_ROOT)

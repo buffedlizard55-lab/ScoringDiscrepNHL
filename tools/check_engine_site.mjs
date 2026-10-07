@@ -200,6 +200,23 @@ if (existsSync(feedPath)) {
   check('payload alerts mirror data/alerts.json', SDN.alerts.length === n, `${SDN.alerts.length} vs ${n}`);
   const al = open('alerts');
   check('alerts view lists the feed (or says it is empty)', n ? /alerts:/.test(al) && /data\/alerts\.xml/.test(al) : /No alerts/.test(al));
+
+  /* The Alerts tab must tell a reader how to be notified, and must not claim a
+   * channel that the delivery code does not have. */
+  const channels = ((SDN.meta || {}).notifications || {}).channels || [];
+  check('payload describes the notification channels', channels.length === 4,
+    `expected feed/issue/webhook/email, got ${channels.map((c) => c.id).join(',')}`);
+  check('alerts view renders the subscription panel', /Get notified instead of checking/.test(al));
+  const missing = channels.filter((c) => !al.includes(c.name));
+  check('every channel is listed on the page', missing.length === 0, missing.map((c) => c.id).join(','));
+  check('an unconfigured channel is shown as unconfigured',
+    channels.filter((c) => !c.configured).every((c) => /not configured/.test(al)));
+  const withTotal = (SDN.alerts || []).filter((a) => a.affects_goal_total);
+  check('a goal-total alert carries the record\'s own settlement wording',
+    !withTotal.length || withTotal.every((a) => a.settlement_reason && al.includes(a.settlement_reason.slice(0, 40))));
+  const lastRun = ((SDN.meta || {}).notifications || {}).last_run;
+  check('the last delivery run is shown when one has been recorded',
+    !lastRun || /Last delivery run/.test(al));
 }
 
 console.log(failures.length ? `\n${failures.length} check(s) failed` : '\nall checks passed');

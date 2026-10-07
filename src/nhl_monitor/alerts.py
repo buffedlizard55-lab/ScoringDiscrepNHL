@@ -153,6 +153,27 @@ def write_alerts(alerts: List[dict], *, root: str = ALERTS_DIR) -> List[str]:
     return paths
 
 
+def _issue_state_path(root: str) -> str:
+    return os.path.join(root, "notified_issues.json")
+
+
+def _issues_already_opened(root: str) -> dict:
+    """``{alert_id: {"url": ..., "at": ...}}`` for alerts an issue was opened for."""
+    try:
+        with open(_issue_state_path(root), encoding="utf-8") as fh:
+            return json.load(fh) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _record_issue_opened(alert_id: str, url: Optional[str], root: str) -> None:
+    state = _issues_already_opened(root)
+    state[alert_id] = {"url": url, "at": store.utcnow()}
+    with open(_issue_state_path(root), "w", encoding="utf-8") as fh:
+        json.dump(state, fh, indent=2, ensure_ascii=False, sort_keys=True)
+        fh.write("\n")
+
+
 def emit_for_records(records, *, root: str = ALERTS_DIR, github_issue: bool = False,
                      repo: Optional[str] = None, dry_run: bool = False) -> dict:
     """One alert per record, index refreshed - the single alerting entry point.
@@ -168,8 +189,22 @@ def emit_for_records(records, *, root: str = ALERTS_DIR, github_issue: bool = Fa
     out["paths"] = write_alerts(emitted, root=root)
     out["index"] = write_alert_index(root=root)
     if github_issue:
+        # Deliver once per alert id. This route runs on a five-minute schedule and a
+        # detectable change stays detectable, so without this the same discrepancy
+        # would open a new issue on every pass. The canonical delivery path is
+        # pipeline/nhl_scoring/notify.py; this guard exists so that a caller who
+        # still passes --github-issue cannot flood the repository.
+        opened = _issues_already_opened(root)
         for a in emitted:
-            out["issues"].append(open_github_issue(a["title"], a["body_markdown"], repo=repo))
+            alert_id = a.get("alert_id")
+            if alert_id in opened:
+                out["issues"].append({"created": False, "url": opened[alert_id].get("url"),
+                                      "reason": "an issue was already opened for this alert id"})
+                continue
+            result = open_github_issue(a["title"], a["body_markdown"], repo=repo)
+            out["issues"].append(result)
+            if result.get("created"):
+                _record_issue_opened(alert_id, result.get("url"), root)
     return out
 
 

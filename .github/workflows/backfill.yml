@@ -93,35 +93,50 @@ jobs:
               --start "${{ github.event.inputs.start }}" \
               --end "${{ github.event.inputs.end }}" \
               --kind "${{ github.event.inputs.kind }}" \
-              --github-issue --repo "$GITHUB_REPOSITORY" \
               --out "data/reference/change_scan_${{ github.event.inputs.season }}_${{ github.event.inputs.kind }}.json" \
               | tee backfill_output.json
           elif [ "$METHOD" = "archive" ]; then
             PYTHONPATH=src python -m nhl_monitor backfill-archive \
               --game-id "${{ github.event.inputs.game_id }}" \
-              --kind "${{ github.event.inputs.kind }}" \
-              --github-issue --repo "$GITHUB_REPOSITORY" | tee backfill_output.json
+              --kind "${{ github.event.inputs.kind }}" | tee backfill_output.json
           else
             PYTHONPATH=src python -m nhl_monitor backfill-era \
               --season "${{ github.event.inputs.season }}" \
               --game-type "${{ github.event.inputs.game_type }}" \
               --start "${{ github.event.inputs.start }}" \
-              --end "${{ github.event.inputs.end }}" \
-              --github-issue --repo "$GITHUB_REPOSITORY" | tee backfill_output.json
+              --end "${{ github.event.inputs.end }}" | tee backfill_output.json
           fi
 
-      - name: Rebuild the site data and export CSV
+      - name: Port new records into the canonical database, rebuild the published site, export CSV
         if: always()
         run: |
           node tools/check_site.mjs
-          python tools/build_site.py
+          # The census writes monitor-line records; the published site renders the
+          # canonical database, so the lossless port runs first - otherwise a
+          # backfill could add records the site never shows.
+          python3 scripts/import_parallel_records.py
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 50 --recent-days 14
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
           PYTHONPATH=src python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
+
+      - name: Notify subscribers about alerts that are new since the last run
+        # A backfill can legitimately produce many historical records; the delivery
+        # layer caps per-alert issues per run and folds the rest into one digest,
+        # so a census cannot flood the issue tracker.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SDN_WEBHOOK_URL: ${{ secrets.SDN_WEBHOOK_URL }}
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli notify \
+            --channels feed,issue,webhook,email --allow-failure \
+            --run-label "backfill-${GITHUB_RUN_ID}"
 
       - name: Commit the evidence
         run: |
           git config user.name  "scoring-backfill[bot]"
           git config user.email "scoring-backfill@users.noreply.github.com"
-          git add data/
+          git add data index.html app.js styles.css data.js .nojekyll
           if git diff --cached --quiet; then
             echo "no new records from this slice"
           else

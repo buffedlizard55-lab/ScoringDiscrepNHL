@@ -1,7 +1,12 @@
 # Status
 
-Updated 2026-10-07. This file is the honest ledger: what runs, what is seeded, what
-is still open, and what will never work.
+Updated 2026-10-07 (notification-delivery pass). This file is the honest ledger: what
+runs, what is seeded, what is still open, and what will never work.
+
+**Headline numbers, re-measured this pass.** 4,406 official Situation Room statements
+in the ledger · **1,470 database records, 0 invalid** · 18 alerts in the published
+feed · **1 notification actually delivered** ([issue #18](https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18),
+HTTP 201) · 302 unit tests passing · site checks passing.
 
 > **REVISED 2026-10-07 (later session, after the Situation Room backfill).**
 > The sections below were written at the consolidation point and describe an
@@ -41,12 +46,18 @@ is still open, and what will never work.
   records.
 - **Alerting**: triage, markdown + JSON output, webhook payload, issue title,
   Situation Room quote extraction.
+- **Notification delivery** (`pipeline/nhl_scoring/notify.py`, CLI `notify`): four
+  channels (feed/RSS, GitHub issue, webhook, e-mail), deliver-once fingerprints in
+  `data/notifications_state.json`, a committed delivery report per run, labels created
+  over the API when missing, and a failure recorded as a failure (retried next run,
+  never marked delivered). Wired into all four detection workflows. One real issue has
+  been opened by it. See [NOTIFICATIONS.md](NOTIFICATIONS.md).
 - **GitHub Pages site** built from the database: filterable by season, date, team,
   period, discrepancy type, goal/no-goal, scorer/assist, video review, intermission,
   postgame, and total-changed; separate buckets for total-changing vs
   attribution-only; settlement exposure view; detection coverage view; every row with
   official links.
-- **Tests**: `python3 -m unittest discover -s tests -t .` -> **260 tests** (engine + monitor lines combined), all offline,
+- **Tests**: `python3 -m unittest discover -s tests -t .` -> **260 tests** (engine + monitor lines combined), all offline, In the notification pass `backfill.yml` was also still rebuilding the retired `_site/` output and skipping the record port, so census records never reached the published page - fixed.
   including a real conflicting fixture pair and a control pair that must stay clean.
 - **Verified against live data before the sandbox boundary was known**: the seed
   record was produced by reading the actual `20002001/GS020001.HTM` and
@@ -67,6 +78,10 @@ the translation. `validate()` rejects a lossy or invented port: all three came o
 `verified`, with their own flags carried across
 (`assists_before_the_change_not_captured`, `initial_state_reported_by_secondary_source_only`).
 
+0. **Close the delivery loop**: publish a measured end-to-end latency distribution once
+   scheduled runs have accumulated; prove the webhook and e-mail channels against real
+   endpoints; add team/market routing to `notify`. Ranked detail in
+   [ROADMAP.md](ROADMAP.md) items 21-25.
 Both validators now check the same file: `python3 -m nhl_scoring.cli validate` (engine
 contract) and `python3 -m pipeline.main validate` (monitor contract) each report
 **1,470 records, 0 errors** - the monitor line's validator dispatches engine-shaped records to
@@ -96,13 +111,24 @@ that resolves each.
 
 ## Open work, in priority order
 
-1. **Backfill the cross-source census across seasons.** *(The Situation Room feed
-   already covers 2016-02 onward — see the banner; this item is the separate
-   cross-source-diff census over official reports, which extends coverage to
-   pre-2016 and to post-final change detection.)* `backfill.yml` runs the scan in
-   batches (25 games/run). 2000-01 -> present is ~18k games; at CI-friendly pacing
-   that is weeks of scheduled runs, and it self-limits: coverage notes record what
-   was not reached. First target is the last 5 seasons plus 2000-01..2002-03 (era coverage).
+Both validators check the same file and still agree today (re-run 2026-10-07 in the
+notification pass): `python3 -m nhl_scoring.cli validate` -> `1470 records, 0 invalid`
+and `python3 -m pipeline.main validate` -> `records: 1470 ... errors: 0`. The monitor
+line's validator dispatches engine-shaped records to the engine's rules instead of
+rejecting them, so neither line's invariants were weakened to reach agreement. (At the
+consolidation pass the same two commands reported 11 records, 0 errors.)
+
+Combined suite: `python3 -m unittest discover -s tests -t .` -> **304 tests**, 0 failures
+- 259 at the start of the notification pass, +41 for the delivery layer
+(`tests/test_notify.py`) and +3 for the monitor line's issue dedupe
+(`tests/test_alert_feed.py`); 260 was the count after the Situation Room line's suite
+landed.
+
+## The database (superseded - 11 records at consolidation; now 1,470)
+
+> See the revision banner at the top for the current counts. The table below is the
+> consolidation-time state, kept for provenance.
+
 2. **Live monitor for the current season.** `monitor.yml` polls the day's scoreboard,
    snapshots each game while `LIVE`, and emits alerts. Needs a schedule; Actions'
    15-minute floor and scheduling lag means "within ~15-30 min", not real time. For
@@ -111,14 +137,7 @@ that resolves each.
    here.
 3. **Resolve the two pending ruling-change records** (game id + official artifacts),
    then promote or retire them.
-3b. ~~**Decide the site/line question for real**: the root site still renders the
-   monitor line's 3-record file.~~ **CLOSED 2026-10-07.** The root site
-   (`index.html`, `app.js`, `styles.css`, `data.js`) is generated by
-   `PYTHONPATH=pipeline python3 -m nhl_scoring.cli site` and renders the
-   consolidated 1,470-record database; GitHub Pages serves the repo root from
-   `main`. What remains open is whether one of the two engines is eventually
-   retired (see the README's consolidation note) — an architecture decision, not a
-   rendering bug.
+- **Tests**: `python3 -m unittest discover -s tests -t .` -> **304 tests** (engine + monitor lines combined), all offline,
 4. **Own-goal `goalModifier` era check** for 2022-23+ (assert C16 can actually fire
    on a modern fixture; today it is only proven not to fire spuriously).
 5. **Shootout goals** (game 2025021181-style cases): decide whether SO "goals" belong

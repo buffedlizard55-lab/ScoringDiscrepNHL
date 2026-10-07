@@ -11,6 +11,12 @@ Everything asserted here was checked on **2026-10-07** in this repository. Where
 claim rests on a retrieval, the artifact is committed. Where it could not be
 checked in this environment, it says so instead of asserting.
 
+> **Companion document.** This file is the *analysis*. The *operation* — which
+> channels exist, which are on, how to subscribe, what latency was measured, what a
+> failure looks like — is [NOTIFICATIONS.md](NOTIFICATIONS.md). A notification that
+> has actually been delivered is linked there (issue #18, HTTP 201,
+> 2026-10-07T21:25:51Z).
+
 > **Revision 2026-10-07 (later session, after the Situation Room backfill).**
 > Sections 3.1, 3.2 and 5 below were written *before* the league's official
 > Situation Room statement feed was found and ingested, and they no longer match
@@ -57,19 +63,32 @@ Three detection routes, one feed, one page.
 
 | Route | Code | Schedule | Writes |
 | --- | --- | --- | --- |
+| **Situation Room ingest** — the league's own statement for every challenge and video review | `pipeline/nhl_scoring/situation_room.py` | `situation-room.yml`, cron `11,41 * * * *` | the ledger, `data/discrepancies.json`, `data/alerts.json`, `data/alerts.xml` |
 | Live monitor — poll recently finished games, diff captured states | `src/nhl_monitor/monitor.py` via `python -m nhl_monitor monitor` | `.github/workflows/monitor.yml`, cron `*/5 * * * *` | `data/records/discrepancies.json`, `data/alerts/`, `data/alerts.json`, `data/alerts.xml` |
 | Announcement ingest — parse the league's own `OFFICIAL SCORING CHANGE` posts | `src/nhl_monitor/ingest.py` | on demand / backfill | same |
 | Engine checks — cross-artifact and snapshot-diff checks C10–C22 | `pipeline/nhl_scoring/checks.py` via `python -m nhl_scoring.cli` | `scoring-monitor.yml` (dispatch-only) | `data/discrepancies.json`, `data/alerts/<date>/`, `data/alerts.json`, `data/alerts.xml` |
 
-Notification channels that exist in code:
+Notification channels, all delivered by one module
+([`pipeline/nhl_scoring/notify.py`](../pipeline/nhl_scoring/notify.py), CLI
+`nhl_scoring.cli notify`), which every detection workflow calls after it renders the
+feed:
 
 1. **Committed JSON + RSS** — `data/alerts.json` and `data/alerts.xml`, served by
    GitHub Pages. Zero external dependency; the alert is a versioned artifact.
-2. **GitHub Issue** — `alerts.open_github_issue()` via `gh`, labels
-   `scoring-discrepancy` / `auto-detected`, wired into `monitor.yml` with
-   `--github-issue`.
-3. **Generic webhook** — `alerts.webhook_payload()` produces a Slack/Discord-shaped
-   body; the URL comes from `SDN_WEBHOOK`. No credentials are stored in the repo.
+2. **GitHub issue** — REST API with `GITHUB_TOKEN`; one issue per goal-total change,
+   one digest for attribution-only alerts, capped per run. Labels are created if the
+   repository does not have them. **Proven live**: [issue
+   #18](https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18), HTTP 201,
+   2026-10-07T21:25:51Z.
+3. **Generic webhook** — Slack/Discord-shaped payload (`text` *and* `content`); the URL
+   comes from `SDN_WEBHOOK_URL`. Off until the secret exists, and reported as skipped
+   rather than silently dropped.
+4. **E-mail digest** — SMTP over the six `SDN_SMTP_*` secrets. Off until they exist.
+
+Delivery is **once per alert**, enforced by a committed fingerprint per alert id
+([`data/notifications_state.json`](../data/notifications_state.json)), and every run
+writes a committed report under `data/notifications/`. A failed send is recorded as
+failed and retried on the next run — it is never recorded as delivered.
 
 **Every route projects into the same site feed.** That was a real defect, not a
 design choice: the published page reads `data/alerts.json`, both detection routes
@@ -159,9 +178,11 @@ goal-count-changing** (1,342 goal→no-goal and 123 no-goal→goal), **4 attribu
 and **1 total-change-unknown**; by status, 1,400 `verified`, 53 `flagged`,
 17 `retired` (a superseded parser's rows, kept and marked).
 Each goal-count-changing record is backed by an official Situation Room statement
-and cross-checked against the play-by-play where the game id resolves — 1,396
-agree, 55 inconclusive, 12 conflict, 12 not checked; the conflicts and inconclusives
-are flagged, not hidden.
+and cross-checked against the play-by-play where the game id resolves. Measured on the
+ledger this pass, restricted to the 1,471 overturned statements: **1,396 agree,
+52 inconclusive, 12 conflict, 11 with no cross-check recorded** (the wider ledger counts
+3 further inconclusive cross-checks on non-overturned statements); the conflicts and
+inconclusives are flagged, not hidden.
 The three **announcement-based** records below — the only ones built through the
 league's `OFFICIAL SCORING CHANGE` announcement path (1 scorer change, 2 assist
 changes) — remain verified and are a small subset of that total; in the canonical
@@ -217,33 +238,41 @@ the GitHub Actions runners are.
 
 ---
 
-## 7. The gap that matters most next
+## 7. The gap that mattered most, and what is left of it
 
-**Raw captures are not committed.** Records store a quoted row or a paraphrased
-note, not the bytes they came from. That is exactly how the §5 claim went
-unnoticed: there was nothing to re-read. The fix is small and mechanical —
-`fetch.py` already records URL + status + retrieval time; add the response body (or
-its SHA-256 plus the quoted excerpt) under `data/evidence/<date>/<game>/`, and make
-`store.validate()` refuse `verified` for a record whose quote has no committed
-capture behind it.
+**Raw captures are now committed for the Situation Room line.** The 0.5.0 parser
+stores the league's own text for every statement — **4,406 of 4,406** entries in
+[`data/situation_room/rulings.json`](../data/situation_room/rulings.json) carry `raw`
+— so a claim about a ruling can be re-read from the repository instead of being
+trusted. That is the direct answer to the §5 withdrawal: the record that failed
+re-verification failed because a paraphrase had been stored instead of the payload.
 
-Until that exists, every "verified" record is verified **as of the last time a human
-or a runner re-read the source**, and this document should be re-read whenever that
-changes.
+What remains of the gap: the **HTML report line** still stores quoted rows rather than
+the bytes, so a claim about a game-night scoring summary is verifiable only by
+re-fetching the document. `store.validate()` does not yet refuse `verified` for a
+record whose quote has no committed capture behind it.
 
 ---
 
 ## 8. Bottom line
 
-- **Possible and built:** continuous change detection over official NHL artifacts,
-  typed classification (goal-count vs attribution-only), timing bounded by poll
-  times, settlement-exposure flagging, and notification to a static feed, RSS and
-  GitHub Issues — with an official URL on every alert.
-- **Not possible from official sources:** the *cause* of a ruling change, an
-  authoritative correction timestamp, a retracted goal with no prior capture,
-  independent verification from a second witness, and anything before 2000-01.
-- **Not yet demonstrated:** a single goal-count-changing correction. Three
-  records is a proof of method, not coverage.
+- **Possible and built:** continuous detection over the league's own review-statement
+  feed (4,406 statements, February 2016 → today) plus the game-record census that
+  reaches back to 2000-01; typed classification (goal-count vs attribution-only);
+  the league's own reason and rule citation for every review ruling; settlement
+  exposure quoted from the record; and delivery to a feed, RSS, GitHub issues,
+  webhook and e-mail — deduplicated, reported, with an official URL on every alert.
+- **Not possible from official sources:** the *cause* of a **scoring-credit** change
+  (no corrections feed exists; probed 404), an authoritative correction timestamp, a
+  retracted goal with no prior capture, independent verification from a second
+  witness (the HTML sheet and the GameCenter JSON are one dataset rendered twice),
+  and anything before 2000-01.
+- **Demonstrated:** 1,470 records and one delivered notification
+  ([issue #18](https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/18)).
+- **Not yet demonstrated:** a goal added or removed *after the game was final* — the
+  only class that can move a settled market. 1,470 records is coverage of the review
+  class, not proof about the post-final class.
 
-Related: [FEASIBILITY.md](FEASIBILITY.md) · [LIMITATIONS.md](LIMITATIONS.md) ·
+Related: [NOTIFICATIONS.md](NOTIFICATIONS.md) · [FEASIBILITY.md](FEASIBILITY.md) ·
+[LIMITATIONS.md](LIMITATIONS.md) · [SITUATION_ROOM.md](SITUATION_ROOM.md) ·
 [DETECTION.md](DETECTION.md) · [COVERAGE_AND_LIMITATIONS.md](COVERAGE_AND_LIMITATIONS.md)
