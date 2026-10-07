@@ -1,0 +1,5 @@
+{
+  "probed_at": null,
+  "note": "Not yet probed. Run `python3 -m pipeline.main probe` from an environment with access to NHL endpoints (GitHub Actions qualifies). All rows below are PLANNED probes, not results.",
+  "results": []
+}

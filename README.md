@@ -17,6 +17,19 @@ original and the corrected state preserved.
 > seeded from memory, media reporting or assumptions, which is why every row below can be opened and
 > re-checked.
 
+> **Two implementations of this brief now coexist in this repository (2026-10-07).** `main` already
+> carried a complete, independently built implementation from parallel sessions — `pipeline/`, a
+> root-served site (`index.html`, `js/`, `css/`), its own database `data/discrepancies.json`
+> (**0 records**), its own tests and docs, and a 30-minute monitor. This branch adds a second:
+> `src/nhl_monitor/`, `site/` and `data/records/discrepancies.json` (**3 verified records**).
+> Nothing from either line was deleted. The four colliding artifacts were each resolved once: one
+> monitor is scheduled (this line's), the parallel line's monitor is parked verbatim at
+> `.github/workflows/monitor_root_site.yml.disabled`, and the parallel line's README and source
+> catalog are preserved verbatim under `docs/parallel_line/`. **A decision is owed** — two
+> databases, two monitors and two sites are one too many of each. See
+> [`docs/parallel_line/PARALLEL_LINE.md`](docs/parallel_line/PARALLEL_LINE.md) for what differs,
+> what each line is good at, and the exact steps to keep either one.
+
 ---
 
 ## Contents
