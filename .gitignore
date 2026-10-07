@@ -1,0 +1,16 @@
+# The raw response cache is deliberately NOT in git: multi-megabyte HTML per game.
+# What we keep in git is the content hash + parsed digest (data/snapshots/), which is
+# what makes a claim re-checkable without mirroring the league's servers.
+cache/
+out/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# webhook secrets must never be committed even by accident
+.env
+*.local.json

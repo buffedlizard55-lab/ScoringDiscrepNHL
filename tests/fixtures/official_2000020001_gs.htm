@@ -1,0 +1,78 @@
+<!--
+Fixture provenance (read before trusting this file)
+===================================================
+Every value below (names, times, teams, on-ice numbers, footer timestamp) is
+transcribed verbatim from the official NHL report:
+
+  https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM
+  retrieved 2026-10-07 by Arena agent mode; footer generation stamp:
+  "2000-10-04-22.14.20"
+
+What is NOT verbatim: the markup. The report was read through a page reader that
+rendered the tables as markdown, so the <table>/<td> scaffolding here is
+reconstructed around the real cell values. Consequence for CI: this fixture
+proves the parser handles the real *value shapes* and column order of the legacy
+layout; it does not prove it survives every quirk of the raw bytes (nested
+tables, &nbsp; runs, charset). The scan job therefore has to assert parse
+success per game and report unreadable games instead of trusting a clean result.
+
+Only the SCORING SUMMARY and footer blocks are reproduced; penalty/goalie blocks
+are omitted because the parser does not read them.
+-->
+<!doctype html>
+<html><head><meta charset="iso-8859-1"><title>Game Summary</title></head>
+<body bgcolor="#ffffff" text="#000000">
+<table border=0 cellpadding=2 cellspacing=0 width="100%">
+  <tr>
+    <td valign=top align=left width="25%">VISITOR<br>COLORADO AVALANCHE<br>Game 1 Away Game 1</td>
+    <td valign=top align=right width="5%">2</td>
+    <td valign=top align=center width="40%">Game Summary<br>Game 0001<br>
+        Wednesday, October 4, 2000<br>7:08 PM CT at Reunion Arena<br>Attendance 17,001<br>Final</td>
+    <td valign=top align=left width="5%">2</td>
+    <td valign=top align=right width="25%">HOME<br>DALLAS STARS<br>Game 1 Home Game 1</td>
+  </tr>
+</table>
+<hr>
+<table border=0 cellpadding=1 cellspacing=0>
+  <tr><td align=center colspan=10><b>SCORING SUMMARY</b></td></tr>
+  <tr>
+    <td>G</td><td>Per</td><td>Time</td><td>Team</td><td>Goal Scorer</td>
+    <td>Assist</td><td>Assist</td><td>COL</td><td>DAL</td><td>STR</td>
+  </tr>
+  <tr>
+    <td>1</td><td>1</td><td>12:40</td><td>DAL</td><td>S. ZUBOV (1)</td>
+    <td>M. MODANO (1)</td><td>J. LEHTINEN (1)</td>
+    <td>21 77 52 37 33</td><td>56 9 26 24 20</td><td>EV</td>
+  </tr>
+  <tr>
+    <td>2</td><td>1</td><td>19:59</td><td>DAL</td><td>M. MODANO (1)</td>
+    <td>D. SYDOR (1)</td><td>&nbsp;</td>
+    <td>3 77 33 26 19</td><td>9 5 56 20 16 10</td><td>PP</td>
+  </tr>
+  <tr>
+    <td>3</td><td>2</td><td>2:00</td><td>COL</td><td>S. PODEIN (1)</td>
+    <td>S. YELLE (1)</td><td>D. HINOTE (1)</td>
+    <td>25 7 33 26 24 13</td><td>12 56 55 24 20 15</td><td>EV</td>
+  </tr>
+  <tr>
+    <td>4</td><td>2</td><td>18:31</td><td>COL</td><td>A. DEADMARSH (1)</td>
+    <td>C. DRURY (1)</td><td>&nbsp;</td>
+    <td>18 77 37 33 21 19</td><td>2 24 22 20 11</td><td>PP</td>
+  </tr>
+  <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<table border=0 cellpadding=1 cellspacing=0>
+  <tr><td colspan=3>GOALS BY PER.</td><td colspan=3>SHOTS ON GOAL</td></tr>
+  <tr><td>&nbsp;</td><td>COL</td><td>DAL</td><td>&nbsp;</td><td>COL</td><td>DAL</td></tr>
+  <tr><td>1</td><td>0</td><td>2</td><td>1</td><td>10</td><td>7</td></tr>
+  <tr><td>2</td><td>2</td><td>0</td><td>2</td><td>8</td><td>4</td></tr>
+  <tr><td>3</td><td>0</td><td>0</td><td>3</td><td>8</td><td>7</td></tr>
+  <tr><td>4</td><td>0</td><td>0</td><td>4</td><td>2</td><td>3</td></tr>
+  <tr><td>T</td><td>2</td><td>2</td><td>T</td><td>28</td><td>21</td></tr>
+</table>
+<hr>
+<table border=0 width="100%"><tr>
+  <td>&copy; Copyright 2000, National Hockey League</td>
+  <td align=right>2000-10-04-22.14.20</td>
+</tr></table>
+</body></html>

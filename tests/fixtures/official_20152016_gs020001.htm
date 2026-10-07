@@ -1,0 +1,55 @@
+<!--
+Fixture: modern (2010s-2020s) RTSS Game Summary layout, values transcribed
+verbatim from https://www.nhl.com/scores/htmlreports/20152016/GS020001.HTM
+(retrieved 2026-10-07; footer stamp "2015-10-09-9.54.18" - note that is two
+days after the game, which is why a GS file is a post-correction artifact and not
+a live one).
+
+What this fixture pins down:
+  * the "Str" column sits between Time and Team (legacy has no such column)
+  * players are "<number> <INITIAL>.<SURNAME>(<counter>)"
+  * empty-net goals read "EV-EN"
+  * the two on-ice lists follow the assists and must never be parsed as players
+  * the BY PERIOD blocks are separate tables per team, away first
+The nested <table> scaffolding is reconstructed; the cell values are not.
+-->
+<!doctype html>
+<html><head><title>Game Summary</title></head><body>
+<table border=0 width="100%"><tr>
+  <td>VISITOR<br>MONTREAL CANADIENS<br>Game 1 Away Game 1</td><td>3</td>
+  <td>Game Summary<br>Wednesday, October 7, 2015<br>Attendance 19,241 at Air Canada Centre<br>Start 7:20 EDT; End 9:56 EDT<br>Game 0001<br>Final</td>
+  <td>1</td><td>HOME<br>TORONTO MAPLE LEAFS<br>Game 1 Home Game 1</td>
+</tr></table>
+<table border=0><tr><td><b>SCORING SUMMARY</b></td></tr>
+<tr><td>
+<table border=0>
+  <tr><td>G</td><td>Per</td><td>Time</td><td>Str</td><td>Team</td><td>Goal Scorer</td><td>Assist</td><td>Assist</td><td>MTL on Ice</td><td>TOR on Ice</td></tr>
+  <tr><td>1</td><td>1</td><td>3:09</td><td>EV</td><td>MTL</td><td>67 M.PACIORETTY(1)</td><td>76 P.SUBBAN(1)</td><td>&nbsp;</td><td>11, 14, 31, 67, 76, 79</td><td>23, 28, 43, 44, 45, 52</td></tr>
+  <tr><td>2</td><td>2</td><td>0:19</td><td>PP</td><td>TOR</td><td>21 J.VAN RIEMSDYK(1)</td><td>43 N.KADRI(1)</td><td>3 D.PHANEUF(1)</td><td>15, 17, 26, 31, 74</td><td>3, 15, 21, 28, 43, 45</td></tr>
+  <tr><td>3</td><td>3</td><td>12:02</td><td>EV</td><td>MTL</td><td>27 A.GALCHENYUK(1)</td><td>79 A.MARKOV(1)</td><td>76 P.SUBBAN(2)</td><td>13, 27, 31, 76, 79, 81</td><td>15, 16, 26, 36, 45, 51</td></tr>
+  <tr><td>4</td><td>3</td><td>19:29</td><td>EV-EN</td><td>MTL</td><td>67 M.PACIORETTY(2)</td><td>76 P.SUBBAN(3)</td><td>32 B.FLYNN(1)</td><td>14, 31, 32, 67, 76, 79</td><td>15, 21, 28, 43, 44, 51</td></tr>
+</table>
+</td></tr>
+<tr><td>
+<table border=0><tr><td><b>PENALTY SUMMARY</b></td></tr></table>
+</td></tr></table>
+<table border=0><tr><td>
+<table border=0>
+  <tr><td>Per</td><td>Goals</td><td>Shots</td><td>PN</td><td>PIM</td></tr>
+  <tr><td>1</td><td>1</td><td>7</td><td>1</td><td>2</td></tr>
+  <tr><td>2</td><td>0</td><td>15</td><td>2</td><td>4</td></tr>
+  <tr><td>3</td><td>2</td><td>7</td><td>1</td><td>2</td></tr>
+  <tr><td>TOT</td><td>3</td><td>29</td><td>4</td><td>8</td></tr>
+</table>
+</td><td>
+<table border=0>
+  <tr><td>Per</td><td>Goals</td><td>Shots</td><td>PN</td><td>PIM</td></tr>
+  <tr><td>1</td><td>0</td><td>11</td><td>2</td><td>4</td></tr>
+  <tr><td>2</td><td>1</td><td>16</td><td>0</td><td>0</td></tr>
+  <tr><td>3</td><td>0</td><td>10</td><td>0</td><td>0</td></tr>
+  <tr><td>TOT</td><td>1</td><td>37</td><td>2</td><td>4</td></tr>
+</table>
+</td></tr></table>
+<hr>
+<table border=0 width="100%"><tr><td>&copy; Copyright 2015, National Hockey League</td><td align=right>2015-10-09-9.54.18</td></tr></table>
+</body></html>
