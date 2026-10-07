@@ -1,0 +1,46 @@
+{
+ "type": "story",
+ "selfUrl": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720",
+ "slug": "edmonton-oilers-vancouver-canucks-video-review-x7720",
+ "title": "Edmonton Oilers Vancouver Canucks video review",
+ "tags": [
+  {
+   "slug": "2025-26",
+   "title": "2025-26"
+  },
+  {
+   "slug": "nhl",
+   "title": "NHL"
+  },
+  {
+   "slug": "nhl-created",
+   "title": "NHL Created"
+  },
+  {
+   "slug": "situation-room",
+   "title": "Situation Room"
+  }
+ ],
+ "fields": {},
+ "createdBy": "Paul Jannace",
+ "lastUpdatedBy": "Christina Chaiban",
+ "lastUpdatedDate": "2026-10-02T23:15:44.89Z",
+ "contentDate": "2026-10-02T04:34:00Z",
+ "headline": "Video Review: EDM @ VAN – 4:43 of the Third Period",
+ "summary": "Type of Review: Batted Puck\nResult: Goal Vancouver\nExplanation: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered",
+ "parts": [
+  {
+   "type": "photo",
+   "slug": "nhl-shield-298127792"
+  },
+  {
+   "type": "markdown",
+   "content": "**Type of Review:** Batted Puck\n\n**Result:** Goal Vancouver\n\n**Explanation:** The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the **puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion**.",
+   "contextualFields": {}
+  },
+  {
+   "type": "customentity",
+   "slug": "2026-2027-nhl-interactive-rulebook-promo"
+  }
+ ]
+}

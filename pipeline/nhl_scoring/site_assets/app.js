@@ -3,9 +3,10 @@
   'use strict';
   var SDN = window.SDN || {records: [], summary: {}, meta: {}, docs: {}};
   var R = SDN.records || [];
-  var VIEWS = [['database', 'Database'], ['market', 'Settlement exposure'], ['coverage', 'Detection coverage'], ['monitor', 'Live monitor']]
+  var RUL = SDN.rulings || [];
+  var VIEWS = [['database', 'Database'], ['rulings', 'Situation Room log'], ['market', 'Settlement exposure'], ['coverage', 'Detection coverage'], ['monitor', 'Live monitor']]
     .concat(Object.keys(SDN.docs || {}).map(function (f) { return ['doc:' + f, SDN.docs[f].label]; }));
-  var state = {view: 'database', doc: null, sort: 'date-desc', page: 0, per: 60};
+  var state = {view: 'database', doc: null, sort: 'date-desc', page: 0, per: 60, rulPage: 0};
   var els = {};
 
   function h(tag, attrs, kids) {
@@ -36,11 +37,15 @@
     {key: 'period', label: 'Period', type: 'select', options: uniq(R.map(function (r) { return r.discrepancy && r.discrepancy.period; })).sort(function (a, b) { return a - b; })},
     {key: 'date_from', label: 'Date from', type: 'date'},
     {key: 'date_to', label: 'Date to', type: 'date'},
-    {key: 'game_type', label: 'Game type', type: 'select', options: uniq(R.map(function (r) { return r.game && r.game.game_type; })).sort()}
+    {key: 'game_type', label: 'Game type', type: 'select', options: uniq(R.map(function (r) { return r.game && r.game.game_type; })).sort()},
+    {key: 'review_kind', label: 'Review kind', type: 'select', options: [['coach_challenge', "Coach's Challenge"], ['video_review', 'Video review (Situation Room / referee)']]},
+    {key: 'review_type', label: 'Challenge / review type', type: 'select', options: uniq(R.map(function (r) { return r.discrepancy && r.discrepancy.review && r.discrepancy.review.type; })).sort()}
   ];
   var TOGGLES = [
     {key: 'goal_total_changed', label: 'Changed the goal total'},
     {key: 'goal_no_goal_change', label: 'Goal <-> no-goal change'},
+    {key: 'goal_added', label: 'No-goal on ice -> goal'},
+    {key: 'goal_removed', label: 'Goal on ice -> no goal'},
     {key: 'attribution_only', label: 'Attribution only (scorer/assist)'},
     {key: 'scorer_change', label: 'Scorer changed'},
     {key: 'assist_change', label: 'Assist changed'},
@@ -67,6 +72,10 @@
     if (active.status && r.status !== active.status) return false;
     if (active.period && String(d.period) !== String(active.period)) return false;
     if (active.game_type && g.game_type !== active.game_type) return false;
+    if (active.review_kind && !(d.review && d.review.kind === active.review_kind)) return false;
+    if (active.review_type && !(d.review && d.review.type === active.review_type)) return false;
+    if (active.goal_added && d.field !== 'goal_added') return false;
+    if (active.goal_removed && d.field !== 'goal_removed') return false;
     if (active.date_from && (g.date || '') < active.date_from) return false;
     if (active.date_to && (g.date || '') > active.date_to) return false;
     if (active.goal_total_changed && d.total_changed !== true) return false;
@@ -119,11 +128,25 @@
      ['Total change unresolved', s.total_change_unknown || 0]]
       .forEach(function (pair) { stats.appendChild(h('div', {class: 'stat'}, [h('b', {text: String(pair[1])}), h('span', {text: pair[0]})])); });
     el.appendChild(stats);
+    var sr = m.situation_room && m.situation_room.summary ? m.situation_room.summary : null;
+    if (sr && sr.rulings) {
+      var srBox = h('div', {class: 'callout info'});
+      srBox.appendChild(h('strong', {text: 'Official Situation Room statements'}));
+      srBox.appendChild(h('div', {class: 'note', html:
+        esc(sr.rulings) + ' official video-review / coach\'s-challenge statements ingested from the league content API, ' +
+        esc((sr.earliest_statement || '').slice(0, 10)) + ' to ' + esc((sr.latest_statement || '').slice(0, 10)) + '. ' +
+        'Overturned on-ice calls: <strong>' + esc((sr.by_outcome || {}).overturned || 0) + '</strong> (each one is a record above); upheld: ' +
+        esc((sr.by_outcome || {}).upheld || 0) + '; on-ice call not stated in the text: ' + esc((sr.by_outcome || {}).on_ice_call_not_stated || 0) +
+        ' (kept in the <a href="#view=rulings">Situation Room log</a>, never guessed). ' +
+        'Cross-checked against the official play-by-play: ' + esc(JSON.stringify(sr.overturned_crosscheck || {})) + '.'}));
+      el.appendChild(srBox);
+    }
     el.appendChild(h('div', {class: 'callout', html:
-      '<strong>Read the limits before you use it.</strong> The NHL does not publish a correction feed, and its public ' +
-      'game data is edited in place with no version history. That means <em>retroactive</em> detection is limited to ' +
-      'disagreements that survive between two official artifacts, and <em>new</em> corrections are only catchable while ' +
-      'we are actively polling. Details in ' +
+      '<strong>Read the limits before you use it.</strong> The NHL publishes an official statement for every video review ' +
+      'and coach\'s challenge (ingested here, continuous since February 2016), but it publishes <em>no</em> feed for scorer ' +
+      'or assist corrections, and its public game data is edited in place with no version history. So goal / no-goal ' +
+      'reversals are covered from the league\'s own words; attribution changes are only catchable by diffing official ' +
+      'artifacts while we are polling, or where two official documents still disagree. Details in ' +
       '<a href="#feasibility" data-jump="doc:FEASIBILITY.md">Can we detect it?</a>.'}));
     if (cov && cov.games_scanned !== undefined) {
       var c = h('div', {class: 'callout info'});
@@ -152,7 +175,10 @@
       if (f.type === 'select') {
         input = h('select', {name: f.key});
         input.appendChild(h('option', {value: '', text: 'All'}));
-        (f.options || []).forEach(function (o) { input.appendChild(h('option', {value: String(o), text: String(o)})); });
+        (f.options || []).forEach(function (o) {
+          var val = Array.isArray(o) ? o[0] : o, lab = Array.isArray(o) ? o[1] : o;
+          input.appendChild(h('option', {value: String(val), text: String(lab)}));
+        });
       } else {
         input = h('input', {type: f.type === 'search' ? 'search' : f.type, name: f.key, placeholder: f.placeholder || ''});
       }
@@ -292,6 +318,19 @@
     body.appendChild(h('div', {class: 'row'}, [h('span', {text: 'Game-total market'}), h('span', {text: mi.affects_game_total || 'unknown'})]));
     body.appendChild(h('div', {class: 'row'}, [h('span', {text: 'Player props'}), h('span', {text: mi.affects_player_props || 'unknown'})]));
     body.appendChild(h('p', {class: 'note', html: '<strong>Settlement note:</strong> ' + esc(mi.reason || '')}));
+    if (d.review) {
+      var rv = d.review, rvRows = [
+        ['Review', (rv.kind === 'coach_challenge' ? "Coach's Challenge" : 'Video review') + (rv.initiated_by ? ' - initiated by ' + rv.initiated_by : '')],
+        ['Type', rv.type ? rv.type + (rv.type_inferred ? ' (inferred from the text)' : '') : null],
+        ['Official result line', rv.result || null],
+        ['On-ice call -> final call', (rv.on_ice_call || '?') + ' -> ' + (rv.final_call || '?') +
+          (rv.classification_confidence && rv.classification_confidence !== 'high' ? ' (' + rv.classification_confidence + ' confidence: ' + (rv.classification_basis || '') + ')' : '')],
+        ['Clock reset', rv.clock_reset ? 'clock shows ' + rv.clock_reset.shows + ' (' + rv.clock_reset.elapsed + ' elapsed)' : null]
+      ];
+      var rvBox = h('div', {class: 'review'});
+      rvRows.forEach(function (row) { if (row[1]) rvBox.appendChild(h('div', {class: 'row'}, [h('span', {text: row[0]}), h('span', {text: row[1]})])); });
+      body.appendChild(rvBox);
+    }
     if (d.reason && d.reason.text) {
       body.appendChild(h('p', {class: 'note', html: '<strong>League explanation:</strong> ' + esc(d.reason.text) +
         (d.reason.rule_citation ? ' (rule ' + esc(d.reason.rule_citation) + ')' : '')}));
@@ -425,12 +464,14 @@
     var how = h('table', {class: 'grid'});
     how.appendChild(h('thead', {html: '<tr><th>Change type</th><th>Detected automatically?</th><th>Latency</th><th>How</th></tr>'}));
     var rows = [
+      ['Goal overturned / awarded on video review or coach\'s challenge', 'yes', 'minutes (official statement) + run cadence', 'Situation Room statement feed (SR1), cross-checked against play-by-play'],
       ['Goal added/removed during a game', 'yes', 'seconds-minutes while polling', 'snapshot diff of live endpoints (C21)'],
       ['Goal credited to another player during a game', 'yes', 'same poll interval', 'snapshot diff (C20)'],
       ['Correction during intermission', 'yes', 'same poll interval', 'polling continues through intermission'],
       ['Correction after last poll but before report generation', 'partial', '12-36 h', 'cross-source diff, GS report vs API'],
       ['Silent post-game edit, no prior poll', 'no', 'never', 'no version history in official data'],
-      ["League's stated reason for a change", 'no', 'manual', 'Situation Room text is not published in any machine-readable feed'],
+      ["League's stated reason for a review decision", 'yes', 'minutes', 'Situation Room statement text (result, rule cited, explanation) is stored verbatim on the record'],
+      ["League's stated reason for a scorer / assist change", 'no', 'manual', 'no official feed; only @PR_NHL / team notes, which are secondary'],
       ['Historical corrections (pre-2000-01)', 'no', 'n/a', 'no official artifact to diff against'],
       ['Box score vs official scorer ruling mismatch', 'yes', 'per scan', 'C10-C17 cross-source checks']
     ];
@@ -438,6 +479,75 @@
     rows.forEach(function (r) { tb.appendChild(h('tr', {html: '<td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td><td>' + esc(r[3]) + '</td>'})); });
     how.appendChild(tb);
     wrap.appendChild(how);
+    return wrap;
+  }
+
+  var rulFilter = {q: '', season: '', team: '', outcome: '', kind: '', type: ''};
+  function rulingsView() {
+    var wrap = h('div');
+    wrap.appendChild(h('h2', {text: 'Situation Room log - every official review statement'}));
+    var sr = ((SDN.meta || {}).situation_room || {});
+    wrap.appendChild(h('p', {class: 'note', html:
+      'Every Coach\'s Challenge and video-review statement the NHL has published (' + esc(RUL.length) + ' so far, newest first), ' +
+      'parsed from the league content API and linked to the official page. <strong>overturned</strong> = the on-ice call was changed ' +
+      '(these become database records); <strong>upheld</strong> = the on-ice call stood; <strong>on_ice_call_not_stated</strong> = the ' +
+      'statement gives the result but not the on-ice call, so no change is inferred. Column "PBP" is the automatic cross-check of ' +
+      'overturned calls against the official play-by-play.' + (sr.last_run ? ' Last ingest ' + esc(sr.last_run) + '.' : '')}));
+    var bar = h('div', {class: 'fgrid'});
+    function sel(key, label, options) {
+      var lab = h('label', {class: 'f'}); lab.appendChild(h('span', {text: label}));
+      var input = h('select'); input.appendChild(h('option', {value: '', text: 'All'}));
+      options.forEach(function (o) { var opt = h('option', {value: o, text: o}); if (rulFilter[key] === o) opt.selected = true; input.appendChild(opt); });
+      input.addEventListener('change', function () { rulFilter[key] = input.value; render(); });
+      lab.appendChild(input); bar.appendChild(lab);
+    }
+    var q = h('label', {class: 'f'}); q.appendChild(h('span', {text: 'Search'}));
+    var qi = h('input', {type: 'search', value: rulFilter.q, placeholder: 'team, game id, type, result'});
+    qi.addEventListener('input', function () { rulFilter.q = qi.value; render(); });
+    q.appendChild(qi); bar.appendChild(q);
+    sel('season', 'Season', uniq(RUL.map(function (r) { return r.season; })).sort(naturalDesc));
+    sel('team', 'Team', uniq(RUL.map(function (r) { return r.away; }).concat(RUL.map(function (r) { return r.home; }))).sort());
+    sel('outcome', 'Outcome', ['overturned', 'upheld', 'on_ice_call_not_stated', 'unclassified']);
+    sel('kind', 'Kind', ['coach_challenge', 'video_review']);
+    sel('type', 'Type', uniq(RUL.map(function (r) { return r.type; })).sort());
+    wrap.appendChild(bar);
+    var rows = RUL.filter(function (r) {
+      if (rulFilter.season && String(r.season) !== rulFilter.season) return false;
+      if (rulFilter.team && r.away !== rulFilter.team && r.home !== rulFilter.team) return false;
+      if (rulFilter.outcome && r.outcome !== rulFilter.outcome) return false;
+      if (rulFilter.kind && r.kind !== rulFilter.kind) return false;
+      if (rulFilter.type && r.type !== rulFilter.type) return false;
+      if (rulFilter.q) {
+        var hay = [r.date, r.game_id, r.away, r.home, r.type, r.result, r.outcome, r.team, r.initiated_by].join(' ').toLowerCase();
+        if (hay.indexOf(rulFilter.q.toLowerCase()) === -1) return false;
+      }
+      return true;
+    });
+    wrap.appendChild(h('p', {class: 'note', text: rows.length + ' of ' + RUL.length + ' statements match.'}));
+    var t = h('table', {class: 'grid rul'});
+    t.appendChild(h('thead', {html: '<tr><th>Game date</th><th>Game</th><th>When</th><th>Kind</th><th>Type</th><th>Official result</th><th>Outcome</th><th>PBP</th><th>Record</th><th>Source</th></tr>'}));
+    var tb = h('tbody');
+    rows.slice(0, state.rulPage * 200 + 200).forEach(function (r) {
+      var tr = h('tr', {class: 'o-' + esc(r.outcome || '')});
+      tr.appendChild(h('td', {text: r.date || '?'}));
+      tr.appendChild(h('td', {html: esc(r.away || '?') + ' at ' + esc(r.home || '?') + (r.game_id ? '<br><code>' + esc(r.game_id) + '</code>' : '<br><span class="miss">no game id</span>')}));
+      tr.appendChild(h('td', {text: (r.period ? 'P' + r.period + ' ' : '') + (r.clock || '')}));
+      tr.appendChild(h('td', {text: r.kind === 'coach_challenge' ? 'Challenge' + (r.initiated_by ? ' (' + r.initiated_by + ')' : '') : 'Video review'}));
+      tr.appendChild(h('td', {text: r.type || '-'}));
+      tr.appendChild(h('td', {text: r.result || '-'}));
+      tr.appendChild(h('td', {html: '<span class="badge ' + esc(r.outcome || '') + '">' + esc(r.outcome || '?') + '</span>' +
+        (r.confidence && r.confidence !== 'high' && r.outcome === 'overturned' ? '<br><small>' + esc(r.confidence) + ' confidence</small>' : '')}));
+      tr.appendChild(h('td', {text: r.xc || '-'}));
+      tr.appendChild(h('td', {html: r.record_id ? '<a href="#view=database&q=' + encodeURIComponent(r.game_id || '') + '">' + esc(r.record_id) + '</a>' : '-'}));
+      tr.appendChild(h('td', {html: '<a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">nhl.com</a>'}));
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+    wrap.appendChild(t);
+    if (rows.length > state.rulPage * 200 + 200) {
+      wrap.appendChild(h('button', {class: 'btn', text: 'Show 200 more', onclick: function () { state.rulPage += 1; render(); }}));
+    }
+    if (!RUL.length) wrap.appendChild(h('p', {class: 'empty', text: 'No Situation Room ledger committed yet. Run: python -m nhl_scoring.cli situation-room --apply'}));
     return wrap;
   }
 
@@ -462,6 +572,7 @@
     var out = null;
     if (state.view === 'database') out = databaseView();
     else if (state.view === 'market') out = marketView();
+    else if (state.view === 'rulings') out = rulingsView();
     else if (state.view === 'coverage') out = coverageView();
     else if (state.view === 'monitor') out = monitorView();
     else if (state.view.indexOf('doc:') === 0) out = docView(state.view.slice(4));

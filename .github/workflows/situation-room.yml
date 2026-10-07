@@ -1,0 +1,94 @@
+name: Situation Room ingest
+
+# The NHL publishes an official statement for every coach's challenge and video
+# review (see pipeline/nhl_scoring/situation_room.py). This job pulls the feed,
+# classifies each statement, cross-checks overturned calls against the official
+# play-by-play, merges records into data/discrepancies.json, rebuilds the site
+# and commits. It is the primary alert path for goal <-> no-goal reversals.
+#
+# Cadence reality: GitHub schedules cron workflows on a best-effort basis and
+# throttles repositories heavily (measured on this repo: one scheduled run in
+# eleven hours for a */5 cron). Twice an hour is requested; expect less. Anyone
+# who needs minutes-level latency should trigger this workflow from an external
+# scheduler via `gh workflow run "Situation Room ingest"` or the REST dispatch
+# endpoint - the job itself takes about a minute in incremental mode.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "incremental (newest pages until nothing new) or full (walk the whole feed)"
+        required: false
+        default: "incremental"
+      max_pages:
+        description: "Feed pages of 100 statements to read"
+        required: false
+        default: "2"
+      start_skip:
+        description: "Offset into the feed (full mode only)"
+        required: false
+        default: "0"
+      max_crosscheck:
+        description: "Play-by-play documents to fetch for cross-checking this run"
+        required: false
+        default: "150"
+  schedule:
+    - cron: "11,41 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: situation-room-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Ingest the official Situation Room feed
+        env:
+          MODE: ${{ github.event.inputs.mode || 'incremental' }}
+          MAX_PAGES: ${{ github.event.inputs.max_pages || '2' }}
+          START_SKIP: ${{ github.event.inputs.start_skip || '0' }}
+          MAX_XC: ${{ github.event.inputs.max_crosscheck || '150' }}
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli situation-room \
+            --mode "$MODE" --max-pages "$MAX_PAGES" --start-skip "$START_SKIP" \
+            --max-crosscheck "$MAX_XC" --apply --verbose \
+            --out out/situation_room_findings.json
+      - name: Validate the database
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
+      - name: Render alerts
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 50
+      - name: Rebuild the site (repository root is what GitHub Pages serves)
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
+      - name: Commit and push
+        run: |
+          git config user.name  "scoring-discrepancy-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data index.html app.js styles.css data.js .nojekyll || true
+          if git diff --cached --quiet; then
+            echo "nothing new in the Situation Room feed"
+            exit 0
+          fi
+          git commit -m "situation-room: $(date -u +%FT%TZ) ingest (${{ github.event.inputs.mode || 'incremental' }})"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            git pull --rebase origin "${GITHUB_REF_NAME}" || exit 1
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: situation-room-findings
+          path: out/situation_room_findings.json
+          if-no-files-found: ignore

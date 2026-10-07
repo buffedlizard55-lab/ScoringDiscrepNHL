@@ -2,7 +2,8 @@
 
 No bundler, no framework, no runtime dependencies: the whole point of the site
 is to be a review surface that still loads five years from now. Output is plain
-files in ``docs/`` (``.nojekyll`` included so Pages does not try to build it),
+files written to the repository root - the directory GitHub Pages serves for
+this repository (``.nojekyll`` included so Pages does not try to build it) -
 and the data is shipped as ``data.js`` rather than fetched, so the page works
 from ``file://`` and from any subpath the Pages config happens to use.
 
@@ -196,6 +197,30 @@ def summarize(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def compact_ruling(r: Dict[str, Any]) -> Dict[str, Any]:
+    """The subset of a Situation Room ruling the site table needs (keeps data.js small)."""
+    xc = r.get("crosscheck") or {}
+    return {
+        "slug": r.get("slug"),
+        "date": r.get("game_date") or (r.get("content_date") or "")[:10],
+        "published": r.get("content_date"),
+        "season": r.get("season"),
+        "game_id": r.get("game_id"),
+        "away": r.get("away"), "home": r.get("home"),
+        "period": r.get("period"), "clock": r.get("clock"),
+        "kind": r.get("kind"), "type": r.get("review_type"),
+        "initiated_by": r.get("initiated_by"),
+        "result": r.get("result_text"),
+        "outcome": r.get("outcome"),
+        "on_ice": r.get("on_ice_call"), "final": r.get("final_call"), "team": r.get("final_team"),
+        "confidence": r.get("confidence"),
+        "xc": xc.get("status"),
+        "record_id": r.get("record_id"),
+        "url": r.get("public_url"),
+        "flags": r.get("flags") or [],
+    }
+
+
 def build(out_dir: str, *, db_path: str, repo_root: str,
            coverage_path: Optional[str] = None) -> List[str]:
     os.makedirs(out_dir, exist_ok=True)
@@ -223,6 +248,20 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "states": sum(int(v.get("states") or 0) for v in polls.values()),
             "games_with_changes": sum(1 for v in polls.values() if int(v.get("states") or 0) > 1),
         }
+    situation_room: Dict[str, Any] = {}
+    rulings_compact: List[Dict[str, Any]] = []
+    ledger_path = os.path.join(repo_root, "data", "situation_room", "rulings.json")
+    if os.path.exists(ledger_path):
+        with open(ledger_path, "r", encoding="utf-8") as fh:
+            ledger = json.load(fh)
+        situation_room = {
+            "summary": ledger.get("summary") or {},
+            "generated_at": ledger.get("generated_at"),
+            "feed": ledger.get("feed"),
+            "public_index": ledger.get("public_index"),
+            "last_run": (ledger.get("meta") or {}).get("last_run_at"),
+        }
+        rulings_compact = [compact_ruling(r) for r in ledger.get("rulings") or []]
     docs: Dict[str, str] = {}
     for filename, label, title in DOC_PAGES:
         path = os.path.join(repo_root, "docs", filename)
@@ -240,9 +279,11 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "repo": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL",
             "coverage": coverage,
             "snapshots": snapshot_summary,
+            "situation_room": situation_room,
         },
         "summary": summarize(records),
         "records": records,
+        "rulings": rulings_compact,
         "docs": docs,
     }
     written: List[str] = []

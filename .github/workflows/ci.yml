@@ -17,12 +17,17 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Validate data files
         run: python3 -m pipeline.main validate
-      - name: Site asset sanity
+      - name: Site asset sanity (repo root is what GitHub Pages serves)
         run: |
           test -f index.html
-          test -f js/app.js
-          test -f css/style.css
+          test -f app.js
+          test -f styles.css
+          test -f data.js
           test -f .nojekyll
           test -f data/discrepancies.json
-          test -f data/alerts.json
-          node --check js/app.js || echo "node unavailable, skipped JS syntax check"
+          node --check app.js
+          node --check pipeline/nhl_scoring/site_assets/app.js
+      - name: Site is in sync with the database
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out /tmp/site_check
+          for f in index.html app.js styles.css; do cmp "/tmp/site_check/$f" "$f"; done

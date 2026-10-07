@@ -1,0 +1,38 @@
+{
+ "type": "story",
+ "selfUrl": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/coach-s-challenge-new-york-islanders-florida-panthers-283675564",
+ "slug": "coach-s-challenge-new-york-islanders-florida-panthers-283675564",
+ "title": "Coach;s Challenge new york islanders florida panthers",
+ "tags": [
+  {
+   "slug": "situation-room",
+   "title": "Situation Room"
+  },
+  {
+   "slug": "gameid-2016020214",
+   "title": "NYI@FLA 11/12/2016 07:00PM",
+   "externalSourceName": "game",
+   "extraData": {
+    "gameId": "2016020214"
+   }
+  }
+ ],
+ "fields": {
+  "homebaseId": "283675564",
+  "description": "Review overturns call of no goaltender interference, no goal Panthers",
+  "contributorOverride": "NHL.com @NHLdotcom"
+ },
+ "createdBy": "nhl-forge-converter-client",
+ "lastUpdatedBy": "nhl-forge-converter-client",
+ "lastUpdatedDate": "2016-11-13T03:04:31Z",
+ "contentDate": "2016-11-13T02:16:15Z",
+ "headline": "Coach's Challenge: NYI @ FLA - 14:53 of Second Period",
+ "summary": "At 14:53 of the second period in the Islanders/Panthers game, the original call by the referee closest to the Islanders net was \"no goal\" but after the four on-ice officials huddled, the call on the ice was changed to \"good goal\". New York then requested a Coach's Challenge to review",
+ "parts": [
+  {
+   "type": "markdown",
+   "content": "At 14:53 of the second period in the Islanders/Panthers game, the original call by the referee closest to the Islanders net was \"no goal\" but after the four on-ice officials huddled, the call on the ice was changed to \"good goal\". New York then requested a Coach's Challenge to review whether a Florida player interfered with New York goaltender Jaroslav Halak prior to the goal.After reviewing all available replays and consulting with NHL Hockey Operations staff, the Referee determined that **Florida's Jaromir Jagr interfered with Halak before the puck crossed the goal line**. According to Rule 78.7, \"*The standard for overturning the call in the event of a 'GOAL' call on the ice is that the Referee, after reviewing any and all available replays and consulting with the Toronto Video Room, determines that the goal should have been disallowed due to 'Interference on the Goalkeeper,' as described in Rules 69.1, 69.3 and 69.4 .\"***Therefore the \"good call\" call is overturned - no goal Florida Panthers.**Since the Coach's Challenge resulted in the \"good goal\" call being overturned, **the New York Islanders retain their time-out.**",
+   "contextualFields": {}
+  }
+ ]
+}
