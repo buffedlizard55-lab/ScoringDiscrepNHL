@@ -1,0 +1,42 @@
+name: Scoring engine CI
+
+# Everything that must be true before the database or the site changes. Runs offline:
+# the fixtures are the contract, so a green run never depends on nhl.com being up.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests, engine line (offline, against verbatim official fixtures)
+        run: python3 -m unittest discover -s tests -t . -v -p "test_parsers.py" -p "test_detection.py" -p "test_site_alerts.py"
+      - name: Unit tests, monitor line
+        run: python3 -m unittest discover -s tests -t . -p "test_*.py"
+      - name: Every module compiles
+        run: python3 -m compileall -q pipeline scripts tests
+      - name: Database validates against the record contract
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
+      - name: ...and against the monitor line's contract (same file, both rule sets)
+        run: python3 -m pipeline.main validate
+      - name: Source claims table (network not required)
+        run: python3 scripts/verify_sources.py --offline
+      - name: Site is in sync with the database
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
+          git diff --exit-code docs/ || {
+            echo "::error::docs/ is stale - run: python3 -m nhl_scoring.cli site --out docs and commit"; exit 1; }
+      - name: Asset syntax
+        run: |
+          node --check pipeline/nhl_scoring/site_assets/app.js

@@ -5,6 +5,27 @@ changed to no-goals, no-goals that became goals, scorer and assist corrections, 
 corrections, and post-game corrections — with the **official NHL artifact behind every claim** and both the
 original and the corrected state preserved.
 
+> ## Standing brief - read before touching anything
+>
+> The full requirements live in [PROJECT_PROMPT.md](PROJECT_PROMPT.md) and are the
+> contract for every session: a continuously updateable database of NHL scoring
+> discrepancies and corrections from **official** sources (goal↔no-goal, video-review
+> changes, scorer changes, assist changes, in-game/intermission/post-game
+> corrections); per record the game date, teams, period, clock, initial ruling,
+> corrected/final ruling, reason, correction type, when it was corrected, whether the
+> goal/point total changed, whether attribution alone changed, and the exact official
+> source link; both states preserved; incomplete or conflicting evidence **flagged,
+> never guessed**; a clean filterable GitHub Pages site; an alerting layer plus an
+> explicit account of whether this is even possible; a PR merged to main; and three
+> passes - implement, hunt bugs, recheck against the brief.
+>
+> **Core Values.** *Maximize P(Win)*: a plausible-looking row is worth less than a
+> flagged empty field, so nothing enters the database without a link that survives a
+> click and no check ships without a fixture proving it fires **and** stays quiet on
+> clean data. *Own the Outcome*: no "the API didn't provide it", no TODO handoffs -
+> gaps are owned in the data (`status`, `flags`, `pending_review`) and in
+> [docs/STATUS.md](docs/STATUS.md), never smoothed over.
+
 > **Status, stated plainly (2026-10-07).** The toolkit, the website and both detection paths are built,
 > unit-tested (**73 tests**) and wired to a scheduler. The database holds **three verified records** — every
 > one built from the league's own scoring-change announcement *and* cross-checked against the official game
@@ -388,3 +409,40 @@ satisfies the original request. Work line by line verify everything no hallucina
   [`data/reference/verified_facts.json`](data/reference/verified_facts.json) with its URL and observation; a
   claim that is not in that ledger may not appear on the site or in this README. Media reporting is confined
   to a clearly-labelled *not evidence* list.
+
+---
+
+## Consolidation of the parallel lines (2026-10-07, this PR)
+
+`main` already carried a complete implementation built in parallel (`pipeline/`,
+`src/nhl_monitor/`, a root-served site, 3 records verified from the NHL's own
+scoring-change announcements, 108 tests). Its README said a decision was owed. Here
+it is, taken without deleting either line's work:
+
+| Question | Decision |
+| --- | --- |
+| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema, now **11 records**: the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
+| What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it, and it stays the root site's data source. It is now provenance for the port, not a competing database. |
+| Which site is the site of record? | **`docs/`** (built by `python3 -m nhl_scoring.cli site --out docs`) - it renders all 11 records with the filters and both lines' documentation as tabs. The root site keeps working and is not modified. |
+| Which scheduler runs? | The monitor line's `monitor.yml` / `backfill.yml` keep the only crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
+| Which docs win where they collided? | `docs/DATA_MODEL.md`, `docs/METHODOLOGY.md`, `docs/SOURCES.md` stayed the monitor line's, verbatim. This line's are at `docs/engine/*.md` and published as "engine" tabs. Nothing was overwritten. |
+| Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> **182 tests, 0 failures**. |
+
+Still owed, and not decided here: whether one engine is eventually retired. The two
+answer the same brief through different mechanisms (statement-ingest vs cross-source
+diff + snapshots) and the ported records prove they compose - the strongest argument
+for keeping the detector and the announcement feed as two inputs to one database.
+
+### This line's additions, in one list
+
+- `pipeline/nhl_scoring/` - fetch/cache with content hashes, parsers for **both**
+  official HTML-report eras + the Game Center landing/right-rail JSON, 20 implemented
+  checks (`C1`-`C17`, `C20`-`C22`; `C18`/`C19` documented as unimplementable), market
+  classification, record store with validation and sticky merge, state-change-only
+  snapshots, alerting, site generator, CLI.
+- `tests/` - 74 offline tests over verbatim official fixtures, including a **clean
+  control pair** that must produce zero findings and a regression test for the
+  pairing bug that once would have manufactured phantom missing-goal records.
+- `docs/FEASIBILITY.md` - the "is this even possible" analysis the brief asks for.
+- `docs/STATUS.md`, `docs/engine/*`, `data/schema/discrepancy.schema.json`,
+  `data/leads/README.md`, `scripts/{seed_records,verify_sources,backfill,import_parallel_records}.py`.

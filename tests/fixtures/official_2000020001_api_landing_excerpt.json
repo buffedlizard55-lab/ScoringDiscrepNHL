@@ -1,0 +1,61 @@
+{
+  "_fixture_note": "Verbatim excerpt of summary.scoring plus the team blocks from https://api-web.nhle.com/v1/gamecenter/2000020001/landing retrieved 2026-10-07. Field order preserved; the penalties/threeStars/other blocks of the live payload are omitted because the parser does not read them. No values were changed or invented. NOTE goal 4: the API credits TWO assists (Drury and Sakic) while the official GS020001.HTM report credits ONE (Drury). That single goal is record SDN-0001.",
+  "id": 2000020001,
+  "season": 20002001,
+  "gameType": 2,
+  "limitedScoring": false,
+  "gameDate": "2000-10-04",
+  "venue": {"default": "Reunion Arena"},
+  "awayTeam": {"id": 21, "commonName": {"default": "Avalanche"}, "abbrev": "COL", "score": 2, "sog": 28},
+  "homeTeam": {"id": 25, "commonName": {"default": "Stars"}, "abbrev": "DAL", "score": 2, "sog": 21},
+  "summary": {
+    "scoring": [
+      {"periodDescriptor": {"number": 1, "periodType": "REG", "maxRegulationPeriods": 3}, "goals": [
+        {"eventId": 10060836, "strength": "ev", "playerId": 8458494,
+         "firstName": {"default": "Sergei"}, "lastName": {"default": "Zubov"},
+         "name": {"default": "S. Zubov"}, "teamAbbrev": {"default": "DAL"},
+         "goalsToDate": 1, "awayScore": 0, "homeScore": 1,
+         "leadingTeamAbbrev": {"default": "DAL"}, "timeInPeriod": "12:40",
+         "shotType": "slap", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8449645, "firstName": {"default": "Mike"}, "lastName": {"default": "Modano"}, "name": {"default": "M. Modano"}, "assistsToDate": 1, "sweaterNumber": 9},
+           {"playerId": 8459024, "firstName": {"default": "Jere"}, "lastName": {"default": "Lehtinen"}, "name": {"default": "J. Lehtinen"}, "assistsToDate": 1, "sweaterNumber": 26}
+         ], "isHome": true},
+        {"eventId": 10060837, "strength": "pp", "playerId": 8449645,
+         "firstName": {"default": "Mike"}, "lastName": {"default": "Modano"},
+         "name": {"default": "M. Modano"}, "teamAbbrev": {"default": "DAL"},
+         "goalsToDate": 1, "awayScore": 0, "homeScore": 2,
+         "leadingTeamAbbrev": {"default": "DAL"}, "timeInPeriod": "19:59",
+         "shotType": "slap", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8458172, "firstName": {"default": "Darryl"}, "lastName": {"default": "Sydor"}, "name": {"default": "D. Sydor"}, "assistsToDate": 1, "sweaterNumber": 5}
+         ], "isHome": true}
+      ]},
+      {"periodDescriptor": {"number": 2, "periodType": "REG", "maxRegulationPeriods": 3}, "goals": [
+        {"eventId": 10060838, "strength": "ev", "playerId": 8457704,
+         "firstName": {"default": "Shjon"}, "lastName": {"default": "Podein"},
+         "name": {"default": "S. Podein"}, "teamAbbrev": {"default": "COL"},
+         "goalsToDate": 1, "awayScore": 1, "homeScore": 2,
+         "leadingTeamAbbrev": {"default": "DAL"}, "timeInPeriod": "02:00",
+         "shotType": "tip-in", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8459122, "firstName": {"default": "Stephane"}, "lastName": {"default": "Yelle"}, "name": {"default": "S. Yelle"}, "assistsToDate": 1, "sweaterNumber": 26},
+           {"playerId": 8465175, "firstName": {"default": "Dan"}, "lastName": {"default": "Hinote"}, "name": {"default": "D. Hinote"}, "assistsToDate": 1, "sweaterNumber": 13}
+         ], "isHome": false},
+        {"eventId": 10060839, "strength": "pp", "playerId": 8459436,
+         "firstName": {"default": "Adam"}, "lastName": {"default": "Deadmarsh"},
+         "name": {"default": "A. Deadmarsh"}, "teamAbbrev": {"default": "COL"},
+         "goalsToDate": 1, "awayScore": 2, "homeScore": 2,
+         "timeInPeriod": "18:31",
+         "shotType": "snap", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8460562, "firstName": {"default": "Chris"}, "lastName": {"default": "Drury"}, "name": {"default": "C. Drury"}, "assistsToDate": 1, "sweaterNumber": 37},
+           {"playerId": 8451101, "firstName": {"default": "Joe"}, "lastName": {"default": "Sakic"}, "name": {"default": "J. Sakic"}, "assistsToDate": 1, "sweaterNumber": 19}
+         ], "isHome": false}
+      ]},
+      {"periodDescriptor": {"number": 3, "periodType": "REG", "maxRegulationPeriods": 3}, "goals": []},
+      {"periodDescriptor": {"number": 4, "periodType": "OT", "maxRegulationPeriods": 3}, "goals": []}
+    ],
+    "threeStars": []
+  }
+}

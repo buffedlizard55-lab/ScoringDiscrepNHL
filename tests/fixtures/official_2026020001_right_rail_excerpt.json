@@ -1,0 +1,50 @@
+{
+  "_fixture_note": "Verbatim excerpt of https://api-web.nhle.com/v1/gamecenter/2026020001/right-rail retrieved 2026-10-07 (season opener, FLA at CAR, 2026-09-29, 1-0 OT). Omitted: seasonSeries entries beyond this game and the news/video blocks, which the parser does not read. This is the fixture that pins the official per-game report links we cite in every record.",
+  "gameInfo": {
+    "referees": [{"fullName": {"default": "Chris Rooney"}, "sweaterNumber": 5},
+                 {"fullName": {"default": "Jake Brenk"}, "sweaterNumber": 26}],
+    "linesmen": [{"fullName": {"default": "Libor Suchanek"}, "sweaterNumber": 60},
+                 {"fullName": {"default": "Ryan Daisy"}, "sweaterNumber": 81}],
+    "awayTeam": {"headCoach": {"default": "Paul Maurice"},
+                 "scratches": [{"id": 8484304, "firstName": {"default": "Uvis"}, "lastName": {"default": "Balinskis"}}]},
+    "homeTeam": {"headCoach": {"default": "Rod Brind'Amour"},
+                 "scratches": [{"id": 8476422, "firstName": {"default": "Mike"}, "lastName": {"default": "Reilly"}},
+                               {"id": 8480051, "firstName": {"default": "Cayden"}, "lastName": {"default": "Primeau"}},
+                               {"id": 8480829, "firstName": {"default": "Jesperi"}, "lastName": {"default": "Kotkaniemi"}}]}
+  },
+  "linescore": {
+    "byPeriod": [
+      {"periodDescriptor": {"number": 1, "periodType": "REG", "maxRegulationPeriods": 3}, "away": 0, "home": 0},
+      {"periodDescriptor": {"number": 2, "periodType": "REG", "maxRegulationPeriods": 3}, "away": 0, "home": 0},
+      {"periodDescriptor": {"number": 3, "periodType": "REG", "maxRegulationPeriods": 3}, "away": 0, "home": 0},
+      {"periodDescriptor": {"number": 4, "periodType": "OT", "maxRegulationPeriods": 3}, "away": 1, "home": 0}
+    ],
+    "totals": {"away": 1, "home": 0}
+  },
+  "shotsByPeriod": [
+    {"periodDescriptor": {"number": 1}, "away": 6, "home": 3},
+    {"periodDescriptor": {"number": 2}, "away": 8, "home": 7},
+    {"periodDescriptor": {"number": 3}, "away": 5, "home": 4},
+    {"periodDescriptor": {"number": 4}, "away": 1, "home": 1}
+  ],
+  "teamGameStats": [
+    {"category": "sog", "awayValue": 20, "homeValue": 15},
+    {"category": "faceoffWins", "awayValue": "25/58", "homeValue": "33/58"},
+    {"category": "powerPlay", "awayValue": "0/7", "homeValue": "0/6"},
+    {"category": "pim", "awayValue": 17, "homeValue": 19},
+    {"category": "hits", "awayValue": 43, "homeValue": 41},
+    {"category": "blockedShots", "awayValue": 13, "homeValue": 19}
+  ],
+  "gameReports": {
+    "gameSummary": "https://www.nhl.com/scores/htmlreports/20262027/GS020001.HTM",
+    "eventSummary": "https://www.nhl.com/scores/htmlreports/20262027/ES020001.HTM",
+    "playByPlay": "https://www.nhl.com/scores/htmlreports/20262027/PL020001.HTM",
+    "faceoffSummary": "https://www.nhl.com/scores/htmlreports/20262027/FS020001.HTM",
+    "faceoffComparison": "https://www.nhl.com/scores/htmlreports/20262027/FC020001.HTM",
+    "rosters": "https://www.nhl.com/scores/htmlreports/20262027/RO020001.HTM",
+    "shotSummary": "https://www.nhl.com/scores/htmlreports/20262027/SS020001.HTM",
+    "shiftChart": "https://www.nhl.com/stats/shiftcharts?id=2026020001",
+    "toiAway": "https://www.nhl.com/scores/htmlreports/20262027/TV020001.HTM",
+    "toiHome": "https://www.nhl.com/scores/htmlreports/20262027/TH020001.HTM"
+  }
+}

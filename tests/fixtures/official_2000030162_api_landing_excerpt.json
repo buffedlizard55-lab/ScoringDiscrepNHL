@@ -1,0 +1,52 @@
+{
+  "_fixture_note": "Verbatim excerpt of summary.scoring + team blocks from https://api-web.nhle.com/v1/gamecenter/2000030162/landing retrieved 2026-10-07. Control fixture: identical to the GS030162 report, so the detector must find nothing.",
+  "id": 2000030162,
+  "season": 20002001,
+  "gameType": 3,
+  "limitedScoring": false,
+  "gameDate": "2001-04-14",
+  "venue": {"default": "Joe Louis Arena"},
+  "awayTeam": {"id": 26, "commonName": {"default": "Kings"}, "abbrev": "LAK", "score": 0, "sog": 20},
+  "homeTeam": {"id": 17, "commonName": {"default": "Red Wings"}, "abbrev": "DET", "score": 4, "sog": 32},
+  "summary": {
+    "scoring": [
+      {"periodDescriptor": {"number": 1, "periodType": "REG", "maxRegulationPeriods": 3}, "goals": [
+        {"eventId": 10067750, "strength": "pp", "playerId": 8446788,
+         "firstName": {"default": "Sergei"}, "lastName": {"default": "Fedorov"}, "name": {"default": "S. Fedorov"},
+         "teamAbbrev": {"default": "DET"}, "goalsToDate": 2, "awayScore": 0, "homeScore": 1,
+         "leadingTeamAbbrev": {"default": "DET"}, "timeInPeriod": "02:16", "shotType": "slap", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8460743, "firstName": {"default": "Tomas"}, "lastName": {"default": "Holmstrom"}, "name": {"default": "T. Holmstrom"}, "assistsToDate": 1, "sweaterNumber": 96},
+           {"playerId": 8446494, "firstName": {"default": "Steve"}, "lastName": {"default": "Duchesne"}, "name": {"default": "S. Duchesne"}, "assistsToDate": 1, "sweaterNumber": 28}
+         ], "isHome": true},
+        {"eventId": 10067751, "strength": "pp", "playerId": 8446494,
+         "firstName": {"default": "Steve"}, "lastName": {"default": "Duchesne"}, "name": {"default": "S. Duchesne"},
+         "teamAbbrev": {"default": "DET"}, "goalsToDate": 1, "awayScore": 0, "homeScore": 2,
+         "leadingTeamAbbrev": {"default": "DET"}, "timeInPeriod": "09:12", "shotType": "slap", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8446788, "firstName": {"default": "Sergei"}, "lastName": {"default": "Fedorov"}, "name": {"default": "S. Fedorov"}, "assistsToDate": 3, "sweaterNumber": 91},
+           {"playerId": 8457063, "firstName": {"default": "Nicklas"}, "lastName": {"default": "Lidstrom", "sv": "Lidstr\u00f6m"}, "name": {"default": "N. Lidstrom", "sv": "N. Lidstr\u00f6m"}, "assistsToDate": 3, "sweaterNumber": 5}
+         ], "isHome": true}
+      ]},
+      {"periodDescriptor": {"number": 2, "periodType": "REG", "maxRegulationPeriods": 3}, "goals": []},
+      {"periodDescriptor": {"number": 3, "periodType": "REG", "maxRegulationPeriods": 3}, "goals": [
+        {"eventId": 10067752, "strength": "ev", "playerId": 8456887,
+         "firstName": {"default": "Vyacheslav"}, "lastName": {"default": "Kozlov"}, "name": {"default": "V. Kozlov"},
+         "teamAbbrev": {"default": "DET"}, "goalsToDate": 1, "awayScore": 0, "homeScore": 3,
+         "leadingTeamAbbrev": {"default": "DET"}, "timeInPeriod": "06:04", "shotType": "slap", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8448669, "firstName": {"default": "Igor"}, "lastName": {"default": "Larionov"}, "name": {"default": "I. Larionov"}, "assistsToDate": 1, "sweaterNumber": 8}
+         ], "isHome": true},
+        {"eventId": 10067753, "strength": "pp", "playerId": 8456887,
+         "firstName": {"default": "Vyacheslav"}, "lastName": {"default": "Kozlov"}, "name": {"default": "V. Kozlov"},
+         "teamAbbrev": {"default": "DET"}, "goalsToDate": 2, "goalInGame": 2, "awayScore": 0, "homeScore": 4,
+         "leadingTeamAbbrev": {"default": "DET"}, "timeInPeriod": "13:31", "shotType": "wrist", "goalModifier": "none",
+         "assists": [
+           {"playerId": 8449745, "firstName": {"default": "Larry"}, "lastName": {"default": "Murphy"}, "name": {"default": "L. Murphy"}, "assistsToDate": 1, "sweaterNumber": 55},
+           {"playerId": 8457063, "firstName": {"default": "Nicklas"}, "lastName": {"default": "Lidstrom", "sv": "Lidstr\u00f6m"}, "name": {"default": "N. Lidstrom", "sv": "N. Lidstr\u00f6m"}, "assistsToDate": 4, "sweaterNumber": 5}
+         ], "isHome": true}
+      ]}
+    ],
+    "threeStars": []
+  }
+}

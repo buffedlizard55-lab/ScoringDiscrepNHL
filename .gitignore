@@ -27,3 +27,11 @@ data/exports/*.csv
 
 # Never lose the workflows themselves
 !.github/workflows/*.yml
+
+# --- added by the nhl_scoring engine (this PR) ---
+cache/
+out/
+.mypy_cache/
+.ruff_cache/
+.env
+*.local.json

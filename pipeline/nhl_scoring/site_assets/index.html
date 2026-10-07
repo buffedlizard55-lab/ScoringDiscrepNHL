@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NHL Scoring Discrepancy Database</title>
+<meta name="description" content="Continuously updated database of NHL scoring discrepancies and corrections, detected from official NHL sources, with per-record source links.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">◈</span>
+    <div>
+      <h1>NHL Scoring Discrepancies</h1>
+      <p class="tagline">Official-source database of corrected goals, changed credits, and scoring-record conflicts</p>
+    </div>
+  </div>
+  <nav id="nav" aria-label="Sections"></nav>
+</header>
+<main id="main">
+  <section id="overview" class="panel"></section>
+  <section id="filters" class="panel filters" hidden></section>
+  <section id="results" class="panel results"></section>
+</main>
+<footer class="foot">
+  <p>Built by <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL" target="_blank" rel="noopener noreferrer">ScoringDiscrepNHL</a>.
+  Detection output is machine-generated from official NHL artifacts; every record links to the source that supports it and is
+  flagged when the evidence is incomplete. Nothing on this site is an official NHL ruling.</p>
+</footer>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

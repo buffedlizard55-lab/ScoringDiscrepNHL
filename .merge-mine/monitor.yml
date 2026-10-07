@@ -1,0 +1,105 @@
+name: Live monitor
+
+# The "eliminate manual checking" half: poll the day's games, snapshot every state
+# change, derive temporal findings, merge them into the database, publish the alert
+# digest, and rebuild the site. GitHub's scheduler is 15-minute-granular and often
+# later than that, so this is "near-real-time"; docs/STATUS.md documents the
+# always-on runner path for genuinely in-game latency.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "YYYY-MM-DD to poll instead of today/yesterday"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Dates to poll (today and yesterday UTC, plus any in-flight games)
+        id: dates
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            echo "list=${{ github.event.inputs.date }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "list=$(date -u -d 'yesterday' +%F) $(date -u +%F)" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Snapshot each game's live state (digests are written only on change)
+        run: |
+          for d in ${{ steps.dates.outputs.list }}; do
+            echo "== snap $d"
+            PYTHONPATH=pipeline python3 -m nhl_scoring.cli snap --date "$d" || echo "::warning::snap failed for $d"
+          done
+      - name: Derive temporal findings from the accumulated snapshots
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli snapfind --out out/temporal.json
+      - name: Merge findings into the database
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli merge --findings out/temporal.json --db data/discrepancies.json --apply --strict
+      - name: Validate + render alerts
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 40
+      - name: Rebuild the site from the updated database
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
+      - name: Commit what changed
+        run: |
+          git config user.name  "scoring-discrepancy-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/discrepancies.json data/discrepancies.csv data/snapshots data/alerts docs || true
+          if ! git diff --cached --quiet; then
+            git commit -m "monitor: $(date -u +%FT%TZ) snapshot + alert pass"
+            git push origin HEAD:main
+          else
+            echo "no state change captured this run"
+          fi
+      - name: Open an issue if a goal total moved
+        if: ${{ always() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(ls -1 data/alerts 2>/dev/null | tail -1)
+          [ -n "$latest" ] || exit 0
+          python3 - <<'PYEOF' > out/issue-env
+          import json, os, sys
+          sys.path.insert(0, "pipeline")
+          from nhl_scoring import alerts
+          latest = sorted(os.listdir("data/alerts"))[-1] if os.path.isdir("data/alerts") else ""
+          if not latest:
+              raise SystemExit(0)
+          path = os.path.join("data/alerts", latest, "alerts.json")
+          if not os.path.exists(path):
+              raise SystemExit(0)
+          payload = json.load(open(path, encoding="utf-8"))
+          items = payload.get("alerts") or []
+          immediate = [i for i in items if i.get("level") == "immediate"]
+          if not immediate:
+              raise SystemExit(0)
+          title = alerts.issue_title(immediate)
+          body = ("Automated monitor run found immediate-severity scoring discrepancies "
+                  "(a goal total or an official artifact that disagrees with another official "
+                  "artifact about a goal). Open the record links before acting; "
+                  "the league edits its own JSON in place.\n\n"
+                  f"Digest: `data/alerts/{latest}/alerts.md`\n")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
+              fh.write("SDN_ISSUE_TITLE<<" + "SDNEOF" + "\n" + title + "\nSDNEOF\n")
+              fh.write("SDN_ISSUE_BODY<<" + "SDNEOF" + "\n" + body + "SDNEOF\n")
+          PYEOF
+          if [ -n "$SDN_ISSUE_TITLE" ]; then
+            gh issue create --title "$SDN_ISSUE_TITLE" --body "$SDN_ISSUE_BODY" --label "detection" \
+              || echo "::warning::issue creation failed (label may not exist yet)"
+          else
+            echo "no immediate-severity alerts; no issue opened"
+          fi

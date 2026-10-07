@@ -1,0 +1,62 @@
+name: Backfill
+
+# Grows the database. One run polls a bounded number of calendar days, because the
+# entry point is the daily scoreboard (the only listing endpoint verified to work),
+# and unbounded season loops in CI are how you get a repository suspended.
+# Dispatch with a season to work through it; state persists in data/backfill-state.json.
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "Season to advance through, e.g. 20002001"
+        required: true
+        default: "20252026"
+      max_dates:
+        description: "Calendar days to poll in this run"
+        required: false
+        default: "40"
+  schedule:
+    - cron: "17 6 * * 2"   # weekly, off the :00 mark
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Collect game ids for this window
+        run: |
+          python3 scripts/backfill.py \
+            --season "${{ github.event.inputs.season || '20252026' }}" \
+            --max-dates "${{ github.event.inputs.max_dates || 25 }}" \
+            --out out/ids.txt
+      - name: Scan each game against both official artifacts
+        run: |
+          if [ ! -s out/ids.txt ]; then echo "no new game ids"; exit 0; fi
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli scan \
+            --games-file out/ids.txt --out out/findings.json --apply --verbose
+      - name: Validate and project to CSV
+        run: |
+          PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
+      - name: Rebuild site
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
+      - name: Commit progress
+        run: |
+          git config user.name  "scoring-discrepancy-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data docs || true
+          if ! git diff --cached --quiet; then
+            git commit -m "backfill: $(date -u +%FT%TZ) scan pass"
+            git push origin HEAD:main
+          else
+            echo "nothing new detected in this window"
+          fi
