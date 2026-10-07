@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write   # only so the coverage step below can commit the measured report
+
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -55,10 +58,25 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Measure per-season report coverage and the frozen/regenerated era
+        id: coverage
         continue-on-error: true
         run: |
+          set -o pipefail
           PYTHONPATH=src python -m nhl_monitor coverage --from-season 1999 --to-season 2026 \
             | tee coverage_output.json || true
+
+      - name: Commit the measured coverage report
+        if: github.event_name == 'push'
+        run: |
+          git config user.name  "coverage-bot"
+          git config user.email "coverage-bot@users.noreply.github.com"
+          git add data/reference/coverage_report.json
+          if git diff --cached --quiet; then
+            echo "coverage report unchanged"
+          else
+            git commit -m "coverage: measured per-season official-report availability [skip ci]"
+            git push
+          fi
 
       - name: Upload the probe and coverage reports (audit trail)
         if: always()
