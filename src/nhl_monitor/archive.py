@@ -62,8 +62,28 @@ class Snapshot:
         }
 
 
+def _document_path(url: str) -> str:
+    """The document path, ignoring scheme, host and port.
+
+    The archive stores a capture of ``http://www.nhl.com:80/scores/htmlreports/...``
+    under the same document as ``https://www.nhl.com/scores/htmlreports/...``. Matching
+    on the whole URL string silently discards those captures, which *undercounts* how
+    often a document was archived - measured 2026-10-07 on the 2000-01 season, where the
+    league's own http:// captures are the only ones that exist.
+    """
+    from urllib.parse import urlparse
+
+    path = urlparse(url).path or url
+    return path.rstrip("/").lower()
+
+
 def parse_cdx(payload, *, url_filter: Optional[str] = None) -> List[Snapshot]:
-    """Parse a CDX JSON payload (list of lists, first row is the header)."""
+    """Parse a CDX JSON payload (list of lists, first row is the header).
+
+    ``url_filter`` compares document *paths* (see :func:`_document_path`), so scheme and
+    host variants of the same document are kept instead of being mistaken for other
+    documents - and other documents in the same prefix are still excluded.
+    """
     if not payload:
         return []
     rows = payload
@@ -81,7 +101,7 @@ def parse_cdx(payload, *, url_filter: Optional[str] = None) -> List[Snapshot]:
             mimetype=str(rec.get("mimetype", "")),
             length=str(rec.get("length", "")),
         )
-        if url_filter and url_filter not in snap.original:
+        if url_filter and _document_path(url_filter) != _document_path(snap.original):
             continue
         out.append(snap)
     return sorted(out, key=lambda s: s.timestamp)
@@ -89,7 +109,11 @@ def parse_cdx(payload, *, url_filter: Optional[str] = None) -> List[Snapshot]:
 
 def snapshots_for(url: str, *, limit: int = 100, timeout: float = 45.0,
                   cache_dir: Optional[str] = None) -> List[Snapshot]:
-    """All archived captures of one exact URL (throttle politely: one call per URL)."""
+    """All archived captures of one document (throttle politely: one call per URL).
+
+    Captures taken from a different scheme/host/port for the same document path count as
+    captures of the document; each one keeps its own ``original`` URL as evidence.
+    """
     api = sources.cdx_query(url, limit=limit, collapse=None)
     resp = http_get(api, timeout=timeout, cache_dir=cache_dir, expect_status=(200, 404, 429))
     if resp.status != 200 or not resp.body.strip():
@@ -231,11 +255,16 @@ def summarise_scan(results: List[dict]) -> dict:
     verdicts: Dict[str, int] = {}
     leads: List[dict] = []
     archived = 0
+    changed_labels = set()
     for row in results:
         verdict = row.get("verdict", "unknown")
         verdicts[verdict] = verdicts.get(verdict, 0) + 1
         if isinstance(row.get("usable_captures"), int) and row["usable_captures"] > 0:
             archived += 1
+        if row.get("change_windows"):
+            # count DOCUMENTS, not windows: one document can change twice, and a rate
+            # computed from windows would exceed 1.0 and overstate the yield
+            changed_labels.add(row.get("label"))
         for window in row.get("change_windows") or []:
             leads.append({
                 "label": row["label"],
@@ -254,9 +283,12 @@ def summarise_scan(results: List[dict]) -> dict:
         "verdicts": verdicts,
         "documents_with_a_usable_capture": archived,
         "documents_without_a_usable_capture": len(results) - archived,
-        "documents_provably_changed": len(leads),
-        "proven_change_rate_among_archived": round(len(leads) / archived, 4) if archived else None,
-        "proven_change_rate_among_probed": round(len(leads) / len(results), 4) if results else None,
+        "documents_provably_changed": len(changed_labels),
+        "change_windows_found": len(leads),
+        "proven_change_rate_among_archived": (round(len(changed_labels) / archived, 4)
+                                              if archived else None),
+        "proven_change_rate_among_probed": (round(len(changed_labels) / len(results), 4)
+                                            if results else None),
         "leads": leads,
         "reading": ("documents_provably_changed counts documents whose archived content is "
                     "known to have changed - each lead is a candidate scoring correction "
