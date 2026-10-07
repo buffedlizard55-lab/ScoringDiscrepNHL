@@ -1,9 +1,23 @@
 # Roadmap — what still needs to be done
 
+> **Revision 2026-10-07 (later session, after the Situation Room backfill).** The
+> roadmap below was written when the database was nearly empty and framed several
+> P0 items as "the database is empty until these run." That is superseded: the
+> official **Situation Room statement feed** was found and ingested
+> ([`SITUATION_ROOM.md`](SITUATION_ROOM.md)), and the database now holds **1,470
+> records** — 1,465 goal-count-changing video-review overturns (2016-02 onward),
+> 4 attribution-only, 1 total-change-unknown. The blocker is no longer *populating*
+> the database; it is the historical-coverage and post-final-change-detection work
+> below. P0 items 1–2 are therefore largely closed (the pipeline ran on the GitHub
+> Actions runner and committed real records); what genuinely remains open is marked
+> **[still open]** inline. The list is kept in full because the remaining items are
+> still the right next steps.
+
 **Done since the first draft (2026-10-07, pass 3):** the earliest serving season is answered (**2000-01**;
 1999-2000 is a 404) and its reports are frozen; the frozen/regenerated behaviour is established for seven
-seasons; the database is no longer empty — three records were built through the announcement-ingest path and
-verified against official reports; announcement latency is measured; the site and CI gained a headless
+seasons; ~~the database is no longer empty — three records were built through the announcement-ingest path and
+verified against official reports~~ **the database holds 1,470 records** (Situation Room backfill + the
+announcement-ingest records); announcement latency is measured; the site and CI gained a headless
 rendering test of the real database. Items 1, 6 and 13 below are therefore partially or wholly closed —
 what remains is that the *pipeline* must run on a networked machine, not that it is unknown how to run it.
 
@@ -11,6 +25,11 @@ Ordered by how much each item blocks the stated goal ("a full, continuously-upda
 check by hand"). Effort is a rough estimate for one focused session.
 
 ## P0 — the database is empty until these run
+
+> **[mostly closed 2026-10-07]** The Situation Room backfill populated the
+> database (1,470 records) on the runner. Items 1–2 below are retained for the
+> *historical census* (cross-source diff over old frozen reports), which is a
+> coverage enhancement, not a prerequisite for a non-empty database.
 
 | # | Task | Why | How | Effort |
 |---|---|---|---|---|
@@ -57,8 +76,11 @@ check by hand"). Effort is a rough estimate for one focused session.
 
 ## Known blockers, plainly
 
-1. **No networked machine has run the collector yet.** The build sandbox is network-isolated from NHL hosts
-   (evidence committed). Until items 1-2 run, the database has no rows — by design, not by oversight.
+1. ~~**No networked machine has run the collector yet.** The build sandbox is network-isolated from NHL hosts
+   (evidence committed). Until items 1-2 run, the database has no rows — by design, not by oversight.~~
+   **Superseded 2026-10-07:** the GitHub Actions runner ran the Situation Room ingest and committed 1,470
+   records. The sandbox is still network-isolated from NHL hosts (evidence committed), so the *historical*
+   cross-source census still needs a networked machine to reach full coverage.
 2. ~~**No machine-readable Situation Room feed exists**, so "reason" can never be fully automated.~~
    **Corrected 2026-10-07:** it exists (content API, tag `situation-room`, every challenge and video review
    since 2016-02) and is ingested; see `docs/SITUATION_ROOM.md`. What stays permanent: no official feed
@@ -72,6 +94,6 @@ check by hand"). Effort is a rough estimate for one focused session.
 |---|---|---|---|
 | 17 | Automate retrieval of the league's scoring-change announcements | it is the sharpest signal that exists: it names game, period, clock, scorer and assists, and it arrives 2h49m–3h25m after the final buzzer | the posts were read here through the platform's page-fetch tool. A runner needs either a paid X API tier or a documented, rate-limited fetch; neither has been exercised from this repository yet |
 | 18 | Prefer, but never require, a pre-change official artifact | two of three shipped records can only say "reported by a secondary source" for the superseded credit | a CDX search for a snapshot *before* the announcement date is the mechanism; the one snapshot found for game 1238 post-dates the correction |
-| 19 | Prove or disprove the goal-count class | all three records are attribution-only, so the highest-value class (a goal added or removed after the record was final) has no example | a season-wide census is the only honest way; treat "not found" as a result to report, not a failure |
+| 19 | Prove or disprove the *post-final* goal-count class | ~~all three records are attribution-only, so the highest-value class (a goal added or removed after the record was final) has no example~~ — still true for the **post-final** class specifically: the 1,465 goal-count-changing records are all in-game video-review overturns, none is a goal added/removed *after* publication | a season-wide snapshot census is the only honest way; treat "not found" as a result to report, not a failure |
 | 20 | Add a latency column to the site and the export | the measured 2h49m–3h25m is a concrete answer to "what latency can a user expect", but it is currently only inside the record JSON | `timing.latency_after_final_buzzer_seconds` is already stored per record |
 | 11 | Start the CI census runs | `gh workflow run` returns HTTP 403 from the agent token (cannot write to Actions), so the measured sweeps must be started from the Actions tab | repository admin dispatches `backfill.yml` with `method=archive-yield` and `method=change-scan`, then `method=era`

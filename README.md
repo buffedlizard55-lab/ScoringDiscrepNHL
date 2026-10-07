@@ -34,7 +34,7 @@ original and the corrected state preserved.
 > the on-ice call** (goal→no goal or no goal→goal), 1,915 upheld the call, 902 give the result but not the
 > on-ice call (kept, no change inferred), 98 are not goal reviews at all (officiating-crew updates,
 > penalty-only challenges, non-reviewable plays) and 20 could not be classified by machine (flagged). Every changed call with a resolvable game id was
-> cross-checked against the official play-by-play: **1,396 agree, 52 inconclusive, 12 conflict, 11 not
+> cross-checked against the official play-by-play: **1,396 agree, 55 inconclusive, 12 conflict, 12 not
 > checked** - the conflicts and inconclusives are *flagged*, not hidden.
 >
 > The database ([`data/discrepancies.json`](data/discrepancies.json)) holds **1,470 records**: 1,449 live
@@ -45,7 +45,7 @@ original and the corrected state preserved.
 > silently deleted). Five third-party goal-clock leads were moved out of the database to
 > [`data/leads/third_party_clock_claims.json`](data/leads/third_party_clock_claims.json) because no official
 > source states a correction. `PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate` → **1,470 records,
-> 0 invalid**; `python3 -m unittest discover -s tests -t .` → **259 tests OK**; `node tools/check_engine_site.mjs`
+> 0 invalid**; `python3 -m unittest discover -s tests -t .` → **260 tests OK**; `node tools/check_engine_site.mjs`
 > runs the published client against the committed payload and passes.
 >
 > **What is live.** One site at the repository root (GitHub Pages: `main`, `/`): Database (filters for season,
@@ -57,12 +57,12 @@ original and the corrected state preserved.
 > (cron on GitHub Actions is best-effort - measured, see fact F32) and commits ledger, database, alerts and site.
 >
 > **What this is not, yet.** Scorer/assist-only corrections still come only from the league's scoring-change
-> announcements (3 records); pre-2016 reviews have no statement feed (documented limit); 897 statements state
+> announcements (3 records); pre-2016 reviews have no statement feed (documented limit); 902 statements state
 > the result without the on-ice call and become records only through a *documented* human read
 > ([`data/curation/situation_room_human_reads.json`](data/curation/situation_room_human_reads.json)); the
 > ledger has been re-read in full by parser 0.5.0 (raw statement text captured for every row, so later parser
-> fixes replay offline without re-fetching); 12 play-by-play conflicts, 52 inconclusives and 6 statements
-> without a resolvable game id are waiting for a human. Open items are listed at the end of this file and in
+> fixes replay offline without re-fetching); 12 play-by-play conflicts, 55 inconclusives and 12 statements not
+> yet cross-checked (3 without a resolvable game id) are waiting for a human. Open items are listed at the end of this file and in
 > [`docs/STATUS.md`](docs/STATUS.md).
 
 ---
@@ -179,8 +179,8 @@ python -m nhl_monitor verify --record-id NHL-20232024-020001-01
 python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
 python -m nhl_monitor sources                     # the source registry with verification status
 
-python -m unittest discover -s tests -v           # 121 tests
-python tools/build_site.py && python -m http.server 8080 --directory _site   # local site
+python3 -m unittest discover -s tests -t .       # 260 tests (engine + monitor lines)
+python3 -m nhl_scoring.cli site && python3 -m http.server 8080   # rebuild + serve the live site at the repo root
 ```
 
 `probe` is not decoration: it fetches the live Game Summary and parses it, so a league layout change makes
@@ -212,10 +212,20 @@ official URL. The shipped case files are the template.
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| [`tests.yml`](.github/workflows/tests.yml) | every push | 73 unit tests, a browser-less site smoke test, JS syntax check, site build, JSON record-schema validation, source reachability probe (which also measures per-season coverage on the runner) |
-| [`monitor.yml`](.github/workflows/monitor.yml) | every 5 minutes | captures the slate, diffs against the stored state, commits the evidence timeline, opens a GitHub issue for every detected discrepancy |
+| [`ci.yml`](.github/workflows/ci.yml) | every push / PR | the full combined suite (`python3 -m unittest discover -s tests` → 260 tests), validates the database under **both** contracts, rebuilds the site and asserts it is byte-identical to the committed one, smoke-tests the published client against the real payload (`tools/check_engine_site.mjs`), and checks the alert feed |
+| [`situation-room.yml`](.github/workflows/situation-room.yml) | twice hourly (`:11`,`:41`) | ingests the official Situation Room statement feed, cross-checks overturned calls against the play-by-play, and commits ledger + database + alerts + rebuilt site |
+| [`monitor.yml`](.github/workflows/monitor.yml) | every 5 minutes | the monitor line's live slate capture: diffs captured states, opens a GitHub issue per detected discrepancy, ports new records into the canonical database |
+| [`scoring-monitor.yml`](.github/workflows/scoring-monitor.yml) · [`scoring-backfill.yml`](.github/workflows/scoring-backfill.yml) · [`scoring-ci.yml`](.github/workflows/scoring-ci.yml) | schedule / dispatch | the engine line's monitor, backfill and CI |
 | [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method, scans the archive for provable changes, measures the archive's coverage ceiling, and commits the results |
-| [`pages.yml`](.github/workflows/pages.yml) | on push to `main` | builds and deploys the site |
+| [`tests.yml`](.github/workflows/tests.yml) | every push | monitor-line tests + a source-reachability probe and per-season coverage measurement, committed to `data/reference/coverage_report.json` |
+
+**Pages.** The site *is* the repository root (`index.html`, `app.js`, `styles.css`,
+`data.js`, `.nojekyll`), served by GitHub Pages from `main` at `/` (legacy
+branch deployment — nothing is built at serve time). The ingest/monitor workflows
+rebuild and commit those files. An Actions-based `pages.yml` deploy is parked as
+[`pages.yml.disabled`](.github/workflows/pages.yml.disabled) because this repo's
+Pages setting is branch-root, not "GitHub Actions"; rename it back only after
+switching that setting (repo-admin).
 
 GitHub Actions is the right home for this because a runner has unrestricted outbound network access, a
 scheduler, durable storage (git history) and a notification channel (issues) — none of which the build
@@ -290,7 +300,7 @@ site/                index.html app.js styles.css   (static, GitHub Pages)
 data/                records/discrepancies.json  inbox/statements/ (one case file per record)
                      reference/verified_facts.json  taxonomy.json
                      schema/observed_vocabulary.json  games/ evidence/ alerts/ exports/
-tests/               73 unittest cases + provenance-documented fixtures from real official documents
+tests/               260 unittest cases (engine + monitor lines) + provenance-documented fixtures from real official documents
 tools/build_site.py  assembles _site/ (static files + committed JSON)
 docs/                LIMITATIONS.md BACKFILL.md DATA_MODEL.md SOURCES.md OPERATIONS.md ROADMAP.md
                      VERIFICATION_LOG.md  evidence/
@@ -301,10 +311,16 @@ docs/                LIMITATIONS.md BACKFILL.md DATA_MODEL.md SOURCES.md OPERATI
 
 Ranked by how much they block the goal (details in [`docs/ROADMAP.md`](docs/ROADMAP.md)):
 
-1. **Run the backfill slice on a networked machine** (`backfill-era --season 20052006 --start 1 --end 200`,
-   or via `backfill.yml`). The three shipped records prove the *announcement* path end to end; the frozen-era
-   census path is built and unit-tested but has never run against live sources at scale. Expect the first
-   slice to be the slowest: markup drift, missing games and archive redirects all surface at once.
+> **Revised 2026-10-07 after the Situation Room backfill.** The database is no
+> longer "three records": the official review-statement feed was ingested and the
+> database holds 1,470 records (1,465 goal-count-changing in-game overturns). Items
+> 1 and 4 below are corrected for that; the rest stand.
+
+1. **Run the frozen-era cross-source census at scale** (`backfill-era --season 20052006 --start 1 --end 200`,
+   or via `backfill.yml`). The Situation Room feed already covers 2016-02 onward, so this is now a
+   *historical-coverage* task (pre-2016 + post-final change detection), not initial population. The census path
+   is built and unit-tested but has never run against live sources at scale. Expect the first slice to be the
+   slowest: markup drift, missing games and archive redirects all surface at once.
 2. **Turn the announcement watch into a scheduled job.** The announcements are the sharpest signal that exists
    (they name the game, the period, the clock and the new credit), and they were retrieved here through the
    platform's page-fetch tool, not through a supported API. A runner needs either an X API tier or a
@@ -313,8 +329,9 @@ Ranked by how much they block the goal (details in [`docs/ROADMAP.md`](docs/ROAD
    2020-21, 2026-27) are neither a game-night record nor a late batch rebuild, and may already contain corrections.
    They are currently marked regenerated; whether they deserve their own, weaker evidence class is an open design
    question.
-4. **Hunt for a goal-count change.** All three records are attribution-only, so the highest-value class —
-   a goal added or removed *after* the record was final — is still unobserved. It should be rare by
+4. **Hunt for a *post-final* goal-count change.** The 1,465 goal-count-changing records are all in-game
+   video-review overturns stated by the league; the highest-value class — a goal added or removed *after* the
+   record was final — is still unobserved through change detection. It should be rare by
    construction; proving that claim, rather than asserting it, is the next research step.
 5. **Recover pre-change states from the archive** where a frozen or early snapshot exists, which would
    upgrade a record from "superseded credit is secondary" to two official states.
@@ -437,12 +454,12 @@ it is, taken without deleting either line's work:
 
 | Question | Decision |
 | --- | --- |
-| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema (1,469 records after the Situation Room backfill; it started as 11): the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
+| Which database is canonical? | **`data/discrepancies.json`** - one file, engine schema (1,470 records after the Situation Room backfill; it started as 11): the monitor line's 3 verified announcements (mechanically ported, losslessly - each keeps its full original object under `parallel_record`) + 1 cross-source verified historical conflict + 7 pending leads. Port command: `python3 scripts/import_parallel_records.py`. |
 | What happens to `data/records/discrepancies.json`? | Left exactly as the monitor line wrote it. It is provenance for the port, not a competing database, and no published page reads it any more. |
 | Which site is the site of record? | **The repository root** (`index.html`, `app.js`, `styles.css`, `data.js`), built by `PYTHONPATH=pipeline python3 -m nhl_scoring.cli site`. GitHub Pages serves `main` at `/`. The former `docs/` build and the legacy root client were removed (2026-10-07); `docs/` holds documentation only. |
 | Which scheduler runs? | `situation-room.yml` (feed poll, twice hourly) plus the monitor line's `monitor.yml` / `backfill.yml` crons. This line's equivalents ship as `scoring-monitor.yml` (dispatch-only) and `scoring-backfill.yml` (offset weekly cron), so nothing commits to `main` twice on a timer. Flip the schedule in `scoring-monitor.yml` if the engine line becomes the single monitor. |
 | Which docs win where they collided? | `docs/DATA_MODEL.md`, `docs/METHODOLOGY.md`, `docs/SOURCES.md` stayed the monitor line's, verbatim. This line's are at `docs/engine/*.md` and published as "engine" tabs. Nothing was overwritten. |
-| Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> **182 tests, 0 failures**. |
+| Tests | Both suites run together: `python3 -m unittest discover -s tests -t .` -> **182 tests, 0 failures** at consolidation; **260 tests, 0 failures** after the Situation Room line's suite was added. |
 
 Still owed, and not decided here: whether one engine is eventually retired. The two
 answer the same brief through different mechanisms (statement-ingest vs cross-source

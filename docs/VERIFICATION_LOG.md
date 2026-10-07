@@ -4,6 +4,17 @@ Line-by-line record of what was checked while building this project, on **2026-1
 version is [`data/reference/verified_facts.json`](../data/reference/verified_facts.json) (rendered on the
 site); this file adds the narrative of how each check was performed and what it changed in the code.
 
+> **Note (later session, after the Situation Room backfill).** This log records the
+> announcement-ingest verification pass, when the database held three
+> attribution-only records. The official Situation Room statement feed was
+> subsequently found and ingested, adding 1,465 goal-count-changing records
+> (in-game video-review overturns). Where this log says a goal-count change "has
+> never been observed," read it as *"had not been observed through the
+> announcement / cross-source-diff paths at the time of this log"* — the
+> post-final goal-count class remains unobserved. See
+> [`SITUATION_ROOM.md`](SITUATION_ROOM.md) and the current counts in
+> [`STATUS.md`](STATUS.md).
+
 ## Environment
 
 * Direct HTTP from the build sandbox to `nhl.com`, `www.nhl.com`, `api-web.nhle.com`,
