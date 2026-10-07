@@ -1,8 +1,8 @@
 {
   "date": "2026-10-07",
-  "run_id": "20261007T203856Z-0.5.0",
-  "count": 9,
-  "immediate_count": 9,
+  "run_id": "20261007T210357Z-0.5.0",
+  "count": 10,
+  "immediate_count": 10,
   "review_count": 0,
   "info_count": 0,
   "coverage": {},
@@ -20,9 +20,9 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-02T01:15:00Z"
         },
@@ -73,6 +73,7 @@
           },
           "review": {
             "kind": "coach_challenge",
+            "type_group": "Goaltender Interference",
             "initiated_by": "Nashville",
             "type": "Goaltender Interference",
             "type_inferred": false,
@@ -129,7 +130,7 @@
             "url": "https://www.nhl.com/news/minnesota-wild-nashville-predators-coach-challenge",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:02Z",
+            "retrieved_at": "2026-10-07T20:43:32Z",
             "quote": "Call on the ice is overturned – No goal Minnesota"
           },
           {
@@ -137,7 +138,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-nashville-predators-coach-challenge",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:02Z",
+            "retrieved_at": "2026-10-07T20:43:32Z",
             "note": "contentDate 2026-10-02T01:15:00Z"
           },
           {
@@ -165,12 +166,20 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play and look at period 1 around 15:05: there must be no goal for MIN at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No goal Minnesota.",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     },
     {
@@ -178,17 +187,17 @@
       "record": {
         "record_id": "SDN-752f5a246e",
         "schema_version": "1.0",
-        "status": "flagged",
-        "confidence": "medium",
+        "status": "verified",
+        "confidence": "high",
         "detected_by": "league_statement",
         "detection": {
           "check_id": "SR1",
           "rule": "situation_room_no_goal_overturned_to_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-02T04:34:00Z"
         },
@@ -239,6 +248,7 @@
           },
           "review": {
             "kind": "video_review",
+            "type_group": "Hand Pass / Batted Puck",
             "initiated_by": "NHL Situation Room",
             "type": "Batted Puck",
             "type_inferred": false,
@@ -246,8 +256,8 @@
             "on_ice_call": "no_goal",
             "final_call": "goal",
             "outcome": "overturned",
-            "classification_confidence": "medium",
-            "classification_basis": "on-ice call no_goal (initial_ruling_sentence_infraction) vs final goal",
+            "classification_confidence": "high",
+            "classification_basis": "on-ice call no_goal (initial_ruling_sentence_infraction) vs final goal; on-ice call no_goal from documented human read (2026-10-07T17:15:00Z): The official statement's own first sentence states the initial ruling: the referees ruled that Rossi batted the puck in with his glove, which is a disallowed goal under Rule 78.5(i) (puck directed into the net by an attacking player other than with a stick); the review then found a legal shoulder deflection and the goal stands in the play-by-play (eventId 899, P3 04:43, 8-5) with a video-review stoppage at the same clock (eventId 43). The parser inferred the same on-ice call at medium confidence; this read confirms it.",
             "clock_reset": null,
             "statement_format": "structured"
           },
@@ -255,7 +265,7 @@
             "stated_by_league": true,
             "text": "The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.",
             "rule_citation": "",
-            "needs_human_read": true
+            "needs_human_read": false
           }
         },
         "initial_state": {
@@ -325,7 +335,7 @@
             "url": "https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:02Z",
+            "retrieved_at": "2026-10-07T20:43:32Z",
             "quote": "Goal Vancouver"
           },
           {
@@ -333,7 +343,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:02Z",
+            "retrieved_at": "2026-10-07T20:43:32Z",
             "note": "contentDate 2026-10-02T04:34:00Z"
           },
           {
@@ -346,6 +356,15 @@
             "note": "cross-check: agree; "
           },
           {
+            "label": "Scouting The Refs - Video review overturns batted-puck call, awards Rossi goal (independent corroboration of the on-ice no-goal)",
+            "url": "https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/",
+            "kind": "third_party_officiating_site",
+            "evidence": "secondary",
+            "retrieved_at": "2026-10-07T12:00:00Z",
+            "quote": null,
+            "note": "Secondary; used only to corroborate the on-ice call, never for the result."
+          },
+          {
             "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
             "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM",
             "kind": "official_report",
@@ -355,22 +374,55 @@
           }
         ],
         "verification": {
-          "status": "flagged",
+          "status": "verified",
           "evidence_grade": "primary",
           "independently_checkable": true,
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play and look at period 3 around 04:43: a goal event for VAN must be present. The GS report should show the same scoring summary.",
-          "verified_by": "",
-          "verified_at": ""
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree; on-ice call from documented human read by Arena agent session 2026-10-07 (official sources only; see docs/VERIFICATION_LOG.md)",
+          "verified_at": "2026-10-07T21:03:56Z",
+          "human_read": {
+            "on_ice_call": "no_goal",
+            "basis": "The official statement's own first sentence states the initial ruling: the referees ruled that Rossi batted the puck in with his glove, which is a disallowed goal under Rule 78.5(i) (puck directed into the net by an attacking player other than with a stick); the review then found a legal shoulder deflection and the goal stands in the play-by-play (eventId 899, P3 04:43, 8-5) with a video-review stoppage at the same clock (eventId 43). The parser inferred the same on-ice call at medium confidence; this read confirms it.",
+            "read_at": "2026-10-07T17:15:00Z",
+            "read_by": "Arena agent session 2026-10-07 (official sources only; see docs/VERIFICATION_LOG.md)",
+            "sources": [
+              {
+                "label": "NHL Situation Room statement, EDM @ VAN 4:43 of the Third Period (the sentence that states the initial ruling)",
+                "url": "https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720",
+                "kind": "official_statement",
+                "evidence": "primary",
+                "quote": "The Referee's initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi's shoulder and entered the Edmonton net in a legal fashion.",
+                "retrieved_at": "2026-10-07T12:00:00Z"
+              },
+              {
+                "label": "Scouting The Refs - Video review overturns batted-puck call, awards Rossi goal (independent corroboration of the on-ice no-goal)",
+                "url": "https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/",
+                "kind": "third_party_officiating_site",
+                "evidence": "secondary",
+                "note": "Secondary; used only to corroborate the on-ice call, never for the result.",
+                "retrieved_at": "2026-10-07T12:00:00Z"
+              }
+            ],
+            "quote": null
+          }
         },
         "flags": [
           "game_id_resolved_from_schedule",
-          "needs_human_read_of_on_ice_call",
+          "on_ice_call_from_documented_human_read",
           "on_ice_call_inferred_from_wording"
         ],
-        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: on-ice call no_goal (initial_ruling_sentence_infraction) vs final goal.",
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: on-ice call no_goal (initial_ruling_sentence_infraction) vs final goal; on-ice call no_goal from documented human read (2026-10-07T17:15:00Z): The official statement's own first sentence states the initial ruling: the referees ruled that Rossi batted the puck in with his glove, which is a disallowed goal under Rule 78.5(i) (puck directed into the net by an attacking player other than with a stick); the review then found a legal shoulder deflection and the goal stands in the play-by-play (eventId 899, P3 04:43, 8-5) with a video-review stoppage at the same clock (eventId 43). The parser inferred the same on-ice call at medium confidence; this read confirms it..",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     },
     {
@@ -386,9 +438,9 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-02T23:12:25.85Z"
         },
@@ -439,6 +491,7 @@
           },
           "review": {
             "kind": "coach_challenge",
+            "type_group": "Off-Side",
             "initiated_by": "Detroit",
             "type": "Off-Side",
             "type_inferred": false,
@@ -498,7 +551,7 @@
             "url": "https://www.nhl.com/news/new-york-rangers-detroit-red-wings-coach-challenge",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:02Z",
+            "retrieved_at": "2026-10-07T20:43:31Z",
             "quote": "Call on the ice is overturned – No Goal NY Rangers"
           },
           {
@@ -506,7 +559,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-rangers-detroit-red-wings-coach-challenge",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:02Z",
+            "retrieved_at": "2026-10-07T20:43:31Z",
             "note": "contentDate 2026-10-02T23:12:25.85Z"
           },
           {
@@ -534,14 +587,22 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play and look at period 1 around 07:08: there must be no goal for NYR at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
         ],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal NY Rangers.",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     },
     {
@@ -557,9 +618,9 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-03T03:29:04.463Z"
         },
@@ -610,6 +671,7 @@
           },
           "review": {
             "kind": "coach_challenge",
+            "type_group": "Off-Side",
             "initiated_by": null,
             "type": "Off-Side",
             "type_inferred": false,
@@ -669,7 +731,7 @@
             "url": "https://www.nhl.com/news/st-louis-blues-dallas-stars-coach-challenge",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:01Z",
+            "retrieved_at": "2026-10-07T20:43:31Z",
             "quote": "Call on the ice is overturned – No Goal St. Louis"
           },
           {
@@ -677,7 +739,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-dallas-stars-coach-challenge",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:01Z",
+            "retrieved_at": "2026-10-07T20:43:31Z",
             "note": "contentDate 2026-10-03T03:29:04.463Z"
           },
           {
@@ -705,12 +767,20 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play and look at period 3 around 01:06: there must be no goal for STL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal St. Louis.",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     },
     {
@@ -876,9 +946,9 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-04T01:39:13.984Z"
         },
@@ -929,6 +999,7 @@
           },
           "review": {
             "kind": "coach_challenge",
+            "type_group": "Off-Side",
             "initiated_by": "Montreal",
             "type": "Off-Side",
             "type_inferred": false,
@@ -988,7 +1059,7 @@
             "url": "https://www.nhl.com/news/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:01Z",
+            "retrieved_at": "2026-10-07T20:43:30Z",
             "quote": "Call on the ice is overturned – No Goal Pittsburgh"
           },
           {
@@ -996,7 +1067,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-pittsburgh-penguins-coach-challenge-x9847",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:01Z",
+            "retrieved_at": "2026-10-07T20:43:30Z",
             "note": "contentDate 2026-10-04T01:39:13.984Z"
           },
           {
@@ -1024,11 +1095,246 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play and look at period 3 around 05:25: there must be no goal for PIT at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Pittsburgh.",
         "first_seen_at": "2026-10-07T17:33:05Z",
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-d967bb12d3",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_no_goal_overturned_to_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-04T04:36:03.187Z"
+        },
+        "game": {
+          "game_id": "2026020033",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-03",
+          "away_team": "CGY",
+          "home_team": "VAN",
+          "venue": "Rogers Arena",
+          "final_score": {
+            "away": 1,
+            "home": 4
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020033",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020033.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 3,
+          "period_type": "REG",
+          "clock": "01:28",
+          "team": "VAN",
+          "field": "goal_added",
+          "goal_key": "P3@01:28",
+          "change_type": "no_goal_overturned_to_goal",
+          "summary": "Video review (Puck Over Goal Line): on-ice no-goal overturned, goal awarded to VAN at 01:28 of period 3",
+          "detail": "The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal line.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "video_review",
+            "type_group": "Puck Over Goal Line",
+            "initiated_by": "NHL Situation Room",
+            "type": "Puck Over Goal Line",
+            "type_inferred": false,
+            "result": "Goal Vancouver",
+            "on_ice_call": "no_goal",
+            "final_call": "goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "statement gives the result but not the on-ice call; on-ice call no_goal from documented human read (2026-10-07T17:15:00Z): The official statement gives only the result (Goal Vancouver). The league's own game recap on NHL.com states the on-ice call in words: the goal was initially waved off on the ice. The play-by-play carries a video-review stoppage and the goal at the same clock (eventIds 508 and 822, P3 01:28).",
+            "clock_reset": null,
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal line.",
+            "rule_citation": "",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "01:28",
+          "team": "VAN",
+          "score_after": null,
+          "note": null
+        },
+        "corrected_state": {
+          "artifact": "official play-by-play after review",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": {
+            "name": "L. Ohgren",
+            "surname": "Ohgren",
+            "initial": "L",
+            "player_id": 8483499,
+            "sweater_number": 92,
+            "team_id": 23,
+            "season_counter": 1
+          },
+          "assists": [
+            {
+              "name": "P. Cotter",
+              "surname": "Cotter",
+              "initial": "P",
+              "player_id": 8481032,
+              "sweater_number": 47,
+              "team_id": 23,
+              "season_counter": 2
+            },
+            {
+              "name": "T. Willander",
+              "surname": "Willander",
+              "initial": "T",
+              "player_id": 8484240,
+              "sweater_number": 5,
+              "team_id": 23,
+              "season_counter": 2
+            }
+          ],
+          "period": 3,
+          "clock": "01:28",
+          "team": "VAN",
+          "score_after": {
+            "away": 1,
+            "home": 1
+          },
+          "event_id": 822,
+          "shot_type": "wrist"
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 5,
+          "goal_delta": 1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Video Review: CGY @ VAN – 1:28 of the Third Period",
+            "url": "https://www.nhl.com/news/calgary-flames-vancouver-canucks-video-review",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T20:43:30Z",
+            "quote": "Goal Vancouver"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-video-review",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T20:43:30Z",
+            "note": "contentDate 2026-10-04T04:36:03.187Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020033/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-07T21:03:41Z",
+            "sha256": "a887ad8340bd2367afa32b46ddf6e59ecdff8ae792dc70334a547a460c2695bd",
+            "note": "cross-check: agree; "
+          },
+          {
+            "label": "NHL.com official game recap, CGY @ VAN, 2026-10-03 (states the on-ice call)",
+            "url": "https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026",
+            "kind": "official_editorial",
+            "evidence": "secondary",
+            "retrieved_at": "2026-10-07T17:12:00Z",
+            "quote": "Ohgren's goal was initially waved off on the ice and Cooley was confident it didn't get past him, but a video review proved the puck crossed the goal line through the webbing of his glove.",
+            "note": "League-published editorial recap (NHL.com staff), not a scoring record; graded secondary for that reason. Same text via the content API: https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-game-recap-october-3-2026"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020033.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020033/play-by-play and look at period 3 around 01:28: a goal event for VAN must be present. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree; on-ice call from documented human read by Arena agent session 2026-10-07 (official sources only; see docs/VERIFICATION_LOG.md)",
+          "verified_at": "2026-10-07T21:03:56Z",
+          "human_read": {
+            "on_ice_call": "no_goal",
+            "basis": "The official statement gives only the result (Goal Vancouver). The league's own game recap on NHL.com states the on-ice call in words: the goal was initially waved off on the ice. The play-by-play carries a video-review stoppage and the goal at the same clock (eventIds 508 and 822, P3 01:28).",
+            "read_at": "2026-10-07T17:15:00Z",
+            "read_by": "Arena agent session 2026-10-07 (official sources only; see docs/VERIFICATION_LOG.md)",
+            "sources": [
+              {
+                "label": "NHL.com official game recap, CGY @ VAN, 2026-10-03 (states the on-ice call)",
+                "url": "https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026",
+                "kind": "official_editorial",
+                "evidence": "secondary",
+                "quote": "Ohgren's goal was initially waved off on the ice and Cooley was confident it didn't get past him, but a video review proved the puck crossed the goal line through the webbing of his glove.",
+                "note": "League-published editorial recap (NHL.com staff), not a scoring record; graded secondary for that reason. Same text via the content API: https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-game-recap-october-3-2026",
+                "retrieved_at": "2026-10-07T17:12:00Z"
+              }
+            ],
+            "quote": null
+          }
+        },
+        "flags": [
+          "on_ice_call_from_documented_human_read",
+          "on_ice_call_not_stated"
+        ],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: statement gives the result but not the on-ice call; on-ice call no_goal from documented human read (2026-10-07T17:15:00Z): The official statement gives only the result (Goal Vancouver). The league's own game recap on NHL.com states the on-ice call in words: the goal was initially waved off on the ice. The play-by-play carries a video-review stoppage and the goal at the same clock (eventIds 508 and 822, P3 01:28)..",
+        "first_seen_at": "2026-10-07T21:03:56Z",
         "seen_count": 1
       }
     },
@@ -1045,9 +1351,9 @@
           "rule": "situation_room_no_goal_overturned_to_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-06T01:15:00Z"
         },
@@ -1098,6 +1404,7 @@
           },
           "review": {
             "kind": "video_review",
+            "type_group": "High-Sticking the Puck",
             "initiated_by": null,
             "type": "High-Sticking the Puck",
             "type_inferred": false,
@@ -1184,7 +1491,7 @@
             "url": "https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:00Z",
+            "retrieved_at": "2026-10-07T20:43:30Z",
             "quote": "Original call is overturned – Goal Pittsburgh"
           },
           {
@@ -1192,7 +1499,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:00Z",
+            "retrieved_at": "2026-10-07T20:43:30Z",
             "note": "contentDate 2026-10-06T01:15:00Z"
           },
           {
@@ -1220,14 +1527,22 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play and look at period 2 around 09:27: a goal event for PIT must be present. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
         ],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Original call is overturned – Goal Pittsburgh.",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     },
     {
@@ -1243,9 +1558,9 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-07T01:38:00Z"
         },
@@ -1296,6 +1611,7 @@
           },
           "review": {
             "kind": "coach_challenge",
+            "type_group": "Off-Side",
             "initiated_by": null,
             "type": "Off-Side",
             "type_inferred": false,
@@ -1355,7 +1671,7 @@
             "url": "https://www.nhl.com/news/st-louis-blues-chicago-blackhawks-coach-challenge",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:00Z",
+            "retrieved_at": "2026-10-07T20:43:29Z",
             "quote": "Call on the ice is overturned – No Goal St. Louis"
           },
           {
@@ -1363,7 +1679,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/st-louis-blues-chicago-blackhawks-coach-challenge",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:03:00Z",
+            "retrieved_at": "2026-10-07T20:43:29Z",
             "note": "contentDate 2026-10-07T01:38:00Z"
           },
           {
@@ -1391,12 +1707,20 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play and look at period 2 around 01:05: there must be no goal for STL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal St. Louis.",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     },
     {
@@ -1412,9 +1736,9 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-07T17:33:05Z",
-          "run_id": "20261007T170259Z-0.4.0",
-          "tool_version": "0.4.0",
+          "detected_at": "2026-10-07T21:03:56Z",
+          "run_id": "20261007T204328Z-0.5.0",
+          "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-07T01:41:00Z"
         },
@@ -1465,6 +1789,7 @@
           },
           "review": {
             "kind": "coach_challenge",
+            "type_group": "Off-Side",
             "initiated_by": null,
             "type": "Off-Side",
             "type_inferred": false,
@@ -1524,7 +1849,7 @@
             "url": "https://www.nhl.com/news/nashville-predators-toronto-maple-leafs-coach-challenge",
             "kind": "official_statement",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:02:59Z",
+            "retrieved_at": "2026-10-07T20:43:29Z",
             "quote": "Call on the ice is overturned – No Goal Toronto"
           },
           {
@@ -1532,7 +1857,7 @@
             "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-toronto-maple-leafs-coach-challenge",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-07T17:02:59Z",
+            "retrieved_at": "2026-10-07T20:43:29Z",
             "note": "contentDate 2026-10-07T01:41:00Z"
           },
           {
@@ -1560,12 +1885,20 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play and look at period 3 around 11:49: there must be no goal for TOR at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-07T17:33:05Z"
+          "verified_at": "2026-10-07T21:03:56Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Toronto.",
         "first_seen_at": "2026-10-07T17:33:05Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261007T204328Z-0.5.0",
+            "detected_at": "2026-10-07T21:03:56Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-07T21:03:56Z"
       }
     }
   ]

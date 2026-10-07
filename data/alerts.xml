@@ -4,7 +4,7 @@
     <title>ScoringDiscrepNHL alerts</title>
     <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>
     <description>Automated alerts for detected NHL scoring discrepancies and corrections. Every alert links to official-source evidence.</description>
-    <lastBuildDate>Wed, 07 Oct 2026 20:38:56 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2026 21:03:57 GMT</lastBuildDate>
     <item>
       <title>[MEDIUM] Goal scorer changed: NJD @ CHI 2025-03-26 — REG P1 6:50</title>
       <guid isPermaLink="false">sdnhl-ALERT-NHL-20242025-021140-01</guid>
@@ -261,6 +261,20 @@ Flags: game_id_resolved_from_schedule
 Official reason: Video review determined that Ben Kindel&#x27;s stick was at or below the height of the crossbar when he directed the puck into the Winnipeg net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”<p><a href="https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review">https://www.nhl.com/news/winnipeg-jets-pittsburgh-penguins-video-review</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/winnipeg-jets-pittsburgh-penguins-video-review</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM</a></p></description>
     </item>
     <item>
+      <title>[IMMEDIATE] 2026-10-03 CGY @ VAN - Video review (Puck Over Goal Line): on-ice no-goal overturned, goal awarded to VAN at 01:28 of period 3</title>
+      <guid isPermaLink="false">sdnhl-SDN-d967bb12d3</guid>
+      <pubDate>2026-10-04T04:36:03.187Z</pubDate>
+      <description>Video review (Puck Over Goal Line): on-ice no-goal overturned, goal awarded to VAN at 01:28 of period 3
+The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal line.
+Record SDN-d967bb12d3 - status verified - confidence high
+Change type: no_goal_overturned_to_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Flags: on_ice_call_from_documented_human_read, on_ice_call_not_stated
+Official reason: The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal line.<p><a href="https://www.nhl.com/news/calgary-flames-vancouver-canucks-video-review">https://www.nhl.com/news/calgary-flames-vancouver-canucks-video-review</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-video-review">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-video-review</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020033/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020033/play-by-play</a></p><p><a href="https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026">https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020033.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020033.HTM</a></p></description>
+    </item>
+    <item>
       <title>[IMMEDIATE] 2026-10-03 MTL @ PIT - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal PIT at 05:25 of period 3</title>
       <guid isPermaLink="false">sdnhl-SDN-73e0895bf7</guid>
       <pubDate>2026-10-04T01:39:13.984Z</pubDate>
@@ -328,13 +342,13 @@ The clock is reset to show 12:57 (7:03 elapsed time), when the off-side infracti
       <pubDate>Fri, 02 Oct 2026 04:34:00 GMT</pubDate>
       <description>Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3
 The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.
-Record SDN-752f5a246e - status flagged - confidence medium
+Record SDN-752f5a246e - status verified - confidence high
 Change type: no_goal_overturned_to_goal
 Goal total changed: True
 Attribution only: False
 Corrected: in_game
-Flags: game_id_resolved_from_schedule, needs_human_read_of_on_ice_call, on_ice_call_inferred_from_wording
-Official reason: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.<p><a href="https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720">https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM</a></p></description>
+Flags: game_id_resolved_from_schedule, on_ice_call_from_documented_human_read, on_ice_call_inferred_from_wording
+Official reason: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.<p><a href="https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720">https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play</a></p><p><a href="https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/">https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM</a></p></description>
     </item>
     <item>
       <title>[IMMEDIATE] 2026-10-01 MIN @ NSH - Coach&#x27;s Challenge (Goaltender Interference): on-ice goal overturned, no goal MIN at 15:05 of period 1</title>

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-07T20:38:56Z",
+  "generated_at": "2026-10-07T21:03:57Z",
   "alerts": [
     {
       "id": "ALERT-NHL-20242025-021140-01",
@@ -126,7 +126,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM"
       ],
       "created_at": "2026-10-07T01:41:00Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-07T01:41:00Z"
@@ -145,7 +145,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM"
       ],
       "created_at": "2026-10-07T01:38:00Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-07T01:38:00Z"
@@ -221,10 +221,29 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM"
       ],
       "created_at": "2026-10-06T01:15:00Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-06T01:15:00Z"
+    },
+    {
+      "id": "SDN-d967bb12d3",
+      "record_id": "SDN-d967bb12d3",
+      "type": "no_goal_overturned_to_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-03 CGY @ VAN - Video review (Puck Over Goal Line): on-ice no-goal overturned, goal awarded to VAN at 01:28 of period 3",
+      "body": "Video review (Puck Over Goal Line): on-ice no-goal overturned, goal awarded to VAN at 01:28 of period 3\nThe Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal line.\nRecord SDN-d967bb12d3 - status verified - confidence high\nChange type: no_goal_overturned_to_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nFlags: on_ice_call_from_documented_human_read, on_ice_call_not_stated\nOfficial reason: The Situation Room initiated a video review to further examine whether Liam Ohgren’s original shot entered the Calgary net while it was in the webbing of Devin Cooley’s glove. Video determined that the puck did cross the Calgary goal line.",
+      "links": [
+        "https://www.nhl.com/news/calgary-flames-vancouver-canucks-video-review",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/calgary-flames-vancouver-canucks-video-review",
+        "https://api-web.nhle.com/v1/gamecenter/2026020033/play-by-play",
+        "https://www.nhl.com/news/calgary-flames-vancouver-canucks-game-recap-october-3-2026",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020033.HTM"
+      ],
+      "created_at": "2026-10-04T04:36:03.187Z",
+      "detected_at": "2026-10-07T21:03:56Z",
+      "affects_goal_total": true,
+      "detected_by": "nhl_scoring"
     },
     {
       "id": "SDN-73e0895bf7",
@@ -240,7 +259,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM"
       ],
       "created_at": "2026-10-04T01:39:13.984Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-04T01:39:13.984Z"
@@ -259,7 +278,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM"
       ],
       "created_at": "2026-10-03T03:29:04.463Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-03T03:29:04.463Z"
@@ -278,7 +297,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM"
       ],
       "created_at": "2026-10-02T23:12:25.85Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-02T23:12:25.85Z"
@@ -289,15 +308,16 @@
       "type": "no_goal_overturned_to_goal",
       "severity": "high",
       "title": "[IMMEDIATE] 2026-10-01 EDM @ VAN - Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3",
-      "body": "Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3\nThe Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.\nRecord SDN-752f5a246e - status flagged - confidence medium\nChange type: no_goal_overturned_to_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nFlags: game_id_resolved_from_schedule, needs_human_read_of_on_ice_call, on_ice_call_inferred_from_wording\nOfficial reason: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.",
+      "body": "Video review (Batted Puck): on-ice no-goal overturned, goal awarded to VAN at 04:43 of period 3\nThe Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.\nRecord SDN-752f5a246e - status verified - confidence high\nChange type: no_goal_overturned_to_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nFlags: game_id_resolved_from_schedule, on_ice_call_from_documented_human_read, on_ice_call_inferred_from_wording\nOfficial reason: The Referee’s initially ruled that Marco Rossi batted the puck into the Edmonton net with his glove. The Situation Room then initiated a video review to further examine the play and determined that the puck deflected off Rossi’s shoulder and entered the Edmonton net in a legal fashion.",
       "links": [
         "https://www.nhl.com/news/edmonton-oilers-vancouver-canucks-video-review-x7720",
         "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/edmonton-oilers-vancouver-canucks-video-review-x7720",
         "https://api-web.nhle.com/v1/gamecenter/2026020015/play-by-play",
+        "https://scoutingtherefs.com/2026/10/53416/video-review-overturns-batted-puck-call-awards-rossi-goal/",
         "https://www.nhl.com/scores/htmlreports/20262027/GS020015.HTM"
       ],
       "created_at": "2026-10-02T04:34:00Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-02T04:34:00Z"
@@ -316,7 +336,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM"
       ],
       "created_at": "2026-10-02T01:15:00Z",
-      "detected_at": "2026-10-07T17:33:05Z",
+      "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
       "detected_by": "nhl_scoring",
       "first_seen_at": "2026-10-02T01:15:00Z"
