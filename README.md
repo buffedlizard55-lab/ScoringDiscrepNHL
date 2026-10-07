@@ -352,11 +352,17 @@ docs/                NOTIFICATIONS.md ALERTING.md FEASIBILITY.md SITUATION_ROOM.
 > is no longer "three records": 1,470 records, 1,465 of them goal-count-changing in-game
 > overturns), and again in the notification pass, which is what items 1-4 below are.
 
-1. **Publish a measured end-to-end latency.** The league's statement appears minutes
-   after the play (three samples measured), but "how late do *we* see it" is still
-   bounded by the cron slot rather than measured. Every record stores the statement's
-   `content_date` and our `detected_at`, so this is a report away once a week of
-   scheduled runs exists. Until then no latency figure is quoted anywhere.
+1. **Make the trigger dependable, then publish a measured end-to-end latency.** The
+   league's statement appears minutes after the play (three samples measured), but
+   "how late do *we* see it" is unmeasured — and the trigger itself is unreliable:
+   GitHub's scheduler has fired this repository's crons **twice in a full day**, and the
+   `11,41` cron on the primary alert path did not fire at all in the slots measured
+   (fact F33, re-measuring F32 while the repository was being actively pushed to). So the
+   cadence in the workflow files is a request, not a guarantee. Needs an external timer
+   calling `gh workflow run "Situation Room ingest"`, or a self-hosted runner; every
+   record already stores the statement's `content_date` and our `detected_at`, so the
+   latency distribution is a report away once runs accumulate. Until then no latency
+   figure is quoted anywhere.
 2. **Prove the webhook and e-mail channels against real endpoints.** Both are
    implemented and unit-tested with injected transports; only the GitHub issue channel
    has been proven live. Turning either on is a secret, not a change - and the first

@@ -111,10 +111,15 @@ those, so the distinction is auditable rather than assumed.
 
 Two honest caveats, both measured rather than assumed:
 
-* **GitHub Actions cron is best-effort.** This repository measured *one scheduled run
-  in eleven hours* for a `*/5` cron while it was idle. An active repository is
-  scheduled far more reliably, but the floor is minutes, not seconds, and nobody should
-  design a settlement process around it.
+* **GitHub Actions cron is best-effort, and "the repository is active" does not fix
+  it.** This repository measured *one scheduled run in eleven hours* for a `*/5` cron
+  while idle (fact F32), and re-measured the same evening — while it was being actively
+  pushed to — as *two scheduled runs in a whole day*, with the `11,41` cron on the
+  primary alert path not firing at all across the slots that passed (fact F33). An
+  earlier version of this paragraph claimed an active repository is "scheduled far more
+  reliably"; that claim was wrong and is withdrawn. **The cadence in the workflow file
+  is a request, not a guarantee**, and nobody should design a settlement process around
+  it. A dependable cadence needs an external trigger (below).
 * **The end-to-end number for "how late did we see a statement" has not been measured
   yet.** Every record stores the statement's `content_date` and our `detected_at`, so
   the distribution becomes available as scheduled runs accumulate. **No figure is
