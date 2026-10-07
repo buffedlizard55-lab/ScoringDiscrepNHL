@@ -1,3 +1,13 @@
+# PARKED 2026-10-07 (repair pass) — this workflow deploys via actions/deploy-pages,
+# which REQUIRES the repo's Pages setting "Source: GitHub Actions". This repo's Pages
+# is configured (admin-only) to deploy from the main branch ROOT (legacy), so this
+# workflow can only fail while that setting stands — and it would fail on every
+# monitor data commit (paths: data/**). The live public site is served by legacy
+# Pages from the repo root (index.html, css/, js/, data/).
+#
+# To restore: switch Settings -> Pages -> Source to "GitHub Actions" (needs a repo
+# admin), then rename this file back to pages.yml.
+#
 name: deploy site
 
 on:

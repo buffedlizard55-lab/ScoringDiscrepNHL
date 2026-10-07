@@ -4,6 +4,12 @@ name: scoring monitor
 # official record for a game has actually changed, so most runs commit nothing.
 # GitHub cron is UTC and can be delayed a few minutes at busy times - treat the
 # schedule as "at least every ~10 minutes", not as a real-time feed.
+#
+# REPAIR NOTE (2026-10-07): this file was pushed to main with unresolved merge
+# conflict markers, breaking every run. It has been reconstructed verbatim from
+# the HEAD side of that conflicted merge — the active implementation of the
+# parallel line (src/nhl_monitor). The other line's monitor (pipeline/) remains
+# parked at monitor_root_site.yml.disabled. See docs/parallel_line/PARALLEL_LINE.md.
 
 on:
   schedule:
