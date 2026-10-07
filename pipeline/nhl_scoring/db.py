@@ -374,9 +374,21 @@ def load_db(path: str) -> Dict[str, Any]:
     return payload
 
 
+def canonical_order(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """The one order every artifact derived from the store is written in.
+
+    ``save_db`` sorted by (game date, record_id) while ``write_csv`` wrote rows in
+    whatever order it was handed, so the JSON and the CSV listed the same records
+    in different orders and a byte-for-byte sync check could never pass. Both now
+    go through here, so the export cannot drift from the database it exports.
+    """
+    return sorted(records,
+                  key=lambda r: ((r.get("game") or {}).get("date") or "",
+                                 r.get("record_id") or ""))
+
+
 def save_db(payload: Dict[str, Any], path: str) -> None:
-    records = sorted(payload.get("records", []),
-                     key=lambda r: ((r.get("game") or {}).get("date") or "", r.get("record_id") or ""))
+    records = canonical_order(payload.get("records", []))
     out = {
         "schema_version": payload.get("schema_version", SCHEMA_VERSION),
         "generated_by": "pipeline/nhl_scoring (db.py)",
@@ -498,7 +510,7 @@ def to_csv(rows: List[Dict[str, Any]]) -> List[List[str]]:
 
 def write_csv(rows: List[Dict[str, Any]], path: str) -> int:
     import csv as _csv
-    table = to_csv(rows)
+    table = to_csv(canonical_order(rows))
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="") as fh:
         _csv.writer(fh, lineterminator="\n").writerows(table)

@@ -37,6 +37,17 @@ jobs:
           PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
           git diff --exit-code docs/ || {
             echo "::error::docs/ is stale - run: python3 -m nhl_scoring.cli site --out docs and commit"; exit 1; }
+      - name: CSV export is in sync with the database
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, "pipeline")
+          from nhl_scoring import db as db_mod
+          recs = json.load(open("data/discrepancies.json"))["records"]
+          db_mod.write_csv(recs, "data/discrepancies.csv")
+          PY
+          git diff --exit-code data/discrepancies.csv || {
+            echo "::error::data/discrepancies.csv is stale - regenerate it from data/discrepancies.json and commit"; exit 1; }
       - name: Asset syntax
         run: |
           node --check pipeline/nhl_scoring/site_assets/app.js
