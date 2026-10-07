@@ -80,14 +80,16 @@ hand-invented; see the honesty note below.
 
 ---
 
-## Research leads inbox
+## Research leads inbox (verification queue)
 
-`docs/inbox/prior_session_leads.json` contains 5 scoring-change **leads** carried
-over from a prior session's seed database. They are **quarantined**: they were
-hand-entered, cannot be line-by-line verified from this environment, and some rely
-on secondary sources only. They are NOT part of the verified database. Each lead
-must be independently re-verified against its cited official source (or deleted)
-before it may enter `data/discrepancies.json` via the standard schema.
+`docs/inbox/` contains **quarantined research leads** carried over from prior
+work sessions (31 leads across two files). They are NOT part of the verified
+database: their cited sources have not yet been re-captured and verified
+line-by-line from this environment, and at least one citation shows an internal
+inconsistency (flagged in-file). The website renders them under
+**Verification Queue** with clickable source links; verified leads are promoted
+with `python3 -m pipeline.promote` (which refuses to invent missing fields).
+See [docs/inbox/README.md](docs/inbox/README.md) for the verification procedure.
 
 ## Honesty note — current status
 
@@ -100,6 +102,20 @@ before it may enter `data/discrepancies.json` via the standard schema.
   probe results will be produced by the GitHub Actions monitor runs. Any statement
   about endpoint shapes or historical coverage that could not be verified live is
   explicitly marked `unverified` in the docs.
+
+## Coordination warning (important)
+
+This repository has been edited by **multiple parallel work sessions**, and two
+of them (PR #1, PR #3) merged competing architectures and hand-built record
+lists directly to `main` while other work was in flight. Consequences:
+
+* Architectures were overwritten mid-flight; this build reconciles them and is
+  the tested canonical implementation (see commit history).
+* Hand-built records from those sessions are quarantined in `docs/inbox/` until
+  re-verified — do **not** treat them as verified facts anywhere.
+* Future sessions must branch from the latest `main`, preserve the architecture
+  described here, and route changes through reviewed PRs rather than rewriting
+  `main` wholesale.
 
 ## Quick start (local)
 

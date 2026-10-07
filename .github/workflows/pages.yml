@@ -36,6 +36,8 @@ jobs:
           cp -r site/. _site/
           mkdir -p _site/data
           cp data/discrepancies.json data/alerts.json data/alerts.xml data/coverage_report.json _site/data/ 2>/dev/null || true
+          mkdir -p _site/data/inbox
+          cp docs/inbox/*.json _site/data/inbox/ 2>/dev/null || true
 
       - uses: actions/configure-pages@v5
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 
 from pipeline import livefeed
-from pipeline.diff import diff_goals, diff_report_hashes, field_changes
+from pipeline.diff import diff_goals, diff_report_hashes, field_changes, total_mismatches
 from tests.fixture_feeds import goal_play, make_feed
 
 
@@ -79,6 +79,23 @@ class TestReportHashes(unittest.TestCase):
         old = {"report_hashes": {"GS": {"ok": False, "missing": True}}}
         new = {"report_hashes": {"GS": {"ok": False, "missing": True}}}
         self.assertEqual(diff_report_hashes(old, new), [])
+
+
+class TestTotalMismatches(unittest.TestCase):
+    def test_consistent_snapshot_has_no_mismatch(self):
+        feed = make_feed([goal_play(1, 1, "10:00", "TCA", "A")])
+        feed["liveData"]["linescore"]["teams"]["away"]["goals"] = 1
+        snap = livefeed.normalize_live_feed(feed, "t", "u")
+        self.assertEqual(total_mismatches(snap), [])
+
+    def test_mismatch_detected(self):
+        feed = make_feed([goal_play(1, 1, "10:00", "TCA", "A")])
+        feed["liveData"]["linescore"]["teams"]["away"]["goals"] = 2  # says 2, only 1 event
+        snap = livefeed.normalize_live_feed(feed, "t", "u")
+        problems = total_mismatches(snap)
+        self.assertEqual(len(problems), 1)
+        self.assertEqual(problems[0]["linescore_total"], 2)
+        self.assertEqual(problems[0]["goal_events"], 1)
 
 
 class TestFieldChanges(unittest.TestCase):

@@ -147,6 +147,34 @@ def field_changes(old_g: dict, new_g: dict) -> dict:
     return changed
 
 
+def total_mismatches(snapshot: dict) -> list[dict]:
+    """Internal consistency check (idea adopted from PR #3's monitor):
+    the linescore team totals must equal the number of goal events per team
+    (shootout deciders add one goal without a standard period goal event, so
+    shootout games are reported but not treated as errors)."""
+    problems = []
+    feed_state = snapshot.get("feed_state") or {}
+    ls_goals = feed_state.get("goals") or {}
+    goals = snapshot.get("goals") or []
+    has_shootout = any(g.get("shootout") for g in goals)
+    for side, team_key in (("away", "away"), ("home", "home")):
+        expected = ls_goals.get(side)
+        if expected is None:
+            continue
+        counted = sum(1 for g in goals
+                      if (g.get("team") or "").upper()
+                      == (((snapshot.get("teams") or {}).get(team_key) or {}).get("tri") or "")
+                      and not g.get("shootout"))
+        if counted != expected:
+            problems.append({
+                "side": side,
+                "linescore_total": expected,
+                "goal_events": counted,
+                "shootout_present": has_shootout,
+            })
+    return problems
+
+
 def diff_report_hashes(old_snap: dict, new_snap: dict) -> list[dict]:
     """Detect silent edits of official PDF reports via hash changes."""
     changes = []

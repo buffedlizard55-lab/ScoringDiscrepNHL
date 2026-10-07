@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 
 from . import alerts as alerts_mod
 from . import config, httpclient, livefeed, store, validate
-from .diff import diff_goals, diff_report_hashes
+from .diff import diff_goals, diff_report_hashes, total_mismatches
 from .records import build_records_for_changes
 
 
@@ -104,6 +104,21 @@ def process_game(game_pk: int, now_iso: str, stats: dict, force_rebaseline: bool
     if force_rebaseline:
         stats["rebaselined"] += 1
         return []
+
+    # Internal consistency: linescore totals vs goal events (alerts only; the
+    # mismatch itself is not a discrepancy record until a change is observed).
+    mismatches = total_mismatches(snap)
+    if mismatches:
+        stats["warnings"].append(f"game {game_pk}: linescore/goal-event mismatch {mismatches}")
+        alerts_mod.append_alerts([alerts_mod.make_alert(
+            "schema_drift",
+            f"Linescore vs goal-event mismatch for game {game_pk}",
+            "The official linescore total does not equal the number of goal events "
+            f"in the play-by-play: {mismatches}. If no shootout is present this "
+            "may indicate a scoring change in progress; human review requested.",
+            record_id=None,
+            links=[(snap.get("source") or {}).get("live_feed")],
+            severity="warn", now_iso=now_iso)], now_iso)
 
     changes = diff_goals(prev.get("goals") or [], snap.get("goals") or [])
     report_changes = diff_report_hashes(prev, snap)
