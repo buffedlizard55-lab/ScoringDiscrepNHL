@@ -1,6 +1,6 @@
-# Scoring discrepancy alerts (10)
+# Scoring discrepancy alerts (9)
 
-Run `20261007T210357Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261007T210514Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] MIN at NSH - 2026-10-01 (game 2026020012)
 
@@ -90,28 +90,6 @@ Record id: `SDN-5619ac48fc` - open each link and read the goal line before actin
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-5c05cee8b5` - open each link and read the goal line before acting on this.
-
-### [IMMEDIATE] CGY at VAN - 2026-10-03 (game None)
-
-- **What changed:** Vancouver goal waived off on the ice, then awarded after Situation Room review; a 1-0 Calgary lead became part of a 4-1 Vancouver win
-- **Rule fired:** `MANUAL` Ruling change reported; official per-game artifact not yet linked (high)
-- **Initial state:** no_goal_on_ice, VAN (period 3 01:30)
-- **Corrected state:** goal: L. Ohgren; assists none (period 3 01:30, score 1-1)
-- **Goal total affected:** yes (total_changed=None; attribution-only=False)
-- **Player props affected:** yes
-- **When corrected:** in_game
-- **Record status:** pending_review / confidence medium
-
-**Why it matters for settlement:** A goal that did not exist at one moment exists at the next, inside the same game: the number of goals a live game-total market is watching moved while the game was in progress.
-
-**Flags:** `game_id_not_resolved`, `goal_line_review_admitted_inconclusive_risk`, `period_and_game_total_impact`, `requires_human_verification`, `secondary_source_only`, `total_change_reported_by_secondary_source_not_established`
-
-**Official sources**
-- [Official NHL daily scoreboard API (resolves the game id for 2026-10-03)](https://api-web.nhle.com/v1/score/2026-10-03) _(evidence: primary; retrieved: n/a)_
-- [Scouting The Refs - report of the review decision and the NHL's words](https://scoutingtherefs.com/2026/10/04/canucks-flames-ohgren-controversy/) _(evidence: secondary; retrieved: 2026-10-07)_
-- [NHL Situation Room live blog (the official channel that documents such rulings)](https://www.nhl.com/news/frozen-frenzy-nhl-situation-room-live-blog-october-22-2024) _(evidence: reference; retrieved: n/a)_
-
-Record id: `SDN-3916f9ce9a` - open each link and read the goal line before acting on this.
 
 ### [IMMEDIATE] MTL at PIT - 2026-10-03 (game 2026020026)
 

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-07T21:03:57Z",
+  "generated_at": "2026-10-07T21:05:14Z",
   "alerts": [
     {
       "id": "ALERT-NHL-20242025-021140-01",
@@ -243,7 +243,8 @@
       "created_at": "2026-10-04T04:36:03.187Z",
       "detected_at": "2026-10-07T21:03:56Z",
       "affects_goal_total": true,
-      "detected_by": "nhl_scoring"
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-04T04:36:03.187Z"
     },
     {
       "id": "SDN-73e0895bf7",

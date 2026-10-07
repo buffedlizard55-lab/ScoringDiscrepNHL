@@ -136,10 +136,15 @@
       srBox.appendChild(h('div', {class: 'note', html:
         esc(sr.rulings) + ' official video-review / coach\'s-challenge statements ingested from the league content API, ' +
         esc((sr.earliest_statement || '').slice(0, 10)) + ' to ' + esc((sr.latest_statement || '').slice(0, 10)) + '. ' +
-        'Overturned on-ice calls: <strong>' + esc((sr.by_outcome || {}).overturned || 0) + '</strong> (each one is a record above); upheld: ' +
+        'Overturned on-ice calls: <strong>' + esc((sr.by_outcome || {}).overturned || 0) + '</strong> (a record is made for each one whose game, period and clock resolve); upheld: ' +
         esc((sr.by_outcome || {}).upheld || 0) + '; on-ice call not stated in the text: ' + esc((sr.by_outcome || {}).on_ice_call_not_stated || 0) +
-        ' (kept in the <a href="#view=rulings">Situation Room log</a>, never guessed). ' +
-        'Cross-checked against the official play-by-play: ' + esc(JSON.stringify(sr.overturned_crosscheck || {})) + '.'}));
+        ' (kept in the <a href="#view=rulings">Situation Room log</a>, never guessed)' +
+        (((sr.by_outcome || {}).not_a_review || (sr.by_outcome || {}).penalty_review || (sr.by_outcome || {}).not_reviewable) ?
+          '; not goal reviews (officials updates, penalty-only challenges, non-reviewable plays): ' +
+          esc(((sr.by_outcome || {}).not_a_review || 0) + ((sr.by_outcome || {}).penalty_review || 0) + ((sr.by_outcome || {}).not_reviewable || 0)) : '') + '. ' +
+        'Cross-checked against the official play-by-play: ' + Object.keys(sr.overturned_crosscheck || {}).map(function (k) {
+          return esc(k.replace(/_/g, ' ')) + ' ' + esc(sr.overturned_crosscheck[k]);
+        }).join(', ') + '.'}));
       el.appendChild(srBox);
     }
     el.appendChild(h('div', {class: 'callout', html:

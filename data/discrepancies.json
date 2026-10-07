@@ -259609,7 +259609,7 @@
     {
       "record_id": "SDN-3916f9ce9a",
       "schema_version": "1.0",
-      "status": "pending_review",
+      "status": "retired",
       "confidence": "medium",
       "detected_by": "manual_research",
       "detection": {
@@ -259734,7 +259734,7 @@
         }
       ],
       "verification": {
-        "status": "pending_review",
+        "status": "retired",
         "evidence_grade": "secondary",
         "independently_checkable": true,
         "check_instructions": "Resolve the game id with GET https://api-web.nhle.com/v1/score/2026-10-03 (match CGY at VAN), then open gamecenter/{id}/landing and confirm the goal is present in summary.scoring at the stated period and clock. Pull the GS/PL sheets from right-rail gameReports for the frozen post-game rendering.",
@@ -259747,9 +259747,13 @@
         "period_and_game_total_impact",
         "requires_human_verification",
         "secondary_source_only",
+        "superseded_by_situation_room_record",
         "total_change_reported_by_secondary_source_not_established"
       ],
-      "notes": "Third-period goal-line review that changed both the period total and the game total; the strongest kind of settlement exposure in the feed. Entered from secondary reporting because the league publishes no machine-readable review record - the official artifact pull is the next step and is spelled out in check_instructions.",
+      "notes": [
+        "Third-period goal-line review that changed both the period total and the game total; the strongest kind of settlement exposure in the feed. Entered from secondary reporting because the league publishes no machine-readable review record - the official artifact pull is the next step and is spelled out in check_instructions.",
+        "2026-10-07T21:10Z: superseded by SDN-d967bb12d3 - the same ruling built from the official Situation Room statement, cross-checked against the play-by-play, with the on-ice call supplied by the documented human read in data/curation/situation_room_human_reads.json (official NHL.com recap). Kept for provenance; not counted."
+      ],
       "first_seen_at": "2026-10-07T05:00:00Z",
       "seen_count": 1
     },

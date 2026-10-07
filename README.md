@@ -30,21 +30,21 @@ original and the corrected state preserved.
 > an official **Situation Room statement for every Coach's Challenge and video review** (NHL content API,
 > tag `situation-room`, February 2016 → today, minutes after the play). This repository now ingests that
 > feed end to end: **4,406 statements** are in the ledger
-> ([`data/situation_room/rulings.json`](data/situation_room/rulings.json)); **1,470 are rulings that changed
-> the on-ice call** (goal→no goal or no goal→goal), 1,921 upheld the call, 897 give the result but not the
-> on-ice call (kept, no change inferred), and 118 are not goal reviews at all (officiating-crew updates,
-> penalty-only challenges, non-reviewable plays). Every changed call with a resolvable game id was
-> cross-checked against the official play-by-play: **1,394 agree, 51 inconclusive, 12 conflict, 13 not
+> ([`data/situation_room/rulings.json`](data/situation_room/rulings.json)); **1,471 are rulings that changed
+> the on-ice call** (goal→no goal or no goal→goal), 1,915 upheld the call, 902 give the result but not the
+> on-ice call (kept, no change inferred), 98 are not goal reviews at all (officiating-crew updates,
+> penalty-only challenges, non-reviewable plays) and 20 could not be classified by machine (flagged). Every changed call with a resolvable game id was
+> cross-checked against the official play-by-play: **1,396 agree, 52 inconclusive, 12 conflict, 11 not
 > checked** - the conflicts and inconclusives are *flagged*, not hidden.
 >
-> The database ([`data/discrepancies.json`](data/discrepancies.json)) holds **1,469 records**: 1,448 live
-> Situation Room records (1,327 goal→no goal, 121 no goal→goal; **1,393 verified** by statement + play-by-play
-> agreement, 55 flagged for a human), 3 verified scorer/assist corrections from official scoring-change
-> announcements, 1 single-artifact assist conflict, 1 pending hand-typed record awaiting its documented
-> on-ice read, and **16 retired** rows (records a parser correction no longer supports - kept, marked, never
+> The database ([`data/discrepancies.json`](data/discrepancies.json)) holds **1,470 records**: 1,449 live
+> Situation Room records (**1,396 verified** by statement + play-by-play agreement, 53 flagged for a human;
+> two of them carry their on-ice call from a documented human read of the official NHL.com recap), 3 verified
+> scorer/assist corrections from official scoring-change announcements, 1 single-artifact assist conflict,
+> and **17 retired** rows (records a parser correction no longer supports - kept, marked, never
 > silently deleted). Five third-party goal-clock leads were moved out of the database to
 > [`data/leads/third_party_clock_claims.json`](data/leads/third_party_clock_claims.json) because no official
-> source states a correction. `PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate` → **1,469 records,
+> source states a correction. `PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate` → **1,470 records,
 > 0 invalid**; `python3 -m unittest discover -s tests -t .` → **259 tests OK**; `node tools/check_engine_site.mjs`
 > runs the published client against the committed payload and passes.
 >
@@ -60,9 +60,9 @@ original and the corrected state preserved.
 > announcements (3 records); pre-2016 reviews have no statement feed (documented limit); 897 statements state
 > the result without the on-ice call and become records only through a *documented* human read
 > ([`data/curation/situation_room_human_reads.json`](data/curation/situation_room_human_reads.json)); the
-> ledger committed by the first run was parsed by version 0.4.0 - the 0.5.0 parser in this tree re-reads the
-> 2016-17 prose forms, files non-goal statements, captures raw statement text and retires records it no
-> longer supports, and is applied on the next full run. Open items are listed at the end of this file and in
+> ledger has been re-read in full by parser 0.5.0 (raw statement text captured for every row, so later parser
+> fixes replay offline without re-fetching); 12 play-by-play conflicts, 52 inconclusives and 6 statements
+> without a resolvable game id are waiting for a human. Open items are listed at the end of this file and in
 > [`docs/STATUS.md`](docs/STATUS.md).
 
 ---
