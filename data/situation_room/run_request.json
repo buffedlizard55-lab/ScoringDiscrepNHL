@@ -1,0 +1,7 @@
+{
+  "mode": "full",
+  "max_pages": 60,
+  "max_crosscheck": 2500,
+  "requested_at": "2026-10-07T20:45:00Z",
+  "reason": "parser 0.5.0 re-read of all 4,406 statements with raw capture; retires records the corrected parser no longer supports"
+}
