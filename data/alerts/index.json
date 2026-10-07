@@ -1,11 +1,64 @@
 {
-  "generated_at_utc": "2026-10-07T05:07:57Z",
-  "count": 0,
+  "generated_at_utc": "2026-10-07T05:22:13Z",
+  "count": 3,
   "counts_by_severity": {
     "critical": 0,
     "high": 0,
-    "medium": 0,
+    "medium": 3,
     "low": 0
   },
-  "alerts": []
+  "alerts": [
+    {
+      "alert_id": "ALERT-NHL-20242025-021140-01",
+      "record_id": "NHL-20242025-021140-01",
+      "created_at_utc": "2026-10-07T05:21:27Z",
+      "severity": "medium",
+      "discrepancy_type": "scorer_change",
+      "affects_goal_total": false,
+      "title": "[MEDIUM] Goal scorer changed: NJD @ CHI 2025-03-26 — REG P1 6:50",
+      "body_markdown": "**NJD @ CHI** — 2025-03-26 (game 2024021140, season 20242025)\n\n- Event: REG period 1 at 6:50 (PP), team NJD\n- Type: `scorer_change` — affects goal total: **False** / attribution only: **True**\n- Timing: `postgame_after_publication` — the league announced the change on 2025-03-27, after the game of 2025-03-26 had been published as final\n\n**Initial ruling (as previously published)**\n- Goal credited to #28 Timo Meier (assists: unassisted), strength unknown\n\n**Corrected ruling**\n- Goal credited to #91 Dawson Mercer (assists: Luke Hughes, Nico Hischier), strength unknown\n\n**What changed:** goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer\n\n**Why (official statements only):** OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats\n\n**Settlement relevance:** attribution — Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.\n\n**Evidence status:** `verified_corrected_state_and_official_announcement` | flags: assists_before_the_change_not_captured, initial_state_reported_by_secondary_source_only, official_payload_contains_two_different_clip_titles_for_the_same_goal, pre_change_assist_credits_unresolved\n\n**Official sources**\n- [corrected_state] Official Game Summary (HTML): GS021140.HTM — https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM (HTTP 200, retrieved 2026-10-07T00:00:00Z)\n- [corrected_state] NHL GameCenter play-by-play — https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play (HTTP 200, retrieved 2026-10-07T00:00:00Z)\n- [initial_state_corroboration] Highlight clip title inside the official GameCenter payload — https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [official_announcement_reproduction] Athlon Sports (syndicated via Yardbarker) — https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [official_announcement] NHL Public Relations (@NHLPR) — https://x.com/NHLPR/status/1905120424146383077 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [cross_check] NHL GameCenter boxscore — https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n\n_Record id `NHL-20242025-021140-01` · detected 2026-10-07T00:00:00Z by official_statement_ingest:2025-03-26-njd-at-chi-g1140.json · status `verified_from_official_announcement`_",
+      "official_urls": [
+        "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
+        "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
+        "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+        "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
+        "https://x.com/NHLPR/status/1905120424146383077",
+        "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore"
+      ]
+    },
+    {
+      "alert_id": "ALERT-NHL-20242025-021185-01",
+      "record_id": "NHL-20242025-021185-01",
+      "created_at_utc": "2026-10-07T05:21:27Z",
+      "severity": "medium",
+      "discrepancy_type": "assist_change",
+      "affects_goal_total": false,
+      "title": "[MEDIUM] Assists changed: NSH @ CBJ 2025-04-01 — REG P3 9:02",
+      "body_markdown": "**NSH @ CBJ** — 2025-04-01 (game 2024021185, season 20242025)\n\n- Event: REG period 3 at 9:02 (EV), team NSH\n- Type: `assist_change` — affects goal total: **False** / attribution only: **True**\n- Timing: `postgame_after_publication` — the league announced the change on 2025-04-02, after the game of 2025-04-01 had been published as final\n\n**Initial ruling (as previously published)**\n- Goal credited to #82 Jordan Oesterle (assists: unassisted), strength unknown\n\n**Corrected ruling**\n- Goal credited to #82 Jordan Oesterle (assists: Cole Smith, Michael McCarron), strength unknown\n\n**What changed:** assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron\n\n**Why (official statements only):** OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats\n\n**Settlement relevance:** attribution — Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.\n\n**Evidence status:** `verified_corrected_state_and_official_announcement` | flags: assists_before_the_change_not_captured, declared_change_not_confirmable_from_states:assist_change, initial_state_not_retrievable_from_any_source, pre_change_assist_credits_undetermined\n\n**Official sources**\n- [corrected_state] Official Game Summary (HTML): GS021185.HTM — https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM (HTTP 200, retrieved 2026-10-07T00:00:00Z)\n- [official_announcement_reproduction] Athlon Sports (syndicated via Yardbarker) — https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [cross_check] Same Game Summary, season totals — https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [official_announcement] NHL Public Relations (@NHLPR) — https://x.com/NHLPR/status/1907298847056941350 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [cross_check] NHL GameCenter play-by-play — https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n\n_Record id `NHL-20242025-021185-01` · detected 2026-10-07T00:00:00Z by official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json · status `verified_from_official_announcement`_",
+      "official_urls": [
+        "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+        "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
+        "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+        "https://x.com/NHLPR/status/1907298847056941350",
+        "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play"
+      ]
+    },
+    {
+      "alert_id": "ALERT-NHL-20242025-021238-01",
+      "record_id": "NHL-20242025-021238-01",
+      "created_at_utc": "2026-10-07T05:21:27Z",
+      "severity": "medium",
+      "discrepancy_type": "assist_change",
+      "affects_goal_total": false,
+      "title": "[MEDIUM] Assists changed: BOS @ NJD 2025-04-08 — REG P1 9:38",
+      "body_markdown": "**BOS @ NJD** — 2025-04-08 (game 2024021238, season 20242025)\n\n- Event: REG period 1 at 9:38 (EV), team BOS\n- Type: `assist_change` — affects goal total: **False** / attribution only: **True**\n- Timing: `postgame_after_publication` — the league announced the change on 2025-04-09, after the game of 2025-04-08 had been published as final\n\n**Initial ruling (as previously published)**\n- Goal credited to #88 David Pastrnak (assists: Parker Wotherspoon), strength unknown\n\n**Corrected ruling**\n- Goal credited to #88 David Pastrnak (assists: Morgan Geekie), strength unknown\n\n**What changed:** assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie\n\n**Why (official statements only):** OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats\n\n**Settlement relevance:** attribution — Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.\n\n**Evidence status:** `verified_corrected_state_and_official_announcement` | flags: initial_state_citation_in_reproduction_points_at_a_different_goal, initial_state_reported_by_secondary_source_only, official_play_by_play_event_not_quoted_this_pass\n\n**Official sources**\n- [corrected_state] Official Game Summary (HTML): GS021238.HTM — https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM (HTTP 200, retrieved 2026-10-07T00:00:00Z)\n- [official_announcement_reproduction] Athlon Sports (syndicated via Yardbarker) — https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [cross_check] Same Game Summary, goal 2 of the same game — https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [official_announcement] NHL Public Relations (@NHLPR) — https://x.com/NHLPR/status/1909831272047800540 (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n- [cross_check] NHL GameCenter play-by-play — https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play (HTTP ?, retrieved 2026-10-07T00:00:00Z)\n\n_Record id `NHL-20242025-021238-01` · detected 2026-10-07T00:00:00Z by official_statement_ingest:2025-04-08-bos-at-njd-g1238.json · status `verified_from_official_announcement`_",
+      "official_urls": [
+        "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+        "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
+        "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+        "https://x.com/NHLPR/status/1909831272047800540",
+        "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play"
+      ]
+    }
+  ]
 }

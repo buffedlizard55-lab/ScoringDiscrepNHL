@@ -1,21 +1,26 @@
 name: historical backfill
 
-# Builds the historical census. Two methods (see docs/LIMITATIONS.md):
-#   era     - frozen-era official document vs the league's current database
-#   archive - archived snapshots of the same official document
+# Builds the historical census. Methods (see docs/BACKFILL.md and docs/LIMITATIONS.md):
+#   era          - frozen-era official document vs the league's current database
+#   archive      - two archived captures of the same official document, compared
+#   change-scan  - walk a game range through the archive index, compare what changed
+#   archive-yield- MEASURE how much of history the archive can even show (per season)
+#   coverage     - measure per-season official-report availability and era
 #
-# This job is deliberately manual: it walks thousands of games, so it should be run
-# in slices (a game-number range or one season at a time) and its output reviewed.
+# This job is deliberately manual: it walks thousands of games, so it should be run in
+# slices (a game-number range or one season at a time) and its output reviewed.
+# Every method that produces records also raises alerts for them (same feed as the
+# 5-minute monitor), so a census finding cannot land silently.
 
 on:
   workflow_dispatch:
     inputs:
       method:
-        description: "era | archive | coverage"
+        description: "era | archive | change-scan | archive-yield | coverage"
         required: true
         default: "era"
       season:
-        description: "Season folder start year, e.g. 20052006 (method=era)"
+        description: "Season folder start year, e.g. 20052006 (era, change-scan)"
         required: false
         default: "20052006"
       game_type:
@@ -23,11 +28,11 @@ on:
         required: false
         default: "2"
       start:
-        description: "first game number (method=era)"
+        description: "first game number (era, change-scan)"
         required: false
         default: "1"
       end:
-        description: "last game number (method=era)"
+        description: "last game number (era, change-scan)"
         required: false
         default: "50"
       game_id:
@@ -35,19 +40,35 @@ on:
         required: false
         default: "2023020001"
       kind:
-        description: "report kind for method=archive: GS | ES | PL | RO"
+        description: "report kind for the archive methods: GS | ES | PL | RO"
         required: false
         default: "GS"
+      from_season:
+        description: "first season start year (archive-yield)"
+        required: false
+        default: "2005"
+      to_season:
+        description: "last season start year (archive-yield)"
+        required: false
+        default: "2026"
+      game_numbers:
+        description: "sampled game numbers per season (archive-yield)"
+        required: false
+        default: "1,500,1100"
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -55,19 +76,38 @@ jobs:
       - name: Run the selected census method
         run: |
           set -o pipefail
-          if [ "${{ github.event.inputs.method }}" = "coverage" ]; then
+          METHOD="${{ github.event.inputs.method }}"
+          if [ "$METHOD" = "coverage" ]; then
             PYTHONPATH=src python -m nhl_monitor coverage \
               --from-season 1999 --to-season 2026 | tee backfill_output.json
-          elif [ "${{ github.event.inputs.method }}" = "archive" ]; then
+          elif [ "$METHOD" = "archive-yield" ]; then
+            PYTHONPATH=src python -m nhl_monitor archive-yield \
+              --from-season "${{ github.event.inputs.from_season }}" \
+              --to-season "${{ github.event.inputs.to_season }}" \
+              --game-numbers "${{ github.event.inputs.game_numbers }}" \
+              --kind "${{ github.event.inputs.kind }}" | tee backfill_output.json
+          elif [ "$METHOD" = "change-scan" ]; then
+            PYTHONPATH=src python -m nhl_monitor archive-scan \
+              --season "${{ github.event.inputs.season }}" \
+              --game-type "${{ github.event.inputs.game_type }}" \
+              --start "${{ github.event.inputs.start }}" \
+              --end "${{ github.event.inputs.end }}" \
+              --kind "${{ github.event.inputs.kind }}" \
+              --github-issue --repo "$GITHUB_REPOSITORY" \
+              --out "data/reference/change_scan_${{ github.event.inputs.season }}_${{ github.event.inputs.kind }}.json" \
+              | tee backfill_output.json
+          elif [ "$METHOD" = "archive" ]; then
             PYTHONPATH=src python -m nhl_monitor backfill-archive \
               --game-id "${{ github.event.inputs.game_id }}" \
-              --kind "${{ github.event.inputs.kind }}" | tee backfill_output.json
+              --kind "${{ github.event.inputs.kind }}" \
+              --github-issue --repo "$GITHUB_REPOSITORY" | tee backfill_output.json
           else
             PYTHONPATH=src python -m nhl_monitor backfill-era \
               --season "${{ github.event.inputs.season }}" \
               --game-type "${{ github.event.inputs.game_type }}" \
               --start "${{ github.event.inputs.start }}" \
-              --end "${{ github.event.inputs.end }}" | tee backfill_output.json
+              --end "${{ github.event.inputs.end }}" \
+              --github-issue --repo "$GITHUB_REPOSITORY" | tee backfill_output.json
           fi
 
       - name: Rebuild the site data and export CSV
@@ -85,7 +125,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "no new records from this slice"
           else
-            git commit -m "backfill: ${{ github.event.inputs.method }} ${{ github.event.inputs.season }} games ${{ github.event.inputs.start }}-${{ github.event.inputs.end }}"
+            git commit -m "backfill: ${{ github.event.inputs.method }} ${{ github.event.inputs.season }} games ${{ github.event.inputs.start }}-${{ github.event.inputs.end }} [skip ci]"
             git push
           fi
 
