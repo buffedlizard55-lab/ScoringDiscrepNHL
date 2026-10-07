@@ -1,6 +1,6 @@
 """Promote a verified research lead from the inbox into the database.
 
-Leads in docs/inbox/*.json are quarantined claims. Once a human has verified a
+Leads in data/inbox/*.json are quarantined claims. Once a human has verified a
 lead line-by-line against its cited official sources, this tool converts it into
 a schema-compliant record. It refuses to invent any missing field — every
 required value must be supplied explicitly (usually looked up from the official
@@ -28,7 +28,7 @@ from datetime import datetime, timezone
 from . import config, store, validate
 from .records import record_id
 
-INBOX_DIR = config.REPO_ROOT / "docs" / "inbox"
+INBOX_DIR = config.REPO_ROOT / "data" / "inbox"
 
 
 def load_leads() -> list[tuple[str, dict]]:

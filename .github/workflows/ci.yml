@@ -19,9 +19,10 @@ jobs:
         run: python3 -m pipeline.main validate
       - name: Site asset sanity
         run: |
-          test -f site/index.html
-          test -f site/js/app.js
-          test -f site/css/style.css
+          test -f index.html
+          test -f js/app.js
+          test -f css/style.css
+          test -f .nojekyll
           test -f data/discrepancies.json
           test -f data/alerts.json
-          node --check site/js/app.js || echo "node unavailable, skipped JS syntax check"
+          node --check js/app.js || echo "node unavailable, skipped JS syntax check"

@@ -33,15 +33,16 @@ Settings → Pages, or the deployed site link in the sidebar).
 
 ## What this repository contains
 
-| Item | Status |
+| Path | Purpose |
 |---|---|
-| `site/` | The GitHub Pages website (clean UI, filters, alert feed, docs pages) |
-| `data/` | The database itself: `discrepancies.json`, `alerts.json`, `coverage_report.json`, plus the JSON Schema |
+| `index.html`, `css/`, `js/` | The GitHub Pages website (served from the repo root of `main`; clean UI, filters, alert feed, verification queue, docs pages) |
+| `data/` | The database itself: `discrepancies.json`, `alerts.json`, `coverage_report.json` |
+| `data/inbox/` | Quarantined research leads (verification queue) + promotion procedure |
 | `data/snapshots/` | Local snapshot cache of captured official feeds (git-ignored; CI keeps them in the Actions cache) |
-| `pipeline/` | Python (stdlib-only) monitor: fetch → snapshot → diff → detect → alert |
+| `pipeline/` | Python (stdlib-only) monitor: fetch → snapshot → diff → detect → alert; plus `promote.py` |
 | `tests/` | Unit tests with **clearly synthetic** fixtures (runnable offline) |
-| `docs/` | Coverage & limitations, source catalog, detection design, methodology, schema |
-| `.github/workflows/` | Scheduled monitor (cron), CI tests, Pages deployment |
+| `docs/` | Coverage & limitations, source catalog, detection design, methodology, JSON schema |
+| `.github/workflows/` | Scheduled monitor (cron) + CI tests |
 
 ---
 
@@ -82,14 +83,14 @@ hand-invented; see the honesty note below.
 
 ## Research leads inbox (verification queue)
 
-`docs/inbox/` contains **quarantined research leads** carried over from prior
+`data/inbox/` contains **quarantined research leads** carried over from prior
 work sessions (31 leads across two files). They are NOT part of the verified
 database: their cited sources have not yet been re-captured and verified
 line-by-line from this environment, and at least one citation shows an internal
 inconsistency (flagged in-file). The website renders them under
 **Verification Queue** with clickable source links; verified leads are promoted
 with `python3 -m pipeline.promote` (which refuses to invent missing fields).
-See [docs/inbox/README.md](docs/inbox/README.md) for the verification procedure.
+See [data/inbox/README.md](data/inbox/README.md) for the verification procedure.
 
 ## Honesty note — current status
 
@@ -111,7 +112,7 @@ lists directly to `main` while other work was in flight. Consequences:
 
 * Architectures were overwritten mid-flight; this build reconciles them and is
   the tested canonical implementation (see commit history).
-* Hand-built records from those sessions are quarantined in `docs/inbox/` until
+* Hand-built records from those sessions are quarantined in `data/inbox/` until
   re-verified — do **not** treat them as verified facts anywhere.
 * Future sessions must branch from the latest `main`, preserve the architecture
   described here, and route changes through reviewed PRs rather than rewriting
@@ -136,14 +137,17 @@ python3 -m pipeline.main probe
 python3 -m pipeline.main serve
 ```
 
-## One-time GitHub setup (operational notes)
+## GitHub Pages & operational notes
 
-1. **GitHub Pages** must be enabled with source = **GitHub Actions**
-   (Settings → Pages → Source: GitHub Actions). The `pages.yml` workflow deploys
-   `site/` + `data/` on every push to `main`.
+1. **GitHub Pages is configured to deploy from the `main` branch root** (legacy
+   mode, already enabled). The website therefore lives at the repository root
+   (`index.html`, `css/`, `js/`) with `.nojekyll`. Every push to `main`
+   (including the monitor's data commits) rebuilds the site automatically — no
+   extra deploy workflow is needed.
 2. **Workflow permissions**: Settings → Actions → General → Workflow permissions
    must allow **Read and write** so the monitor can commit `data/` updates
-   (`monitor.yml` requests `contents: write`).
+   (`monitor.yml` requests `contents: write`). If the first scheduled run cannot
+   push, flip this setting — it requires repo-admin access.
 3. The monitor cron runs every 30 minutes. Its snapshot baselines live in the
    **Actions cache** (not in git) by design — see
    [docs/COVERAGE_AND_LIMITATIONS.md](docs/COVERAGE_AND_LIMITATIONS.md) §3.

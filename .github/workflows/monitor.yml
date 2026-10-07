@@ -53,15 +53,12 @@ jobs:
                   data/notifications_state.json data/coverage_report.json || true
           if ! git diff --cached --quiet; then
             git commit -m "monitor: update discrepancy data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            # Pushing to main re-triggers the legacy GitHub Pages build
+            # automatically (Pages is configured to deploy from the main branch).
             git push
-            # GITHUB_TOKEN pushes don't fire other workflows; retrigger Pages.
-            gh api -X POST "repos/${{ github.repository }}/dispatches" \
-              -f event_type=data-updated || echo "dispatch failed (non-fatal)"
           else
             echo "No data changes to commit."
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Open GitHub Issues for new alerts
         if: always()

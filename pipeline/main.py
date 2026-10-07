@@ -58,10 +58,20 @@ def cmd_validate(_args) -> int:
 
 
 def cmd_serve(args) -> int:
-    """Assemble site/ + data/ into one directory and serve it locally."""
+    """Assemble the site (root files + data/) into one directory and serve it.
+
+    The site lives at the repository root because GitHub Pages for this repo is
+    configured to serve the main branch root directly (legacy deploy-from-branch).
+    """
     repo_root = config.REPO_ROOT
     build_dir = Path(tempfile.mkdtemp(prefix="sdnhl-site-"))
-    shutil.copytree(repo_root / "site", build_dir, dirs_exist_ok=True)
+    for item in ("index.html", ".nojekyll", "css", "js"):
+        src = repo_root / item
+        if src.exists():
+            if src.is_dir():
+                shutil.copytree(src, build_dir / item, dirs_exist_ok=True)
+            else:
+                shutil.copy(src, build_dir / item)
     data_dest = build_dir / "data"
     if (repo_root / "data").exists():
         shutil.copytree(repo_root / "data", data_dest, dirs_exist_ok=True,
