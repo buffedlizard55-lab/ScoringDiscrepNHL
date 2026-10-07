@@ -31,7 +31,7 @@ DOC_PAGES: List[Tuple[str, str, str]] = [
     # "Consolidation"), and hiding one line's analysis would misrepresent what the
     # project knows. Paths prefixed engine/ are this package's own documents.
     ("FEASIBILITY.md", "Can we detect it?", "Detection feasibility and limits"),
-    ("ALERTING.md", "Alerting analysis", "What can and cannot be alerted on, with the evidence"),
+    ("ALERTING.md", "Can we alert on it?", "The alert/notification system: what it detects, latency, and what it cannot do"),
     ("NOTIFICATIONS.md", "Notifications", "What is delivered, how, how fast, and what never can be"),
     ("SITUATION_ROOM.md", "Situation Room source", "The official review-statement feed: what it is, how it is read, what it cannot tell"),
     ("STATUS.md", "Status & backlog", "Project status, consolidation, and open work"),
@@ -53,6 +53,7 @@ DOC_PAGES: List[Tuple[str, str, str]] = [
 def _inline(text: str) -> str:
     out = html.escape(text)
     out = re.sub(r"`([^`]+)`", r"<code>\1</code>", out)
+    out = re.sub(r"~~([^~]+)~~", r"<del>\1</del>", out)
     out = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
     out = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", out)
     out = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
@@ -121,17 +122,33 @@ def md_to_html(markup: str) -> str:
         if re.match(r"^[-*]\s+", stripped):
             flush()
             items = []
-            while i < len(lines) and re.match(r"^\s*[-*]\s+", lines[i]):
-                items.append(re.sub(r"^\s*[-*]\s+", "", lines[i].strip()))
-                i += 1
+            while i < len(lines):
+                ln = lines[i]
+                if re.match(r"^\s*[-*]\s+", ln):
+                    items.append(re.sub(r"^\s*[-*]\s+", "", ln.strip()))
+                    i += 1
+                elif (items and ln.strip() and ln[:1] in (" ", "\t")
+                      and not ln.lstrip().startswith(("#", "|", "```", ">"))):
+                    items[-1] += " " + ln.strip()
+                    i += 1
+                else:
+                    break
             out.append("<ul>" + "".join(f"<li>{_inline(it)}</li>" for it in items) + "</ul>")
             continue
         if re.match(r"^\d+[.)]\s+", stripped):
             flush()
             items = []
-            while i < len(lines) and re.match(r"^\s*\d+[.)]\s+", lines[i]):
-                items.append(re.sub(r"^\s*\d+[.)]\s+", "", lines[i].strip()))
-                i += 1
+            while i < len(lines):
+                ln = lines[i]
+                if re.match(r"^\s*\d+[.)]\s+", ln):
+                    items.append(re.sub(r"^\s*\d+[.)]\s+", "", ln.strip()))
+                    i += 1
+                elif (items and ln.strip() and ln[:1] in (" ", "\t")
+                      and not ln.lstrip().startswith(("#", "|", "```", ">"))):
+                    items[-1] += " " + ln.strip()
+                    i += 1
+                else:
+                    break
             out.append("<ol>" + "".join(f"<li>{_inline(it)}</li>" for it in items) + "</ol>")
             continue
         if stripped.startswith(">"):

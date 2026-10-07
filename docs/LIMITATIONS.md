@@ -135,12 +135,25 @@ the record rather than hidden:
 
 ## What has *not* been demonstrated
 
-* **No goal-count-changing correction has ever been found.** All three records are attribution-only, so the
-  class that would move a game total is, so far, unobserved rather than disproved. The detector handles it
-  (`goal_added` / `goal_removed` are the only two change types that set `affects_goal_total`), and the site
-  keeps a separate view for it that is currently empty on purpose.
-* **No in-game announced-then-overturned goal has been found.** The official play-by-play contains no review
-  event, and the Game Summary records only the final ruling, so this class is not detectable from the
-  official machine-readable sources reviewed here.
+* **No *post-final* goal-count correction has been found via change detection.**
+  ~~All three records are attribution-only, so the class that would move a game
+  total is, so far, unobserved rather than disproved.~~ That sentence predates the
+  Situation Room backfill and is struck. What is now demonstrated: **1,465
+  goal-count-changing records** — in-game video-review overturns (1,342
+  goal→no-goal, 123 no-goal→goal) stated by the league's own Situation Room feed
+  and cross-checked against the play-by-play. What is *still* unobserved is the
+  narrower, settlement-critical class: a goal added to or removed from the record
+  **after** it was published as final, detected by diffing two of our own captures.
+  The detector handles both (`goal_added` / `goal_removed` are the change types
+  that set `affects_goal_total`); the site keeps them in the "Changed the number of
+  goals" bucket and the settlement view ranks them.
+* **No *pre-2016-02* review ruling is recoverable from a statement.** ~~The
+  official play-by-play contains no review event, and the Game Summary records
+  only the final ruling, so this class is not detectable from the official
+  machine-readable sources reviewed here.~~ Struck: the play-by-play *does* mark
+  reviews as `chlg-*` / `video-review` stoppages, and the Situation Room statement
+  feed covers every challenge and review from **2016-02** (the coach's-challenge
+  era) onward. Before that there is no statement feed, so an overturned call from
+  earlier history leaves no machine-readable trace in the final record.
 * **No pre-2000-01 material.** The official report host 404s on 1999-2000 and no alternative official
   historical source was located.
