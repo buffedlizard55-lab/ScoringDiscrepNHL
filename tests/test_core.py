@@ -443,7 +443,14 @@ class TestStore(unittest.TestCase):
         self.assertLess(c["percent_complete"], 100)
 
     def test_writing_records_preserves_hand_maintained_metadata(self):
-        """The first pipeline write must not delete the coverage panel."""
+        """The first pipeline write must not delete the coverage panel.
+
+        A status note that still agrees with the records is hand-maintained prose
+        the store does not own, so it survives. A note that contradicts the records
+        does not: the shipped file once read "This database is intentionally EMPTY"
+        above three records, and a file that contradicts itself is worse than either
+        text alone.
+        """
         import tempfile
 
         with tempfile.TemporaryDirectory() as tmp:
@@ -451,13 +458,43 @@ class TestStore(unittest.TestCase):
             with open(path, "w") as fh:
                 json.dump({"schema_version": "1.0", "count": 0, "records": [],
                            "coverage": {"season_coverage_measured": {"20052006": "frozen"}},
-                           "status_note": ["why the database is empty"]}, fh)
+                           "status_note": ["written by a reviewer, still accurate"]}, fh)
             store.save_records([self._record()], path=path)
             with open(path) as fh:
                 blob = json.load(fh)
             self.assertEqual(blob["count"], 1)
             self.assertIn("coverage", blob)
-            self.assertEqual(blob["status_note"], ["why the database is empty"])
+            self.assertEqual(blob["status_note"], ["written by a reviewer, still accurate"])
+
+    def test_a_status_note_that_contradicts_the_records_is_corrected(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "records.json")
+            with open(path, "w") as fh:
+                json.dump({"schema_version": "1.0", "count": 0, "records": [],
+                           "coverage": {"keep": "me"},
+                           "status_note": ["This database is intentionally EMPTY on the day "
+                                           "the system was built."]}, fh)
+            store.save_records([self._record()], path=path)
+            with open(path) as fh:
+                blob = json.load(fh)
+            self.assertEqual(blob["count"], 1)
+            self.assertIn("coverage", blob, "unrelated hand-maintained metadata must survive")
+            note = " ".join(blob["status_note"])
+            self.assertNotIn("EMPTY", note.upper().replace("EMPTY ON", "EMPTY ON"))
+            self.assertNotRegex(note, r"intentionally EMPTY")
+            self.assertIn("1 record", note)
+
+    def test_the_shipped_status_note_agrees_with_the_shipped_records(self):
+        """Regression guard on the committed file, not just on the writer."""
+        blob = json.load(open(store.RECORDS_PATH))
+        count = blob.get("count")
+        self.assertEqual(count, len(blob.get("records", [])))
+        note = " ".join(blob.get("status_note") or [])
+        if count:
+            self.assertNotRegex(note, r"(?i)intentionally empty")
+            self.assertIn(f"{count} record", note)
 
     def test_upsert_insert_update_and_revision(self):
         import tempfile

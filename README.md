@@ -26,30 +26,50 @@ original and the corrected state preserved.
 > gaps are owned in the data (`status`, `flags`, `pending_review`) and in
 > [docs/STATUS.md](docs/STATUS.md), never smoothed over.
 
-> **Status, stated plainly (2026-10-07).** The toolkit, the website and both detection paths are built,
-> unit-tested (**73 tests**) and wired to a scheduler. The database holds **three verified records** — every
-> one built from the league's own scoring-change announcement *and* cross-checked against the official game
-> report it names, with the superseded credit, the flags and the exact URLs preserved (see
-> [the first three records](#the-first-three-records)). It is **not** a complete census of NHL scoring
-> changes: three records from one season is a proof of method, not coverage, and each record states in its
-> own flags which part of its evidence is missing. Two things still require a networked machine: the mass
-> backfill and the live monitor (the build sandbox has no route to NHL hosts — measured, artifact committed
-> at [`docs/evidence/sandbox_network_probe.json`](docs/evidence/sandbox_network_probe.json)). Nothing is
-> seeded from memory, media reporting or assumptions, which is why every row below can be opened and
-> re-checked.
+> **Status, stated plainly (2026-10-07, re-verified this session).** The toolkit, the website and all
+> three detection paths are built and wired to a scheduler. `PYTHONPATH=src:pipeline python3 -m pytest tests -q`
+> reports **209 passed, 3 subtests passed**; `node tools/check_root_site.mjs` and `node tools/check_site.mjs`
+> both pass; `python3 -m nhl_scoring.cli validate` reports **11 records, 0 invalid** and the monitor-line
+> schema validator reports 3 records, 0 invalid.
+>
+> The database holds **3 verified records** (all 2024-25, all attribution-only) plus **8 quarantined or
+> pending-review rows** — 5 third-party goal-clock leads, 2 secondary-source ruling-change leads and 1
+> single-artifact assist conflict. Every verified record was rebuilt from the league's own scoring-change
+> announcement *and* re-checked this session against the official report it names; the transcripts are
+> committed at [`data/evidence/reverify-2026-10-07/`](data/evidence/reverify-2026-10-07/). It is **not** a
+> census of NHL scoring changes: three records from one season is a proof of method, not coverage, and each
+> record states in its own flags which part of its evidence is missing. Two things still require a networked
+> machine: the mass backfill and the live monitor (the build sandbox has no direct route to NHL hosts —
+> re-measured this session, artifacts at
+> [`docs/evidence/sandbox_network_probe.json`](docs/evidence/sandbox_network_probe.json) and
+> [`data/reference/probe_report.json`](data/reference/probe_report.json)). Nothing is seeded from memory,
+> media reporting or assumptions, which is why every row below can be opened and re-checked.
+>
+> **One stored claim failed re-verification this session and has been corrected.** Record
+> `NHL-20242025-021140-01` asserted that the official GameCenter payload carried two different clip titles
+> for the same goal. The payload fetched on the re-check reads "meier" in both languages. The corroboration
+> is withdrawn, fact F17 is amended rather than deleted, and the record carries
+> `initial_state_corroboration_withdrawn_on_reverification`. See
+> [`data/evidence/reverify-2026-10-07/README.md`](data/evidence/reverify-2026-10-07/README.md).
 
-> **Two implementations of this brief now coexist in this repository (2026-10-07).** `main` already
-> carried a complete, independently built implementation from parallel sessions — `pipeline/`, a
-> root-served site (`index.html`, `js/`, `css/`), its own database `data/discrepancies.json`
-> (**0 records**), its own tests and docs, and a 30-minute monitor. This branch adds a second:
-> `src/nhl_monitor/`, `site/` and `data/records/discrepancies.json` (**3 verified records**).
-> Nothing from either line was deleted. The four colliding artifacts were each resolved once: one
-> monitor is scheduled (this line's), the parallel line's monitor is parked verbatim at
-> `.github/workflows/monitor_root_site.yml.disabled`, and the parallel line's README and source
-> catalog are preserved verbatim under `docs/parallel_line/`. **A decision is owed** — two
-> databases, two monitors and two sites are one too many of each. See
-> [`docs/parallel_line/PARALLEL_LINE.md`](docs/parallel_line/PARALLEL_LINE.md) for what differs,
-> what each line is good at, and the exact steps to keep either one.
+> **The two parallel implementations are now joined at the presentation layer (2026-10-07).** Two
+> independently built lines were merged by PR #9 and both were kept: `pipeline/` (engine) writes
+> `data/discrepancies.json` (**11 records**) and `src/nhl_monitor/` (monitor line) writes
+> `data/records/discrepancies.json` (**3 verified records**). Neither database was deleted, so the
+> published site **merges them**: `js/normalize.js` maps both record shapes onto one view model and
+> de-duplicates the three corrections that exist in both stores, so the page shows **11 distinct
+> corrections** and names the store each card came from.
+>
+> The same joining was applied to alerting, because it was broken: GitHub Pages serves the repository
+> root, the root page reads `data/alerts.json`, and both detection routes wrote their alerts somewhere
+> else — so the live Alerts tab said *"No alerts yet"* while three alerts were committed. Both routes now
+> project into `data/alerts.json` + `data/alerts.xml` (de-duplicated by record id, `created_at` preserved
+> on re-emit), and [`tools/check_root_site.mjs`](tools/check_root_site.mjs) runs the published page against
+> the real committed data in CI so this class of break cannot ship again.
+>
+> **Still owed: one database, not two.** The merge is at the view layer only. See
+> [`docs/parallel_line/PARALLEL_LINE.md`](docs/parallel_line/PARALLEL_LINE.md) for what differs, what each
+> line is good at, and the exact steps to keep either one.
 
 ---
 
@@ -88,7 +108,7 @@ artifact on **2026-10-07**. The full ledger, including the observations and the 
 | The 2000-2004 report layout is different and is parsed. | On-ice skaters sit inside the scoring summary, the strength column is last, there is no league-shield logo, and bench penalties appear as a player cell literally reading `Team`. Fixture: `tests/fixtures/gs_20002001_020001.html`. |
 | **The NHL publishes scoring changes in a fixed, machine-parseable form.** | `OFFICIAL SCORING CHANGE: Game <n> @<away> at @<home> Goal at <M:SS> of the <ordinal> period now reads <scorer> from <assist1> and <assist2>. #NHLStats` — retrieved and parsed for three games; each resolves to a specific goal in the official report (F16). |
 | Corrections land **after** the game is final, by hours. | All three announcements were posted between **2h49m and 3h25m** after the reported end of the game. This is the latency a market would care about, and it is measured from the announcement timestamp and the report's own end-of-game clock. |
-| An official payload can still show the **superseded** credit. | For the corrected goal of game 1140, the event's English highlight-clip title still reads `meier-scores-ppg` while the French title for the same event reads `mercer-…`, and the scoring fields read Mercer (F17). Stored as corroboration, flagged as an inconsistency. |
+| ~~An official payload can still show the **superseded** credit.~~ **WITHDRAWN on re-verification.** | The claim was that event 146 of game 1140 carried an English clip title reading `meier-…` and a French one reading `mercer-…`. Re-fetched 2026-10-07, the payload reads `njd-chi-meier-scores-ppg-…-6370610304112` and `njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112` — **both "meier"**, and a different French clip id than was recorded. The corroboration is withdrawn (F17 amended, F22 records the pass, transcript at [`data/evidence/reverify-2026-10-07/gamecenter-2024021140-event146.txt`](data/evidence/reverify-2026-10-07/gamecenter-2024021140-event146.txt)). Root cause: a paraphrase was stored instead of the payload, so the claim was never auditable. |
 | The Wayback CDX index exposes a content **digest per snapshot**. | One snapshot for `20232024/GS020001.HTM` (digest `TE24NPUUMSEV3LQEBNQE2TN3NO5GNATJ`), so "did this document ever change?" is answerable without downloading every version. |
 | Archive coverage is sparse and noisy. | 2006-era captures of 2005-06 reports are HTTP 302 redirects with the empty digest `3I42H3S6NNFQ2MSVX7XZKYAYSCX5QBYJ`; these are rejected as evidence. |
 | A **negative control** passed. | The archived copy of `20232024/GS020001.HTM` (2025-01-25) has the same eight-goal scoring summary and the same footer as the live document, so the method produced no false positive on that game — and it proves a regenerated footer is *not* by itself a change. |

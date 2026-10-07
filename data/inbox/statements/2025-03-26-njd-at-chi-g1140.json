@@ -109,7 +109,9 @@
       "name": "Highlight clip title inside the official GameCenter payload",
       "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
       "retrieved_at_utc": "2026-10-07T00:00:00Z",
-      "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+      "note": "RE-VERIFIED 2026-10-07: the payload fetched on the re-check carries highlightClipSharingUrl '...njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112' and highlightClipSharingUrlFr '...njd-chi-meier-marque-un-but-en-a-n-contre-spencer-knight-6370610205112'. BOTH read 'meier'. The previously recorded French title 'mercer-...-6370608420112' is not present in the payload as it stands, and no raw capture from the original read was committed, so the superseded-credit corroboration is withdrawn. The claim is unreproduced, not disproved.",
+      "evidence_status": "withdrawn",
+      "reverified_at_utc": "2026-10-07T00:00:00Z"
     }
   ],
   "cross_check_sources": [
@@ -131,5 +133,10 @@
     "pre_change_assist_credits_unresolved",
     "official_payload_contains_two_different_clip_titles_for_the_same_goal"
   ],
-  "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets."
+  "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+  "reverification": {
+    "reverified_at_utc": "2026-10-07T00:00:00Z",
+    "evidence": "data/evidence/reverify-2026-10-07/",
+    "note": "The French-clip corroboration of the superseded credit was not reproducible on re-check and is withdrawn. See data/reference/verified_facts.json F17 and F22."
+  }
 }

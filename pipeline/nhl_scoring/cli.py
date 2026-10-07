@@ -462,6 +462,11 @@ def alerts_cmd(args: argparse.Namespace) -> int:
     if args.write:
         out = alerts_mod.write_alerts(triaged, args.out_dir, date_str=_now()[:10], run_id=_run_id())
         print(f"alerts: wrote {out}")
+        # The published site reads data/alerts.json, not the date-stamped digest, so
+        # every alert this engine raises is projected there too. Without this the
+        # Alerts tab stays on "No alerts yet" however many alerts exist.
+        feed = alerts_mod.write_site_feed(triaged, REPO_ROOT, now=_now())
+        print(f"alerts: site feed -> {feed['json']} ({feed['count']} alerts) + {feed['rss']}")
     if args.webhook:
         import urllib.request
         body = json.dumps(alerts_mod.webhook_payload(triaged)).encode("utf-8")

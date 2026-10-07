@@ -1,0 +1,37 @@
+Source URL : https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM
+Retrieved  : 2026-10-07 (Arena page-fetch text proxy; direct HTTP blocked in sandbox)
+Status     : 200 (inferred: document content returned)
+
+Header, transcribed verbatim:
+  NASHVILLE PREDATORS  4   Game 75 Away Game 38
+  COLUMBUS BLUE JACKETS 8  Game 73 Home Game 36
+  Tuesday, April 1, 2025
+  Attendance 15,605 at Nationwide Arena
+  Start 7:09 EDT; End 9:43 EDT
+  Game 1185
+  Final
+
+SCORING SUMMARY, transcribed verbatim:
+  G | Per | Time | Str | Team | Goal Scorer       | Assist           | Assist           | NSH on Ice             | CBJ on Ice
+  1 | 1   | 1:15 | EV  | CBJ  | 86 K.MARCHENKO(29)| 8 Z.WERENSKI(53) |                  | 7, 20, 58, 74, 77, 90  | 8, 10, 15, 23, 86, 90
+  2 | 1   | 16:34| EV  | CBJ  | 19 A.FANTILLI(23) | 5 D.MATEYCHUK(7) | 91 K.JOHNSON(25) | 7, 20, 40, 58, 74, 91  | 5, 9, 19, 38, 90, 91
+  3 | 1   | 18:10| PP  | CBJ  | 23 S.MONAHAN(15)  | 91 K.JOHNSON(26) | 8 Z.WERENSKI(54) | 24, 47, 68, 74, 76     | 8, 23, 38, 86, 90, 91
+  4 | 1   | 18:34| EV  | NSH  | 9 F.FORSBERG(29)  | 77 L.EVANGELISTA(17)| 90 R.O'REILLY(28)| 9, 20, 74, 77, 82, 90| 4, 17, 24, 44, 78, 90
+  5 | 2   | 4:12 | EV  | CBJ  | 86 K.MARCHENKO(30)| 23 S.MONAHAN(31) |                  | 8, 9, 26, 74, 82, 91   | 10, 23, 44, 78, 86, 90
+  6 | 2   | 5:43 | EV  | NSH  | 58 M.BUNTING(17)  | 40 F.SVECHKOV(8) | 77 L.EVANGELISTA(18)| 7, 20, 40, 58, 74, 77| 8, 15, 19, 38, 90, 91
+  7 | 2   | 6:26 | EV  | NSH  | 20 J.BARRON(5)    | 19 J.VRANA(5)    |                  | 7, 19, 20, 47, 58, 74  | 7, 11, 27, 44, 78, 90
+  8 | 2   | 12:00| EV  | CBJ  | 19 A.FANTILLI(24) | 38 B.JENNER(11)  |                  | 19, 24, 36, 40, 74, 82 | 5, 19, 38, 78, 90, 91
+  9 | 2   | 16:47| PP  | CBJ  | 23 S.MONAHAN(16)  | 86 K.MARCHENKO(39)| 38 B.JENNER(12) | 36, 37, 47, 74, 76     | 8, 23, 38, 86, 90, 91
+  10| 2   | 19:41| EV  | CBJ  | 15 D.FABBRO(7)    | 19 A.FANTILLI(23)| 91 K.JOHNSON(27) | 8, 9, 68, 74, 82, 91  | 8, 15, 19, 38, 90, 91
+  11| 3   | 5:23 | EV  | CBJ  | 86 K.MARCHENKO(31)| 23 S.MONAHAN(32) | 15 D.FABBRO(15)  | 7, 9, 20, 26, 29, 91   | 8, 10, 15, 23, 86, 90
+  12| 3   | 9:02 | EV  | NSH  | 82 J.OESTERLE(2)  | 36 C.SMITH(8)    | 47 M.MCCARRON(9) | 24, 29, 36, 47, 68, 82 | 7, 17, 38, 44, 78, 90
+
+Row 12 is the corrected goal of record NHL-20242025-021185-01 and the last goal of
+the game, matching the league announcement's "final goal of the game". Cole Smith is
+shown with 8 assists and Michael McCarron with 9, exactly as the announcement's
+syndicated reproduction states.
+
+NOT captured in this pass: the document footer generation stamp. The proxy returned
+the document in two chunks and the footer was in the chunk not read here, so the
+record's stored `document_generated_at: 2025-04-02 1.00.11` was NOT re-verified on
+2026-10-07 and is left as previously recorded rather than re-asserted.

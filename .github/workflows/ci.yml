@@ -20,9 +20,20 @@ jobs:
       - name: Site asset sanity
         run: |
           test -f index.html
+          test -f js/normalize.js
           test -f js/app.js
           test -f css/style.css
           test -f .nojekyll
           test -f data/discrepancies.json
+          test -f data/records/discrepancies.json
           test -f data/alerts.json
-          node --check js/app.js || echo "node unavailable, skipped JS syntax check"
+          node --check js/normalize.js
+          node --check js/app.js
+      # The published site is the repository root (Pages: branch main, path /).
+      # `node --check` only proves the file parses, which is how a renderer that
+      # printed "? @ ?" for every record reached main. This runs the real client
+      # against the real committed data.
+      - name: Smoke-test the PUBLISHED site client against the committed data
+        run: node tools/check_root_site.mjs
+      - name: The alert feed the site reads must not be empty while alerts exist
+        run: PYTHONPATH=src:pipeline python3 -m unittest tests.test_alert_feed -v

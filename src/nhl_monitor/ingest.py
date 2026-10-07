@@ -295,6 +295,11 @@ def _sources_for_case(case: Dict[str, object], verified_at: str,
             "url": src.get("url"),
             "retrieved_at_utc": src.get("retrieved_at_utc", verified_at),
             **({"note": src["note"]} if src.get("note") else {}),
+            # A corroboration that a later pass could not reproduce is kept on the
+            # record and marked, never silently dropped: the reader has to see that
+            # the superseded credit was once supported and no longer is.
+            **({"evidence_status": src["evidence_status"]} if src.get("evidence_status") else {}),
+            **({"reverified_at_utc": src["reverified_at_utc"]} if src.get("reverified_at_utc") else {}),
         })
     for rep in announcement.get("reproductions", []):
         out.append({
@@ -388,6 +393,9 @@ def build_record(case: Dict[str, object], *, detection_mode: str = "official_sta
         flags.append(f"initial_state_status_unrecognised:{init_status}")
     if initial.get("assists") is None and corrected.get("assists") is not None:
         flags.append("assists_before_the_change_not_captured")
+    if any(s.get("evidence_status") == "withdrawn"
+           for s in case.get("initial_state_sources", [])):
+        flags.append("initial_state_corroboration_withdrawn_on_reverification")
     flags.extend(case.get("extra_flags", []))
 
     # --- declared vs machine-derived changes -------------------------------------- #
@@ -504,6 +512,7 @@ def build_record(case: Dict[str, object], *, detection_mode: str = "official_sta
         },
         "flags": sorted(set(flags)),
         "notes": case.get("notes", ""),
+        **({"reverification": case["reverification"]} if case.get("reverification") else {}),
     }
     record["completeness"] = store.completeness(record)
     errors = store.validate(record)

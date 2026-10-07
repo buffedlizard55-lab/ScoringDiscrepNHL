@@ -37,9 +37,11 @@
         <div class="stat"><span class="stat-num" id="stat-total">–</span><span class="stat-label">records</span></div>
         <div class="stat"><span class="stat-num" id="stat-total-changing">–</span><span class="stat-label">changed goal totals</span></div>
         <div class="stat"><span class="stat-num" id="stat-attribution">–</span><span class="stat-label">attribution-only</span></div>
-        <div class="stat"><span class="stat-num" id="stat-review">–</span><span class="stat-label">video-review linked</span></div>
-        <div class="stat"><span class="stat-num" id="stat-flagged">–</span><span class="stat-label">needs human review</span></div>
+        <div class="stat"><span class="stat-num" id="stat-unestablished">–</span><span class="stat-label">goal-total impact not established</span></div>
+        <div class="stat"><span class="stat-num" id="stat-verified">–</span><span class="stat-label">verified</span></div>
+        <div class="stat" title="Every record carries a flags list. This counts the records whose flags name something a human still has to settle — including verified records with an unresolved evidence gap."><span class="stat-num" id="stat-flagged">–</span><span class="stat-label">carrying an open evidence flag</span></div>
       </div>
+      <p id="provenance-note" class="muted" style="margin:-6px 0 18px;"></p>
 
       <div class="layout">
         <aside class="filters" aria-label="Filters">
@@ -53,6 +55,8 @@
               <option value="all">All records</option>
               <option value="total">Changed goal totals</option>
               <option value="attrib">Attribution-only corrections</option>
+              <option value="unknown">Goal-total impact not established</option>
+              <option value="report">Official report edited</option>
             </select>
           </div>
           <div class="filter-group">
@@ -78,13 +82,18 @@
               <option value="all">All types</option>
               <option value="goal_to_no_goal">Goal → no-goal</option>
               <option value="no_goal_to_goal">No-goal → goal</option>
-              <option value="video_review_overturn">Video review overturn</option>
-              <option value="coach_challenge">Coach's challenge</option>
               <option value="scorer_change">Scorer correction</option>
               <option value="assist_change">Assist correction</option>
-              <option value="strength_change">Strength/empty-net change</option>
+              <option value="strength_change">Strength / empty-net change</option>
+              <option value="own_goal_flag_change">Own-goal annotation change</option>
+              <option value="clock_conflict">Goal-clock conflict</option>
               <option value="official_report_changed">Official report edited</option>
+              <option value="official_announcement">League scoring-change announcement</option>
+              <option value="video_review_cited">Video review cited by a source</option>
             </select>
+            <!-- No "video review overturn" option: the measured event vocabulary
+                 (data/schema/observed_vocabulary.json) contains zero review event
+                 types, so such a filter could never match honestly. -->
           </div>
           <div class="filter-group">
             <label for="f-timing">Correction timing</label>
@@ -93,6 +102,7 @@
               <option value="in_game">During the game</option>
               <option value="intermission">During intermission</option>
               <option value="postgame">Postgame</option>
+              <option value="not_applicable">Not applicable</option>
               <option value="unknown">Unknown</option>
             </select>
           </div>
@@ -104,6 +114,7 @@
           </div>
           <div class="filter-group checkboxes">
             <label class="check"><input id="f-settlement" type="checkbox"> Settlement-risk only</label>
+            <label class="check"><input id="f-verified-only" type="checkbox"> Verified records only</label>
             <label class="check"><input id="f-flagged-only" type="checkbox"> Needs human review only</label>
           </div>
           <button id="f-clear" class="btn-secondary">Clear filters</button>
@@ -123,9 +134,15 @@
     <!-- ================= ALERTS VIEW ================= -->
     <section id="view-alerts" class="view hidden">
       <div class="alert-tools">
-        <p class="muted">Automated notifications emitted by the monitor. Subscribe via
-          <a href="data/alerts.xml">RSS</a>. Alerts created in CI also open
-          <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues?q=label%3Ascoring-alert" rel="noopener">GitHub Issues</a>.</p>
+        <p class="muted">Notifications emitted by the detection routes. Three artifacts are
+          merged here so the feed never depends on which route ran last:
+          <code>data/alerts/index.json</code> (scheduled monitor),
+          <code>data/alerts.json</code> (engine + RSS) and
+          <code>data/alerts/&lt;date&gt;/alerts.json</code> (daily digest).
+          Subscribe via <a href="data/alerts.xml">RSS</a>; alerts raised in CI also open
+          <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues?q=label%3Ascoring-discrepancy" rel="noopener">GitHub Issues</a>.
+          What can and cannot be alerted on automatically:
+          <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/blob/main/docs/ALERTING.md">docs/ALERTING.md</a>.</p>
       </div>
       <div id="alert-list" class="record-list"></div>
     </section>
@@ -148,12 +165,15 @@
       <p>The honest accounting of what this system can and cannot detect. Full detail:
         <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/blob/main/docs/COVERAGE_AND_LIMITATIONS.md">docs/COVERAGE_AND_LIMITATIONS.md</a>.</p>
       <div class="cap-grid" id="capability-grid"></div>
-      <h3>Live probe of official sources</h3>
-      <p class="muted">The monitor periodically probes official endpoints and records the exact URL tested for each result
-        (<code>data/coverage_report.json</code>). Rows below are the most recent probe.</p>
+      <h3>Per-season official-report availability (measured)</h3>
+      <p class="muted">Every row is a retrieval, not a plan: the exact URL requested, the HTTP
+        status returned and the report&rsquo;s own footer generation stamp, from
+        <code>data/reference/coverage_report.json</code>. Whether a season&rsquo;s report is
+        still frozen at game time decides which census method can recover its original
+        ruling. A footer stamp alone is never treated as proof that a value changed.</p>
       <div id="probe-summary" class="muted"></div>
       <table class="probe-table" id="probe-table">
-        <thead><tr><th>Source</th><th>Kind</th><th>Status</th><th>HTTP</th><th>Note / URL</th></tr></thead>
+        <thead><tr><th>Season</th><th>Report state</th><th>HTTP</th><th>Footer stamp</th><th>URL tested</th></tr></thead>
         <tbody></tbody>
       </table>
     </section>
@@ -161,18 +181,21 @@
     <!-- ================= SOURCES VIEW ================= -->
     <section id="view-sources" class="view hidden">
       <h2>Sources &amp; method</h2>
-      <p>Every record links to the official source that supports it. The monitor
-        snapshots official NHL data every 30 minutes and treats any difference
-        between snapshots as a discrepancy — <em>diff-first detection</em> — so it
-        catches corrections even when they are never announced.</p>
+      <p>Every record links to the official source that supports it. Detection is
+        <em>diff-first</em>: the system captures the official state of a game and captures it
+        again, and a difference between two captures <em>is</em> the evidence. The NHL
+        publishes no correction flag, no revision number and no change history, so a
+        correction that happened before the first capture is not recoverable from any
+        source this project can read. Detection routes, latency and what cannot be alerted
+        on: <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/blob/main/docs/ALERTING.md">docs/ALERTING.md</a>.</p>
       <h3>Official sources used</h3>
-      <ul class="source-list">
-        <li><strong>Live feed (statsapi v1)</strong> — <code>statsapi.web.nhl.com/api/v1/game/{gamePk}/feed/live</code>: authoritative play-by-play, goals, review events.</li>
-        <li><strong>Schedule API (statsapi v1)</strong> — <code>statsapi.web.nhl.com/api/v1/schedule</code>: which games are final, final scores.</li>
-        <li><strong>Official game reports (PDF)</strong> — <code>nhl.com/scores/htmlreports/{season}/GS|ES{report}.PDF</code>: hash-monitored for silent edits.</li>
-        <li><strong>NHL Situation Room</strong> — <a href="https://www.nhl.com/news/topic/situation-room" rel="noopener">nhl.com/news/topic/situation-room</a>: official explanations of review outcomes.</li>
-        <li><strong>NHL Records</strong> — <a href="https://records.nhl.com/" rel="noopener">records.nhl.com</a>: historical verification (manual).</li>
-      </ul>
+      <p class="muted">Rendered from <code>data/reference/sources.json</code>, which records
+        what was fetched, when, and what the response proved. A source is listed as
+        verified only when an artifact from it was actually read.</p>
+      <div id="source-table-wrap"><p class="muted">Loading the source catalogue…</p></div>
+      <h3>Searches that came back empty</h3>
+      <p class="muted">Recorded so nobody repeats them, and so the absence is visible:</p>
+      <div id="source-gaps"><p class="muted">Loading…</p></div>
       <h3>How records are classified</h3>
       <ul>
         <li><strong>Changed goal totals</strong> — goal ↔ no-goal; these carry the <span class="badge badge-risk">settlement risk</span> badge.</li>
@@ -201,6 +224,7 @@
     </div>
   </footer>
 
+  <script src="js/normalize.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+Source URL : https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM
+Retrieved  : 2026-10-07 (Arena page-fetch text proxy; direct HTTP blocked in sandbox)
+Status     : 200 (inferred: full document content returned)
+
+Header, transcribed verbatim from the returned text:
+  NEW JERSEY DEVILS  5   Game 73 Away Game 38
+  CHICAGO BLACKHAWKS 3   Game 72 Home Game 36
+  Wednesday, March 26, 2025
+  Attendance 17,813 at United Center
+  Start 6:37 CDT; End 9:02 CDT
+  Game 1140
+  Final
+
+SCORING SUMMARY, transcribed verbatim:
+  G | Per | Time | Str | Team | Goal Scorer      | Assist          | Assist           | NJD on Ice          | CHI on Ice
+  1 | 1   | 6:23 | EV  | NJD  | 14 N.BASTIAN(4)  | 43 L.HUGHES(30) | 90 T.TATAR(10)   | 14, 22, 25, 42, 43, 90 | 30, 44, 55, 73, 77, 84
+  2 | 1   | 6:50 | PP  | NJD  | 91 D.MERCER(16)  | 43 L.HUGHES(31) | 13 N.HISCHIER(28)| 13, 25, 28, 43, 63, 91 | 5, 17, 30, 72, 95
+  3 | 1   | 9:06 | PP  | CHI  | 59 T.BERTUZZI(20)| 8 R.DONATO(29)  | 55 A.LEVSHUNOV(3)| 5, 8, 13, 25, 91    | 8, 30, 55, 59, 86, 98
+  4 | 2   | 3:14 | SH  | NJD  | 18 O.PALAT(14)   | 63 J.BRATT(63)  |                  | 5, 18, 22, 25, 63   | 8, 30, 55, 73, 77, 91
+  5 | 2   | 5:26 | EV  | CHI  | 95 I.MIKHEYEV(17)| 86 T.TERAVAINEN(41)| 17 N.FOLIGNO(17)| 2, 13, 18, 25, 28, 43 | 17, 30, 38, 46, 86, 95
+  6 | 2   | 11:01| PP  | NJD  | 91 D.MERCER(17)  | 43 L.HUGHES(32) | 63 J.BRATT(64)   | 13, 25, 28, 43, 63, 91 | 5, 17, 30, 72, 91
+  7 | 3   | 17:10| EV  | CHI  | 91 F.NAZAR(7)    | 8 R.DONATO(30)  | 55 A.LEVSHUNOV(4)| 5, 22, 25, 56, 63, 91 | 8, 55, 59, 86, 91, 98
+  8 | 3   | 19:47| EV-EN| NJD | 11 S.NOESEN(20)  | 13 N.HISCHIER(29)|                 | 2, 11, 13, 22, 25, 28 | 8, 55, 59, 86, 91, 98
+
+Three stars: 1. NJD D 43 L.HUGHES  2. NJD C 91 D.MERCER  3. CHI D 55 A.LEVSHUNOV
+
+Footer, transcribed verbatim:
+  (c) Copyright 2025, National Hockey League  2025-03-27 8.23.23
+
+Row 2 is the corrected goal of record NHL-20242025-021140-01. The scorer is
+D. MERCER, not T. MEIER, and the season totals in parentheses (16 / 31 / 28) match
+the GameCenter payload's goalsToDate / assistsToDate for the same players.

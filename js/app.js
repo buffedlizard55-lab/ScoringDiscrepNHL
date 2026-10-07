@@ -1,18 +1,33 @@
-/* ScoringDiscrepNHL — site logic. Vanilla JS, no frameworks, no tracking. */
+/* ScoringDiscrepNHL — site logic. Vanilla JS, no frameworks, no tracking.
+ *
+ * Record and alert shapes are normalised in js/normalize.js; this file only loads,
+ * filters and renders. Nothing here invents a value: an absent field renders as an
+ * em dash, and a record whose evidence is thin says so on the card.
+ */
 "use strict";
 
 const state = {
   records: [],
   alerts: [],
-  coverage: null,
+  coverage: null,        // data/reference/coverage_report.json  (measured per season)
+  probe: null,           // data/reference/probe_report.json     (source reachability)
+  vocabulary: null,      // data/schema/observed_vocabulary.json (what the feed can say)
+  sourceCatalog: null,   // data/reference/sources.json          (what was fetched, and when)
+  legacyCoverage: null,  // data/coverage_report.json            (engine probe, may be empty)
   generatedAt: null,
-  queues: [],   // {file, status, why, records[]}
+  provenance: {},        // which file each store came from + counts, shown on the page
+  queues: [],            // {file, status, why, records[]}
 };
 
 const QUEUE_FILES = [
   "data/inbox/pr3_database_review.json",
   "data/inbox/prior_session_leads.json",
 ];
+
+const ENGINE_DB = "data/discrepancies.json";
+const MONITOR_DB = "data/records/discrepancies.json";
+const MONITOR_ALERT_INDEX = "data/alerts/index.json";
+const LEGACY_ALERTS = "data/alerts.json";
 
 /* ---------------- data loading ---------------- */
 
@@ -22,32 +37,72 @@ async function fetchJson(path) {
   return resp.json();
 }
 
+async function tryJson(path) {
+  try { return await fetchJson(path); } catch { return null; }
+}
+
 async function loadAll() {
   const banner = document.getElementById("status-banner");
-  try {
-    const db = await fetchJson("data/discrepancies.json");
-    state.records = Array.isArray(db.records) ? db.records : [];
-    state.generatedAt = db.generated_at || null;
-  } catch (err) {
-    banner.textContent = `Could not load the discrepancy database (${err.message}). ` +
-      "If the site was just deployed, data files arrive with the first monitor run.";
+  const notes = [];
+
+  const engine = await tryJson(ENGINE_DB);
+  const monitor = await tryJson(MONITOR_DB);
+  const engineRecords = engine && Array.isArray(engine.records) ? engine.records : [];
+  const monitorRecords = monitor && Array.isArray(monitor.records) ? monitor.records : [];
+
+  if (!engine && !monitor) {
+    banner.textContent = "Could not load either discrepancy database. If the site was just " +
+      "deployed, the data files arrive with the first monitor run.";
     banner.classList.remove("hidden");
     banner.classList.add("error");
   }
-  try {
-    const alerts = await fetchJson("data/alerts.json");
-    state.alerts = Array.isArray(alerts.alerts) ? alerts.alerts : [];
-  } catch { /* alerts are optional */ }
-  try {
-    state.coverage = await fetchJson("data/coverage_report.json");
-  } catch { /* coverage is optional */ }
+
+  state.records = mergeRecords(
+    engineRecords.map((r) => normalizeRecord(r, ENGINE_DB)).filter(Boolean),
+    monitorRecords.map((r) => normalizeRecord(r, MONITOR_DB)).filter(Boolean),
+  );
+  state.provenance = {
+    engine: { file: ENGINE_DB, count: engineRecords.length, ok: !!engine },
+    monitor: { file: MONITOR_DB, count: monitorRecords.length, ok: !!monitor },
+    merged: state.records.length,
+  };
+  state.generatedAt = (engine && (engine.generated_at || engine.updated_at_utc))
+    || (monitor && monitor.updated_at_utc) || null;
+
+  // Alerts: three artifacts, three writers. Merge so the feed the user sees does
+  // not depend on which detection route ran last. Record ids differ between the
+  // two stores, so an alias map keeps one correction from alerting twice.
+  const aliases = new Map();
+  state.records.forEach((r) => (r.also_in || []).forEach((alt) => aliases.set(alt, r.id)));
+  const monitorIndex = await tryJson(MONITOR_ALERT_INDEX);
+  const legacy = await tryJson(LEGACY_ALERTS);
+  let digest = null;
+  for (const path of digestCandidatePaths(monitorIndex)) {
+    digest = await tryJson(path);
+    if (digest) { digest._origin = path; break; }
+  }
+  state.alerts = mergeAlerts(monitorIndex, legacy, digest, aliases);
+
+  state.coverage = await tryJson("data/reference/coverage_report.json");
+  state.probe = await tryJson("data/reference/probe_report.json");
+  state.vocabulary = await tryJson("data/schema/observed_vocabulary.json");
+  state.sourceCatalog = await tryJson("data/reference/sources.json");
+  state.legacyCoverage = await tryJson("data/coverage_report.json");
+
   for (const file of QUEUE_FILES) {
-    try {
-      const q = await fetchJson(file);
-      if (q && Array.isArray(q.records)) {
-        state.queues.push({ file, status: q.status, why: q.why, records: q.records });
-      }
-    } catch { /* queue files are optional */ }
+    const q = await tryJson(file);
+    if (q && Array.isArray(q.records)) {
+      state.queues.push({ file, status: q.status, why: q.why, records: q.records });
+    }
+  }
+
+  if (!state.records.length && (engineRecords.length || monitorRecords.length)) {
+    notes.push("The databases loaded but no record could be normalised — treat this as a bug, not an empty database.");
+  }
+  if (notes.length) {
+    banner.textContent = notes.join(" ");
+    banner.classList.remove("hidden");
+    banner.classList.add("error");
   }
 }
 
@@ -56,19 +111,21 @@ async function loadAll() {
 const TYPE_LABELS = {
   goal_to_no_goal: "goal → no-goal",
   no_goal_to_goal: "no-goal → goal",
-  video_review_overturn: "video review overturn",
-  coach_challenge: "coach's challenge",
   scorer_change: "scorer correction",
   assist_change: "assist correction",
   strength_change: "strength / empty-net",
+  own_goal_flag_change: "own-goal annotation",
+  clock_conflict: "goal-clock conflict",
   official_report_changed: "official report edited",
-  other: "other",
+  official_announcement: "league scoring-change announcement",
+  video_review_cited: "video review cited by source",
 };
 
 const TIMING_LABELS = {
   in_game: "during game",
-  intermission: "intermission",
+  intermission: "during intermission",
   postgame: "postgame",
+  not_applicable: "timing not applicable",
   unknown: "unknown timing",
 };
 
@@ -82,19 +139,30 @@ function dash(value) {
   return (value === null || value === undefined || value === "") ? "—" : esc(value);
 }
 
-function teamLabel(team) {
-  if (!team) return "?";
-  return team.tri ? `${esc(team.tri)}` : esc(team.name || "?");
-}
-
 function fmtDate(dateStr) {
   return dateStr ? esc(dateStr) : "—";
 }
 
+function seasonLabel(season) {
+  if (!season || season.length !== 8) return dash(season);
+  return `${season.slice(0, 4)}–${season.slice(4)}`;
+}
+
+/* total / attrib / unknown / report — "unknown" is its own family because a
+ * secondary source claiming a goal-count change is not the same thing as a
+ * measured one, and the site must not present it as either. */
 function recordFamily(rec) {
-  const cls = rec.classification || {};
-  if ((cls.types || []).includes("official_report_changed")) return "report";
-  return cls.changes_game_total ? "total" : "attrib";
+  if ((rec.types || []).includes("official_report_changed")) return "report";
+  if (rec.changes_game_total) return "total";
+  if (rec.attribution_only) return "attrib";
+  return "unknown";
+}
+
+function needsHumanReview(rec) {
+  return rec.status === "pending_review"
+    || rec.status === "disputed"
+    || (rec.flags || []).some((f) => /human|verify|secondary|unresolved|undetermined|not_established|conflict/.test(f))
+    || rec.needs_human_read === true;
 }
 
 /* ---------------- filtering ---------------- */
@@ -110,30 +178,27 @@ function matchesFilters(rec) {
   const to = document.getElementById("f-date-to").value;
   const settlementOnly = document.getElementById("f-settlement").checked;
   const flaggedOnly = document.getElementById("f-flagged-only").checked;
+  const verifiedOnly = document.getElementById("f-verified-only").checked;
   const search = document.getElementById("f-search").value.trim().toLowerCase();
 
-  const cls = rec.classification || {};
-  const game = rec.game || {};
-  const ev = rec.event || {};
-
   if (fam !== "all" && recordFamily(rec) !== fam) return false;
-  if (season !== "all" && game.season !== season) return false;
+  if (season !== "all" && rec.season !== season) return false;
   if (team !== "all") {
-    const tris = [(game.away || {}).tri, (game.home || {}).tri, ev.team]
-      .filter(Boolean).map((t) => t.toUpperCase());
+    const tris = [rec.away, rec.home, rec.team].filter(Boolean).map((t) => t.toUpperCase());
     if (!tris.includes(team)) return false;
   }
   if (period !== "all") {
-    const p = ev.period;
+    const p = rec.period;
     if (period === "5+") { if (!(p >= 5)) return false; }
     else if (String(p) !== period) return false;
   }
-  if (type !== "all" && !(cls.types || []).includes(type)) return false;
-  if (timing !== "all" && cls.timing !== timing) return false;
-  if (from && (game.date || "") < from) return false;
-  if (to && (game.date || "") > to) return false;
-  if (settlementOnly && !cls.settlement_risk) return false;
-  if (flaggedOnly && !(rec.flags || []).includes("needs_human_review")) return false;
+  if (type !== "all" && !(rec.types || []).includes(type)) return false;
+  if (timing !== "all" && rec.timing !== timing) return false;
+  if (from && (rec.date || "") < from) return false;
+  if (to && (rec.date || "") > to) return false;
+  if (settlementOnly && !rec.settlement_risk) return false;
+  if (flaggedOnly && !needsHumanReview(rec)) return false;
+  if (verifiedOnly && rec.status !== "verified") return false;
 
   if (search) {
     const hay = JSON.stringify(rec).toLowerCase();
@@ -144,23 +209,29 @@ function matchesFilters(rec) {
 
 function applyFilters() {
   return state.records.filter(matchesFilters)
-    .sort((a, b) => (b.game && b.game.date || "").localeCompare(a.game && a.game.date || ""));
+    .sort((a, b) => String(b.date || "").localeCompare(String(a.date || ""))
+      || String(b.id).localeCompare(String(a.id)));
 }
 
 /* ---------------- rendering ---------------- */
 
-function stateBox(title, goalState, changed) {
-  const gs = goalState || {};
+function stateBox(title, s, changed) {
+  const st = s || {};
+  const assists = st.assists_known
+    ? (st.assists && st.assists.length ? st.assists.join(", ") : "unassisted")
+    : null;
   return `
     <div class="state-box ${changed ? "changed-state" : ""}">
       <h4>${esc(title)}</h4>
       <dl>
-        <dt>Ruling</dt><dd>${dash(gs.ruling)}</dd>
-        <dt>Scorer</dt><dd>${dash(gs.scorer)}</dd>
-        <dt>Assists</dt><dd>${dash((gs.assists || []).join(", "))}</dd>
-        <dt>Strength</dt><dd>${dash(gs.strength)}</dd>
-        <dt>Clock</dt><dd>${dash(gs.clock)}</dd>
+        <dt>Ruling</dt><dd>${dash(st.ruling)}</dd>
+        <dt>Scorer</dt><dd>${dash(st.scorer)}</dd>
+        <dt>Assists</dt><dd>${dash(assists)}</dd>
+        <dt>Strength</dt><dd>${dash(st.strength)}</dd>
+        <dt>Clock</dt><dd>${dash(st.clock)}</dd>
       </dl>
+      ${st.evidence_status ? `<div class="muted">state evidence: ${esc(st.evidence_status)}</div>` : ""}
+      ${st.evidence_note ? `<div class="muted">${esc(st.evidence_note)}</div>` : ""}
     </div>`;
 }
 
@@ -168,84 +239,105 @@ function evidenceBlock(rec) {
   const items = (rec.evidence || []).map((ev) => `
     <li>
       <a href="${esc(ev.url)}" rel="noopener">${esc(ev.label)}</a>
-      <span class="badge badge-${ev.status === "verified" ? "ok" : ev.status === "incomplete" ? "warn" : ev.status === "conflicting" ? "bad" : "mut"}">${esc(ev.status)}</span>
-      ${ev.captured_at ? `<span class="muted">captured ${esc(ev.captured_at)}</span>` : ""}
-      ${ev.archive_url ? ` · <a href="${esc(ev.archive_url)}" rel="noopener">archive copy</a>` : ""}
+      ${ev.status ? `<span class="badge badge-${/primary|verified|official/.test(ev.status) ? "ok" : /secondary/.test(ev.status) ? "warn" : "mut"}">${esc(ev.status)}</span>` : ""}
+      ${ev.http_status ? `<span class="muted">HTTP ${esc(ev.http_status)}</span>` : ""}
+      ${ev.retrieved_at ? `<span class="muted">retrieved ${esc(ev.retrieved_at)}</span>` : ""}
+      ${ev.quote ? `<div class="quote"><code>${esc(ev.quote)}</code></div>` : ""}
       ${ev.note ? `<div class="muted">${esc(ev.note)}</div>` : ""}
     </li>`).join("");
-  return `<div class="evidence"><h4>Evidence — official sources</h4><ul>${items}</ul></div>`;
+  return `<div class="evidence"><h4>Evidence — official sources</h4><ul>${items || "<li class=\"muted\">No source links are stored on this record.</li>"}</ul></div>`;
 }
 
 function recordCard(rec) {
-  const cls = rec.classification || {};
-  const game = rec.game || {};
-  const ev = rec.event || {};
   const family = recordFamily(rec);
-
-  const typeBadges = (cls.types || []).map((t) =>
+  const typeBadges = (rec.types || []).map((t) =>
     `<span class="badge">${esc(TYPE_LABELS[t] || t)}</span>`).join("");
-  const timingBadge = `<span class="badge">${esc(TIMING_LABELS[cls.timing] || cls.timing)}${cls.timing_confidence === "heuristic" ? " (heuristic)" : ""}</span>`;
-  const familyBadge = family === "total"
-    ? '<span class="badge badge-total">CHANGED GOAL TOTAL</span>'
-    : family === "attrib"
-      ? '<span class="badge badge-attrib">ATTRIBUTION ONLY</span>'
-      : '<span class="badge badge-warn">REPORT EDITED</span>';
-  const riskBadge = cls.settlement_risk ? '<span class="badge badge-risk">settlement risk</span>' : "";
+  const timingBadge = `<span class="badge">${esc(TIMING_LABELS[rec.timing] || rec.timing || "timing unknown")}${rec.timing_uncertain ? " (uncertain)" : ""}</span>`;
+  const familyBadge = {
+    total: '<span class="badge badge-total">CHANGED GOAL TOTAL</span>',
+    attrib: '<span class="badge badge-attrib">ATTRIBUTION ONLY</span>',
+    report: '<span class="badge badge-warn">REPORT EDITED</span>',
+    unknown: '<span class="badge badge-warn">GOAL-TOTAL IMPACT NOT ESTABLISHED</span>',
+  }[family];
+  const riskBadge = rec.settlement_risk ? `<span class="badge badge-risk">settlement risk${rec.market_risk ? `: ${esc(rec.market_risk)}` : ""}</span>` : "";
   const flagBadges = (rec.flags || []).map((f) =>
     `<span class="badge badge-flag">${esc(f.replaceAll("_", " "))}</span>`).join("");
+  const statusBadge = `<span class="badge ${rec.status === "verified" ? "badge-ok" : "badge-warn"}">${esc(rec.status || "status unknown")}</span>`;
 
-  const teams = `${teamLabel(game.away)} @ ${teamLabel(game.home)}`;
-  const periodTxt = ev.period ? `P${esc(ev.period)}` : "";
-  const clockTxt = (rec.corrected && rec.corrected.clock) || (rec.original && rec.original.clock) || "";
+  // A record whose teams were never captured says so, rather than printing a
+  // placeholder that reads like data. The game id is the way to look it up.
+  const teams = (rec.away && rec.home)
+    ? `${esc(rec.away)} @ ${esc(rec.home)}`
+    : `<span class="muted">teams not recorded${rec.game_id ? ` (game ${esc(rec.game_id)})` : ""}</span>`;
+  const periodTxt = rec.period ? `P${esc(rec.period)}` : "";
+  const clockTxt = rec.clock || "";
+  const gameLink = rec.game_id
+    ? `<a href="${esc(rec.gamecenter_url || `https://www.nhl.com/gamecenter/${rec.game_id}`)}" rel="noopener">NHL game ${esc(rec.game_id)}</a>`
+    : '<span class="muted">game id not resolved</span>';
+  const reportLinks = Object.entries(rec.report_urls || {}).map(([k, url]) =>
+    `<a href="${esc(url)}" rel="noopener">${esc(k)}</a>`).join(" · ");
+  const latency = rec.latency_seconds
+    ? `${Math.round(rec.latency_seconds / 60)} min after the final buzzer`
+    : null;
 
   return `
-  <article class="record-card family-${family}">
+  <article class="record-card family-${family}" data-id="${esc(rec.id)}">
     <div class="record-top">
-      <div class="record-title">${fmtDate(game.date)} — ${teams} ${periodTxt} ${esc(clockTxt)}</div>
+      <div class="record-title">${fmtDate(rec.date)} — ${teams} ${periodTxt} ${esc(clockTxt)}</div>
       <span class="muted">${esc(rec.id)}</span>
     </div>
-    <div class="badges">${familyBadge}${riskBadge}${typeBadges}${timingBadge}${flagBadges}</div>
+    <div class="badges">${familyBadge}${statusBadge}${riskBadge}${typeBadges}${timingBadge}${flagBadges}</div>
     <div class="state-pair">
-      ${stateBox("Original ruling", rec.original, false)}
-      ${stateBox("Corrected ruling", rec.corrected, true)}
+      ${stateBox("Original ruling (as first published)", rec.original, false)}
+      ${stateBox("Corrected / final ruling", rec.corrected, true)}
     </div>
-    ${cls.reason ? `<div class="record-meta"><strong>Reason (official):</strong> ${esc(cls.reason)}</div>` : ""}
-    ${ev.description ? `<div class="record-meta"><strong>Official description:</strong> ${esc(ev.description)}</div>` : ""}
+    ${rec.summary ? `<div class="record-meta"><strong>What changed:</strong> ${esc(rec.summary)}</div>` : ""}
+    ${rec.reason_text ? `<div class="record-meta"><strong>Reason (official statement):</strong> ${esc(rec.reason_text)}${rec.reason_channel ? ` <span class="muted">— ${esc(rec.reason_channel)}</span>` : ""}</div>`
+      : `<div class="record-meta"><strong>Reason:</strong> <span class="muted">no official statement of the reason is stored for this record</span></div>`}
+    ${rec.machine_diff ? `<div class="record-meta"><strong>Checked from the two states:</strong> ${esc(Object.entries(rec.machine_diff).map(([k, v]) => `${k} ${v}`).join(" · "))}</div>` : ""}
     ${evidenceBlock(rec)}
     <div class="record-meta">
-      Status: <strong>${esc(rec.status)}</strong> ·
-      Detected ${esc((rec.detection || {}).first_detected_at || "?")} via ${esc((rec.detection || {}).method || "?")} ·
-      ${game.links && game.links.live_feed ? `<a href="${esc(game.links.live_feed)}" rel="noopener">live feed</a> · ` : ""}
-      <a href="https://www.nhl.com/gamecenter/${esc(game.game_pk)}" rel="noopener">NHL game page</a>
+      ${gameLink}${reportLinks ? ` · ${reportLinks}` : ""}<br>
+      Detected ${dash(rec.detected_at)} via ${dash(rec.detected_by)}
+      ${rec.announced_at_utc ? ` · league announcement ${esc(rec.announced_at_utc)}` : ""}
+      ${latency ? ` · ${esc(latency)}` : ""}
+      ${rec.source_db ? `<span class="muted"> · store: ${esc(rec.source_db === "both" ? "both databases (deduplicated)" : rec.source_db)}</span>` : ""}
     </div>
   </article>`;
 }
 
 function renderDatabase() {
-  // summary stats (unfiltered)
   const total = state.records.length;
-  const totalChanging = state.records.filter((r) => (r.classification || {}).changes_game_total).length;
+  const totalChanging = state.records.filter((r) => r.changes_game_total).length;
   const attrib = state.records.filter((r) => recordFamily(r) === "attrib").length;
-  const review = state.records.filter((r) =>
-    ((r.classification || {}).types || []).some((t) => t === "video_review_overturn" || t === "coach_challenge")).length;
-  const flagged = state.records.filter((r) => (r.flags || []).includes("needs_human_review")).length;
+  const unestablished = state.records.filter((r) => recordFamily(r) === "unknown").length;
+  const review = state.records.filter(needsHumanReview).length;
+  const verified = state.records.filter((r) => r.status === "verified").length;
+
   document.getElementById("stat-total").textContent = total;
   document.getElementById("stat-total-changing").textContent = totalChanging;
   document.getElementById("stat-attribution").textContent = attrib;
-  document.getElementById("stat-review").textContent = review;
-  document.getElementById("stat-flagged").textContent = flagged;
+  document.getElementById("stat-unestablished").textContent = unestablished;
+  document.getElementById("stat-flagged").textContent = review;
+  document.getElementById("stat-verified").textContent = verified;
 
-  // populate season/team selects from data
-  const seasons = [...new Set(state.records.map((r) => (r.game || {}).season).filter(Boolean))].sort().reverse();
+  const prov = document.getElementById("provenance-note");
+  if (prov) {
+    const p = state.provenance;
+    prov.innerHTML = `Merged from <code>${esc(p.engine.file)}</code> (${p.engine.count} record${p.engine.count === 1 ? "" : "s"})`
+      + ` and <code>${esc(p.monitor.file)}</code> (${p.monitor.count} record${p.monitor.count === 1 ? "" : "s"})`
+      + ` → <strong>${p.merged}</strong> distinct correction${p.merged === 1 ? "" : "s"}.`
+      + (state.generatedAt ? ` Last database write: ${esc(state.generatedAt)}.` : "")
+      + ` Every card names the store it came from.`;
+  }
+
+  const seasons = [...new Set(state.records.map((r) => r.season).filter(Boolean))].sort().reverse();
   const seasonSel = document.getElementById("f-season");
   seasonSel.length = 1;
-  seasons.forEach((s) => seasonSel.add(new Option(`${s.slice(0, 4)}–${s.slice(4)}`, s)));
+  seasons.forEach((s) => seasonSel.add(new Option(seasonLabel(s), s)));
 
   const tris = new Set();
-  state.records.forEach((r) => {
-    const g = r.game || {};
-    [(g.away || {}).tri, (g.home || {}).tri, (r.event || {}).team].forEach((t) => t && tris.add(t.toUpperCase()));
-  });
+  state.records.forEach((r) => [r.away, r.home, r.team].forEach((t) => t && tris.add(t.toUpperCase())));
   const teamSel = document.getElementById("f-team");
   teamSel.length = 1;
   [...tris].sort().forEach((t) => teamSel.add(new Option(t, t)));
@@ -262,13 +354,10 @@ function renderFiltered() {
   if (state.records.length === 0) {
     list.innerHTML = `
       <div class="empty-state">
-        <h3>Monitoring is live — first records appear after the first detected change.</h3>
+        <h3>No records have been written to the database yet.</h3>
         <p>This database is populated <em>only</em> with entries backed by captured official NHL
-        sources. Nothing is hand-invented, so day zero is intentionally empty.</p>
-        <p>The monitor snapshots every recently completed game every 30 minutes; the first
-        discrepancy or correction it catches will appear here with full before/after detail
-        and official-source links. Check the <strong>Coverage &amp; Limits</strong> tab for what
-        can and cannot be detected.</p>
+        sources. Nothing is hand-invented, so an empty database is a statement about coverage,
+        not about the league.</p>
         ${state.generatedAt ? `<p class="muted">Database last updated: ${esc(state.generatedAt)}</p>` : ""}
       </div>`;
     return;
@@ -290,22 +379,24 @@ function renderAlerts() {
   }
   const list = document.getElementById("alert-list");
   if (!state.alerts.length) {
-    list.innerHTML = '<div class="empty-state"><h3>No alerts yet.</h3><p>Alerts are emitted automatically when the monitor detects a new or updated discrepancy.</p></div>';
+    list.innerHTML = '<div class="empty-state"><h3>No alerts yet.</h3><p>Alerts are emitted automatically when a detection route writes a new or updated discrepancy record.</p></div>';
     return;
   }
   list.innerHTML = state.alerts.map((a) => `
-    <article class="record-card alert-card">
+    <article class="record-card alert-card severity-${esc(a.severity || "low")}" data-alert-id="${esc(a.id)}">
       <div class="record-top">
         <div class="record-title">${esc(a.title)}</div>
         <span class="muted">${esc(a.created_at || "")}</span>
       </div>
       <div class="badges">
-        <span class="badge">${esc(a.type)}</span>
-        ${a.severity === "warn" ? '<span class="badge badge-warn">warning</span>' : ""}
+        <span class="badge badge-${a.severity === "critical" || a.severity === "high" ? "risk" : a.severity === "medium" ? "warn" : "mut"}">${esc(a.severity || "info")}</span>
+        ${a.type ? `<span class="badge">${esc(TYPE_LABELS[a.type] || a.type)}</span>` : ""}
+        ${a.affects_goal_total ? '<span class="badge badge-total">changed goal total</span>' : '<span class="badge badge-attrib">attribution</span>'}
         ${a.record_id ? `<span class="badge badge-mut">${esc(a.record_id)}</span>` : ""}
       </div>
       <pre>${esc(a.body || "")}</pre>
-      ${(a.links || []).length ? `<div class="evidence"><h4>Links</h4><ul>${a.links.map((l) => `<li><a href="${esc(l)}" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>` : ""}
+      ${(a.links || []).length ? `<div class="evidence"><h4>Official source links</h4><ul>${a.links.map((l) => `<li><a href="${esc(l)}" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>` : ""}
+      <div class="record-meta muted">alert artifact: ${esc(a.origin)}</div>
     </article>`).join("");
 }
 
@@ -351,7 +442,7 @@ function leadCard(lead, file) {
       ${lead.evidence_notes ? `<div><strong>Evidence notes:</strong> ${esc(lead.evidence_notes)}</div>` : ""}
     </div>
     <div class="evidence"><h4>Cited sources — click to verify</h4><ul>${sources}</ul></div>
-    <div class="record-meta muted">From ${esc(file)} — not yet independently re-verified in this environment.</div>
+    <div class="record-meta muted">From ${esc(file)} — not yet independently re-verified.</div>
   </article>`;
 }
 
@@ -375,48 +466,129 @@ function renderQueue() {
   list.innerHTML = banners + all.map((r) => leadCard(r, r._file)).join("");
 }
 
-/* ---------------- coverage ---------------- */
+/* ---------------- coverage & capability ---------------- */
 
-const CAPABILITIES = [
-  ["Detect goal ↔ no-goal flips", "yes", "Snapshot diffing of the official live feed — any added/removed goal is caught within one monitor cycle (~30 min)."],
-  ["Detect video-review overturns", "yes", "Review/challenge events in the official play-by-play are captured and linked to the goal they affected."],
-  ["Detect scorer/assist changes", "yes", "Per-goal attribution fields are diffed between snapshots; the goal total is untouched in these records."],
-  ["Detect silent edits to official reports", "partial", "SHA-256 hashes of Game/Event Summary PDFs flag that a report changed; explaining WHAT changed still needs a human (content diff is planned)."],
-  ["Classify correction timing", "partial", "in-game / intermission / postgame from snapshot timestamps + feed state; low-confidence cases are marked heuristic."],
-  ["Explain WHY a correction happened", "partial", "Official Situation Room text and review descriptions are attached as evidence; interpretation is human-verified."],
-  ["Changes before monitoring started", "no", "No baseline snapshot exists for games that finished before the monitor first saw them; those need archival research, flagged for review."],
-  ["Pre-1997/98 era history", "no", "No machine-readable official play-by-play exists online for that era; requires manual archival verification."],
-];
+/* Every claim in this table is backed by a committed measurement. The previous
+ * version of this table asserted automated video-review detection; the measured
+ * event vocabulary contains no review event type at all, so the claim was false
+ * and is now stated the other way round. See docs/LIMITATIONS.md §2.1. */
+function capabilities(vocab) {
+  const reviewTypes = (vocab && vocab.review_event_types_found) || [];
+  const noReview = reviewTypes.length === 0;
+  return [
+    ["A goal appears or disappears in the official record after we captured it",
+      "yes",
+      "Two captured official states are diffed. This is the only formulation that is fully defensible: the NHL publishes no correction flag and no revision history."],
+    ["Scorer / assist / strength attribution changes",
+      "yes",
+      "Per-goal attribution fields are diffed between captures, and the league's own scoring-change announcements are parsed when one exists."],
+    ["A correction announced by the league after the game",
+      "yes",
+      "The league publishes 'OFFICIAL SCORING CHANGE: Game n … now reads X from Y and Z'. Parsed into a record with the post URL stored; measured latency 2h49m–3h25m after the final buzzer on the three verified records."],
+    ["Video review as the *reason* for a change",
+      noReview ? "no" : "partial",
+      noReview
+        ? `Measured: no review or challenge event type exists in the official play-by-play (0 of ${((vocab && vocab.observed_type_desc_keys) || []).length} observed event types). An overturned call is detectable as a goal added/removed; the cause stays unknown unless an official artifact states it in words.`
+        : `${reviewTypes.length} review event type(s) observed: ${reviewTypes.join(", ")}.`],
+    ["Why the league changed a ruling",
+      "partial",
+      "Only when an official artifact says so in words. There is no machine-readable Situation Room feed; no public endpoint exposes correction or version history."],
+    ["When a correction happened, relative to the game",
+      "partial",
+      "Bounded by our poll times. The report footer stamp says when a document was generated, not when a value in it changed, so a stamp alone never earns better than 'timing uncertain'."],
+    ["Which of two disagreeing official artifacts is the corrected one",
+      "no",
+      "The HTML sheet and the GameCenter JSON are the same data rendered twice, not two witnesses. A disagreement is reported as conflicting and flagged, never auto-resolved."],
+    ["Changes that happened between two polls with no prior capture",
+      "no",
+      "If every capture post-dates the correction, the original state is unrecoverable from any source we have. This is the structural false negative."],
+    ["Games before the 2000-01 season",
+      "no",
+      "Measured: 19992000/GS020001.HTM returns 404; the earliest season served by the official report family is 2000-01. Nothing older has a machine-readable official source in this family."],
+    ["Whether a bookmaker regraded a settled market",
+      "no",
+      "House rules are private. The system flags 'a settled market may have been graded on a superseded number' and stops there."],
+  ];
+}
 
 function renderCoverage() {
   const grid = document.getElementById("capability-grid");
-  grid.innerHTML = CAPABILITIES.map(([title, level, desc]) => `
+  grid.innerHTML = capabilities(state.vocabulary).map(([title, level, desc]) => `
     <div class="cap-card">
-      <h4><span class="cap-${level === "yes" ? "yes" : level === "no" ? "no" : "part"}">${level === "yes" ? "✓ Automated" : level === "no" ? "✗ Not automated" : "◐ Partial"}</span> — ${esc(title)}</h4>
+      <h4><span class="cap-${level === "yes" ? "yes" : level === "no" ? "no" : "part"}">${level === "yes" ? "✓ Detectable" : level === "no" ? "✗ Not detectable" : "◐ Partial"}</span> — ${esc(title)}</h4>
       <p>${esc(desc)}</p>
     </div>`).join("");
 
-  const cov = state.coverage;
   const tbody = document.querySelector("#probe-table tbody");
   const summary = document.getElementById("probe-summary");
-  if (!cov || !Array.isArray(cov.results) || !cov.results.length) {
-    summary.innerHTML = cov && cov.note
-      ? `No probe has run yet. ${esc(cov.note)}`
-      : "No probe has run yet — the first GitHub Actions probe run will publish results here.";
-    tbody.innerHTML = '<tr><td colspan="5" class="muted">No probe results yet.</td></tr>';
+  const probe = state.probe;
+  const cov = state.coverage;
+
+  const parts = [];
+  if (cov && cov.earliest_season_with_report) {
+    parts.push(`earliest season with an official report: <strong>${esc(seasonLabel(cov.earliest_season_with_report))}</strong>`);
+    parts.push(`seasons measured: <strong>${(cov.seasons || []).length}</strong>`);
+    parts.push(`still frozen at game time: <strong>${(cov.frozen_seasons || []).length}</strong>`);
+    parts.push(`regenerated in place: <strong>${(cov.regenerated_seasons || []).length}</strong>`);
+    parts.push(`era undetermined: <strong>${(cov.undetermined_seasons || []).length}</strong>`);
+  }
+  if (probe && Array.isArray(probe.results) && probe.results.length) {
+    const ok = probe.results.filter((r) => r.ok).length;
+    parts.push(`source probe ${esc(probe.probed_at_utc || "")}: <strong>${ok}/${probe.results.length}</strong> reachable from the environment that ran it`);
+  }
+  summary.innerHTML = parts.length ? parts.join(" · ")
+    : "No measured coverage report is committed yet. Run the coverage job from an environment with access to NHL endpoints.";
+
+  if (cov && Array.isArray(cov.seasons) && cov.seasons.length) {
+    tbody.innerHTML = cov.seasons.map((r) => `
+      <tr>
+        <td>${esc(seasonLabel(r.season))}</td>
+        <td>${esc(r.report_is_frozen_original ? "frozen at game time (original record)" : r.available === false ? "no report" : r.report_generated_at ? "regenerated in place" : "available, era undetermined")}</td>
+        <td class="status-${r.available === false ? "fail" : r.http_status === 200 ? "ok" : "warn"}">${dash(r.http_status)}</td>
+        <td>${dash(r.report_generated_at)}</td>
+        <td>${r.url ? `<a href="${esc(r.url)}" rel="noopener">${esc(r.url)}</a>` : ""}${(r.parse_warnings || []).length ? ` <span class="muted">${esc(r.parse_warnings.join("; "))}</span>` : ""}</td>
+      </tr>`).join("");
     return;
   }
-  summary.innerHTML = `Probed at <strong>${esc(cov.probed_at || "?")}</strong> · ` +
-    `earliest OK historical feed probe: <strong>${esc((cov.summary || {}).earliest_ok_historical_feed_probe || "none")}</strong> · ` +
-    `earliest OK report season: <strong>${esc((cov.summary || {}).earliest_ok_report_season || "none")}</strong>`;
-  tbody.innerHTML = cov.results.map((r) => `
+  const legacy = state.legacyCoverage;
+  if (legacy && Array.isArray(legacy.results) && legacy.results.length) {
+    tbody.innerHTML = legacy.results.map((r) => `
+      <tr><td>${esc(r.label)}</td><td>${esc(r.kind)}</td><td class="status-${esc(r.status)}">${esc(r.status)}</td><td>${dash(r.http_code)}</td><td>${r.url ? `<a href="${esc(r.url)}" rel="noopener">${esc(r.url)}</a>` : ""}</td></tr>`).join("");
+    return;
+  }
+  tbody.innerHTML = '<tr><td colspan="5" class="muted">No per-season measurement is committed. The table stays empty rather than showing planned probes as results.</td></tr>';
+}
+
+/* ---------------- sources ---------------- */
+
+/* The Sources tab used to hard-code a list of endpoints, two of which
+ * (statsapi.web.nhl.com and the GS/ES "PDF" reports) are not what this project
+ * actually reads. It now renders data/reference/sources.json, which records what
+ * was fetched, when, and what the response proved. */
+function renderSources() {
+  const wrap = document.getElementById("source-table-wrap");
+  const gaps = document.getElementById("source-gaps");
+  if (!wrap) return;
+  const cat = state.sourceCatalog;
+  if (!cat || !cat.sources) {
+    wrap.innerHTML = '<p class="muted">No source catalogue is committed. Nothing is listed rather than guessed.</p>';
+    if (gaps) gaps.innerHTML = "";
+    return;
+  }
+  const rows = Object.values(cat.sources).map((s) => `
     <tr>
-      <td>${esc(r.label)}</td>
-      <td>${esc(r.kind)}</td>
-      <td class="status-${esc(r.status)}">${esc(r.status)}</td>
-      <td>${dash(r.http_code)}</td>
-      <td>${r.url ? `<a href="${esc(r.url)}" rel="noopener">${esc(r.url)}</a>` : ""}${r.note ? ` <span class="muted">${esc(r.note)}</span>` : ""}</td>
+      <td><strong>${esc(s.name)}</strong><br><span class="muted">${esc(s.key)}</span></td>
+      <td><code>${esc(s.url_template)}</code></td>
+      <td><span class="badge ${s.status === "verified" ? "badge-ok" : "badge-mut"}">${esc(s.status)}</span>${s.verified_on ? `<br><span class="muted">${esc(s.verified_on)}</span>` : ""}</td>
+      <td>${esc(s.evidence || "")}${s.notes ? `<div class="muted">${esc(s.notes)}</div>` : ""}${(s.authoritative_for || []).length ? `<div class="muted">authoritative for: ${esc((s.authoritative_for || []).join(", "))}</div>` : ""}</td>
     </tr>`).join("");
+  wrap.innerHTML = `<table class="probe-table"><thead><tr><th>Source</th><th>URL pattern</th><th>Status</th><th>What was actually verified</th></tr></thead><tbody>${rows}</tbody></table>`;
+
+  if (gaps) {
+    const notUsed = cat.unverified_and_deliberately_not_used || {};
+    gaps.innerHTML = `<ul>${Object.entries(notUsed).map(([k, v]) =>
+      `<li><strong>${esc(k)}</strong> — ${esc(v)}</li>`).join("")}</ul>`;
+  }
 }
 
 /* ---------------- CSV export ---------------- */
@@ -427,19 +599,21 @@ function csvEscape(value) {
 }
 
 function exportCsv() {
-  const rows = [["id", "date", "season", "away", "home", "period", "team",
-    "family", "changes_game_total", "attribution_only", "types", "timing",
-    "settlement_risk", "status", "original_ruling", "original_scorer",
-    "original_assists", "corrected_ruling", "corrected_scorer",
-    "corrected_assists", "reason", "evidence_urls"]];
+  const rows = [["id", "store", "date", "season", "away", "home", "game_id", "period", "clock", "team",
+    "status", "family", "changes_game_total", "attribution_only", "goal_total_impact_established",
+    "types", "timing", "timing_uncertain", "settlement_risk",
+    "original_ruling", "original_scorer", "original_assists",
+    "corrected_ruling", "corrected_scorer", "corrected_assists",
+    "reason_stated_by_league", "reason", "needs_human_review", "flags", "evidence_urls"]];
   applyFilters().forEach((r) => {
-    const g = r.game || {}, c = r.classification || {}, o = r.original || {}, x = r.corrected || {};
-    rows.push([r.id, g.date, g.season, (g.away || {}).tri, (g.home || {}).tri,
-      (r.event || {}).period, (r.event || {}).team, recordFamily(r),
-      c.changes_game_total, c.attribution_only, (c.types || []).join("|"),
-      c.timing, c.settlement_risk, r.status, o.ruling, o.scorer,
-      (o.assists || []).join("|"), x.ruling, x.scorer, (x.assists || []).join("|"),
-      c.reason || "", (r.evidence || []).map((e) => e.url).join("|")]);
+    const o = r.original || {}, x = r.corrected || {};
+    rows.push([r.id, r.source_db, r.date, r.season, r.away, r.home, r.game_id, r.period, r.clock, r.team,
+      r.status, recordFamily(r), r.changes_game_total, r.attribution_only, !r.total_change_unknown,
+      (r.types || []).join("|"), r.timing, r.timing_uncertain, r.market_risk,
+      o.ruling, o.scorer, (o.assists || []).join("|"),
+      x.ruling, x.scorer, (x.assists || []).join("|"),
+      r.reason_stated_by_league, r.reason_text || "", needsHumanReview(r),
+      (r.flags || []).join("|"), (r.evidence || []).map((e) => e.url).join("|")]);
   });
   const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv" });
@@ -462,33 +636,58 @@ function switchView(view) {
   });
 }
 
+const FILTER_IDS = ["f-family", "f-season", "f-team", "f-period", "f-type", "f-timing",
+  "f-date-from", "f-date-to", "f-search"];
+const CHECK_IDS = ["f-settlement", "f-flagged-only", "f-verified-only"];
+
 function wire() {
   document.querySelectorAll(".tab").forEach((t) =>
     t.addEventListener("click", () => switchView(t.dataset.view)));
 
-  ["f-family", "f-season", "f-team", "f-period", "f-type", "f-timing",
-   "f-date-from", "f-date-to", "f-search"].forEach((id) => {
+  FILTER_IDS.forEach((id) => {
     const el = document.getElementById(id);
-    el.addEventListener(id === "f-search" ? "input" : "change", renderFiltered);
+    if (el) el.addEventListener(id === "f-search" ? "input" : "change", renderFiltered);
   });
-  ["f-settlement", "f-flagged-only"].forEach((id) =>
-    document.getElementById(id).addEventListener("change", renderFiltered));
+  CHECK_IDS.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("change", renderFiltered);
+  });
 
-  document.getElementById("f-clear").addEventListener("click", () => {
-    document.getElementById("f-search").value = "";
-    document.getElementById("f-family").value = "all";
-    document.getElementById("f-season").value = "all";
-    document.getElementById("f-team").value = "all";
-    document.getElementById("f-period").value = "all";
-    document.getElementById("f-type").value = "all";
-    document.getElementById("f-timing").value = "all";
-    document.getElementById("f-date-from").value = "";
-    document.getElementById("f-date-to").value = "";
-    document.getElementById("f-settlement").checked = false;
-    document.getElementById("f-flagged-only").checked = false;
+  const clear = document.getElementById("f-clear");
+  if (clear) clear.addEventListener("click", () => {
+    FILTER_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.tagName === "SELECT") el.value = "all"; else el.value = "";
+    });
+    CHECK_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = false;
+    });
     renderFiltered();
   });
-  document.getElementById("f-csv").addEventListener("click", exportCsv);
+  const csv = document.getElementById("f-csv");
+  if (csv) csv.addEventListener("click", exportCsv);
+}
+
+/* Exposed for tools/check_root_site.mjs, which runs this file in a stub DOM and
+ * asserts on the rendered output. Without a handle like this the published page
+ * has no automated check at all — which is how a broken renderer reached main. */
+if (typeof window !== "undefined") {
+  window.__sdn = {
+    state,
+    recordFamily,
+    needsHumanReview,
+    applyFilters,
+    matchesFilters,
+    renderDatabase,
+    renderAlerts,
+    renderQueue,
+    renderCoverage,
+    renderSources,
+    capabilities,
+    recordCard,
+  };
 }
 
 (async function init() {
@@ -498,4 +697,5 @@ function wire() {
   renderAlerts();
   renderQueue();
   renderCoverage();
+  renderSources();
 })();

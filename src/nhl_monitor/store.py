@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from typing import Dict, Iterable, List, Optional
 
@@ -126,6 +127,53 @@ def _preserved_metadata(path: str) -> dict:
     return {k: v for k, v in previous.items() if k not in _OWNED_KEYS}
 
 
+_EMPTY_CLAIM = re.compile(r"\b(empty|no records|zero records|nothing has been)\b", re.I)
+
+
+def _status_note_contradicts(note, count: int) -> bool:
+    """True when a hand-written status note disagrees with the record count.
+
+    The note was prose committed once, on the day the system was built, when the
+    database really was empty. `_preserved_metadata` then kept it verbatim, so the
+    shipped file read "This database is intentionally EMPTY" above three records.
+    A file that contradicts itself is worse than either text alone, so a
+    contradicting note is replaced; a consistent one is left alone, because it is
+    still hand-maintained metadata the store does not own.
+    """
+    if not note:
+        return False
+    text = " ".join(note) if isinstance(note, (list, tuple)) else str(note)
+    claims_empty = bool(_EMPTY_CLAIM.search(text))
+    return (claims_empty and count > 0) or (not claims_empty and count == 0
+                                            and "empty" not in text.lower())
+
+
+def _status_note(records: List[dict]) -> List[str]:
+    """Derive an accurate status note from what is actually in the database."""
+    if not records:
+        return [
+            "This database is empty. A scoring discrepancy is only ever written here by a detection",
+            "route, and only when it has two captured official states (or one official artifact plus a",
+            "documented official statement) that differ. Nothing is seeded from memory, media reports",
+            "or assumptions, so there are no placeholder rows to mistake for verified history.",
+        ]
+    by_status: dict = {}
+    for r in records:
+        by_status[r.get("status") or "unknown"] = by_status.get(r.get("status") or "unknown", 0) + 1
+    total_changed = sum(1 for r in records
+                        if (r.get("change") or {}).get("affects_goal_total"))
+    attribution = sum(1 for r in records
+                      if (r.get("change") or {}).get("attribution_only"))
+    return [
+        f"{len(records)} record(s), each written by a detection route from official sources only.",
+        "By status: " + ", ".join(f"{k} = {v}" for k, v in sorted(by_status.items())) + ".",
+        f"{total_changed} changed the number of goals; {attribution} changed player attribution only.",
+        "Nothing is seeded from memory, media reports or assumptions. Every record carries its source",
+        "URLs and a `flags` list naming the part of its evidence that is missing. A record whose",
+        "evidence is thin says so instead of being smoothed over.",
+    ]
+
+
 def save_records(records: Iterable[dict], path: str = RECORDS_PATH, **meta) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     payload = {"schema_version": "1.0", "updated_at_utc": utcnow(), "count": 0, "records": []}
@@ -135,6 +183,8 @@ def save_records(records: Iterable[dict], path: str = RECORDS_PATH, **meta) -> N
             r["completeness"] = completeness(r)
         payload["records"].append(r)
     payload["count"] = len(payload["records"])
+    if _status_note_contradicts(payload.get("status_note"), payload["count"]):
+        payload["status_note"] = _status_note(payload["records"])
     payload.update(meta)
     tmp = path + ".tmp"
     with open(tmp, "w") as fh:

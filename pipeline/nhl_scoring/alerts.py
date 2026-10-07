@@ -205,3 +205,122 @@ def parse_situation_room_text(text: str) -> List[Dict[str, str]]:
         if re.search(r"(goal|net|crease|review|challenge|scor|assist|awarded|no-goal|waived)", quote, re.I):
             out.append({"quote": quote})
     return out
+
+
+# ---------------------------------------------------------------------------
+# Site feed projection
+#
+# The published site (GitHub Pages serves the repository root) reads
+# data/alerts.json and data/alerts.xml. This engine's own digest lives in
+# data/alerts/<date>/alerts.json, which a static page cannot glob. Before this
+# projection the engine could raise an alert and the site's Alerts tab would keep
+# saying "No alerts yet" - which is exactly what it did for three committed
+# alerts. Every writer projects into the same flat shape, de-duplicated by id, so
+# the feed neither loses alerts nor makes an old one look new.
+# ---------------------------------------------------------------------------
+
+SITE_FEED_MAX = 500
+_SEVERITY = {"immediate": "high", "review": "medium", "info": "low"}
+
+
+def site_shape(item: Dict[str, Any]) -> Dict[str, Any]:
+    record = item.get("record") or {}
+    game = record.get("game") or {}
+    disc = record.get("discrepancy") or {}
+    links = [s.get("url") for s in (record.get("sources") or []) if s.get("url")]
+    body = "\n".join(x for x in [
+        disc.get("summary") or "",
+        disc.get("detail") if disc.get("detail") != disc.get("summary") else "",
+        "",
+        f"Record {record.get('record_id')} - status {record.get('status')}"
+        f" - confidence {record.get('confidence')}",
+        f"Change type: {disc.get('change_type')}",
+        f"Goal total changed: {disc.get('total_changed')}",
+        f"Attribution only: {disc.get('attribution_only')}",
+        f"Corrected: {disc.get('when_corrected')}",
+        f"Flags: {', '.join(record.get('flags') or [])}" if record.get("flags") else "",
+        f"Official reason: {((disc.get('reason') or {}).get('text')) or 'none stated'}",
+    ] if x)
+    return {
+        "id": record.get("record_id"),
+        "record_id": record.get("record_id"),
+        "type": disc.get("change_type"),
+        "severity": _SEVERITY.get(item.get("level"), "low"),
+        "title": (f"[{str(item.get('level', 'info')).upper()}] {game.get('date')} "
+                  f"{game.get('away_team')} @ {game.get('home_team')} - "
+                  f"{disc.get('summary') or disc.get('change_type')}"),
+        "body": body,
+        "links": links,
+        "created_at": (record.get("detection") or {}).get("detected_at"),
+        "affects_goal_total": bool(disc.get("total_changed")),
+        "detected_by": "nhl_scoring",
+    }
+
+
+def write_site_feed(alerts: Iterable[Dict[str, Any]], repo_root: str,
+                    *, now: str = "") -> Dict[str, str]:
+    """Merge projected alerts into data/alerts.json and rewrite data/alerts.xml."""
+    import html as _html
+    from datetime import datetime, timezone
+    from email.utils import format_datetime
+
+    now = now or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    json_path = os.path.join(repo_root, "data", "alerts.json")
+    rss_path = os.path.join(repo_root, "data", "alerts.xml")
+
+    existing: List[Dict[str, Any]] = []
+    try:
+        with open(json_path, encoding="utf-8") as fh:
+            existing = (json.load(fh) or {}).get("alerts") or []
+    except Exception:
+        existing = []
+
+    by_id: Dict[str, Dict[str, Any]] = {a["id"]: a for a in existing if a.get("id")}
+    for item in alerts:
+        projected = site_shape(item)
+        if not projected.get("id"):
+            continue
+        previous = by_id.get(projected["id"])
+        if previous and previous.get("created_at"):
+            projected["first_seen_at"] = previous.get("first_seen_at") or previous["created_at"]
+            projected["created_at"] = previous["created_at"]
+        by_id[projected["id"]] = projected
+
+    merged = sorted(by_id.values(), key=lambda a: a.get("created_at") or "", reverse=True)
+    merged = merged[:SITE_FEED_MAX]
+    with open(json_path, "w", encoding="utf-8") as fh:
+        json.dump({"schema_version": 1, "generated_at": now, "alerts": merged},
+                  fh, indent=2, ensure_ascii=False)
+        fh.write("\n")
+
+    def pubdate(value):
+        try:
+            dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            return format_datetime(dt, usegmt=True)
+        except (ValueError, TypeError):
+            return value or now
+
+    items = []
+    for a in merged[:50]:
+        link_html = "".join(
+            f'<p><a href="{_html.escape(l)}">{_html.escape(l)}</a></p>'
+            for l in (a.get("links") or []) if l)
+        items.append(
+            "    <item>\n"
+            f"      <title>{_html.escape(a.get('title') or '')}</title>\n"
+            f"      <guid isPermaLink=\"false\">sdnhl-{_html.escape(str(a.get('id') or ''))}</guid>\n"
+            f"      <pubDate>{pubdate(a.get('created_at'))}</pubDate>\n"
+            f"      <description>{_html.escape(a.get('body') or '')}{link_html}</description>\n"
+            "    </item>")
+    rss = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n'
+        "    <title>ScoringDiscrepNHL alerts</title>\n"
+        "    <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>\n"
+        "    <description>Automated alerts for detected NHL scoring discrepancies and "
+        "corrections. Every alert links to official-source evidence.</description>\n"
+        f"    <lastBuildDate>{pubdate(now)}</lastBuildDate>\n"
+        + ("\n".join(items) + "\n" if items else "")
+        + "  </channel>\n</rss>\n")
+    with open(rss_path, "w", encoding="utf-8") as fh:
+        fh.write(rss)
+    return {"json": json_path, "rss": rss_path, "count": str(len(merged))}
