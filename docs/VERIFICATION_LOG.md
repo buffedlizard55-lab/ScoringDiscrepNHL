@@ -131,3 +131,35 @@ All of these were found by the tests written against the retrieved data, not by 
 * `parse_gs_report`'s **HTML layer** is exercised against reconstruction fixtures, not against the raw byte
   stream of the official document (the retrieval tool returned rendered text). This is exactly what
   `python -m nhl_monitor probe` validates at runtime, and it is listed as roadmap item P0-1.
+
+### 6. Three verified records sat next to an empty alert feed (2026-10-07)
+
+Found by checking the site's own alert index against the database, not by a test:
+`data/records/discrepancies.json` held three verified records while
+`data/alerts/index.json` reported `count: 0`. The reason was structural, not a bug in
+one command: the monitor raised alerts, but the announcement ingest and both backfill
+methods wrote records straight to the database and never emitted anything, so the
+public feed said "nothing detected" beside three verified discrepancies.
+
+Fixed by giving every detection route one entry point, `alerts.emit_for_records`, which
+writes the alert files, refreshes the index and (optionally) opens the GitHub issue. The
+ingest now also preserves an alert's original `created_at_utc` when it is re-emitted, so
+a re-ingest cannot make an old finding look new.
+
+### 7. The archive scan counted unanswerable documents as answered (2026-10-07)
+
+`archive.summarise_scan` computed `documents_with_a_usable_capture` as "everything that
+is not `no_usable_capture`", which silently counted **failed index queries** as
+documents the archive could vouch for — it reported 1 of 1 documents as archived in a
+run where the only query had failed with `RemoteDisconnected`. That would have inflated
+the coverage ceiling that bounds every claim about how much history is recoverable.
+
+Fixed by counting from the capture count per row rather than from the verdict string,
+with `index_error` and `no_usable_capture` reported separately; a regression test asserts
+that a failed query yields `documents_with_a_usable_capture == 0`.
+
+### 8. `backfill-archive` aborted the whole run on one index error (2026-10-07)
+
+The command let a fetch failure propagate, so a single unreachable index query killed a
+long census run instead of reporting that document as unknown. It now records the error,
+states in the output that the document is UNKNOWN rather than unchanged, and continues.
