@@ -1,0 +1,10 @@
+# Monitor runtime state (restored via Actions cache, not git)
+scripts/snapshots/
+scripts/alerts.json
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store

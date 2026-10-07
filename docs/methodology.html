@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methodology &amp; Limitations — NHL Scoring Discrepancies</title>
+  <meta name="description" content="Sources, verification tiers, historical coverage, limitations, and market-impact policy.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">🏒 NHL <span>Scoring Discrepancies</span></a>
+      <div class="nav-links">
+        <a href="index.html">Database</a>
+        <a href="alerts.html">Alert System</a>
+        <a href="methodology.html" class="active">Methodology &amp; Limitations</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <header class="hero">
+      <h1>Methodology, Sources &amp; Limitations</h1>
+      <p>How records are built, what counts as evidence, how far back coverage can go, and what this
+        project honestly cannot do. Read this before citing any record.</p>
+    </header>
+
+    <div class="prose">
+      <h2>1. Mission (project prompt)</h2>
+      <p>Build a complete, continuously updateable database of NHL scoring discrepancies and corrections
+        using official NHL sources whenever available: the NHL Situation Room, official game reports,
+        official scoring summaries, official team reports, and other trusted primary sources. Capture every
+        identifiable event where the original scoring record/ruling was later changed — goals to no-goal,
+        no-goals to goals, video-review reversals, scorer changes, assist changes, in-game, intermission,
+        and postgame corrections. Preserve original and corrected state side by side, link the exact official
+        source for every record, and flag anything incomplete, conflicting, or unverifiable instead of assuming.</p>
+
+      <h2>2. Source hierarchy</h2>
+      <table>
+        <tr><th>Priority</th><th>Source</th><th>What it proves</th><th>Example / pattern</th></tr>
+        <tr><td>1</td><td>NHL Situation Room articles (NHL.com news)</td><td>Review type, original call, final ruling, reason, rule cited</td><td><a href="https://www.nhl.com/news/new-york-rangers-ottawa-senators-video-review">Video Review: NYR @ OTT</a></td></tr>
+        <tr><td>2</td><td>@NHLPR "OFFICIAL SCORING CHANGE" posts</td><td>Corrected scoring line, game number, period/clock</td><td><a href="https://x.com/NHLPR/status/2043750852360302805">@NHLPR scoring change post</a></td></tr>
+        <tr><td>3</td><td>RTSS official HTML reports (GS/ES/PL)</td><td>Final scoring summary, per-goal assists, on-ice players</td><td><code>nhl.com/scores/htmlreports/{season}/GS{game}.HTM</code></td></tr>
+        <tr><td>4</td><td>NHL API snapshots (play-by-play, boxscore)</td><td>Machine-readable scoring state at a point in time; basis for diff alerts</td><td><code>api-web.nhle.com/v1/gamecenter/{id}/play-by-play</code></td></tr>
+        <tr><td>5</td><td>Official team / NHL.com recaps</td><td>Corroboration of events and timing</td><td>Team official sites, NHL.com recaps</td></tr>
+        <tr><td>6</td><td>Trusted secondary (quoting official text)</td><td>Pointer to an official announcement; never final evidence alone</td><td>Beat writers, Scouting the Refs</td></tr>
+      </table>
+
+      <h2>3. Verification tiers (every record carries one)</h2>
+      <table>
+        <tr><th>Tier</th><th>Meaning</th><th>Citable?</th></tr>
+        <tr><td><strong>Official · direct</strong></td><td>An official NHL source directly confirms both the original and corrected state (or the full ruling change).</td><td>Yes</td></tr>
+        <tr><td><strong>Official · partial</strong></td><td>An official source confirms one side (usually the correction); the other side is still missing.</td><td>With caveats</td></tr>
+        <tr><td><strong>Official · quoted</strong></td><td>A secondary report quotes an official announcement verbatim, but the direct official URL is not captured yet.</td><td>No — verify first</td></tr>
+        <tr><td><strong>Secondary</strong></td><td>Only secondary reporting so far.</td><td>No</td></tr>
+        <tr><td><strong>Unverified</strong></td><td>Claim without a traceable source. Should not normally exist in the DB.</td><td>No</td></tr>
+      </table>
+      <p><strong>Rules:</strong> unknown fields are <code>null</code> with a written flag — never guessed.
+        Dates inferred from article context are marked <code>inferred</code>. Records are verified line by line;
+        any irregularity is flagged for review rather than smoothed over.</p>
+
+      <h2>4. Historical coverage — what is realistically obtainable</h2>
+      <table>
+        <tr><th>Era</th><th>What exists</th><th>Discrepancy-recovery prospects</th></tr>
+        <tr><td>2023–present (new NHL API era)</td><td>Full play-by-play/boxscore JSON, Situation Room articles, @NHLPR posts, RTSS reports</td><td><strong>Best.</strong> Forward monitoring + recent backfill feasible.</td></tr>
+        <tr><td>~2011–2023 (legacy API era)</td><td>RTSS reports, Situation Room coverage, contemporary recaps; legacy API is dead (data migrated partially to new API)</td><td><strong>Moderate.</strong> Final states recoverable; original pre-correction states need archived/contemporary sources.</td></tr>
+        <tr><td>2005–2011 (post-lockout, pre–Situation Room blog)</td><td>RTSS reports, boxscores; fewer centralized review explanations</td><td><strong>Hard.</strong> Case-by-case archival research.</td></tr>
+        <tr><td>Pre-2005</td><td>Scores, basic stats; sparse play-level detail</td><td><strong>Very limited.</strong> Only famous/contested cases with contemporary documentation.</td></tr>
+      </table>
+      <p>Earliest reliable coverage will be determined empirically as backfill proceeds and documented here.
+        Any era claim without verified records is not made.</p>
+
+      <h2>5. Limitations (binding on this project)</h2>
+      <ul>
+        <li><strong>No official corrections feed exists.</strong> Detection is snapshot-diffing (see <a href="alerts.html">Alert System</a>), which finds state changes, not announcements.</li>
+        <li><strong>APIs show corrected state only.</strong> Once the NHL updates a game, the pre-correction state is overwritten — forward monitoring must capture "before" snapshots itself.</li>
+        <li><strong>X/Twitter monitoring is manual.</strong> @NHLPR posts are a primary source with no free monitoring API; collection is manual unless a compliant integration is added later.</li>
+        <li><strong>Reasons need human sourcing.</strong> The API never explains <em>why</em>; every "reason" field must trace to a Situation Room/team/official text.</li>
+        <li><strong>GitHub Pages + Actions constraints:</strong> static hosting only; scheduled checks run at cron granularity (minutes, not seconds); no true real-time push.</li>
+        <li><strong>Human verification is mandatory</strong> before any monitored candidate enters the database. The monitor proposes; humans dispose.</li>
+      </ul>
+
+      <h2>6. Game-total market policy</h2>
+      <p>Records distinguish <strong>goal-total changers</strong> (red) from <strong>attribution-only</strong>
+        corrections (blue). A record is flagged <em>possible total-market impact</em> only when a goal was
+        added or removed after the event initially appeared final (e.g. a review overturn after play stopped,
+        or a postgame goal add/remove). Attribution-only changes never affect game totals, though they can
+        affect player-point markets — that is noted per record, not asserted as settlement fact, because
+        sportsbook correction/settlement rules differ.</p>
+
+      <h2>7. Record schema</h2>
+      <p>Canonical database file: <code>docs/data/discrepancies.json</code> (single source of truth for the
+        site). Machine-readable schema: <code>docs/data/schema.json</code>. Validate with
+        <code>python scripts/validate.py</code>. Required on every record: game date (or explicit unknown),
+        teams, period/clock (or explicit unknown), initial ruling, corrected ruling, reason (or "not stated"),
+        correction timing, video-review flag, goal-total vs. attribution flags, at least one source with URL,
+        a verification tier, and a flags array.</p>
+    </div>
+
+    <footer>
+      <a href="index.html">Database</a> · <a href="alerts.html">Alert system</a> ·
+      <a href="https://github.com/buffedlizard55-lab/ScoringDiscrepNHL">GitHub repository</a>
+    </footer>
+  </main>
+</body>
+</html>
