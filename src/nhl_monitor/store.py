@@ -42,6 +42,10 @@ EVIDENCE_STATUSES = {
     "verified_corrected_state": "The corrected state is verified from an official artifact; the "
                                 "initial state rests on an official artifact that has since been "
                                 "overwritten, or on a documented official announcement.",
+    "verified_corrected_state_and_official_announcement":
+        "The corrected state is verified from an official report or game feed, and the league's own "
+        "announcement states that the change was made. The pre-change scoring record was not "
+        "retrievable, so the scope of the change before the correction rests on the announcement.",
     "official_announcement_only": "An official source states the change but the pre-change artifact "
                                   "is not retrievable.",
     "conflicting": "Two official artifacts disagree and the discrepancy has NOT been resolved.",
@@ -98,9 +102,34 @@ def load_records(path: str = RECORDS_PATH) -> List[dict]:
     return blob
 
 
+#: keys the store owns and always rewrites; every other top-level key in the file
+#: (coverage reports, status notes, anything a future session adds) is PRESERVED.
+_OWNED_KEYS = ("schema_version", "updated_at_utc", "count", "records")
+
+
+def _preserved_metadata(path: str) -> dict:
+    """Top-level metadata already in the file that the store must not delete.
+
+    Discovered the hard way: the first monitor write would otherwise have silently
+    dropped `coverage` and `status_note`, taking the site's coverage panel and the
+    empty-state explanation with it.
+    """
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path) as fh:
+            previous = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(previous, dict):
+        return {}
+    return {k: v for k, v in previous.items() if k not in _OWNED_KEYS}
+
+
 def save_records(records: Iterable[dict], path: str = RECORDS_PATH, **meta) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     payload = {"schema_version": "1.0", "updated_at_utc": utcnow(), "count": 0, "records": []}
+    payload.update(_preserved_metadata(path))
     for r in records:
         if not r.get("completeness"):
             r["completeness"] = completeness(r)
@@ -168,6 +197,24 @@ def read_evidence(game_id: int, *, root: str = EVIDENCE_DIR) -> List[dict]:
             if line:
                 out.append(json.loads(line))
     return out
+
+
+def append_finding(game_id: int, finding: dict, *, root: str = EVIDENCE_DIR) -> str:
+    """Persist a cross-check discrepancy (two official renderings disagreeing).
+
+    Findings are *not* discrepancy records: they are unresolved observations that a
+    human (or a later automated pass) must resolve. Keeping them out of the record
+    store is deliberate - a record must never be created from an unresolved conflict.
+    """
+    d = os.path.join(root, str(game_id))
+    os.makedirs(d, exist_ok=True)
+    path = os.path.join(d, "crosschecks.jsonl")
+    payload = dict(finding)
+    payload.setdefault("observed_at_utc", utcnow())
+    payload.setdefault("game_id", game_id)
+    with open(path, "a") as fh:
+        fh.write(json.dumps(payload, sort_keys=True, ensure_ascii=False) + "\n")
+    return path
 
 
 def save_game_state(state_dict: dict, *, root: str = GAMES_DIR) -> str:

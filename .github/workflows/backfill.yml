@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       method:
-        description: "era | archive"
+        description: "era | archive | coverage"
         required: true
         default: "era"
       season:
@@ -55,7 +55,10 @@ jobs:
       - name: Run the selected census method
         run: |
           set -o pipefail
-          if [ "${{ github.event.inputs.method }}" = "archive" ]; then
+          if [ "${{ github.event.inputs.method }}" = "coverage" ]; then
+            PYTHONPATH=src python -m nhl_monitor coverage \
+              --from-season 1999 --to-season 2026 | tee backfill_output.json
+          elif [ "${{ github.event.inputs.method }}" = "archive" ]; then
             PYTHONPATH=src python -m nhl_monitor backfill-archive \
               --game-id "${{ github.event.inputs.game_id }}" \
               --kind "${{ github.event.inputs.kind }}" | tee backfill_output.json
@@ -70,6 +73,7 @@ jobs:
       - name: Rebuild the site data and export CSV
         if: always()
         run: |
+          node tools/check_site.mjs
           python tools/build_site.py
           PYTHONPATH=src python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
 

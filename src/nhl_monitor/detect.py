@@ -13,7 +13,7 @@ from typing import Dict, List, Optional, Tuple
 
 from . import classify, sources, store
 from .parse import parse_api_boxscore, parse_api_pbp, parse_gs_report, report_era
-from .state import Change, GameState, diff_states
+from .state import Change, GameState, _clock_seconds, diff_states
 
 # ----------------------------------------------------------------------------- #
 # Official change notes inside official documents
@@ -137,7 +137,13 @@ def build_records(before: Optional[GameState], after: GameState,
         by_goal.setdefault(key, []).append(ch)
 
     records: List[dict] = []
-    for seq, (key, group) in enumerate(sorted(by_goal.items(), key=lambda kv: str(kv[0])), start=1):
+    # record sequence numbers follow GAME time, using seconds rather than clock text
+    def _group_sort_key(kv):
+        ptype, period, clock, team = kv[0]
+        return ({"REG": 0, "OT": 1, "SO": 9}.get(str(ptype).upper(), 3), period or 0,
+                _clock_seconds(clock or ""), str(clock), str(team))
+
+    for seq, (key, group) in enumerate(sorted(by_goal.items(), key=_group_sort_key), start=1):
         first = group[0]
         group_class = classify.classify(group)
         g_timing, g_why = classify.infer_timing(before, after)
@@ -198,7 +204,7 @@ def build_records(before: Optional[GameState], after: GameState,
                 "previous_state_captured_at_utc": before.retrieved_at,
                 "new_state_captured_at_utc": after.retrieved_at,
             },
-            "sources": _sources_for(group, evidence),
+            "sources": _sources_for(before, after, evidence),
             "evidence_status": _evidence_status(group, evidence, before, after),
             "settlement": g_settlement,
             "detection": {
@@ -232,38 +238,76 @@ def _final_score(state: GameState) -> str:
 
 
 def _blob_for(group: List[Change], side: str) -> dict:
+    """The state of the changed goal *before* or *after* the change.
+
+    Read explicitly from the raw changes so that "did not exist" is distinguishable
+    from "existed but unknown": a goal that was added had no prior ruling, and a goal
+    that was removed has no corrected ruling.
+    """
+    team = group[0].team if group else None
+    kinds = {c.change_type for c in group}
+    if side == "before" and "goal_added" in kinds:
+        return {"ruling": "no_goal", "team": team, "scorer": None, "assists": []}
+    if side == "after" and "goal_removed" in kinds:
+        return {"ruling": "no_goal", "team": team, "scorer": None, "assists": []}
     for ch in group:
         blob = ch.before if side == "before" else ch.after
         if blob:
-            out = _side_blob(blob) or {}
-            if side == "before" and ch.change_type == "goal_added":
-                out = {"ruling": "no_goal", "team": ch.team, "scorer": None, "assists": []}
-            if side == "after" and ch.change_type == "goal_removed":
-                out = {"ruling": "no_goal", "team": ch.team, "scorer": None, "assists": []}
-            return out
-    # pure addition / removal handled above; fallback keeps the structure valid
-    return {"ruling": "unknown", "team": group[0].team if group else None}
+            out = _side_blob(blob)
+            if out:
+                return out
+    return {"ruling": "unknown", "team": team}
 
 
-def _sources_for(group: List[Change], evidence: Dict[str, dict]) -> List[dict]:
+_SOURCE_NAMES = {
+    "api.pbp": ("official-api", "NHL GameCenter play-by-play"),
+    "api.boxscore": ("official-api", "NHL GameCenter boxscore"),
+    "doc.GS": ("official-document", "Official Game Summary (HTML)"),
+    "doc.ES": ("official-document", "Official Event Summary (HTML)"),
+    "doc.PL": ("official-document", "Official Play-by-Play report (HTML)"),
+    "doc.RO": ("official-document", "Official Club Playing Roster (HTML)"),
+}
+
+
+def _source_entry(state: GameState, role: str, evidence: Dict[str, dict]) -> dict:
+    kind, name = _SOURCE_NAMES.get(state.source_key, ("official-api", state.source_key))
+    ev = (evidence or {}).get(state.source_key, {}) or {}
+    return {
+        "role": role,
+        "type": kind,
+        "name": name,
+        "url": state.source_url,
+        "http_status": ev.get("http_status"),
+        "retrieved_at_utc": state.retrieved_at,
+    }
+
+
+def _sources_for(before: GameState, after: GameState, evidence: Dict[str, dict]) -> List[dict]:
+    """Every official URL behind this record, with the role it played.
+
+    When both states came from the same URL (the normal live case: we polled the same
+    endpoint twice), they are recorded as ONE source with two capture times - claiming
+    two independent sources there would be misleading.
+    """
     out: List[dict] = []
-    for ch in group:
-        for side, state_key in (("initial_state", ch.before), ("corrected_state", ch.after)):
-            if not state_key:
-                continue
-            src = evidence.get("pbp") if "pbp" in evidence else None
-            if src and not any(s["url"] == src["url"] and s["role"] == side for s in out):
-                out.append({"role": side, "type": "official-api", "name": "NHL GameCenter play-by-play",
-                            **src})
-        break
+    if before.source_url and before.source_url == after.source_url:
+        entry = _source_entry(after, "initial_state_and_corrected_state", evidence)
+        entry["captured_initial_state_at_utc"] = before.retrieved_at
+        entry["captured_corrected_state_at_utc"] = after.retrieved_at
+        out.append(entry)
+    else:
+        if before.source_url:
+            out.append(_source_entry(before, "initial_state", evidence))
+        if after.source_url:
+            out.append(_source_entry(after, "corrected_state", evidence))
+
     for key, ev in (evidence or {}).items():
-        if key in {"pbp", "boxscore", "gs"} and ev and ev.get("url"):
-            role = {"pbp": "corrected_state", "boxscore": "cross_check", "gs": "cross_check"}.get(key, "cross_check")
-            if not any(s["url"] == ev["url"] for s in out):
-                out.append({"role": role, "type": "official-api" if key != "gs" else "official-document",
-                            "name": {"pbp": "NHL GameCenter play-by-play",
-                                     "boxscore": "NHL GameCenter boxscore",
-                                     "gs": "Official Game Summary (HTML)"}[key], **ev})
+        if not ev or not ev.get("url"):
+            continue
+        if any(x.get("url") == ev["url"] for x in out):
+            continue
+        kind, name = _SOURCE_NAMES.get(key, ("official-api", key))
+        out.append({"role": "cross_check", "type": kind, "name": name, **ev})
     return out
 
 
@@ -323,6 +367,10 @@ def collect_game(game_id: int, *, cache_dir: Optional[str] = None, dry_run: bool
     if box_state is not None:
         result["findings"] = (classify.crosscheck_player_totals(pbp_state, box_state)
                               + classify.team_total_crosscheck(pbp_state, box_state))
+        if result["findings"] and not dry_run:
+            # an unresolved conflict is evidence, not a record: keep it, flag it, review it
+            for finding in result["findings"]:
+                store.append_finding(game_id, finding)
 
     previous = store.load_game_state(game_id)
     before = GameState.from_dict(previous) if previous else None

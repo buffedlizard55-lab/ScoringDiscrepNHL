@@ -131,8 +131,16 @@ class GameState:
         return None
 
     def sorted_goals(self) -> List[GoalEvent]:
+        """Goals in true game order.
+
+        The clock is sorted as SECONDS, not as text: as text, "18:31" sorts before
+        "2:00" and a two-goal period comes out in the wrong order (found by the
+        2000-2004 era fixture on 2026-10-07). The raw string is kept as a tiebreak
+        so that unparseable clocks still order deterministically.
+        """
         order = {"REG": 0, "OT": 1, "SO": 9}
-        return sorted(self.goals, key=lambda g: (order.get(g.period_type.upper(), 3), g.period, g.clock, g.team))
+        return sorted(self.goals, key=lambda g: (order.get(g.period_type.upper(), 3), g.period,
+                                                 _clock_seconds(g.clock), g.clock, g.team))
 
     def as_dict(self) -> dict:
         return {
@@ -216,13 +224,15 @@ class GameState:
 # ----------------------------------------------------------------------------- #
 
 CHANGE_TYPES = (
-    "goal_removed",      # goal -> no goal (total changes)
-    "goal_added",        # no goal -> goal (total changes)
-    "scorer_change",     # attribution only
-    "assist_change",     # attribution only
-    "strength_change",   # goal properties changed
+    "goal_removed",       # goal -> no goal (game total changes)
+    "goal_added",         # no goal -> goal (game total changes)
+    "scorer_change",      # attribution only
+    "assist_change",      # attribution only
+    "strength_change",    # goal properties changed
     "own_goal_flag_change",
-    "metadata_change",   # score/state updated with no structural change
+    "time_change",        # the recorded clock of an existing goal moved: NOT a total change
+    "team_change",        # the goal was reassigned to the other team (team totals / winner can flip)
+    "metadata_change",    # score/state updated with no structural change
 )
 
 
@@ -252,34 +262,63 @@ def _clock_seconds(clock: str) -> int:
         return -1
 
 
-def _match_goals(before: List[GoalEvent], after: List[GoalEvent]
-                 ) -> Tuple[List[Tuple[GoalEvent, GoalEvent]], List[GoalEvent], List[GoalEvent]]:
-    """Match goals across two states.
+class GoalMatch:
+    """A pairing of the same goal across two official states, with how it matched."""
 
-    Pass 1 exact natural key, pass 2 same period+team with clock within 3 seconds.
-    Unmatched goals are reported as added/removed rather than silently re-paired.
+    def __init__(self, before: GoalEvent, after: GoalEvent, kind: str):
+        self.before = before
+        self.after = after
+        self.kind = kind  # "exact" | "clock_drift" | "scorer_same_time_moved" | "scorer_same_clock_reteamed"
+
+
+def _match_goals(before: List[GoalEvent], after: List[GoalEvent]) -> Tuple[List[GoalMatch], List[GoalEvent], List[GoalEvent]]:
+    """Match goals across two states in four progressively looser passes.
+
+    Order matters: a loose pass must never steal the partner of a tighter one, or a
+    goal-time correction would be mis-reported as a removed goal plus an added goal -
+    which would wrongly look like the goal total changed and would corrupt the
+    settlement assessment.
+
+      pass 1  exact      period_type + period + clock + team
+      pass 2  clock_drift same period+team, clock within 3 seconds (feed rounding)
+      pass 3  time moved  same period+team+scorer, any clock   -> time_change
+      pass 4  re-teamed   same period+scorer, clock within 3s  -> team_change (own goal)
+
+    Anything unmatched after all four passes is genuinely added or removed.
     """
-    matched: List[Tuple[GoalEvent, GoalEvent]] = []
+    matched: List[GoalMatch] = []
     remaining_after = list(after)
     unmatched_before: List[GoalEvent] = []
 
-    for gb in before:
-        hit = None
+    def take(gb: GoalEvent, predicate) -> bool:
         for ga in remaining_after:
-            if ga.natural_key() == gb.natural_key():
-                hit = ga
-                break
-        if hit is None:
-            for ga in remaining_after:
-                if (ga.period_type, ga.period, ga.team.upper()) == (gb.period_type, gb.period, gb.team.upper()) \
-                        and abs(_clock_seconds(ga.clock) - _clock_seconds(gb.clock)) <= 3:
-                    hit = ga
-                    break
-        if hit is None:
-            unmatched_before.append(gb)
-        else:
-            remaining_after.remove(hit)
-            matched.append((gb, hit))
+            if predicate(ga):
+                remaining_after.remove(ga)
+                matched.append(GoalMatch(gb, ga, "matched"))
+                return True
+        return False
+
+    def same_scorer(a: GoalEvent, b: GoalEvent) -> bool:
+        if a.scorer is None or b.scorer is None:
+            return False
+        return a.scorer.same_player(b.scorer)
+
+    for gb in before:
+        if take(gb, lambda ga: ga.natural_key() == gb.natural_key()):
+            continue
+        if take(gb, lambda ga: (ga.period_type, ga.period, ga.team.upper()) ==
+                              (gb.period_type, gb.period, gb.team.upper())
+                and abs(_clock_seconds(ga.clock) - _clock_seconds(gb.clock)) <= 3):
+            continue
+        if take(gb, lambda ga: (ga.period_type, ga.period) == (gb.period_type, gb.period)
+                and same_scorer(ga, gb)):
+            continue
+        if take(gb, lambda ga: (ga.period_type, ga.period) == (gb.period_type, gb.period)
+                and abs(_clock_seconds(ga.clock) - _clock_seconds(gb.clock)) <= 3
+                and ga.team.upper() != gb.team.upper()
+                and (gb.scorer is None or ga.scorer is None or same_scorer(ga, gb))):
+            continue
+        unmatched_before.append(gb)
     return matched, unmatched_before, remaining_after
 
 
@@ -306,7 +345,26 @@ def diff_states(before: GameState, after: GameState) -> List[Change]:
             detail=f"Goal now present in the official record: {g.describe()}",
         ))
 
-    for gb, ga in matched:
+    for pair in matched:
+        gb, ga = pair.before, pair.after
+        # a difference of <= 3 seconds is feed rounding (pass 2), not a correction
+        if gb.clock != ga.clock and abs(_clock_seconds(gb.clock) - _clock_seconds(ga.clock)) > 3:
+            changes.append(Change(
+                change_type="time_change",
+                period=ga.period, clock=ga.clock, team=ga.team,
+                before=gb.as_dict(), after=ga.as_dict(),
+                detail=(f"Recorded goal time changed from {gb.clock} to {ga.clock} "
+                        f"(same period, same team, same scorer) - the goal count did not change"),
+            ))
+        if gb.team.upper() != ga.team.upper():
+            changes.append(Change(
+                change_type="team_change",
+                period=ga.period, clock=ga.clock, team=ga.team,
+                before=gb.as_dict(), after=ga.as_dict(),
+                detail=(f"Goal reassigned from {gb.team} to {ga.team} at {ga.clock} "
+                        f"(own-goal re-attribution) - team totals and the winner can change "
+                        f"even though the game total does not"),
+            ))
         if (gb.scorer is None) != (ga.scorer is None) or (
                 gb.scorer and ga.scorer and not gb.scorer.same_player(ga.scorer)):
             changes.append(Change(
@@ -362,4 +420,17 @@ def affects_goal_total(changes: List[Change]) -> bool:
 
 
 def attribution_only(changes: List[Change]) -> bool:
-    return bool(changes) and not affects_goal_total(changes)
+    """True only when every change is about *who* is credited.
+
+    A corrected goal time or a corrected strength is neither a goal-total change nor an
+    attribution change, and must not be labelled as one - the brief asks for those two
+    categories to be kept cleanly apart.
+    """
+    kinds = {c.change_type for c in changes}
+    return bool(kinds) and kinds <= {"scorer_change", "assist_change"}
+
+
+def affects_team_assignment(changes: List[Change]) -> bool:
+    """A goal moved from one team to the other: team totals, puck line and the
+    winner can change even though the *game* total cannot."""
+    return any(c.change_type == "team_change" for c in changes)

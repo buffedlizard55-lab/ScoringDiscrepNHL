@@ -88,3 +88,13 @@ current official state for the changed event next to the stored `corrected_state
 | `metadata_change` records | team score moved with no matching goal-set change | treat as an inconsistent feed, verify manually, never auto-resolve |
 | CDX returns HTTP 429 | archive rate limit | wait, reduce `limit`, run fewer games per slice |
 | Site shows stale data | `_site/data/*` is generated | re-run `python tools/build_site.py` (the Pages workflow does this) |
+
+## Commands
+
+```bash
+PYTHONPATH=src python -m nhl_monitor ingest          # announcements -> records
+PYTHONPATH=src python -m nhl_monitor backfill-era    # frozen report vs current database
+PYTHONPATH=src python -m nhl_monitor monitor         # live poll + alert
+PYTHONPATH=src python -m nhl_monitor coverage        # per-season availability
+PYTHONPATH=src python -m nhl_monitor verify --record-id <id>
+```

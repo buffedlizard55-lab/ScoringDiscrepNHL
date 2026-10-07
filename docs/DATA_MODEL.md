@@ -101,3 +101,25 @@ both the classification and the flag, so the mistake cannot come back unnoticed.
 period, clock, team, scorer, assists, strength, own-goal) — not volatile fields such as retrieval time. Two
 captures with the same fingerprint are the same record; a different fingerprint means the official record
 moved, and the diff engine then says exactly how.
+
+## Fields added by the announcement-ingest path (pass 3)
+
+Records built by `ingest` carry the same required shape as auto-detected ones plus the fields below. The site
+renders all of them in the record drawer.
+
+| Field | Meaning |
+|---|---|
+| `case_id` | the case file in `data/inbox/statements/` this record is reproducible from |
+| `status` | `auto_detected` or `verified_from_official_announcement` |
+| `initial_state.evidence_status` | `verified_official` / `reported_by_secondary_source` / `official_artifact_residual` / `unavailable` — how the *pre-change* state is known |
+| `corrected_state.evidence_status` | `verified` when an official report or feed shows the corrected credit |
+| `change.declared_changes` | what the announcement says changed, as declared in the case file |
+| `change.machine_diff` | the two declared states compared field by field: `same` / `changed` / **`indeterminate`** (a field neither state documents). A declared change that the states do not show, the two are compared and a flag says so |
+| `timing.announced_at_utc` | the league announcement's own timestamp |
+| `timing.game_ended_at_utc` + `game_end_time_note` | the documented end of the game and the conversion that produced it |
+| `timing.latency_after_final_buzzer_seconds` | announcement minus end of game, computed only when both are documented |
+| `sources[].role` | `corrected_state`, `official_announcement`, `official_announcement_reproduction`, `initial_state_corroboration`, `cross_check` |
+| `sources[].document_generated_at` | the report footer, verbatim and unconverted |
+| `sources[].quoted_row` | the exact report row the corrected state was read from (the "line by line" check, stored) |
+| `sources[].retrievable_as_text` | false when the URL is cited but its text could not be read directly |
+| `flags` | every missing or contradictory piece of evidence, named. Flagged is not the same as wrong: it means a named part of the evidence is absent |

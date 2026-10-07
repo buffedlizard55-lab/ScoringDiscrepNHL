@@ -96,6 +96,8 @@ class TestGameSummaryParser(unittest.TestCase):
         self.assertEqual(first.strength, "EV")
         self.assertEqual(first.scorer.sweater, 86)
         self.assertEqual(first.scorer.name, "N.KUCHEROV")
+        self.assertEqual(st.away.abbrev, "NSH")      # league shield logo must not become "NHL"
+        self.assertEqual(st.home.abbrev, "TBL")
         self.assertEqual([a.name for a in first.assists], ["V.HEDMAN", "B.POINT"])
         # the penalty-shot goal has a merged assist cell and no assists
         ps = [g for g in st.goals if g.clock == "3:07"][0]
@@ -124,6 +126,8 @@ class TestGameSummaryParser(unittest.TestCase):
         self.assertEqual([a.name for a in ryder.assists], ["S. KOIVU", "A. KOVALEV"])
         frozen, _ = parse.report_era(st.game_date, st.report_generated_at)
         self.assertTrue(frozen)
+        self.assertEqual((st.away.abbrev, st.home.abbrev), ("MTL", "BOS"))
+        self.assertEqual((st.away.score, st.home.score), (2, 1))
 
     def test_unparsable_document_warns_instead_of_inventing_goals(self):
         st = parse.parse_gs_report("<html><body><table><tr><td>hello</td></tr></table></body></html>",
@@ -141,6 +145,18 @@ class TestPlayByPlayParser(unittest.TestCase):
             "periodDescriptor": {"number": 3}, "clock": {"inIntermission": False},
             "plays": events,
         }
+
+    def test_shootout_goals_do_not_count_and_no_final_score_is_invented(self):
+        html = _read("gs_20232024_020001.html").replace(
+            "<tr><td>8</td><td>3</td><td>19:58</td>",
+            "<tr><td>9</td><td>SO</td><td>0:00</td><td>PS</td><td>TBL</td>"
+            "<td>86 N.KUCHEROV(3)</td><td>unassisted</td><td></td><td></td><td></td></tr>"
+            "<tr><td>8</td><td>3</td><td>19:58</td>", 1)
+        st = parse.parse_gs_report(html, url="u", retrieved_at="t", game_id=2023020001)
+        self.assertEqual(len([g for g in st.goals if g.period_type == "SO"]), 1)
+        self.assertEqual(st.goal_count("TBL"), 5)          # shootout goal excluded from the count
+        self.assertIsNone(st.away.score)                   # no invented final score
+        self.assertTrue(any("shootout" in w for w in st.parse_warnings))
 
     def test_goal_event_verbatim_fixture(self):
         blob = json.loads(_read("pbp_2023020001_goal_event.json"))
@@ -226,6 +242,34 @@ class TestDiffEngine(unittest.TestCase):
         changes = state.diff_states(a, b)
         self.assertEqual([c.change_type for c in changes], ["assist_change"])
         self.assertIn("Assists changed", changes[0].detail)
+
+    def test_goal_time_correction_is_not_a_goal_total_change(self):
+        """A corrected goal time must never look like a removed + added goal."""
+        a = self._state([self._goal(clock="9:48")], 3, 5)
+        b = self._state([self._goal(clock="12:31")], 3, 5)
+        changes = state.diff_states(a, b)
+        self.assertEqual([c.change_type for c in changes], ["time_change"])
+        self.assertFalse(state.affects_goal_total(changes))
+        self.assertFalse(state.attribution_only(changes))
+        cls = classify.classify(changes)
+        self.assertEqual(cls["discrepancy_type"], "time_change")
+        self.assertFalse(cls["affects_goal_total"])
+        self.assertEqual(classify.settlement_assessment(cls, "postgame_after_publication")["level"], "low")
+
+    def test_team_reassignment_is_flagged_as_market_relevant(self):
+        """An own-goal re-attribution keeps the game total but can flip the winner."""
+        a = self._state([self._goal(team="TBL")], 3, 5)
+        b = self._state([self._goal(team="NSH")], 3, 5)
+        changes = state.diff_states(a, b)
+        self.assertEqual([c.change_type for c in changes], ["team_change"])
+        self.assertFalse(state.affects_goal_total(changes))
+        self.assertTrue(state.affects_team_assignment(changes))
+        cls = classify.classify(changes)
+        self.assertEqual(cls["discrepancy_type"], "team_change")
+        out = classify.settlement_assessment(cls, "postgame_after_publication")
+        self.assertFalse(out["could_affect_game_total_market"])   # over/under unchanged
+        self.assertTrue(out["could_affect_team_markets"])          # team totals / puck line / winner
+        self.assertEqual(out["level"], "high")
 
     def test_clock_drift_within_three_seconds_still_matches(self):
         a = self._state([self._goal(clock="9:48")], 3, 5)
@@ -397,6 +441,23 @@ class TestStore(unittest.TestCase):
         c = store.completeness(self._record())
         self.assertIn("reason.text", c["missing_requested_fields"])
         self.assertLess(c["percent_complete"], 100)
+
+    def test_writing_records_preserves_hand_maintained_metadata(self):
+        """The first pipeline write must not delete the coverage panel."""
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "records.json")
+            with open(path, "w") as fh:
+                json.dump({"schema_version": "1.0", "count": 0, "records": [],
+                           "coverage": {"season_coverage_measured": {"20052006": "frozen"}},
+                           "status_note": ["why the database is empty"]}, fh)
+            store.save_records([self._record()], path=path)
+            with open(path) as fh:
+                blob = json.load(fh)
+            self.assertEqual(blob["count"], 1)
+            self.assertIn("coverage", blob)
+            self.assertEqual(blob["status_note"], ["why the database is empty"])
 
     def test_upsert_insert_update_and_revision(self):
         import tempfile

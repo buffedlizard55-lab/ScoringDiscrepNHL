@@ -21,6 +21,7 @@ concurrency:
 permissions:
   contents: write
   issues: write
+  actions: write   # so the monitor can trigger the site deploy after new records
 
 jobs:
   monitor:

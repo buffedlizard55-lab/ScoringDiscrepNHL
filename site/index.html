@@ -81,6 +81,14 @@
       <label>Timing <select id="f-timing"><option value="">all</option></select></label>
       <label>Settlement risk <select id="f-settlement"><option value="">all</option></select></label>
       <label>Evidence <select id="f-evidence"><option value="">all</option></select></label>
+      <label>Cause <select id="f-cause">
+        <option value="">all</option>
+        <option value="video_review">video review (stated officially)</option>
+        <option value="stated">any reason stated officially</option>
+        <option value="unknown">reason not stated officially</option>
+      </select></label>
+      <label class="check"><input type="checkbox" id="f-postfinal" />
+        only changes after the record was final (market risk)</label>
       <label>Search <input type="search" id="f-q" placeholder="player, team, record id…" /></label>
       <button type="button" id="f-reset">Reset</button>
     </form>

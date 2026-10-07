@@ -105,3 +105,30 @@ A full census means tens of thousands of official document fetches (roughly 1,30
 seasons × report kinds) plus a throttled CDX query per game. This is a batch job with polite rate limiting,
 not a live request path — which is why the system is built around a scheduler and committed JSON rather than
 an on-demand API.
+
+## Limits specific to the announcement-ingest path (added in pass 3)
+
+The ingest path (`python -m nhl_monitor ingest`) builds records from the league's own scoring-change
+announcements. It closes the "before monitoring started" gap, but each of its limits is real and is stored on
+the record rather than hidden:
+
+| Limit | What it means | How the project handles it |
+|---|---|---|
+| The announcement states the **new** credit, not the old one | "now reads X from Y" proves the record changed and who is credited now; it does not prove what it read before | three-state comparison (`same` / `changed` / **indeterminate**). "Not documented" never becomes "nothing changed". `assists_before_the_change_not_captured` is a first-class flag |
+| The superseded credit often survives only in secondary reporting | for two of the three shipped records the pre-change credit comes from a syndicated reproduction | the record says `initial_state_reported_by_secondary_source_only` and the drawer shows it next to the official evidence |
+| The announcement channel has no supported API | the posts were retrieved here through the platform's page-fetch tool | the post URL is stored and its retrievability is recorded per source; automatic retrieval on a runner is roadmap P1-17 |
+| Announcement text can be reproduced with small differences | one reproduction renders the same statement with a dash after the game number; one misspells a player's name twice | the primary post is stored as the announcement text; the reproduction is stored as a separate named source with its wording preserved |
+| The offset between the *feed* flipping and the *announcement* | not measurable retrospectively | prospective measurement is the monitor's job; the record only claims what its timestamps support |
+| The report footer has no documented timezone | a rebuild time cannot be converted to UTC, and cannot be compared across sources with confidence | footer timestamps are stored verbatim, and the records say so |
+
+## What has *not* been demonstrated
+
+* **No goal-count-changing correction has ever been found.** All three records are attribution-only, so the
+  class that would move a game total is, so far, unobserved rather than disproved. The detector handles it
+  (`goal_added` / `goal_removed` are the only two change types that set `affects_goal_total`), and the site
+  keeps a separate view for it that is currently empty on purpose.
+* **No in-game announced-then-overturned goal has been found.** The official play-by-play contains no review
+  event, and the Game Summary records only the final ruling, so this class is not detectable from the
+  official machine-readable sources reviewed here.
+* **No pre-2000-01 material.** The official report host 404s on 1999-2000 and no alternative official
+  historical source was located.

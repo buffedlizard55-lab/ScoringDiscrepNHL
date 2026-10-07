@@ -7,7 +7,13 @@
     python -m nhl_monitor backfill-archive --game-id 2023020001
     python -m nhl_monitor verify --record-id NHL-20232024-020001-01
     python -m nhl_monitor export-csv --out data/exports/discrepancies.csv
+    python -m nhl_monitor coverage --from-season 1999 --to-season 2025
     python -m nhl_monitor sources
+
+Reachability, layout validation and coverage measurement are separate on purpose:
+`probe` answers "can I read the sources and does the parser still understand them?",
+`coverage` answers "which seasons exist and which of them still preserve the original
+record?". Both are safe to run at any time; neither writes records.
 
 Every command prints a JSON summary and writes artifacts into ``data/`` so the
 result is reproducible from git history alone.
@@ -143,11 +149,12 @@ def cmd_monitor(args) -> int:
     a settlement dispute.
     """
     from .fetch import get_json
+    from .parse import parse_api_score
 
     date = args.date or store.utcnow()[:10]
     url = f"{sources.API_WEB}/v1/score/{date}"
     payload, resp = get_json(url, cache_dir=args.cache_dir)
-    games = detect.__dict__ and __import__("nhl_monitor.parse", fromlist=["parse"]).parse_api_score(payload)
+    games = parse_api_score(payload)
     selected = []
     for g in games:
         state = (g.get("state") or "").upper()
@@ -265,6 +272,110 @@ def cmd_backfill_archive(args) -> int:
 # ----------------------------------------------------------------------------- #
 # verify / export
 # ----------------------------------------------------------------------------- #
+
+def cmd_coverage(args) -> int:
+    """Measure official-report coverage per season.
+
+    Answers the two questions the brief demands be *determined*, not assumed:
+
+    * from which season do official reports exist at all? (existence probe)
+    * in which season did reports stop being regenerated, i.e. from which season is the
+      live document no longer the original record? (footer timestamp probe)
+
+    The result is written to data/reference/coverage_report.json and quoted by the site.
+    """
+    from .fetch import get_text
+    from .parse import parse_gs_report, report_era
+
+    rows = []
+    for year in range(args.from_season, args.to_season + 1):
+        folder = f"{year}{year + 1}"
+        url = sources.report_url(folder, args.kind.upper(), args.game_type, args.game_no)
+        row = {"season": folder, "url": url}
+        try:
+            html, resp = get_text(url, timeout=args.timeout, retries=1, expect_status=(200, 404))
+        except Exception as exc:
+            row.update({"available": None, "error": f"{type(exc).__name__}: {exc}"})
+            rows.append(row)
+            continue
+        row["http_status"] = resp.status
+        if resp.status != 200:
+            row["available"] = False
+            rows.append(row)
+            continue
+        st = parse_gs_report(html, url=url, retrieved_at=resp.retrieved_at,
+                             season=folder)
+        frozen, note = report_era(st.game_date, st.report_generated_at)
+        row.update({
+            "available": True,
+            "game_date": st.game_date,
+            "report_generated_at": st.report_generated_at,
+            "report_is_frozen_original": frozen,
+            "era_note": note,
+            "goals_parsed": len([g for g in st.goals if g.period_type != "SO"]),
+            "parse_warnings": st.parse_warnings,
+        })
+        rows.append(row)
+
+    available = [r for r in rows if r.get("available")]
+    frozen = [r for r in available if r.get("report_is_frozen_original") is True]
+    regenerated = [r for r in available if r.get("report_is_frozen_original") is False]
+    report = {
+        "probed_at_utc": store.utcnow(),
+        "kind": args.kind.upper(),
+        "game_type": args.game_type,
+        "game_no": args.game_no,
+        "seasons": rows,
+        "earliest_season_with_report": min((r["season"] for r in available), default=None),
+        "latest_frozen_original_season": max((r["season"] for r in frozen), default=None),
+        "earliest_regenerated_season": min((r["season"] for r in regenerated), default=None),
+        "interpretation": (
+            "In frozen seasons the live document preserves the ORIGINAL game-night ruling, so it "
+            "can be diffed against the current database to recover scoring changes with both "
+            "states official. From the earliest regenerated season onward the original bytes are "
+            "overwritten and only archived snapshots can reveal what changed."),
+        "caveats": [
+            "One game per season is probed: a season is only reported as frozen if that game's "
+            "footer timestamp is on the game's own date.",
+            "A missing report for a mid-season game does not prove the season is absent - re-run "
+            "with a different --game-no before drawing a conclusion.",
+        ],
+    }
+    path = os.path.join(store.DATA_DIR, "reference", "coverage_report.json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as fh:
+        json.dump(report, fh, indent=2, ensure_ascii=False)
+        fh.write("\n")
+    _print(report)
+    return 0
+
+
+def cmd_ingest(args) -> int:
+    """Turn curated case files from the inbox into records.
+
+    This is the path for corrections the league announced itself, or that happened
+    before monitoring started. Each case file is parsed, cross-checked against the
+    league's statement, validated, and flagged - see src/nhl_monitor/ingest.py.
+    """
+    from . import ingest
+
+    files = ingest.case_files(args.inbox)
+    if not files:
+        print(f"no case files found in {args.inbox}")
+        return 0
+    built = ingest.ingest_cases(args.inbox, path=args.records, dry_run=args.dry_run,
+                               verbose=args.verbose)
+    print(f"{len(built)} case file(s) processed"
+          + (" (dry run - nothing written)" if args.dry_run else ""))
+    flagged = 0
+    for rec in built:
+        if rec.get("flags"):
+            print(f"  FLAGGED {rec['record_id']}: " + "; ".join(rec["flags"]))
+            flagged += 1
+    print(f"{flagged} record(s) carry review flags - flagged is not the same as wrong, "
+          "it means a named part of the evidence is missing")
+    return 0
+
 
 def cmd_verify(args) -> int:
     records = store.load_records()
@@ -385,6 +496,23 @@ def build_parser() -> argparse.ArgumentParser:
     sa.add_argument("--game-id", type=int, required=True)
     sa.add_argument("--kind", default="GS")
     sa.set_defaults(func=cmd_backfill_archive)
+
+    sco = sub.add_parser("coverage", help="measure per-season report availability and era")
+    sco.add_argument("--from-season", type=int, default=1999)
+    sco.add_argument("--to-season", type=int, default=2025)
+    sco.add_argument("--kind", default="GS")
+    sco.add_argument("--game-type", type=int, default=2)
+    sco.add_argument("--game-no", type=int, default=1)
+    sco.add_argument("--timeout", type=float, default=30.0)
+    sco.set_defaults(func=cmd_coverage)
+
+    si = sub.add_parser("ingest", help="build records from curated official-statement case files")
+    si.add_argument("--inbox", default=os.path.join(store.DATA_DIR, "inbox", "statements"),
+                    help="directory of case files (default: data/inbox/statements)")
+    si.add_argument("--records", default=store.RECORDS_PATH)
+    si.add_argument("--dry-run", action="store_true")
+    si.add_argument("--verbose", action="store_true")
+    si.set_defaults(func=cmd_ingest)
 
     sv = sub.add_parser("verify", help="re-check a stored record against current official sources")
     sv.add_argument("--record-id", required=True)

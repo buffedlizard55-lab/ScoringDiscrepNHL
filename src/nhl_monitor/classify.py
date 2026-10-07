@@ -25,6 +25,9 @@ DISCREPANCY_TYPES = {
     "assist_change": "The credited assists changed (goal count unchanged).",
     "strength_change": "The recorded strength (EV/PP/SH) of a goal changed.",
     "own_goal_flag_change": "The own-goal annotation of a goal changed.",
+    "time_change": "The recorded clock of an existing goal moved (goal count unchanged).",
+    "team_change": "The goal was reassigned to the other team - team totals, puck line and the "
+                   "winner can change even though the game total cannot.",
     "multi_change": "More than one category of change on the same goal.",
     "metadata_change": "Non-scoring metadata changed (flagged for manual review).",
 }
@@ -49,11 +52,12 @@ def classify(changes: List[Change]) -> Dict[str, object]:
     kinds = [c.change_type for c in changes]
     structural = [k for k in kinds if k in ("goal_removed", "goal_added")]
     attribution = [k for k in kinds if k in ("scorer_change", "assist_change")]
-    other = [k for k in kinds if k not in structural + attribution]
+    team_reassignment = [k for k in kinds if k == "team_change"]
+    other = [k for k in kinds if k not in structural + attribution + team_reassignment]
 
     if not changes:
         dtype = "no_change"
-    elif len(set(kinds)) > 1 and (structural or attribution or other):
+    elif len(set(kinds)) > 1 and (structural or attribution or team_reassignment or other):
         dtype = "multi_change"
     elif "goal_removed" in kinds:
         dtype = "goal_to_no_goal"
@@ -67,6 +71,10 @@ def classify(changes: List[Change]) -> Dict[str, object]:
         dtype = "strength_change"
     elif "own_goal_flag_change" in kinds:
         dtype = "own_goal_flag_change"
+    elif "team_change" in kinds:
+        dtype = "team_change"
+    elif "time_change" in kinds:
+        dtype = "time_change"
     else:
         dtype = "metadata_change"
 
@@ -78,12 +86,19 @@ def classify(changes: List[Change]) -> Dict[str, object]:
             "scorer_changes": kinds.count("scorer_change"),
             "assist_changes": kinds.count("assist_change"),
             "other_changes": len(other),
+            "team_reassignments": len(team_reassignment),
         },
         "affects_goal_total": any(k in TOTAL_AFFECTING for k in kinds),
+        "affects_team_assignment": bool(team_reassignment),
         "attribution_only": bool(changes) and not any(k in TOTAL_AFFECTING for k in kinds)
-        and not other,
+        and not other and not team_reassignment and not attribution_absent(changes),
         "needs_manual_review": bool(other),
     }
+
+
+def attribution_absent(changes: List[Change]) -> bool:
+    """True when nothing about who is credited changed (e.g. a time correction)."""
+    return not any(c.change_type in ("scorer_change", "assist_change") for c in changes)
 
 
 def infer_timing(before: Optional[GameState], after: GameState) -> Tuple[str, str]:
@@ -117,12 +132,15 @@ def settlement_assessment(classification: Dict[str, object], timing: str) -> Dic
     settlement rules must be verified separately - see docs/LIMITATIONS.md.
     """
     affects_total = bool(classification.get("affects_goal_total"))
-    if affects_total and timing in {"postgame_after_publication", "unknown"}:
+    re_teamed = bool(classification.get("affects_team_assignment"))
+    if (affects_total or re_teamed) and timing in {"postgame_after_publication", "unknown"}:
         level = "high"
-        why = ("The number of goals changed AND the change appeared after the game record had "
-               "been published as final, so game-total / team-total / puck-line grading could "
-               "have been performed on the superseded value.")
-    elif affects_total:
+        why = (("The number of goals changed" if affects_total else
+                "The goal was reassigned between the two teams")
+               + " AND the change appeared after the game record had been published as final, so "
+                 "game-total / team-total / puck-line grading could have been performed on the "
+                 "superseded value.")
+    elif affects_total or re_teamed:
         level = "medium"
         why = ("The number of goals changed, but the change appeared while the game was still "
                "in progress, so markets were normally graded from the final official record.")
@@ -135,9 +153,12 @@ def settlement_assessment(classification: Dict[str, object], timing: str) -> Dic
         why = "No scoring or attribution change was detected."
     return {
         "level": level,
+        # over/under markets: only a goal being added or removed moves the game total
         "could_affect_game_total_market": affects_total,
-        "could_affect_player_props": bool(classification.get("discrepancy_type", "").endswith("change"))
-        or bool(classification.get("counts", {}).get("scorer_changes")),
+        # team totals, puck line, moneylines: a re-teamed goal can flip the winner too
+        "could_affect_team_markets": affects_total or re_teamed,
+        "could_affect_player_props": bool(classification.get("counts", {}).get("scorer_changes"))
+        or bool(classification.get("counts", {}).get("assist_changes")),
         "reasoning": why,
         "requires_book_specific_review": level in {"high", "attribution"},
     }

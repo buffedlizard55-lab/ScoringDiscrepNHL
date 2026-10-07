@@ -18,6 +18,8 @@ jobs:
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Check the JS client parses
         run: node --check site/app.js
+      - name: Smoke-test the site client without a browser
+        run: node tools/check_site.mjs
       - name: Build the static site
         run: python tools/build_site.py
       - name: Validate the committed data files against the record schema
@@ -39,5 +41,34 @@ jobs:
           print("all records valid")
           PY
       - name: Verify official sources are reachable and the parser understands the live report layout
+        id: probe
         continue-on-error: true
-        run: PYTHONPATH=src python -m nhl_monitor probe
+        run: |
+          set -o pipefail
+          PYTHONPATH=src python -m nhl_monitor probe | tee probe_output.json || true
+          {
+            echo "## Official source probe"
+            echo ""
+            echo '```json'
+            cat probe_output.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Measure per-season report coverage and the frozen/regenerated era
+        continue-on-error: true
+        run: |
+          PYTHONPATH=src python -m nhl_monitor coverage --from-season 1999 --to-season 2026 \
+            | tee coverage_output.json || true
+
+      - name: Upload the probe and coverage reports (audit trail)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-audit-${{ github.run_id }}
+          path: |
+            probe_output.json
+            coverage_output.json
+            data/reference/probe_report.json
+            data/reference/coverage_report.json
+          retention-days: 90
+          if-no-files-found: warn

@@ -5,14 +5,17 @@ changed to no-goals, no-goals that became goals, scorer and assist corrections, 
 corrections, and post-game corrections — with the **official NHL artifact behind every claim** and both the
 original and the corrected state preserved.
 
-> **Status, stated plainly (2026-10-07).** The toolkit, the website and the detection pipeline are built,
-> unit-tested (43 tests) and wired to a scheduler. The **database is intentionally empty**: a record is only
-> written when two *captured official states* differ, and the sandbox this project was built in has no
-> network route to NHL hosts (measured, artifact committed at
-> [`docs/evidence/sandbox_network_probe.json`](docs/evidence/sandbox_network_probe.json)). Filling the
-> database is a workflow run, not a research session — see
-> [Populating the database](#populating-the-database). Nothing is seeded from memory, media reporting or
-> assumptions, which is why you will find zero invented rows below.
+> **Status, stated plainly (2026-10-07).** The toolkit, the website and both detection paths are built,
+> unit-tested (**73 tests**) and wired to a scheduler. The database holds **three verified records** — every
+> one built from the league's own scoring-change announcement *and* cross-checked against the official game
+> report it names, with the superseded credit, the flags and the exact URLs preserved (see
+> [the first three records](#the-first-three-records)). It is **not** a complete census of NHL scoring
+> changes: three records from one season is a proof of method, not coverage, and each record states in its
+> own flags which part of its evidence is missing. Two things still require a networked machine: the mass
+> backfill and the live monitor (the build sandbox has no route to NHL hosts — measured, artifact committed
+> at [`docs/evidence/sandbox_network_probe.json`](docs/evidence/sandbox_network_probe.json)). Nothing is
+> seeded from memory, media reporting or assumptions, which is why every row below can be opened and
+> re-checked.
 
 ---
 
@@ -46,11 +49,33 @@ artifact on **2026-10-07**. The full ledger, including the observations and the 
 | **The API and the HTML reports agree, down to player ids.** | The play-by-play goal event for 2023020001 goal #1 carries `scoringPlayerId=8476453`, which the Play-by-Play report text independently identifies as Kucherov (`NSH #2 SCHENN HIT TBL #86 KUCHEROV`), matching `86 N.KUCHEROV(1)` in the Game Summary. They are the same data rendered twice — **not** two independent witnesses. |
 | **Old reports are frozen at game time; new reports are regenerated.** | `20052006/GS020001.HTM` footer `2005-10-05-21.40.47` (game night), `20162017/GS020001.HTM` footer `2016-10-12-22.08.17` (game night), but `20232024/GS020001.HTM` footer `2024-02-06 11.19.44` — 119 days after the game. |
 | The frozen era preserves the **original** ruling; the regenerated era does not. | Consequence of the row above: for 2005-06 and 2016-17 the live document *is* the game-night record, so diffing it against the league's current database exposes any later scoring change with both states official. |
-| The earliest season is bounded but not pinned. | `19992000/GS020001.HTM` → 404; `20052006/…` → 200. The exact earliest season is measured by the coverage job, not assumed. |
+| **The earliest season served is 2000-01.** | `19992000/GS020001.HTM` → 404, `20002001/GS020001.HTM` → 200 (COL 2 - DAL 2, 2000-10-04, frozen footer `2000-10-04-22.14.20`), `20012002/GS020001.HTM` → 200 (OTT 5 - TOR 4, frozen footer `2001-10-03-22.27.18`). The 2000-2004 reports are **frozen at game time**, so the original record for a 25-year-old game is still retrievable. |
+| The 2000-2004 report layout is different and is parsed. | On-ice skaters sit inside the scoring summary, the strength column is last, there is no league-shield logo, and bench penalties appear as a player cell literally reading `Team`. Fixture: `tests/fixtures/gs_20002001_020001.html`. |
+| **The NHL publishes scoring changes in a fixed, machine-parseable form.** | `OFFICIAL SCORING CHANGE: Game <n> @<away> at @<home> Goal at <M:SS> of the <ordinal> period now reads <scorer> from <assist1> and <assist2>. #NHLStats` — retrieved and parsed for three games; each resolves to a specific goal in the official report (F16). |
+| Corrections land **after** the game is final, by hours. | All three announcements were posted between **2h49m and 3h25m** after the reported end of the game. This is the latency a market would care about, and it is measured from the announcement timestamp and the report's own end-of-game clock. |
+| An official payload can still show the **superseded** credit. | For the corrected goal of game 1140, the event's English highlight-clip title still reads `meier-scores-ppg` while the French title for the same event reads `mercer-…`, and the scoring fields read Mercer (F17). Stored as corroboration, flagged as an inconsistency. |
 | The Wayback CDX index exposes a content **digest per snapshot**. | One snapshot for `20232024/GS020001.HTM` (digest `TE24NPUUMSEV3LQEBNQE2TN3NO5GNATJ`), so "did this document ever change?" is answerable without downloading every version. |
 | Archive coverage is sparse and noisy. | 2006-era captures of 2005-06 reports are HTTP 302 redirects with the empty digest `3I42H3S6NNFQ2MSVX7XZKYAYSCX5QBYJ`; these are rejected as evidence. |
 | A **negative control** passed. | The archived copy of `20232024/GS020001.HTM` (2025-01-25) has the same eight-goal scoring summary and the same footer as the live document, so the method produced no false positive on that game — and it proves a regenerated footer is *not* by itself a change. |
 | No machine-readable Situation Room / video-review feed was located. | The observed event vocabulary (committed at `data/schema/observed_vocabulary.json`) contains no review event type, so the project does **not** claim to detect video review from the feed. |
+
+## The first three records
+
+Three records exist, all from the 2024-25 season, all **attribution-only** (the goal count of each game is
+unchanged). Each one is in [`data/records/discrepancies.json`](data/records/discrepancies.json), is
+reproducible from its case file in [`data/inbox/statements/`](data/inbox/statements/), and carries flags for
+the parts of its evidence that are missing.
+
+| Record | Game | Goal | Change | Verified against | Flags |
+|---|---|---|---|---|---|
+| `NHL-20242025-021140-01` | 2025-03-26 NJD 5 @ CHI 3 | 6:50 P1 (PP) | scorer **Timo Meier → Dawson Mercer** (from Hughes, Hischier) | `GS021140.HTM` (rebuilt 2025-03-27 8.23.23) + GameCenter event 146 + the league's post | superseded credit is secondary only; pre-change assists unresolved; the English clip title still says Meier |
+| `NHL-20242025-021238-01` | 2025-04-08 BOS 7 @ NJD 2 | 9:38 P1 (EV) | assist **Parker Wotherspoon → Morgan Geekie** | `GS021238.HTM` (rebuilt 2025-04-11 21.36.36) + the league's post | superseded assist is secondary only; the reproduction's own citation points at a different goal |
+| `NHL-20242025-021185-01` | 2025-04-01 NSH 4 @ CBJ 8 | 9:02 P3 (EV) | assists resolved to **Cole Smith + Michael McCarron** | `GS021185.HTM` + the league's post | what the assists read *before* the change is not documented anywhere reviewed — the record says so instead of guessing |
+
+Two independent season totals in each official report corroborate the corrected state (for example Geekie 23
+assists and Wotherspoon 6 in game 1238, exactly as the syndicated reproduction of the announcement states).
+No record claims a game-total change, because none of the three changed the number of goals — and the site
+keeps them out of the goal-count view accordingly.
 
 ## How it works
 
@@ -115,17 +140,29 @@ the pipeline fail loudly instead of silently returning zero goals.
 **Locally**
 
 ```bash
+# 1. the league's own announcements -> records (this is how the three shipped records were built)
+PYTHONPATH=src python -m nhl_monitor ingest
+
+# 2. history: a frozen report (the original record) vs the current official database
 PYTHONPATH=src python -m nhl_monitor backfill-era --season 20052006 --start 1 --end 1065
+
+# 3. live: poll, diff, alert
 PYTHONPATH=src python -m nhl_monitor monitor --date 2026-10-07 --github-issue
 ```
+
+**Adding a further case by hand (no manual checking required, but this is the door for it)** — copy an
+announcement's text plus the official report row that verifies it into a JSON file in
+`data/inbox/statements/`, run `ingest`, and the module will parse the announcement, cross-check it against
+the fields you supplied, flag any disagreement, and refuse to build a record whose corrected state has no
+official URL. The shipped case files are the template.
 
 **On GitHub (recommended — this is the "no manual checking" part)**
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| [`tests.yml`](.github/workflows/tests.yml) | every push | 43 unit tests, JS syntax check, site build, JSON record-schema validation, source reachability probe |
+| [`tests.yml`](.github/workflows/tests.yml) | every push | 73 unit tests, a browser-less site smoke test, JS syntax check, site build, JSON record-schema validation, source reachability probe (which also measures per-season coverage on the runner) |
 | [`monitor.yml`](.github/workflows/monitor.yml) | every 5 minutes | captures the slate, diffs against the stored state, commits the evidence timeline, opens a GitHub issue for every detected discrepancy |
-| [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method and commits the records |
+| [`backfill.yml`](.github/workflows/backfill.yml) | manual | walks a season/game range with either census method, or measures per-season coverage, and commits the results |
 | [`pages.yml`](.github/workflows/pages.yml) | on push to `main` | builds and deploys the site |
 
 GitHub Actions is the right home for this because a runner has unrestricted outbound network access, a
@@ -194,11 +231,12 @@ Full detail, including latency and coverage limits: [`docs/LIMITATIONS.md`](docs
 
 ```
 src/nhl_monitor/     sources.py fetch.py parse.py state.py classify.py detect.py archive.py store.py
-                     alerts.py cli.py        (standard library only)
+                     ingest.py alerts.py cli.py   (standard library only)
 site/                index.html app.js styles.css   (static, GitHub Pages)
-data/                records/discrepancies.json  reference/verified_facts.json  taxonomy.json
+data/                records/discrepancies.json  inbox/statements/ (one case file per record)
+                     reference/verified_facts.json  taxonomy.json
                      schema/observed_vocabulary.json  games/ evidence/ alerts/ exports/
-tests/               43 unittest cases + provenance-documented fixtures from real official documents
+tests/               73 unittest cases + provenance-documented fixtures from real official documents
 tools/build_site.py  assembles _site/ (static files + committed JSON)
 docs/                LIMITATIONS.md DATA_MODEL.md SOURCES.md OPERATIONS.md ROADMAP.md
                      VERIFICATION_LOG.md  evidence/
@@ -207,22 +245,27 @@ docs/                LIMITATIONS.md DATA_MODEL.md SOURCES.md OPERATIONS.md ROADM
 
 ## Open items for the next session
 
-Ranked by how much they block the goal (details and estimates in [`docs/ROADMAP.md`](docs/ROADMAP.md)):
+Ranked by how much they block the goal (details in [`docs/ROADMAP.md`](docs/ROADMAP.md)):
 
-1. **Run `probe` once on a networked machine** and resolve any layout mismatch — everything else depends on it.
-2. **Run the first backfill slice** (`backfill-era --season 20052006 --start 1 --end 200`) and review the
-   output. This is the moment the database stops being empty; expect the first slice to be the slowest
-   because the failure modes (markup drift, missing games, redirects in the archive) all surface at once.
-3. **Bracket the frozen→regenerated transition season** (currently only known to lie between 2016-17 and
-   2023-24) with a small scanning job over `GS020001.HTM` footers.
-4. **Close the reason gap** — look for an official written source for corrections (league announcement
-   endpoints, official newsroom items, in-document notes) so `reason.text` can be filled from a primary source.
-5. **Verify the two secondary leads** in `data/reference/verified_facts.json` against official artifacts
-   before they are allowed anywhere near a record.
-6. **Player-id resolution for HTML reports** — the frozen-era documents carry sweater numbers and names but
-   no ids, so name→id matching must be done through the API roster and must refuse to guess on ambiguity.
-7. **Timezone/latency instrumentation** — record feed latency per game so the "when did the official record
-   say X" claim is quantifiable rather than asserted.
+1. **Run the backfill slice on a networked machine** (`backfill-era --season 20052006 --start 1 --end 200`,
+   or via `backfill.yml`). The three shipped records prove the *announcement* path end to end; the frozen-era
+   census path is built and unit-tested but has never run against live sources at scale. Expect the first
+   slice to be the slowest: markup drift, missing games and archive redirects all surface at once.
+2. **Turn the announcement watch into a scheduled job.** The announcements are the sharpest signal that exists
+   (they name the game, the period, the clock and the new credit), and they were retrieved here through the
+   platform's page-fetch tool, not through a supported API. A runner needs either an X API tier or a
+   documented, polite fetch of the announcement account; until then the monitoring path is the game feeds.
+3. **Bracket the frozen→regenerated transition season** more tightly than 2000-01..2023-24 (known frozen:
+   2000-01, 2001-02, 2005-06, 2016-17; known regenerated: 2023-24, 2024-25).
+4. **Hunt for a goal-count change.** All three records are attribution-only, so the highest-value class —
+   a goal added or removed *after* the record was final — is still unobserved. It should be rare by
+   construction; proving that claim, rather than asserting it, is the next research step.
+5. **Recover pre-change states from the archive** where a frozen or early snapshot exists, which would
+   upgrade a record from "superseded credit is secondary" to two official states.
+6. **Verify the four secondary leads** (L01–L04 in `data/reference/verified_facts.json`) or drop them; none
+   may become a record without an official artifact.
+7. **Player-id resolution for HTML reports** — frozen documents carry sweater numbers and surnames but no
+   ids, so name→id matching must go through the season's roster and must refuse to guess on ambiguity.
 
 ## The original brief (verbatim)
 

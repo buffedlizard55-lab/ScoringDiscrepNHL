@@ -79,9 +79,12 @@ function settlementBadge(level) {
 
 function impactCell(rec) {
   const ch = rec.change || {};
-  if (ch.affects_goal_total) return badge('goal count changed', 'bad');
-  if (ch.attribution_only) return badge('attribution only', 'info');
-  return badge('other', 'warn');
+  const bits = [];
+  if (ch.affects_goal_total) bits.push(badge('goal count changed', 'bad'));
+  if (ch.affects_team_assignment) bits.push(badge('reassigned to other team', 'warn'));
+  if (ch.attribution_only) bits.push(badge('attribution only', 'info'));
+  if (!bits.length) bits.push(badge('other', 'warn'));
+  return bits.join(' ');
 }
 
 function sourcesCell(rec) {
@@ -144,6 +147,8 @@ function applyFilters() {
     timing: $('#f-timing').value,
     settlement: $('#f-settlement').value,
     evidence: $('#f-evidence').value,
+    cause: $('#f-cause').value,
+    postFinal: $('#f-postfinal').checked,
   };
   const rows = state.records.filter((rec) => {
     const g = rec.game || {};
@@ -160,6 +165,16 @@ function applyFilters() {
     if (f.timing && (rec.timing || {}).when !== f.timing) return false;
     if (f.settlement && (rec.settlement || {}).level !== f.settlement) return false;
     if (f.evidence && rec.evidence_status !== f.evidence) return false;
+    const reasonText = (rec.reason || {}).text || '';
+    if (f.cause === 'video_review' && !/review/i.test(reasonText)) return false;
+    if (f.cause === 'stated' && (rec.reason || {}).category !== 'official_source_statement') return false;
+    if (f.cause === 'unknown' && (rec.reason || {}).category !== 'unknown') return false;
+    if (f.postFinal) {
+      const risky = Boolean(ch.affects_goal_total || ch.affects_team_assignment);
+      const when = (rec.timing || {}).when;
+      const afterFinal = when === 'postgame_after_publication' || when === 'unknown';
+      if (!(risky && afterFinal)) return false;
+    }
     if (q) {
       const hay = JSON.stringify(rec).toLowerCase();
       if (!hay.includes(q)) return false;
@@ -334,17 +349,23 @@ function openRecord(recordId) {
     <p>${esc(termLabel(rec))} · team ${esc(rec.event.team || '—')} · strength ${esc(rec.event.strength || '—')}</p>
     <div class="two-col">
       <div class="card"><h4>Initial ruling (as previously published)</h4><p>${esc(rulingText(rec.initial_state))}</p>
-        <p class="small muted">captured ${esc((rec.timing || {}).previous_state_captured_at_utc || '—')}</p></div>
+        <p class="small muted">captured ${esc((rec.timing || {}).previous_state_captured_at_utc || (rec.timing || {}).state_captured_at_utc || '—')} · evidence status: ${esc((rec.initial_state || {}).evidence_status || '—')}</p></div>
       <div class="card"><h4>Corrected ruling</h4><p>${esc(rulingText(rec.corrected_state))}</p>
-        <p class="small muted">captured ${esc((rec.timing || {}).new_state_captured_at_utc || '—')}</p></div>
+        <p class="small muted">captured ${esc((rec.timing || {}).new_state_captured_at_utc || (rec.timing || {}).state_captured_at_utc || '—')} · evidence status: ${esc((rec.corrected_state || {}).evidence_status || '—')}</p></div>
     </div>
     <p><strong>Type:</strong> ${esc(typeLabel(ch.discrepancy_type))} —
       ${ch.affects_goal_total ? 'the goal count changed' : 'the goal count did not change'}${ch.attribution_only ? ' (attribution only)' : ''}</p>
     <p><strong>What changed:</strong> ${esc(ch.detail || '—')}</p>
+    ${ch.machine_diff ? `<p class="small muted">Checked from the two states — ruling: ${esc(ch.machine_diff.ruling)} · scorer: ${esc(ch.machine_diff.scorer)} · assists: ${esc(ch.machine_diff.assists)} · team: ${esc(ch.machine_diff.team)}${(ch.declared_changes || []).length ? ` · declared: ${esc(ch.declared_changes.map((c) => c.change_type).join(', '))}` : ''}</p>` : ''}
     <p><strong>Reason (official statements only):</strong> ${esc((rec.reason || {}).text || 'not stated in any retrieved official artifact')}</p>
     <p><strong>Timing:</strong> ${esc((rec.timing || {}).when || '—')} — ${esc((rec.timing || {}).reasoning || '')}</p>
+    ${(rec.timing || {}).announced_at_utc ? `<p><strong>League announcement:</strong> ${esc(rec.timing.announced_at_utc)}${rec.timing.latency_after_final_buzzer_seconds != null ? ` — ${Math.round(rec.timing.latency_after_final_buzzer_seconds / 60)} minutes after the reported end of the game` : ''}</p>` : ''}
     <p><strong>Settlement relevance:</strong> ${settlementBadge((rec.settlement || {}).level)}
       ${esc((rec.settlement || {}).reasoning || '')}</p>
+    <p class="small muted">Could touch a game total (over/under): <strong>${(rec.settlement || {}).could_affect_game_total_market}</strong>
+      · could touch team totals / puck line / winner: <strong>${(rec.settlement || {}).could_affect_team_markets}</strong>
+      · could touch player props: <strong>${(rec.settlement || {}).could_affect_player_props}</strong>
+      · book-specific review required: <strong>${(rec.settlement || {}).requires_book_specific_review}</strong></p>
     <h4>Official sources</h4>
     <ul>${(rec.sources || []).map((s) => `<li><strong>${esc(s.role)}</strong> — ${esc(s.name || '')}
       <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a>
@@ -400,7 +421,7 @@ async function boot() {
   applyFilters();
 
   ['#f-season', '#f-team', '#f-from', '#f-to', '#f-period', '#f-type', '#f-impact',
-   '#f-timing', '#f-settlement', '#f-evidence', '#f-q'].forEach((sel) => {
+   '#f-timing', '#f-settlement', '#f-evidence', '#f-cause', '#f-postfinal', '#f-q'].forEach((sel) => {
     $(sel).addEventListener('input', applyFilters);
     $(sel).addEventListener('change', applyFilters);
   });

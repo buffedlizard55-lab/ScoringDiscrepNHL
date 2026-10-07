@@ -356,22 +356,76 @@ def parse_gs_report(html: str, *, url: str, retrieved_at: str,
             state.parse_warnings.append("shootout row present in scoring summary (kept, not a goal)")
         state.goals.append(goal)
 
-    # team abbreviations from the document header (VISITOR ... HOME ...)
-    abbrs = re.findall(r"logo(c[a-z0-9]+)\.gif", html, flags=re.I)
-    if len(abbrs) >= 2:
-        def _abbr(token: str) -> str:
-            t = token.lower()
-            known = {"nsh": "NSH", "tbl": "TBL", "mtl": "MTL", "bos": "BOS", "tor": "TOR", "ott": "OTT"}
-            return known.get(t[:3], t[:3].upper())
+    # ---- team identity ---------------------------------------------------- #
+    # The report header carries team logos in document order (visitor first, then
+    # the home team). The league shield (logo(cnhl)) appears between them and MUST be
+    # filtered out: an earlier version of this parser happily reported the home team
+    # as "NHL". Verified against 20232024/GS020001.HTM, 20052006/GS020001.HTM and
+    # 20132014/GS020001.HTM on 2026-10-07.
+    logos = _team_abbrevs_from_logos(html)
+    goal_teams: List[str] = []
+    for g in state.goals:
+        if g.team and g.team.upper() not in goal_teams:
+            goal_teams.append(g.team.upper())
 
-        away_ab, home_ab = _abbr(abbrs[0]), _abbr(abbrs[1])
+    away_ab: Optional[str] = None
+    home_ab: Optional[str] = None
+    if len(logos) >= 2:
+        away_ab, home_ab = logos[0], logos[1]
+        unexpected = [t for t in goal_teams if t not in (away_ab, home_ab)]
+        if unexpected:
+            state.parse_warnings.append(
+                f"logo-derived teams {away_ab}/{home_ab} do not cover the teams named in the "
+                f"scoring summary ({', '.join(goal_teams)}) - the home/away order may be wrong")
+    elif len(goal_teams) == 2:
+        away_ab, home_ab = goal_teams
+        state.parse_warnings.append(
+            "no team logo markers found; home/away order was inferred from the scoring summary "
+            "and must be confirmed before the record is trusted")
+    elif len(goal_teams) == 1:
+        away_ab = home_ab = None
+        state.parse_warnings.append(
+            "only one team appears in the scoring summary and no logo markers were found; "
+            "away/home cannot be established from this document alone")
+
+    if away_ab and home_ab:
         state.away = state.away or TeamState(abbrev=away_ab)
         state.home = state.home or TeamState(abbrev=home_ab)
-    if state.away:
-        state.away.score = state.goal_count(state.away.abbrev)
-    if state.home:
-        state.home.score = state.goal_count(state.home.abbrev)
+        if any(g.period_type.upper() == "SO" for g in state.goals):
+            # In a shootout game the scoring summary shows regulation + OT goals only,
+            # so the goal counts are NOT the final score (the official final adds the
+            # shootout-deciding goal to the winner). Refuse to invent it.
+            state.parse_warnings.append(
+                "shootout goals are present: goal counts exclude the shootout winner, so no "
+                "final score is derived from this document (use the GameCenter API instead)")
+        else:
+            state.away.score = state.goal_count(state.away.abbrev)
+            state.home.score = state.goal_count(state.home.abbrev)
     return state
+
+
+#: Logo tokens that are not clubs (league shield, all-star formats, conference marks).
+_NON_TEAM_LOGOS = {"nhl", "nfo", "eas", "wes", "all", "ast"}
+
+
+def _team_abbrevs_from_logos(html: str) -> List[str]:
+    """Team abbreviations in document order, derived from the official logo filenames.
+
+    The official reports reference ``.../images/logo<C><abbr>.gif`` (e.g. ``logocnsh.gif``,
+    ``logoctor.gif``, ``logoccbj.gif``). Non-club tokens are filtered out and duplicates
+    removed, leaving the visitor team first and the home team second.
+    """
+    out: List[str] = []
+    for token in re.findall(r"logo(c[a-z0-9]+)\.gif", html, flags=re.I):
+        token = token.lower()
+        if len(token) < 4:
+            continue
+        abbr = token[1:4].upper()
+        if abbr.lower() in _NON_TEAM_LOGOS or not re.fullmatch(r"[A-Z]{3}", abbr):
+            continue
+        if abbr not in out:
+            out.append(abbr)
+    return out
 
 
 # ----------------------------------------------------------------------------- #
