@@ -27,7 +27,6 @@ concurrency:
 permissions:
   contents: write
   issues: write
-  actions: write   # so the monitor can trigger the site deploy after new records
 
 jobs:
   monitor:
@@ -61,21 +60,37 @@ jobs:
           PY
           )" >> "$GITHUB_OUTPUT"
 
+      - name: Port new monitor-line records into the canonical database and rebuild the site
+        # The root site renders data/discrepancies.json (the engine database). The
+        # port is lossless and idempotent (scripts/import_parallel_records.py) and
+        # only runs when this pass actually changed the monitor line's record file,
+        # so quiet runs stay quiet.
+        run: |
+          if git diff --quiet -- data/records/discrepancies.json; then
+            echo "no new monitor-line records this run"
+          else
+            python3 scripts/import_parallel_records.py
+            PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
+            PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
+          fi
+
       - name: Commit the evidence timeline and any new records
         run: |
           git config user.name  "scoring-monitor[bot]"
           git config user.email "scoring-monitor@users.noreply.github.com"
-          git add data/
+          git add data/ index.html app.js styles.css data.js .nojekyll
           if git diff --cached --quiet; then
             echo "no changes in the official records this run"
           else
             git commit -m "monitor: capture official state $(date -u +'%Y-%m-%dT%H:%MZ') (alerts: ${{ steps.collect.outputs.alerts }})"
-            git push
+            for attempt in 1 2 3; do
+              if git push; then break; fi
+              git pull --rebase || exit 1
+            done
           fi
 
-      - name: Publish the site with the new data
-        if: steps.collect.outputs.alerts != '0'
-        run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" || true
+      # GitHub Pages serves the repository root of main (legacy build), so the push
+      # above is the deploy; no separate Pages workflow is needed.
 
       - name: Upload the run output for auditing
         if: always()

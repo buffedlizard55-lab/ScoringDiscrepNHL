@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "incremental (newest pages until nothing new) or full (walk the whole feed)"
+        description: "incremental (newest pages until nothing new), full (walk the whole feed) or reparse (re-run the parser on the stored statements, no feed fetch)"
         required: false
         default: "incremental"
       max_pages:

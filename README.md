@@ -92,7 +92,7 @@ artifact on **2026-10-07**. The full ledger, including the observations and the 
 | The Wayback CDX index exposes a content **digest per snapshot**. | One snapshot for `20232024/GS020001.HTM` (digest `TE24NPUUMSEV3LQEBNQE2TN3NO5GNATJ`), so "did this document ever change?" is answerable without downloading every version. |
 | Archive coverage is sparse and noisy. | 2006-era captures of 2005-06 reports are HTTP 302 redirects with the empty digest `3I42H3S6NNFQ2MSVX7XZKYAYSCX5QBYJ`; these are rejected as evidence. |
 | A **negative control** passed. | The archived copy of `20232024/GS020001.HTM` (2025-01-25) has the same eight-goal scoring summary and the same footer as the live document, so the method produced no false positive on that game — and it proves a regenerated footer is *not* by itself a change. |
-| No machine-readable Situation Room / video-review feed was located. | The observed event vocabulary (committed at `data/schema/observed_vocabulary.json`) contains no review event type, so the project does **not** claim to detect video review from the feed. |
+| ~~No machine-readable Situation Room / video-review feed was located.~~ **Corrected 2026-10-07:** the league publishes an official statement for every challenge and video review. | `forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room` - ~4,400 statements, 2016-02 to today, with `gameid-` tags; the play-by-play marks reviews as `chlg-*` / `video-review` stoppages. Ingested by `pipeline/nhl_scoring/situation_room.py`; evidence in `docs/SITUATION_ROOM.md` and facts F30-F32. The earlier claim was measured on a single game that had no review. |
 
 ## The first three records
 
@@ -256,8 +256,10 @@ disagreement between two official renderings of the same game.
 
 **Cannot be detected automatically** (and the project does not pretend otherwise):
 
-* **The reason** — no machine-readable Situation Room / review feed was located, so "video review" is only
-  recorded when an official artifact says so in words. Everything else keeps `reason.text = null` plus a flag.
+* **The reason for a scorer / assist change** — there is no official feed for those, so it is only recorded
+  when an official artifact says so in words; everything else keeps `reason.text = null` plus a flag. (The
+  reason for a *review* decision **is** available: the Situation Room statement feed, see
+  `docs/SITUATION_ROOM.md`.)
 * **A change that happened and was superseded between two of our polls**, when no archive snapshot exists
   from before the change. The archive method cannot see it either if every snapshot postdates the correction.
 * **Whether a bookmaker regraded anything** — house rules are private.

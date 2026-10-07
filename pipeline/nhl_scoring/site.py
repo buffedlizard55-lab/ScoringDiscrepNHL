@@ -28,6 +28,7 @@ DOC_PAGES: List[Tuple[str, str, str]] = [
     # "Consolidation"), and hiding one line's analysis would misrepresent what the
     # project knows. Paths prefixed engine/ are this package's own documents.
     ("FEASIBILITY.md", "Can we detect it?", "Detection feasibility and limits"),
+    ("SITUATION_ROOM.md", "Situation Room source", "The official review-statement feed: what it is, how it is read, what it cannot tell"),
     ("STATUS.md", "Status & backlog", "Project status, consolidation, and open work"),
     ("engine/METHODOLOGY.md", "Methodology (engine)", "How a record gets made, validated, and promoted"),
     ("engine/SOURCES.md", "Sources (engine)", "Official endpoints, response status, what each proves"),
@@ -262,6 +263,25 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "last_run": (ledger.get("meta") or {}).get("last_run_at"),
         }
         rulings_compact = [compact_ruling(r) for r in ledger.get("rulings") or []]
+    # The flat alert feed (data/alerts.json + data/alerts.xml) is what alert
+    # consumers subscribe to; the site shows the same list so a reader can see
+    # what an alert looks like and click through to the record behind it.
+    alert_feed: Dict[str, Any] = {}
+    alerts_compact: List[Dict[str, Any]] = []
+    feed_path = os.path.join(repo_root, "data", "alerts.json")
+    if os.path.exists(feed_path):
+        try:
+            with open(feed_path, "r", encoding="utf-8") as fh:
+                feed = json.load(fh) or {}
+        except (OSError, ValueError):
+            feed = {}
+        items = feed.get("alerts") or []
+        alert_feed = {"generated_at": feed.get("generated_at"), "count": len(items),
+                      "json": "data/alerts.json", "rss": "data/alerts.xml"}
+        for a in items[:300]:
+            alerts_compact.append({k: a.get(k) for k in
+                                   ("id", "record_id", "type", "severity", "title", "body", "links",
+                                    "created_at", "first_seen_at", "affects_goal_total", "detected_by")})
     docs: Dict[str, str] = {}
     for filename, label, title in DOC_PAGES:
         path = os.path.join(repo_root, "docs", filename)
@@ -280,10 +300,12 @@ def build(out_dir: str, *, db_path: str, repo_root: str,
             "coverage": coverage,
             "snapshots": snapshot_summary,
             "situation_room": situation_room,
+            "alert_feed": alert_feed,
         },
         "summary": summarize(records),
         "records": records,
         "rulings": rulings_compact,
+        "alerts": alerts_compact,
         "docs": docs,
     }
     written: List[str] = []

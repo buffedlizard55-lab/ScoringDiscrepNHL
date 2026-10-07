@@ -4,7 +4,8 @@
   var SDN = window.SDN || {records: [], summary: {}, meta: {}, docs: {}};
   var R = SDN.records || [];
   var RUL = SDN.rulings || [];
-  var VIEWS = [['database', 'Database'], ['rulings', 'Situation Room log'], ['market', 'Settlement exposure'], ['coverage', 'Detection coverage'], ['monitor', 'Live monitor']]
+  var AL = SDN.alerts || [];
+  var VIEWS = [['database', 'Database'], ['rulings', 'Situation Room log'], ['alerts', 'Alerts'], ['market', 'Settlement exposure'], ['coverage', 'Detection coverage'], ['monitor', 'Live monitor']]
     .concat(Object.keys(SDN.docs || {}).map(function (f) { return ['doc:' + f, SDN.docs[f].label]; }));
   var state = {view: 'database', doc: null, sort: 'date-desc', page: 0, per: 60, rulPage: 0};
   var els = {};
@@ -482,6 +483,44 @@
     return wrap;
   }
 
+  function alertsView() {
+    var wrap = h('div');
+    var feed = (SDN.meta || {}).alert_feed || {};
+    wrap.appendChild(h('h2', {text: 'Alerts - what the detectors raised'}));
+    wrap.appendChild(h('p', {class: 'note', html:
+      'Every alert below was raised by a detector run (Situation Room ingest, live monitor, cross-source scan) and ' +
+      'points at a record in the database; nothing here is written by hand. The same list is published as ' +
+      '<a href="data/alerts.json">JSON</a> and <a href="data/alerts.xml">RSS</a> for anyone who wants to subscribe. ' +
+      'Severity: <strong>high</strong> = the number of goals in a game changed; <strong>medium</strong> = credit changed ' +
+      'or a human read is needed; <strong>low</strong> = informational. ' +
+      (feed.generated_at ? 'Feed generated ' + esc(feed.generated_at) + '. ' : '') +
+      'Latency is bounded by the run cadence, not by the source - see the Live monitor tab.'}));
+    if (!AL.length) {
+      wrap.appendChild(h('p', {class: 'empty', text: 'No alerts in the feed yet. The feed is written by: python -m nhl_scoring.cli alerts --write'}));
+      return wrap;
+    }
+    var sev = {high: 0, medium: 0, low: 0};
+    AL.forEach(function (a) { sev[a.severity] = (sev[a.severity] || 0) + 1; });
+    wrap.appendChild(h('p', {class: 'note', text: AL.length + ' alerts: ' + sev.high + ' high, ' + sev.medium + ' medium, ' + sev.low + ' low (newest first).'}));
+    AL.forEach(function (a) {
+      var card = h('article', {class: 'alert sev-' + esc(a.severity || 'low')});
+      card.appendChild(h('h3', {html: '<span class="badge ' + esc(a.severity || 'low') + '">' + esc(a.severity || '?') + '</span> ' + esc(a.title || a.id)}));
+      card.appendChild(h('p', {class: 'meta', html: 'Raised ' + esc(a.created_at || '?') +
+        (a.first_seen_at && a.first_seen_at !== a.created_at ? ' (first seen ' + esc(a.first_seen_at) + ')' : '') +
+        ' by <code>' + esc(a.detected_by || '?') + '</code>' +
+        (a.record_id ? ' - record <a href="#view=database&q=' + encodeURIComponent(a.record_id) + '">' + esc(a.record_id) + '</a>' : '') +
+        (a.affects_goal_total ? ' - <strong>goal total affected</strong>' : '')}));
+      if (a.body) card.appendChild(h('pre', {class: 'body', text: a.body}));
+      if ((a.links || []).length) {
+        var ul = h('ul', {class: 'links'});
+        a.links.forEach(function (l) { ul.appendChild(h('li', {html: '<a href="' + esc(l) + '" target="_blank" rel="noopener noreferrer">' + esc(l) + '</a>'})); });
+        card.appendChild(ul);
+      }
+      wrap.appendChild(card);
+    });
+    return wrap;
+  }
+
   var rulFilter = {q: '', season: '', team: '', outcome: '', kind: '', type: ''};
   function rulingsView() {
     var wrap = h('div');
@@ -491,7 +530,8 @@
       'Every Coach\'s Challenge and video-review statement the NHL has published (' + esc(RUL.length) + ' so far, newest first), ' +
       'parsed from the league content API and linked to the official page. <strong>overturned</strong> = the on-ice call was changed ' +
       '(these become database records); <strong>upheld</strong> = the on-ice call stood; <strong>on_ice_call_not_stated</strong> = the ' +
-      'statement gives the result but not the on-ice call, so no change is inferred. Column "PBP" is the automatic cross-check of ' +
+      'statement gives the result but not the on-ice call, so no change is inferred - unless a documented human read (marked ' +
+      '<em>human read</em>, with its source on the record) supplies the on-ice call. Column "PBP" is the automatic cross-check of ' +
       'overturned calls against the official play-by-play.' + (sr.last_run ? ' Last ingest ' + esc(sr.last_run) + '.' : '')}));
     var bar = h('div', {class: 'fgrid'});
     function sel(key, label, options) {
@@ -536,7 +576,8 @@
       tr.appendChild(h('td', {text: r.type || '-'}));
       tr.appendChild(h('td', {text: r.result || '-'}));
       tr.appendChild(h('td', {html: '<span class="badge ' + esc(r.outcome || '') + '">' + esc(r.outcome || '?') + '</span>' +
-        (r.confidence && r.confidence !== 'high' && r.outcome === 'overturned' ? '<br><small>' + esc(r.confidence) + ' confidence</small>' : '')}));
+        (r.confidence && r.confidence !== 'high' && r.outcome === 'overturned' ? '<br><small>' + esc(r.confidence) + ' confidence</small>' : '') +
+        ((r.flags || []).indexOf('on_ice_call_from_documented_human_read') !== -1 ? '<br><small title="on-ice call supplied by a documented, source-linked human read">human read</small>' : '')}));
       tr.appendChild(h('td', {text: r.xc || '-'}));
       tr.appendChild(h('td', {html: r.record_id ? '<a href="#view=database&q=' + encodeURIComponent(r.game_id || '') + '">' + esc(r.record_id) + '</a>' : '-'}));
       tr.appendChild(h('td', {html: '<a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">nhl.com</a>'}));
@@ -573,6 +614,7 @@
     if (state.view === 'database') out = databaseView();
     else if (state.view === 'market') out = marketView();
     else if (state.view === 'rulings') out = rulingsView();
+    else if (state.view === 'alerts') out = alertsView();
     else if (state.view === 'coverage') out = coverageView();
     else if (state.view === 'monitor') out = monitorView();
     else if (state.view.indexOf('doc:') === 0) out = docView(state.view.slice(4));

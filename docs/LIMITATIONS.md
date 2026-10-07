@@ -23,17 +23,20 @@ Everything else is reconstruction:
 | What changed (goal count vs attribution)? | **Yes** | typed diff of goals, scorers, assists, strength |
 | When did it change, relative to the game? | **Yes, bounded by poll times** | the game state at each capture |
 | Could it affect a settled total? | **Yes, as a flag** | change type + whether the previous capture was already final |
-| *Why* did it change? | **No** | only if an official artifact states it in words |
+| *Why* did it change? | **Yes for review decisions (official statement, verbatim); no for scorer/assist edits** | Situation Room statement text; otherwise only if an official artifact states it in words |
 | Did a bookmaker regrade anything? | **No** | private house rules |
 
 ## 2. What cannot be detected automatically
 
-1. **Video review as a cause.** No machine-readable Situation Room feed was located, and the observed event
-   vocabulary in the official play-by-play contains no review event type (measured 2026-10-07, committed at
-   `data/schema/observed_vocabulary.json`). An overturned goal *is* detected — as a goal-removed state
-   change — but the *reason* stays `null` with the flag `reason_not_stated_in_official_source` unless an
-   official artifact says so. Consequence: the website has **no** "video review" filter, because offering a
-   filter that can never match accurately would be a lie about capability.
+1. **Video review as a cause - corrected 2026-10-07.** This item originally said no machine-readable
+   Situation Room feed existed and that the play-by-play had no review marker. Both were measured on one
+   game without a review and are wrong: the league publishes an official statement for every challenge
+   and video review (content API, tag `situation-room`, continuous since 2016-02) and the play-by-play
+   marks reviews as `chlg-*` / `video-review` stoppages. See `docs/SITUATION_ROOM.md` and verified facts
+   F30-F31. What remains true: the statement sometimes gives the result without the on-ice call
+   (`on_ice_call_not_stated`), in which case no change is inferred; and nothing of the kind exists for
+   **scorer / assist** corrections, whose reason stays `null` unless an official artifact says so. The
+   website's "video review" filter is backed by the statements, not by inference.
 2. **Changes that were superseded between two polls with no archive snapshot from before the change.** If a
    goal is credited to player A at 20:14, changed to player B at 20:16 and we polled at 20:12 and 20:20, we
    see nothing. The archive method cannot help if every snapshot postdates the correction.

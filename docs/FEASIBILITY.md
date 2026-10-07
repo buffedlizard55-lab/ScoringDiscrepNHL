@@ -10,18 +10,28 @@ a network-restricted sandbox, so status codes were read through a text proxy
 rather than raw sockets) and by reading the artifacts themselves. HTTP results are
 listed per-URL in [SOURCES.md](SOURCES.md).
 
+**Revision 2026-10-07 (later session).** Sections 1, 2 and 4 originally said that
+no review marker exists in the play-by-play and that no machine-readable Situation
+Room source exists. Both were measured on a single game that had no review and
+both are wrong: the play-by-play marks reviews as `stoppage` events with
+`chlg-*` / `video-review` reasons, and the league publishes an official statement
+for every challenge and video review through its content API, continuously since
+February 2016. The corrected evidence is in [SITUATION_ROOM.md](SITUATION_ROOM.md)
+and `data/reference/verified_facts.json` (F30-F32). The text below has been
+amended in place; struck claims are kept so the correction is visible.
+
 ## 1. Verdict
 
 | Capability | Verdict | Why |
 | --- | --- | --- |
 | Find disagreements between the NHL's own published artifacts for one game | **Achievable, working** | Two independent renderings of the same goal exist (HTML sheet, JSON game center) and they are produced by different code paths. C10-C17 compare them. One real record in the seed database came out of this. |
 | Detect a correction *after* it happens | **Achievable, working, but only going forward** | The league edits the JSON in place with no version header. The only way to see an edit is to have kept a copy. `snapshot.py` stores state-change-only digests in git, so the git history *is* the audit trail. |
-| Detect a goal / no-goal change from history alone | **Not achievable** | An overturned call leaves no trace in the final record. The box score of a game where a goal went goal → no-goal → goal shows exactly one goal. |
-| Recover a *retracted* goal from public data | **Only from our own snapshots or live TV** | Requires having polled the game while it was in progress. See section 3. |
+| Detect a goal / no-goal change caused by a review, from history | **Achievable, working (2016-02 onward)** | ~~An overturned call leaves no trace in the final record.~~ The final box score does show one goal or none, but (a) the official Situation Room statement for every challenge/review states the on-ice call, the result and the rule, and (b) the play-by-play keeps a `chlg-*` / `video-review` stoppage at the clock. `situation_room.py` ingests (a) and cross-checks against (b). Before 2016-02 there is no statement feed, so there the original verdict stands. |
+| Recover a *retracted* goal from public data | **From the Situation Room statement (2016+); otherwise only from our own snapshots or live TV** | The disallowed goal is removed from the play-by-play, not annotated; the statement is the official record that it was signalled. See section 3. |
 | Know *when* a correction was made (authoritative timestamp) | **Not achievable** | The only timestamps in the artifacts are the report generation stamp and the feed's own game clock. Neither is a correction timestamp. |
-| Get a league-published corrections feed | **Does not exist** | No public endpoint exposes correction or version history. Searched and probed: see section 4. |
+| Get a league-published corrections feed | **Exists for review decisions; does not exist for scorer/assist corrections** | Review decisions: the `situation-room` statement feed (section 4, SITUATION_ROOM.md). Scorer/assist corrections: no public endpoint exposes a changelog or version history; only @PR_NHL / team notes, which are secondary. |
 | Flag records whose evidence is thin | **Achievable, working** | Every record carries `status`, `confidence`, `flags`, and a per-source `evidence` grade. Validation refuses `verified` without a primary source and a timestamp. |
-| Feed a real-time alerting pipeline | **Partially** | GitHub Actions scheduling is delayed and coarse (15 min floor); true in-game alerting needs the self-hosted runner path in STATUS.md. |
+| Feed a real-time alerting pipeline | **Partially** | The source is fast (statements publish within minutes of the play) but GitHub Actions cron is best-effort: this repository measured one scheduled run in eleven hours against a `*/5` request. Minutes-level alerting needs an external trigger of the workflow or a self-hosted runner. |
 
 ## 2. Why goal / no-goal changes are invisible in the record
 
@@ -29,15 +39,19 @@ This is the central obstacle, so the chain of reasoning is explicit:
 
 1. The official scoring artifacts (GS sheet, `summary.scoring` in the game center
    JSON) record **final credited goals**. Neither has a field for a prior ruling.
-2. The RTSS play-by-play feed has no event type for a video review or a coach's
-   challenge. A third-party history of the feed describes 26 RTSS event types
-   against 16 in the modern API (`puckovertheglass.substack.com/p/a-brief-history-of-nhl-play-by-play`,
-   secondary, read 2026-10-07). Nothing in either is "call overturned".
-3. Therefore a play that was waved off and then awarded appears **once**, as a goal,
-   with the goal's period and clock - indistinguishable from a goal that was never
-   questioned.
-4. Conversely a goal that was disallowed appears **zero** times. There is nothing to
-   diff against.
+2. ~~The RTSS play-by-play feed has no event type for a video review or a coach's
+   challenge.~~ **Corrected:** reviews are not an event *type* but a stoppage
+   *reason*: `details.reason` / `secondaryReason` = `video-review`,
+   `chlg-vis-off-side`, `chlg-vis-goal-interference` (observed in 2016020214,
+   2026020015, 2026020033, 2026020044). The stoppage says a review happened; it
+   does not say what the on-ice call was or how it ended.
+3. A play that was waved off and then awarded appears **once** in the final record,
+   as a goal - distinguishable from an unquestioned goal only by the adjacent
+   `video-review` stoppage and by the Situation Room statement.
+4. A goal that was disallowed appears **zero** times in the final record; the
+   `chlg-*` stoppage and the statement are the only official evidence it was
+   signalled. The statement feed is therefore the primary source for these
+   records, and the play-by-play is the cross-check.
 
 Consequences for this project:
 
@@ -46,11 +60,12 @@ Consequences for this project:
   signal: the sheet is a frozen post-game artifact, the JSON is live-edited, so a
   post-game correction shows up as a missing goal in one and not the other), and
   (b) our own before/after snapshots (C21).
-- Everything else about rulings has to come from *text*: the Situation Room's
-  explanations, the on-ice official's post-game remarks, or a rules analyst's
-  write-up. Those are published for some plays and not others, on no schedule,
-  with no API. `alerts.parse_situation_room_text()` will extract quoted rulings from
-  such a page when one exists; it cannot conjure one when it does not.
+- The *reason* for a ruling comes from text, and for reviews that text is
+  official and systematic: ~~published for some plays and not others, on no
+  schedule, with no API~~ **the league publishes a statement for every challenge
+  and video review, within minutes, through a paginated content API**
+  (SITUATION_ROOM.md). What remains text-only and unsystematic is the reason for
+  a scorer/assist change (post-game @PR_NHL notes, team notes).
 - Commercial providers (e.g. Sportradar's live game feed) do expose a
   `challenge{outcome: call_overturned, decision, ...}` object. That is a licensed
   product, not a free primary source, so it is not part of the pipeline; it is
@@ -77,7 +92,12 @@ than a statement. Roughly: in-game is assertable for a live-monitored game,
 `unknown` is the honest default for history, and a report stamp alone never earns
 better than `timing_uncertain`.
 
-## 4. Searches that came back empty
+## 4. Searches that came back empty - and the one that did not
+
+**Found (2026-10-07):** `https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room`
+- the official Situation Room statements, ~4,400 of them, 2016-02 to today, with
+`gameid-` tags. `nhl.com/news/topic/video-review` and the Forge tag `video-review`
+are dead ends; `situation-room` is the tag that works. Details in SITUATION_ROOM.md.
 
 Recorded so nobody repeats them: `nhl.com/webapi/v1/statspdf` (404),
 `statsapi.hockey.com` (unreachable), a version/history parameter on

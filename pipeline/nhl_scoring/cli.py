@@ -503,9 +503,10 @@ def probe_cmd(args: argparse.Namespace) -> int:
         ("right_rail_reports", GameRef("2026020001").gamecenter_right_rail, 200),
         ("no_correction_feed_v1", "https://api-web.nhle.com/v1/corrections", 404),
         ("no_correction_feed_v2", "https://api-web.nhle.com/v1/gamecenter/2026020001/situations", 404),
-        ("no_situation_room_api", "https://api-web.nhle.com/v1/situation-room", 404),
-        # The official Situation Room statements ARE published, as tagged stories on
-        # the league content API (verified 2026-10-07; see situation_room.py).
+        # api-web has no Situation Room endpoint - but that is NOT "no feed": the
+        # official statements ARE published, as tagged stories on the league
+        # content API (verified 2026-10-07; see situation_room.py / docs/SITUATION_ROOM.md).
+        ("api_web_has_no_situation_room_endpoint", "https://api-web.nhle.com/v1/situation-room", 404),
         ("situation_room_feed", "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=1", 200),
     ]
     results = []
@@ -554,6 +555,8 @@ def situation_room_cmd(args: argparse.Namespace) -> int:
     if args.apply:
         existing = db_mod.load_db(args.db) if os.path.exists(args.db) else {"records": []}
         merged, mstats = db_mod.upsert(existing.get("records", []), records)
+        retired = sr_mod.retire_stale_records(merged, result.get("stale") or [])
+        mstats["retired_stale"] = retired
         db_mod.save_db({"schema_version": existing.get("schema_version", "1.0"), "records": merged}, args.db)
         csv_path = os.path.join(os.path.dirname(args.db) or ".", "discrepancies.csv")
         count = db_mod.write_csv(merged, csv_path)
@@ -627,8 +630,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.set_defaults(func=probe_cmd)
 
     s = sub.add_parser("situation-room", help="ingest the official NHL Situation Room statement feed")
-    s.add_argument("--mode", choices=("incremental", "full"), default="incremental",
-                   help="incremental stops at the first page with nothing new; full walks --max-pages from --start-skip")
+    s.add_argument("--mode", choices=("incremental", "full", "reparse"), default="incremental",
+                   help="incremental stops at the first page with nothing new; full walks --max-pages from --start-skip; "
+                        "reparse re-runs the parser over the raw statements already in the ledger (no feed fetch)")
     s.add_argument("--max-pages", type=int, default=2)
     s.add_argument("--page-size", type=int, default=sr_mod.DEFAULT_PAGE_SIZE)
     s.add_argument("--start-skip", type=int, default=0)

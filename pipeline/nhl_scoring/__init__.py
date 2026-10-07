@@ -17,7 +17,12 @@ market     Whether a change could move a market (game totals, props).
 db         Canonical record store: validate, upsert, merge, flatten to CSV.
 alerts     Human-readable alert rendering + dedupe.
 site       Static GitHub Pages builder.
+situation_room
+           The official NHL Situation Room statement feed: ingest, classify,
+           cross-check against the play-by-play, keep a full ledger.
 """
 
-__version__ = "0.4.0"
+# Also stamped into every record (detection.tool_version) and every ledger row
+# (parser_version): bumping it makes the next ingest re-parse the whole corpus.
+__version__ = "0.5.0"
 SCHEMA_VERSION = "1.0"

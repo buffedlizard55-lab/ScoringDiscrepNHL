@@ -253,7 +253,9 @@ def parse_headline(headline: str) -> Dict[str, Any]:
                            "period": None, "period_type": None, "period_label": None}
     km = HEADLINE_KIND_RE.match(text)
     kind_text = _norm(km.group("kind")) if km else _norm(text)
-    if "challenge" in kind_text:
+    if "officials update" in kind_text or "officiating update" in kind_text:
+        out["kind"] = "officials_update"
+    elif "challenge" in kind_text:
         out["kind"] = "coach_challenge"
     elif "video review" in kind_text or "review" in kind_text:
         out["kind"] = "video_review"
@@ -294,6 +296,14 @@ def extract_fields(text: str) -> Dict[str, str]:
 
 def _final_call(text: str) -> Optional[str]:
     low = _norm(text)
+    # 2016-17 prose verdicts name the call that was REVERSED, not the final one:
+    #   "Goal overturned as Stars deemed offsides"                -> no goal
+    #   "Review overturns ... decision that resulted in a 'no goal' call" -> goal
+    if re.search(r"\b(?:good )?goal (?:is |was |has been )?(?:overturned|disallowed|reversed|nullified|negated|waved off|taken off the board|wiped out)\b", low):
+        return "no_goal"
+    if re.search(r"\boverturn(?:s|ed)\b.{0,100}\bno[- ]goal\b[\"']? (?:call|ruling|decision)", low) or \
+            re.search(r"\bno[- ]goal\b[\"']? (?:call|ruling|decision) (?:is |was |has been )?(?:overturned|reversed)", low):
+        return "goal"
     if re.search(r"\bno[- ]goal\b", low):
         return "no_goal"
     if re.search(r"\b(good goal|goal)\b", low):
@@ -346,6 +356,25 @@ def classify_outcome(kind: str, fields: Dict[str, str], description: str, body: 
     body_unquoted = _norm(_strip_quotations(body_plain))
     out: Dict[str, Any] = {"changed": None, "final_call": None, "on_ice_call": None,
                            "outcome": "unclassified", "confidence": "low", "basis": ""}
+
+    # Statements that are not goal reviews at all. They stay in the ledger
+    # (the feed is captured whole) but never become discrepancy records.
+    if kind == "officials_update":
+        out.update(outcome="not_a_review", confidence="high",
+                   basis="Officials Update: officiating-crew change, not a review")
+        return out
+    verdict_norm = _norm(verdict_source)
+    if verdict_norm and re.search(r"\bnot (?:a )?reviewable\b", verdict_norm):
+        out.update(changed=False, outcome="not_reviewable", confidence="high",
+                   basis=f"result line: {_strip_markdown(verdict_source)[:160]}")
+        return out
+    if verdict_norm and re.search(r"\bpenalty\b", verdict_norm) and not re.search(r"\bgoal\b", verdict_norm):
+        # 2025-26 coach's challenges of delay-of-game penalties, major-penalty
+        # reviews, "penalty call rescinded": a penalty changed, no goal did.
+        changed = bool(re.search(r"\boverturn|\brescind|\breduced|\breversed", verdict_norm))
+        out.update(changed=changed, outcome="penalty_review", confidence="high",
+                   basis=f"result line names a penalty and no goal: {_strip_markdown(verdict_source)[:160]}")
+        return out
 
     final = _final_call(verdict_source)
     if final is None and fields.get("explanation"):
@@ -413,6 +442,53 @@ def infer_review_type(fields: Dict[str, str], body: str, kind: str) -> Tuple[Opt
         if re.search(pattern, low):
             return label, True
     return None, kind == "other"
+
+
+REVIEW_TYPE_GROUPS: List[Tuple[str, str]] = [
+    (r"situation room initiated", "League-initiated challenge"),
+    (r"missed (?:game )?stoppage", "Missed Game Stoppage Event"),
+    (r"goal(?:tender|ie|keeper) interference|interference on the goal", "Goaltender Interference"),
+    (r"off[- ]?side", "Off-Side"),
+    (r"puck (?:over|crossed|crossing|across) (?:the )?goal line|goal line|entering net|legal goal|legal fashion", "Puck Over Goal Line"),
+    (r"kick", "Distinct Kicking Motion"),
+    (r"high[- ]?stick", "High-Sticking the Puck"),
+    (r"hand pass|batted|bats|batting|directed puck|directs puck", "Hand Pass / Batted Puck"),
+    (r"net off|net dislodged|displaced net|net displaced|moorings|awarded goal", "Net Off / Awarded Goal"),
+    (r"out of play|out of bounds", "Puck Out of Play"),
+    (r"time expired|time on clock|expir", "Time Expired"),
+    (r"continuous play|culmination", "Culmination of a Continuous Play"),
+    (r"penalty|penalties|major|match", "Penalty"),
+    (r"deflected directly off official|off official", "Puck Off Official"),
+]
+
+
+def normalize_review_type(label: Optional[str]) -> str:
+    """Collapse the ~70 spellings the league has used for a dozen review types
+    into stable filter buckets. The verbatim label is always kept alongside;
+    this only drives filtering and counting."""
+    if not label:
+        return "unstated"
+    low = _norm(label).replace("\u2013", "-").replace("--", "-")
+    hits = []
+    for pattern, group in REVIEW_TYPE_GROUPS:
+        if re.search(pattern, low):
+            hits.append(group)
+    if not hits:
+        return "Other"
+    if hits[0] in ("Missed Game Stoppage Event", "League-initiated challenge"):
+        return hits[0]
+    if "Penalty" in hits and not re.search(r"\bgoal\b", low):
+        return "Penalty"
+    return hits[0] if len(hits) == 1 else "Combined: " + " + ".join(dict.fromkeys(hits))
+
+
+def all_tags(item: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Story tags plus the tags of embedded parts: in the 2019-2023 era the
+    ``gameid-`` tag often sits on the embedded video, not on the story."""
+    tags = list(item.get("tags") or [])
+    for part in item.get("parts") or []:
+        tags.extend((part or {}).get("tags") or [])
+    return tags
 
 
 def game_from_tags(tags: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
@@ -496,9 +572,14 @@ class Ruling:
     flags: List[str] = dataclasses.field(default_factory=list)
     crosscheck: Optional[Dict[str, Any]] = None
     ingested_at: str = dataclasses.field(default_factory=utcnow)
+    human_read: Optional[Dict[str, Any]] = None
+    parser_reading: Optional[Dict[str, Any]] = None
+    review_type_group: str = "unstated"
 
     def to_dict(self) -> Dict[str, Any]:
-        return dataclasses.asdict(self)
+        d = dataclasses.asdict(self)
+        d["review_type_group"] = normalize_review_type(self.review_type)
+        return d
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Ruling":
@@ -513,7 +594,7 @@ def ruling_from_item(item: Dict[str, Any]) -> Ruling:
     body = markdown_of(item)
     fields = extract_fields(body)
     description = ((item.get("fields") or {}).get("description")) or None
-    tags = game_from_tags(item.get("tags") or [])
+    tags = game_from_tags(all_tags(item))
     verdict = classify_outcome(head["kind"], fields, description or "", body)
     review_type, inferred = infer_review_type(fields, body, head["kind"])
     plain = _strip_markdown(body)
@@ -727,8 +808,32 @@ def crosscheck_with_pbp(pbp: Dict[str, Any], ruling: Ruling, *, fetch: Optional[
             if not out["review_stoppages"]:
                 out["notes"].append("no review stoppage recorded near the clock (goal present as ruled)")
         else:
-            out["status"] = "conflict"
-            out["notes"].append("ruling awards a goal but the final play-by-play has no goal at that period/clock")
+            # Same team, same period, further away: the statement clock and the
+            # play-by-play clock disagree (clock resets after a review are
+            # common). Not a contradiction, but not a confirmation either.
+            same_period = []
+            for p in plays:
+                if p.get("typeDescKey") != "goal" or (p.get("periodDescriptor") or {}).get("number") != ruling.period:
+                    continue
+                d = p.get("details") or {}
+                scorer_team = team_by_id.get(d.get("eventOwnerTeamId"))
+                if ruling.final_team and scorer_team and scorer_team != ruling.final_team:
+                    continue
+                sec = clock_seconds(p.get("timeInPeriod"))
+                if sec is None:
+                    continue
+                same_period.append((abs(sec - want_sec), sec - want_sec, p, scorer_team))
+            same_period.sort(key=lambda t: t[0])
+            if same_period and same_period[0][0] <= 180:
+                _, signed, p, scorer_team = same_period[0]
+                out["goal_event"] = goal_dict(p, scorer_team)
+                out["status"] = "inconclusive"
+                out["notes"].append(
+                    f"no goal within 2s of the stated clock; nearest {scorer_team or 'same-team'} goal in the period is at "
+                    f"{pad_clock(p.get('timeInPeriod'))} ({signed:+d}s) - statement clock and play-by-play clock disagree; human check")
+            else:
+                out["status"] = "conflict"
+                out["notes"].append("ruling awards a goal but the final play-by-play has no goal at that period/clock")
     elif ruling.final_call == "no_goal":
         if team_goals:
             delta, p, scorer_team = team_goals[0]
@@ -756,13 +861,89 @@ def _gs_url(game_id: str) -> Optional[str]:
         return None
 
 
+# ---------------------------------------------------------------------------
+# Human reads: documented, source-backed supplements for statements the parser
+# cannot classify on its own (typically "on_ice_call_not_stated").  They live in
+# data/curation/situation_room_human_reads.json, keyed by statement slug, and
+# every entry must carry the official source that states the on-ice call.  The
+# ingest applies them on every run, so the resulting record is reproducible
+# machine output with a visible audit trail - not a hand-typed row.
+# ---------------------------------------------------------------------------
+HUMAN_READS_RELPATH = os.path.join("data", "curation", "situation_room_human_reads.json")
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+HUMAN_READS_PATH = os.path.join(_REPO_ROOT, HUMAN_READS_RELPATH)
+HUMAN_READ_FLAG = "on_ice_call_from_documented_human_read"
+
+
+_PARSER_READING_KEYS = ("on_ice_call", "changed", "outcome", "confidence", "basis", "flags")
+
+
+def ruling_from_item_dict(row: Dict[str, Any]) -> Ruling:
+    """Rebuild a Ruling from a ledger row with any earlier human overlay removed,
+    so a changed or withdrawn read can be re-applied cleanly: the parser's own
+    reading is restored from ``parser_reading`` when an overlay was applied."""
+    data = dict(row)
+    parser = data.get("parser_reading")
+    if parser:
+        data.update({k: parser.get(k) for k in _PARSER_READING_KEYS if k in parser})
+    data["human_read"] = None
+    data["parser_reading"] = None
+    return Ruling.from_dict(data)
+
+
+def load_human_reads(path: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
+    """Return ``{slug: read}`` from the curation file (empty when absent)."""
+    path = path or HUMAN_READS_PATH
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        data = json.load(fh)
+    out: Dict[str, Dict[str, Any]] = {}
+    for read in data.get("reads") or []:
+        slug = read.get("slug")
+        if slug and read.get("on_ice_call") in ("goal", "no_goal"):
+            out[slug] = read
+    return out
+
+
+def apply_human_read(ruling: Ruling, read: Optional[Dict[str, Any]]) -> Ruling:
+    """Overlay a documented on-ice call onto a ruling the parser could not settle.
+
+    The read only ever *adds* the on-ice call; the final call always stays the
+    one printed in the official statement.  A read that contradicts an on-ice
+    call the statement states explicitly (confidence ``high``) is ignored and
+    flagged, because the statement outranks any later reading of it.
+    """
+    if not read:
+        return ruling
+    call = read.get("on_ice_call")
+    if call not in ("goal", "no_goal") or not ruling.final_call:
+        return ruling
+    if ruling.confidence == "high" and ruling.on_ice_call and ruling.on_ice_call != call:
+        ruling.flags = sorted(set(ruling.flags) | {"human_read_contradicts_statement_ignored"})
+        return ruling
+    if ruling.parser_reading is None:
+        ruling.parser_reading = {k: getattr(ruling, k) for k in _PARSER_READING_KEYS}
+    ruling.on_ice_call = call
+    ruling.changed = call != ruling.final_call
+    ruling.outcome = "overturned" if ruling.changed else "upheld"
+    ruling.confidence = "high"
+    ruling.basis = (f"{ruling.basis}; on-ice call {call} from documented human read "
+                    f"({read.get('read_at') or 'undated'}): {read.get('basis') or ''}").strip()
+    ruling.human_read = {k: read.get(k) for k in ("on_ice_call", "basis", "read_at", "read_by", "sources", "quote")}
+    ruling.flags = sorted((set(ruling.flags) | {HUMAN_READ_FLAG}) - {"needs_human_read_of_on_ice_call"})
+    return ruling
+
+
 def ruling_to_record(ruling: Ruling, *, run_id: str, now: Optional[str] = None) -> Optional[Dict[str, Any]]:
     """Build a database record for a ruling whose on-ice call was changed.
 
     Returns ``None`` for upheld / not-stated rulings and for anything without
     a game id, period and clock (those stay in the ledger with their flags).
     """
-    if ruling.changed is not True or not ruling.game_id or ruling.period is None or not ruling.clock:
+    if ruling.changed is not True or ruling.outcome != "overturned" or not ruling.game_id or ruling.period is None or not ruling.clock:
+        return None
+    if ruling.final_call not in ("goal", "no_goal") or ruling.on_ice_call not in ("goal", "no_goal") or ruling.final_call == ruling.on_ice_call:
         return None
     now = now or utcnow()
     final = ruling.final_call
@@ -860,6 +1041,13 @@ def ruling_to_record(ruling: Ruling, *, run_id: str, now: Optional[str] = None) 
             "retrieved_at": xc.get("checked_at"), "sha256": xc.get("pbp_sha256"),
             "note": f"cross-check: {xc.get('status')}; " + "; ".join(xc.get("notes") or [])[:300],
         })
+    for extra in (ruling.human_read or {}).get("sources") or []:
+        if extra.get("url") and extra["url"] not in {src.get("url") for src in sources}:
+            sources.append({"label": extra.get("label") or "Source for the on-ice call (documented human read)",
+                            "url": extra["url"], "kind": extra.get("kind") or "official_page",
+                            "evidence": extra.get("evidence") if extra.get("evidence") in db_mod.VALID_EVIDENCE else "secondary",
+                            "retrieved_at": extra.get("retrieved_at") or (ruling.human_read or {}).get("read_at") or "",
+                            "quote": extra.get("quote"), "note": extra.get("note")})
     gs = _gs_url(ruling.game_id)
     if gs:
         sources.append({"label": "Official Game Summary (GS) report - frozen post-game scoring summary",
@@ -876,9 +1064,13 @@ def ruling_to_record(ruling: Ruling, *, run_id: str, now: Optional[str] = None) 
             f"{ruling.clock}: {'a goal event for ' + (team or 'the awarded team') + ' must be present' if final == 'goal' else 'there must be no goal for ' + (team or 'the team') + ' at that clock, and a chlg-*/video-review stoppage nearby'}. "
             f"The GS report should show the same scoring summary."),
         "verified_by": ("nhl_scoring.situation_room - official statement and official play-by-play agree"
+                        + (f"; on-ice call from documented human read by {(ruling.human_read or {}).get('read_by')}"
+                           if ruling.human_read else "")
                         if status == "verified" else ""),
         "verified_at": now if status == "verified" else "",
     }
+    if ruling.human_read:
+        verification["human_read"] = ruling.human_read
     gtype = GAME_TYPE_NAMES.get(ruling.game_id[4:6], ruling.game_id[4:6])
     record = {
         "record_id": rid,
@@ -985,6 +1177,7 @@ def summarize_rulings(rulings: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     by_season: Dict[str, Dict[str, int]] = {}
     by_kind: Dict[str, int] = {}
     by_type: Dict[str, int] = {}
+    by_group: Dict[str, int] = {}
     xc: Dict[str, int] = {}
     dates = [r.get("content_date") for r in rows if r.get("content_date")]
     for r in rows:
@@ -992,10 +1185,13 @@ def summarize_rulings(rulings: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         by_kind[r.get("kind") or "?"] = by_kind.get(r.get("kind") or "?", 0) + 1
         t = r.get("review_type") or "unstated"
         by_type[t] = by_type.get(t, 0) + 1
+        g = r.get("review_type_group") or normalize_review_type(r.get("review_type"))
+        by_group[g] = by_group.get(g, 0) + 1
         season = r.get("season") or ((r.get("content_date") or "")[:4] + "?")
-        bucket = by_season.setdefault(season, {"total": 0, "overturned": 0, "upheld": 0, "not_stated": 0, "unclassified": 0})
+        bucket = by_season.setdefault(season, {"total": 0, "overturned": 0, "upheld": 0, "not_stated": 0, "non_goal": 0, "unclassified": 0})
         bucket["total"] += 1
-        key = {"overturned": "overturned", "upheld": "upheld", "on_ice_call_not_stated": "not_stated"}.get(r.get("outcome"), "unclassified")
+        key = {"overturned": "overturned", "upheld": "upheld", "on_ice_call_not_stated": "not_stated",
+               "penalty_review": "non_goal", "not_a_review": "non_goal", "not_reviewable": "non_goal"}.get(r.get("outcome"), "unclassified")
         bucket[key] += 1
         status = ((r.get("crosscheck") or {}).get("status")) or "not_checked"
         if r.get("outcome") == "overturned":
@@ -1005,6 +1201,7 @@ def summarize_rulings(rulings: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         "by_outcome": by_outcome,
         "by_kind": by_kind,
         "by_review_type": dict(sorted(by_type.items(), key=lambda kv: -kv[1])),
+        "by_review_type_group": dict(sorted(by_group.items(), key=lambda kv: -kv[1])),
         "by_season": dict(sorted(by_season.items())),
         "overturned_crosscheck": xc,
         "earliest_statement": min(dates) if dates else None,
@@ -1033,27 +1230,86 @@ def save_ledger(payload: Dict[str, Any], path: str) -> None:
     os.replace(tmp, path)
 
 
+# ---------------------------------------------------------------------------
+# Raw capture: the ledger keeps the verbatim statement body and the tags that
+# matter, so the corpus can be re-parsed offline (``mode="reparse"``) after a
+# parser change without re-fetching ~4,400 stories, and so every classification
+# can be audited against the exact text it was made from.
+# ---------------------------------------------------------------------------
+def raw_of(item: Dict[str, Any]) -> Dict[str, Any]:
+    tags = []
+    for tag in all_tags(item):
+        slug = str((tag or {}).get("slug") or "")
+        if slug.startswith(("gameid-", "teamid-")) or re.fullmatch(r"\d{4}-\d{2}", slug):
+            tags.append({"slug": slug, "title": tag.get("title"),
+                         "extraData": {k: v for k, v in (tag.get("extraData") or {}).items()
+                                       if k in ("abbreviation", "gameId", "teamId")}})
+    return {"headline": item.get("headline") or "", "body": markdown_of(item),
+            "description": ((item.get("fields") or {}).get("description")) or None,
+            "summary": item.get("summary") or None, "tags": tags}
+
+
+def item_from_raw(row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Rebuild a feed item from a ledger row's raw capture (None if not captured)."""
+    raw = row.get("raw") or {}
+    if not raw or not (raw.get("body") or raw.get("summary") or raw.get("description")):
+        return None
+    return {"slug": row.get("slug"), "headline": raw.get("headline") or row.get("headline") or "",
+            "parts": [{"type": "markdown", "content": raw.get("body") or ""}] if raw.get("body") else [],
+            "summary": raw.get("summary"),
+            "fields": {"description": raw["description"]} if raw.get("description") else {},
+            "tags": raw.get("tags") or [], "contentDate": row.get("content_date"),
+            "lastUpdatedDate": row.get("last_updated"), "selfUrl": row.get("api_url")}
+
+
+def _carry_over(new_row: Dict[str, Any], old_row: Dict[str, Any]) -> Dict[str, Any]:
+    """Keep what a re-parse cannot reproduce: resolved ids, cross-checks, record ids."""
+    if old_row.get("game_id") and not new_row.get("game_id"):
+        new_row["game_id"], new_row["game_id_source"] = old_row["game_id"], old_row.get("game_id_source")
+        new_row["game_date"] = new_row.get("game_date") or old_row.get("game_date")
+        new_row["season"] = season_from_game_id(new_row["game_id"])
+        if old_row.get("game_id_source") == "schedule":
+            new_row["flags"] = sorted(set(new_row.get("flags") or []) | {"game_id_resolved_from_schedule"})
+    if old_row.get("game_id_lookup_failed"):
+        new_row["game_id_lookup_failed"] = old_row["game_id_lookup_failed"]
+    same_claim = (old_row.get("outcome") == new_row.get("outcome") and old_row.get("final_call") == new_row.get("final_call")
+                  and old_row.get("period") == new_row.get("period") and old_row.get("clock") == new_row.get("clock"))
+    if same_claim and old_row.get("crosscheck"):
+        new_row["crosscheck"] = old_row["crosscheck"]
+    if old_row.get("record_id"):
+        new_row["record_id"] = old_row["record_id"]
+    if old_row.get("raw") and not new_row.get("raw"):
+        new_row["raw"] = old_row["raw"]
+    return new_row
+
+
 def ingest(fetcher: Fetcher, *, ledger_path: str, mode: str = "incremental", max_pages: int = 2,
            page_size: int = DEFAULT_PAGE_SIZE, start_skip: int = 0, crosscheck: bool = True,
            max_crosscheck: int = 150, run_id: str = "", verbose: bool = False,
            resolve_ids: bool = True,
            pages: Optional[Iterable[List[Dict[str, Any]]]] = None,
-           pbp_loader=None) -> Dict[str, Any]:
+           pbp_loader=None, human_reads: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[str, Any]:
     """Walk the feed, update the ledger, return records for changed rulings.
 
     ``mode='incremental'`` stops at the first page that contains nothing new
     (slug unseen or ``lastUpdatedDate`` moved); ``mode='full'`` walks
     ``max_pages`` pages from ``start_skip`` and remembers where it stopped so a
-    later run can continue. ``pages`` / ``pbp_loader`` let tests feed fixtures
-    without a network.
+    later run can continue; ``mode='reparse'`` touches no feed page and re-runs
+    the parser over the raw statements already in the ledger (a parser fix can
+    then be applied to the whole corpus offline). ``pages`` / ``pbp_loader`` let
+    tests feed fixtures without a network.
     """
     ledger = load_ledger(ledger_path)
     by_slug: Dict[str, Dict[str, Any]] = {r["slug"]: r for r in ledger["rulings"] if r.get("slug")}
     stats = {"pages": 0, "items": 0, "new": 0, "updated": 0, "unchanged": 0, "stories_fetched": 0,
-             "game_ids_resolved": 0, "crosschecked": 0, "records": 0, "fetch_errors": 0}
+             "game_ids_resolved": 0, "crosschecked": 0, "records": 0, "fetch_errors": 0, "human_reads_applied": 0}
+    if human_reads is None:
+        human_reads = load_human_reads()
     run_id = run_id or utcnow().replace(":", "").replace("-", "")
 
     def page_iter():
+        if mode == "reparse":
+            return
         if pages is not None:
             for p in pages:
                 yield p
@@ -1085,21 +1341,23 @@ def ingest(fetcher: Fetcher, *, ledger_path: str, mode: str = "incremental", max
                 stats["unchanged"] += 1
                 continue
             if not any((p or {}).get("type") == "markdown" for p in item.get("parts") or []):
-                story, res = fetch_story(fetcher, slug)
-                stats["stories_fetched"] += 1
-                if story:
-                    item = story
-                elif not res.ok:
-                    stats["fetch_errors"] += 1
-            ruling = ruling_from_item(item)
+                cached = item_from_raw(prior) if (prior and prior.get("last_updated") == item.get("lastUpdatedDate")) else None
+                if cached:
+                    item = cached          # same version already captured: no fetch needed
+                    stats["raw_reused"] = stats.get("raw_reused", 0) + 1
+                else:
+                    story, res = fetch_story(fetcher, slug)
+                    stats["stories_fetched"] += 1
+                    if story:
+                        item = story
+                    elif not res.ok:
+                        stats["fetch_errors"] += 1
+            ruling = apply_human_read(ruling_from_item(item), human_reads.get(slug))
             row = ruling.to_dict()
             row["parser_version"] = __version__
+            row["raw"] = raw_of(item)
             if prior:
-                row["crosscheck"] = prior.get("crosscheck")
-                if prior.get("game_id") and not row.get("game_id"):
-                    row["game_id"], row["game_id_source"] = prior["game_id"], prior.get("game_id_source")
-                    row["game_date"] = row.get("game_date") or prior.get("game_date")
-                    row["season"] = season_from_game_id(row["game_id"])
+                row = _carry_over(row, prior)
                 stats["updated"] += 1
             else:
                 stats["new"] += 1
@@ -1107,6 +1365,48 @@ def ingest(fetcher: Fetcher, *, ledger_path: str, mode: str = "incremental", max
             by_slug[slug] = row
         if mode == "incremental" and page_new == 0 and stats["pages"] >= 1:
             break
+
+    if mode == "reparse":
+        for slug, old_row in list(by_slug.items()):
+            item = item_from_raw(old_row)
+            if not item:
+                stats["reparse_skipped_no_raw"] = stats.get("reparse_skipped_no_raw", 0) + 1
+                continue
+            ruling = apply_human_read(ruling_from_item(item), human_reads.get(slug))
+            new_row = ruling.to_dict()
+            new_row["parser_version"] = __version__
+            new_row["raw"] = old_row.get("raw")
+            by_slug[slug] = _carry_over(new_row, old_row)
+            stats["reparsed"] = stats.get("reparsed", 0) + 1
+
+    # apply human reads added since a statement was last parsed (the unchanged
+    # short-circuit above skips them), and drop reads that were since removed
+    for slug, read in human_reads.items():
+        row = by_slug.get(slug)
+        if not row:
+            continue
+        applied = (row.get("human_read") or {})
+        if applied.get("read_at") == read.get("read_at") and applied.get("on_ice_call") == read.get("on_ice_call"):
+            continue
+        ruling = apply_human_read(ruling_from_item_dict(row), read)
+        new_row = ruling.to_dict()
+        new_row["parser_version"] = __version__
+        for keep in ("crosscheck", "game_id_lookup_failed", "record_id"):
+            if row.get(keep) is not None:
+                new_row[keep] = row[keep]
+        if new_row.get("outcome") != row.get("outcome"):
+            new_row["crosscheck"] = None  # the claim changed; check it again
+        by_slug[slug] = new_row
+        stats["human_reads_applied"] += 1
+    for slug, row in list(by_slug.items()):
+        if row.get("human_read") and slug not in human_reads:
+            ruling = ruling_from_item_dict(row)  # read withdrawn: back to the parser's reading
+            new_row = ruling.to_dict()
+            new_row["parser_version"] = __version__
+            for keep in ("crosscheck", "game_id_lookup_failed"):
+                if row.get(keep) is not None:
+                    new_row[keep] = row[keep]
+            by_slug[slug] = new_row
 
     # resolve game ids for untagged statements (cheap: one scoreboard call per date)
     if resolve_ids:
@@ -1152,17 +1452,56 @@ def ingest(fetcher: Fetcher, *, ledger_path: str, mode: str = "incremental", max
                 print(f"  xcheck {ruling.game_id} P{ruling.period} {ruling.clock} {ruling.final_call}: {row['crosscheck']['status']}")
 
     records: List[Dict[str, Any]] = []
+    stale: List[Dict[str, str]] = []
     for row in by_slug.values():
-        if row.get("outcome") != "overturned":
-            continue
-        rec = ruling_to_record(Ruling.from_dict(row), run_id=run_id)
+        previous_id = row.get("record_id")
+        rec = ruling_to_record(Ruling.from_dict(row), run_id=run_id) if row.get("outcome") == "overturned" else None
         if rec:
             row["record_id"] = rec["record_id"]
             records.append(rec)
+        else:
+            row.pop("record_id", None)
+        if previous_id and previous_id != row.get("record_id"):
+            # A parser correction re-read this statement and the old record no
+            # longer follows from it. Report it so the database can retire it
+            # instead of carrying a claim nothing supports any more.
+            stale.append({"record_id": previous_id, "slug": row.get("slug"), "public_url": row.get("public_url"),
+                          "now": row.get("outcome"), "replacement": row.get("record_id")})
     stats["records"] = len(records)
+    stats["stale_records"] = len(stale)
     ledger["rulings"] = list(by_slug.values())
     ledger["meta"].update({"last_run_id": run_id, "last_run_at": utcnow(), "last_mode": mode,
                            "last_stats": stats, "parser_version": __version__})
     save_ledger(ledger, ledger_path)
-    return {"stats": stats, "records": records, "ledger_path": ledger_path,
+    return {"stats": stats, "records": records, "stale": stale, "ledger_path": ledger_path,
             "summary": summarize_rulings(ledger["rulings"])}
+
+
+def retire_stale_records(existing: List[Dict[str, Any]], stale: List[Dict[str, str]], *, now: Optional[str] = None) -> int:
+    """Mark records that no longer follow from their statement as ``retired``.
+    Human-reviewed records (anything not machine-verified by this module) are
+    left alone and only flagged."""
+    now = now or utcnow()
+    by_id = {r.get("record_id"): r for r in existing}
+    n = 0
+    for item in stale:
+        rec = by_id.get(item["record_id"])
+        if not rec or (rec.get("detection") or {}).get("check_id") != CHECK_ID:
+            continue
+        note = (f"{now}: the Situation Room statement ({item.get('public_url')}) was re-read by parser {__version__} as "
+                f"'{item.get('now')}'" + (f"; replaced by {item['replacement']}" if item.get("replacement") else "") + ".")
+        flags = set(rec.get("flags") or [])
+        if db_mod.is_machine_verified(rec) or rec.get("status") in ("flagged", "pending_review"):
+            rec["status"] = "retired"
+            flags.add("superseded_by_reclassification")
+            rec.setdefault("notes", [])
+            if isinstance(rec["notes"], list):
+                rec["notes"].append(note)
+            n += 1
+        else:
+            flags.add("statement_reclassified_review_needed")
+            rec.setdefault("notes", [])
+            if isinstance(rec["notes"], list):
+                rec["notes"].append(note + " Human-set status kept; please re-review.")
+        rec["flags"] = sorted(flags)
+    return n

@@ -30,6 +30,10 @@ ALERT_RULES = {
     "assist_attribution_conflict": ("info", "Assist credits differ between the official records."),
     "goal_total_mismatch": ("review", "An official artifact is internally inconsistent on goal totals."),
     "final_score_conflict": ("immediate", "The two official records disagree on the final score."),
+    "situation_room_goal_overturned_to_no_goal": ("immediate", "Official Situation Room statement: a goal "
+                                                  "signalled on the ice was overturned to no goal."),
+    "situation_room_no_goal_overturned_to_goal": ("immediate", "Official Situation Room statement: a no-goal "
+                                                  "call on the ice was overturned and the goal awarded."),
 }
 RANK = {"immediate": 0, "review": 1, "info": 2}
 
@@ -76,6 +80,20 @@ def _fmt_player(state: Optional[Dict[str, Any]], key: str = "scorer") -> str:
     return value or "none"
 
 
+def _fmt_state(state: Dict[str, Any]) -> str:
+    """One line per state: ruling, scorer, assists, clock - without printing 'None' for a no-goal."""
+    ruling = state.get("ruling") or ("goal" if state.get("goal_present") else "absent")
+    where = f"period {state.get('period')} {state.get('clock')}"
+    if state.get("goal_present") is False or not state.get("scorer"):
+        extra = f", {state.get('team')}" if state.get("team") else ""
+        return f"{ruling}{extra} ({where})"
+    strength = f", {state.get('strength')}" if state.get("strength") else ""
+    score = state.get("score_after") or {}
+    score_txt = f", score {score.get('away')}-{score.get('home')}" if score.get("away") is not None else ""
+    return (f"{ruling}: {_fmt_player(state)}; assists {_fmt_player(state, 'assists')} "
+            f"({where}{strength}{score_txt})")
+
+
 def render_record(record: Dict[str, Any], *, level: str = "review") -> str:
     game = record.get("game") or {}
     disc = record.get("discrepancy") or {}
@@ -90,10 +108,8 @@ def render_record(record: Dict[str, Any], *, level: str = "review") -> str:
         f"- **Rule fired:** `{(record.get('detection') or {}).get('check_id')}` "
         f"{(record.get('detection') or {}).get('rule_label')} "
         f"({(record.get('detection') or {}).get('severity')})",
-        f"- **Initial state:** {_fmt_player(ini)}; assists {_fmt_player(ini, 'assists')}"
-        f" (period {ini.get('period')} {ini.get('clock')}, {ini.get('strength')})",
-        f"- **Corrected state:** {_fmt_player(cor)}; assists {_fmt_player(cor, 'assists')}"
-        f" (period {cor.get('period')} {cor.get('clock')}, {cor.get('strength')})",
+        f"- **Initial state:** {_fmt_state(ini)}",
+        f"- **Corrected state:** {_fmt_state(cor)}",
         f"- **Goal total affected:** {mi.get('affects_game_total')} "
         f"(total_changed={disc.get('total_changed')}; attribution-only={disc.get('attribution_only')})",
         f"- **Player props affected:** {mi.get('affects_player_props')}",

@@ -54,13 +54,13 @@ jobs:
         run: |
           PYTHONPATH=pipeline python3 -m nhl_scoring.cli validate
           PYTHONPATH=pipeline python3 -m nhl_scoring.cli alerts --write --limit 40
-      - name: Rebuild the site from the updated database
-        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site --out docs
+      - name: Rebuild the site from the updated database (repository root is what GitHub Pages serves)
+        run: PYTHONPATH=pipeline python3 -m nhl_scoring.cli site
       - name: Commit what changed
         run: |
           git config user.name  "scoring-discrepancy-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/discrepancies.json data/discrepancies.csv data/snapshots data/alerts docs || true
+          git add data/discrepancies.json data/discrepancies.csv data/snapshots data/alerts index.html app.js styles.css data.js .nojekyll || true
           if ! git diff --cached --quiet; then
             git commit -m "monitor: $(date -u +%FT%TZ) snapshot + alert pass"
             git push origin HEAD:main

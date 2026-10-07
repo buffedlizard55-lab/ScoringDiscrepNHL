@@ -28,13 +28,25 @@ Notes on behaviour, learned the hard way:
   Constructed URLs 404 for games whose reports were never generated (see the
   missing-playoff-reports list in STATUS.md).
 
+## Tier 1b - official, machine-readable: the Situation Room statement feed (added 2026-10-07)
+
+- `https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=N`
+  - one story per coach's challenge / video review, newest first, ~4,400 items from
+  2016-02-01 to the current night, each tagged `gameid-<id>` (a few are not and are
+  resolved through the daily scoreboard). Public page: `https://www.nhl.com/news/<slug>`.
+  States the on-ice call, the result ("Call on the ice is overturned - No Goal
+  Toronto"), the rule cited and the explanation; publishes within minutes of the
+  play. Read by `situation_room.py` (check SR1); details and limits in
+  `docs/SITUATION_ROOM.md`. The earlier Tier 2 wording below ("not published for
+  every game, no API") was wrong and is kept struck through.
+
 ## Tier 2 - official, human-readable, primary but not machine-readable
 
-- **Situation Room explanations** - e.g.
+- **Situation Room live blogs / recaps** - e.g.
   `https://www.nhl.com/news/frozen-frenzy-nhl-situation-room-live-blog-october-22-2024`.
-  The only official format that states *why* a call was overturned, in prose, per
-  play. Not published for every game, not structured, no API, no SLA. The pipeline
-  can quote it (`alerts.parse_situation_room_text`) when a page exists.
+  ~~The only official format that states *why* a call was overturned ... Not
+  published for every game, not structured, no API, no SLA.~~ Superseded by the
+  statement feed above; still quotable (`alerts.parse_situation_room_text`).
 - **NHL Rule Book** (Rule 78 for goals/assists, 37 for video review) - the standard
   against which "correct" is defined; cited as evidence `reference`, never as proof
   that a specific entry is wrong.

@@ -19,7 +19,7 @@ endpoints**. The GitHub Actions monitor and the `probe` command convert
 | Capability | Automatable? | How | Confidence |
 |---|---|---|---|
 | Detect a goal flipped to no-goal (or vice versa) | **Yes** | Diff consecutive snapshots of the official live feed for a completed game; any added/removed goal is a game-total discrepancy | High |
-| Detect video-review overturns as they happen | **Yes** | Review/challenge events exist in the official play-by-play and Situation Room posts; the monitor captures them and marks the overturn | High |
+| Detect video-review overturns as they happen | **Yes** | The league's own Situation Room statement for every challenge / review (published within minutes) is ingested and cross-checked against the `chlg-*` / `video-review` stoppage in the official play-by-play; see `docs/SITUATION_ROOM.md` | High (2016-02 onward) |
 | Detect scorer/assist attribution changes | **Yes** | Diff per-goal scorer/assist fields between snapshots of live feeds and official Event Summaries | High |
 | Detect corrections to official PDF reports (silent edits) | **Yes (as a flag)** | SHA-256 hashes of Game Summary / Event Summary PDFs are stored per game; a hash change ⇒ "official report changed — human review needed". The system tells you *that* a report changed, not *what* changed — PDF text diffing is a planned enhancement | High for detection, human needed for explanation |
 | Classify *when* the correction happened (in-game / intermission / postgame) | **Partially** | From snapshot timestamps + feed state (period/intermission/final). Heuristic; low-confidence cases carry `timing_confidence: heuristic` and may need review | Medium |
@@ -42,7 +42,7 @@ All are public, no API key. Catalog with URL templates: [SOURCES.md](SOURCES.md)
 | `statsapi.web.nhl.com` schedule API | Discover completed games, final scores | `unverified` (blocked from authoring environment; verified in CI by first run) |
 | `statsapi.web.nhl.com` live feed (`/api/v1/game/{gamePk}/feed/live`) | Authoritative play-by-play, goals, review events | `unverified` (same) |
 | `nhl.com/scores/htmlreports/...` official PDF reports (GS/ES) | Hash-based change detection of official reports | `unverified` (same) |
-| Situation Room posts (`nhl.com`, topic "situation-room") | Corroboration + reason text for reviews | `unverified` (same); v1 captures links only, parsing is a planned enhancement |
+| Situation Room statements (`forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room`, public pages `nhl.com/news/<slug>`) | Official on-ice call, result, rule and explanation for every coach's challenge / video review since 2016-02 | **verified and ingested 2026-10-07** by `pipeline/nhl_scoring/situation_room.py`; see `docs/SITUATION_ROOM.md` |
 | `api-web.nhle.com` (scoreboard, gamecenter play-by-play/boxscore) | Second official endpoint family: corroboration and planned second snapshot source | `unverified` (same); probed by the coverage probe |
 
 ## 3. Latency & timeliness
