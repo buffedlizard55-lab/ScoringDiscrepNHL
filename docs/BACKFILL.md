@@ -44,7 +44,7 @@ What a proven change means, and what it does not:
 
 | Question | Answer |
 | --- | --- |
-| Which state is the original? | Decided by the **content comparison**, never by capture order. A document can be rewritten twice. |
+| Which state is the original? | The **older capture is recorded as the initial state and the newer as the corrected state** — that is the only ordering the archive proves, and the record stores the bracket, flags `correction_time_bounded_not_known`, and flags a digest that returned to an earlier value as a possible reversion. The content comparison decides whether this is a scoring change **at all**, not which side is original. |
 | When did the correction happen? | Unknown. It is bracketed: the older content demonstrably existed at T1 and the newer at T2. The record carries the bracket, flags `correction_time_bounded_not_known`, and labels timing `postgame` with `heuristic` confidence (a Game Summary cannot be edited before it exists). |
 | Does a changed digest mean a scoring change? | No. Regeneration for unrelated reasons changes the document too. A pair whose only difference is the footer produces a **finding**, never a record. |
 | What is invisible? | Any correction made **before the first usable capture** — a capture taken after a correction shows the corrected state and is indistinguishable from one taken before any correction. |

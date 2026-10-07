@@ -255,11 +255,16 @@ def summarise_scan(results: List[dict]) -> dict:
     verdicts: Dict[str, int] = {}
     leads: List[dict] = []
     archived = 0
+    changed_labels = set()
     for row in results:
         verdict = row.get("verdict", "unknown")
         verdicts[verdict] = verdicts.get(verdict, 0) + 1
         if isinstance(row.get("usable_captures"), int) and row["usable_captures"] > 0:
             archived += 1
+        if row.get("change_windows"):
+            # count DOCUMENTS, not windows: one document can change twice, and a rate
+            # computed from windows would exceed 1.0 and overstate the yield
+            changed_labels.add(row.get("label"))
         for window in row.get("change_windows") or []:
             leads.append({
                 "label": row["label"],
@@ -278,9 +283,12 @@ def summarise_scan(results: List[dict]) -> dict:
         "verdicts": verdicts,
         "documents_with_a_usable_capture": archived,
         "documents_without_a_usable_capture": len(results) - archived,
-        "documents_provably_changed": len(leads),
-        "proven_change_rate_among_archived": round(len(leads) / archived, 4) if archived else None,
-        "proven_change_rate_among_probed": round(len(leads) / len(results), 4) if results else None,
+        "documents_provably_changed": len(changed_labels),
+        "change_windows_found": len(leads),
+        "proven_change_rate_among_archived": (round(len(changed_labels) / archived, 4)
+                                              if archived else None),
+        "proven_change_rate_among_probed": (round(len(changed_labels) / len(results), 4)
+                                            if results else None),
         "leads": leads,
         "reading": ("documents_provably_changed counts documents whose archived content is "
                     "known to have changed - each lead is a candidate scoring correction "
