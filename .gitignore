@@ -13,3 +13,4 @@ data/snapshots/
 site_build/
 .DS_Store
 *.swp
+_sitecheck*/
