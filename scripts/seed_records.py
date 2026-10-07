@@ -199,7 +199,7 @@ def ohgren_record() -> dict:
         detail="Liam Ohgren's goal about 90 seconds into the third period was not initially counted; "
                "review of the white webbing in the goaltender's glove showed the puck crossing the line "
                "and the goal was awarded, changing the period and game goal count.",
-        total_changed=True, market_game_total="yes",
+        total_changed=None, market_game_total="yes",
         reason_text=("NHL Situation Room official Rod Pasma told Sportsnet the puck was seen moving in "
                      "Devlin Cooley's glove through the white webbing while behind the line, so the goal "
                      "was awarded; he added the call might have been ruled inconclusive had the webbing "
@@ -221,7 +221,8 @@ def ohgren_record() -> dict:
                   "kind": "official_page", "evidence": "reference", "retrieved_at": "",
                   "note": "Example of the only official public format for Situation Room explanations; "
                           "no such page is published for every game."}],
-        extra_flags=["period_and_game_total_impact", "goal_line_review_admitted_inconclusive_risk"],
+        extra_flags=["period_and_game_total_impact", "goal_line_review_admitted_inconclusive_risk",
+                     "total_change_reported_by_secondary_source_not_established"],
         period=3, clock="01:30", team="VAN",
         initial={"artifact": "on-ice ruling", "goal_present": False, "ruling": "no_goal_on_ice",
                  "scorer": {"name": "L. Ohgren"}, "assists": [], "period": 3, "clock": "01:30",
@@ -245,7 +246,7 @@ def rossie_record() -> dict:
         detail="Three states in one play: goal -> no goal (gloved puck) -> goal (deflected off the "
                "shoulder). The final record credits the goal; the two intermediate rulings leave no "
                "trace in the published box score, which is why this class is only catchable live.",
-        total_changed=True, market_game_total="yes",
+        total_changed=None, market_game_total="yes",
         reason_text=('NHL explanation as quoted by Scouting The Refs: "The Referee\'s initially ruled '
                      'that Marco Rossi batted the puck into the Edmonton net with his glove. The '
                      'Situation Room then initiated a video review to further examine the play and '
@@ -269,7 +270,8 @@ def rossie_record() -> dict:
                   "kind": "official_document", "evidence": "reference", "retrieved_at": "",
                   "note": "Rule text governs whether a deflection off the shoulder is legal; the cited "
                           "PDF is the current official rulebook."}],
-        extra_flags=["three_state_ruling_sequence", "not_challengeable_league_initiated"],
+        extra_flags=["three_state_ruling_sequence", "not_challengeable_league_initiated",
+                     "total_change_reported_by_secondary_source_not_established"],
         period=3, clock=None, team="VAN",
         initial={"artifact": "on-ice ruling after referee's revision", "goal_present": False,
                  "ruling": "no_goal_gloved_puck", "scorer": {"name": "M. Rossi"}, "assists": [],

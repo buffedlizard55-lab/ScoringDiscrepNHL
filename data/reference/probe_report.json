@@ -1,0 +1,37 @@
+{
+  "probed_at_utc": "2026-10-07T04:44:37Z",
+  "results": {
+    "api.pbp": {
+      "ok": false,
+      "url": "https://api-web.nhle.com/v1/gamecenter/2023020001/play-by-play",
+      "error": "FetchError: https://api-web.nhle.com/v1/gamecenter/2023020001/play-by-play: URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    "api.boxscore": {
+      "ok": false,
+      "url": "https://api-web.nhle.com/v1/gamecenter/2023020001/boxscore",
+      "error": "FetchError: https://api-web.nhle.com/v1/gamecenter/2023020001/boxscore: URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    "doc.GS": {
+      "ok": false,
+      "url": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+      "error": "FetchError: https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM: URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    "doc.RO": {
+      "ok": false,
+      "url": "https://www.nhl.com/scores/htmlreports/20232024/RO020001.HTM",
+      "error": "FetchError: https://www.nhl.com/scores/htmlreports/20232024/RO020001.HTM: URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    "archive.cdx": {
+      "ok": false,
+      "url": "http://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fwww.nhl.com%2Fscores%2Fhtmlreports%2F20232024%2FGS020001.HTM&output=json&fl=timestamp,original,statuscode,mimetype,digest,length&limit=5&collapse=digest",
+      "error": "FetchError: http://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fwww.nhl.com%2Fscores%2Fhtmlreports%2F20232024%2FGS020001.HTM&output=json&fl=timestamp,original,statuscode,mimetype,digest,length&limit=5&collapse=digest: RemoteDisconnected: Remote end closed connection without response"
+    }
+  },
+  "layout_validation": {
+    "url": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+    "error": "FetchError: https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM: URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+  },
+  "sources_ok": 0,
+  "sources_checked": 5,
+  "verdict": "one or more official sources were NOT reachable - records relying on them must be flagged, not filled in"
+}

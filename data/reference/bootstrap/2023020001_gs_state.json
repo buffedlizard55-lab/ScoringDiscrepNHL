@@ -1,0 +1,243 @@
+{
+  "game_id": 2023020001,
+  "source_key": "doc.GS",
+  "source_url": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+  "retrieved_at": "2026-10-07T00:00:00Z",
+  "game_date": "2023-10-10",
+  "season": "20232024",
+  "away": null,
+  "home": null,
+  "game_state": "",
+  "period": null,
+  "in_intermission": false,
+  "report_generated_at": "2024-02-06 11:19:44",
+  "report_is_frozen": null,
+  "goals": [
+    {
+      "period": 1,
+      "clock": "9:48",
+      "team": "TBL",
+      "scorer": {
+        "id": null,
+        "name": "N.KUCHEROV",
+        "sweater": 86
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "V.HEDMAN",
+          "sweater": 77
+        },
+        {
+          "id": null,
+          "name": "B.POINT",
+          "sweater": 21
+        }
+      ],
+      "strength": "EV",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 2,
+      "clock": "16:15",
+      "team": "NSH",
+      "scorer": {
+        "id": null,
+        "name": "R.O'REILLY",
+        "sweater": 90
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "F.FORSBERG",
+          "sweater": 9
+        },
+        {
+          "id": null,
+          "name": "R.MCDONAGH",
+          "sweater": 27
+        }
+      ],
+      "strength": "EV",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 3,
+      "clock": "0:11",
+      "team": "NSH",
+      "scorer": {
+        "id": null,
+        "name": "J.PARSSINEN",
+        "sweater": 75
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "F.FORSBERG",
+          "sweater": 9
+        },
+        {
+          "id": null,
+          "name": "R.O'REILLY",
+          "sweater": 90
+        }
+      ],
+      "strength": "EV",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 3,
+      "clock": "2:25",
+      "team": "TBL",
+      "scorer": {
+        "id": null,
+        "name": "N.PAUL",
+        "sweater": 20
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "B.POINT",
+          "sweater": 21
+        },
+        {
+          "id": null,
+          "name": "S.STAMKOS",
+          "sweater": 91
+        }
+      ],
+      "strength": "PP",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 3,
+      "clock": "3:07",
+      "team": "TBL",
+      "scorer": {
+        "id": null,
+        "name": "B.HAGEL",
+        "sweater": 38
+      },
+      "assists": [],
+      "strength": "EV-PS",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": true,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 3,
+      "clock": "8:48",
+      "team": "NSH",
+      "scorer": {
+        "id": null,
+        "name": "T.NOVAK",
+        "sweater": 82
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "P.TOMASINO",
+          "sweater": 26
+        },
+        {
+          "id": null,
+          "name": "G.NYQUIST",
+          "sweater": 14
+        }
+      ],
+      "strength": "PP",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 3,
+      "clock": "10:52",
+      "team": "TBL",
+      "scorer": {
+        "id": null,
+        "name": "N.PAUL",
+        "sweater": 20
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "M.SERGACHEV",
+          "sweater": 98
+        },
+        {
+          "id": null,
+          "name": "B.POINT",
+          "sweater": 21
+        }
+      ],
+      "strength": "PP",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    },
+    {
+      "period": 3,
+      "clock": "19:58",
+      "team": "TBL",
+      "scorer": {
+        "id": null,
+        "name": "N.KUCHEROV",
+        "sweater": 86
+      },
+      "assists": [
+        {
+          "id": null,
+          "name": "N.PAUL",
+          "sweater": 20
+        }
+      ],
+      "strength": "EV-EN",
+      "event_id": null,
+      "period_type": "REG",
+      "is_own_goal": false,
+      "is_penalty_shot": false,
+      "away_score_after": null,
+      "home_score_after": null
+    }
+  ],
+  "parse_warnings": [],
+  "evidence": {},
+  "state_kind": "bootstrap_reference",
+  "provenance": {
+    "why": "Committed as a format reference and parser regression check. It is parsed from the TEST-FIXTURE reconstruction of the official document (cell text verbatim, wrapper markup reconstructed), NOT from a live raw fetch. Live states written by the collector go to data/games/ and data/evidence/ instead.",
+    "fixture": "tests/fixtures/gs_20232024_020001.html",
+    "official_document": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+    "retrieved_on": "2026-10-07",
+    "fingerprint": "623e6541508c6b8b866aeb96b12e2a93"
+  }
+}

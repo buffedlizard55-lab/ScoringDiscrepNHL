@@ -1,0 +1,1433 @@
+{
+  "schema_version": "1.0",
+  "updated_at_utc": "2026-10-07T05:07:57Z",
+  "count": 3,
+  "records": [
+    {
+      "record_id": "NHL-20242025-021140-01",
+      "status": "verified_from_official_announcement",
+      "case_id": "CS-2025-03-26-NJD-AT-CHI-G1140",
+      "game": {
+        "game_id": 2024021140,
+        "season": "20242025",
+        "date": "2025-03-26",
+        "away": {
+          "abbrev": "NJD",
+          "score": 5
+        },
+        "home": {
+          "abbrev": "CHI",
+          "score": 3
+        },
+        "final_score": "5-3"
+      },
+      "event": {
+        "period": 1,
+        "period_type": "REG",
+        "clock": "6:50",
+        "strength": "PP",
+        "team": "NJD"
+      },
+      "initial_state": {
+        "ruling": "goal",
+        "team": "NJD",
+        "scorer": {
+          "name": "Timo Meier",
+          "sweater": 28,
+          "team": "NJD"
+        },
+        "assists": null,
+        "evidence_status": "reported_by_secondary_source",
+        "evidence": "Syndicated reproduction of the announcement: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.' No official artifact retaining the pre-change credit was found."
+      },
+      "corrected_state": {
+        "ruling": "goal",
+        "team": "NJD",
+        "scorer": {
+          "name": "Dawson Mercer",
+          "sweater": 91,
+          "team": "NJD",
+          "season_goal_total": 16
+        },
+        "assists": [
+          {
+            "name": "Luke Hughes",
+            "sweater": 43,
+            "team": "NJD",
+            "season_assist_total": 31
+          },
+          {
+            "name": "Nico Hischier",
+            "sweater": 13,
+            "team": "NJD",
+            "season_assist_total": 28
+          }
+        ],
+        "evidence_status": "verified"
+      },
+      "change": {
+        "discrepancy_type": "scorer_change",
+        "affects_goal_total": false,
+        "affects_team_assignment": false,
+        "attribution_only": true,
+        "counts": {
+          "goals_removed": 0,
+          "goals_added": 0,
+          "scorer_changes": 1,
+          "assist_changes": 0,
+          "other_changes": 0,
+          "team_reassignments": 0
+        },
+        "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer",
+        "declared_changes": [
+          {
+            "change_type": "scorer_change",
+            "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
+          }
+        ],
+        "machine_diff": {
+          "ruling": "same",
+          "scorer": "changed",
+          "assists": "indeterminate",
+          "team": "same"
+        },
+        "all_changes": [
+          {
+            "change_type": "scorer_change",
+            "period": 1,
+            "clock": "6:50",
+            "team": "NJD",
+            "before": {
+              "scorer": {
+                "name": "Timo Meier",
+                "sweater": 28,
+                "team": "NJD"
+              },
+              "assists": null,
+              "ruling": "goal"
+            },
+            "after": {
+              "scorer": {
+                "name": "Dawson Mercer",
+                "sweater": 91,
+                "team": "NJD",
+                "season_goal_total": 16
+              },
+              "assists": [
+                {
+                  "name": "Luke Hughes",
+                  "sweater": 43,
+                  "team": "NJD",
+                  "season_assist_total": 31
+                },
+                {
+                  "name": "Nico Hischier",
+                  "sweater": 13,
+                  "team": "NJD",
+                  "season_assist_total": 28
+                }
+              ],
+              "ruling": "goal"
+            },
+            "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
+          }
+        ]
+      },
+      "reason": {
+        "category": "official_source_statement",
+        "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
+        "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
+        "announcement_channel": "NHL Public Relations (@NHLPR)",
+        "announcement_issued_on": "2025-03-27"
+      },
+      "timing": {
+        "when": "postgame_after_publication",
+        "reasoning": "the league announced the change on 2025-03-27, after the game of 2025-03-26 had been published as final",
+        "announced_on": "2025-03-27",
+        "announced_at_utc": "2025-03-27T04:51:19Z",
+        "game_ended_at_utc": "2025-03-27T02:02:00Z",
+        "game_end_time_note": "Report states 'Start 6:37 CDT; End 9:02 CDT'. 21:02 CDT on 2025-03-26 = 02:02Z on 2025-03-27 (CDT = UTC-5).",
+        "latency_after_final_buzzer_seconds": 10159,
+        "state_captured_at_utc": "2026-10-07T00:00:00Z"
+      },
+      "sources": [
+        {
+          "role": "corrected_state",
+          "type": "official-document",
+          "name": "Official Game Summary (HTML): GS021140.HTM",
+          "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
+          "http_status": 200,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "document_generated_at": "2025-03-27 8.23.23",
+          "quoted_row": "2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)"
+        },
+        {
+          "role": "corrected_state",
+          "type": "official-api",
+          "name": "NHL GameCenter play-by-play",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
+          "http_status": 200,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "quoted_row": "eventId 146, period 1, timeInPeriod 06:50, typeDescKey goal, scoringPlayerId 8482110 (goal 16), assist1PlayerId 8482684 (assist 31), assist2PlayerId 8480002 (assist 28), awayScore 2, homeScore 0"
+        },
+        {
+          "role": "initial_state_corroboration",
+          "type": "official-media-metadata",
+          "name": "Highlight clip title inside the official GameCenter payload",
+          "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+        },
+        {
+          "role": "official_announcement_reproduction",
+          "type": "secondary-reproduction-of-official-statement",
+          "name": "Athlon Sports (syndicated via Yardbarker)",
+          "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
+        },
+        {
+          "role": "official_announcement",
+          "type": "official-statement",
+          "name": "NHL Public Relations (@NHLPR)",
+          "url": "https://x.com/NHLPR/status/1905120424146383077",
+          "retrievable_as_text": true,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
+        },
+        {
+          "role": "cross_check",
+          "type": "official-api",
+          "name": "NHL GameCenter boxscore",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "Listed as the next cross-check to run; the Game Summary and play-by-play already agree."
+        }
+      ],
+      "evidence_status": "verified_corrected_state_and_official_announcement",
+      "settlement": {
+        "level": "attribution",
+        "could_affect_game_total_market": false,
+        "could_affect_team_markets": false,
+        "could_affect_player_props": true,
+        "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
+        "requires_book_specific_review": true
+      },
+      "detection": {
+        "detected_by": "official_statement_ingest:2025-03-26-njd-at-chi-g1140.json",
+        "detected_at_utc": "2026-10-07T00:00:00Z",
+        "state_before_fingerprint": null,
+        "state_after_fingerprint": null,
+        "source_keys_compared": [
+          "Official Game Summary (HTML): GS021140.HTM",
+          "NHL GameCenter play-by-play"
+        ],
+        "confidence": "high",
+        "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
+      },
+      "flags": [
+        "assists_before_the_change_not_captured",
+        "initial_state_reported_by_secondary_source_only",
+        "official_payload_contains_two_different_clip_titles_for_the_same_goal",
+        "pre_change_assist_credits_unresolved"
+      ],
+      "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+      "completeness": {
+        "missing_requested_fields": [],
+        "fields_present": 22,
+        "fields_requested": 22,
+        "percent_complete": 100.0
+      },
+      "revision": 2,
+      "previous_revisions": [
+        {
+          "record_id": "NHL-20242025-021140-01",
+          "status": "verified_from_official_announcement",
+          "case_id": "CS-2025-03-26-NJD-AT-CHI-G1140",
+          "game": {
+            "game_id": 2024021140,
+            "season": "20242025",
+            "date": "2025-03-26",
+            "away": {
+              "abbrev": "NJD",
+              "score": 5
+            },
+            "home": {
+              "abbrev": "CHI",
+              "score": 3
+            },
+            "final_score": "5-3"
+          },
+          "event": {
+            "period": 1,
+            "period_type": "REG",
+            "clock": "6:50",
+            "strength": "PP",
+            "team": "NJD"
+          },
+          "initial_state": {
+            "ruling": "goal",
+            "team": "NJD",
+            "scorer": {
+              "name": "Timo Meier",
+              "sweater": 28,
+              "team": "NJD"
+            },
+            "assists": null,
+            "evidence_status": "reported_by_secondary_source",
+            "evidence": "Syndicated reproduction of the announcement: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.' No official artifact retaining the pre-change credit was found."
+          },
+          "corrected_state": {
+            "ruling": "goal",
+            "team": "NJD",
+            "scorer": {
+              "name": "Dawson Mercer",
+              "sweater": 91,
+              "team": "NJD",
+              "season_goal_total": 16
+            },
+            "assists": [
+              {
+                "name": "Luke Hughes",
+                "sweater": 43,
+                "team": "NJD",
+                "season_assist_total": 31
+              },
+              {
+                "name": "Nico Hischier",
+                "sweater": 13,
+                "team": "NJD",
+                "season_assist_total": 28
+              }
+            ],
+            "evidence_status": "verified"
+          },
+          "change": {
+            "discrepancy_type": "scorer_change",
+            "affects_goal_total": false,
+            "affects_team_assignment": false,
+            "attribution_only": true,
+            "counts": {
+              "goals_removed": 0,
+              "goals_added": 0,
+              "scorer_changes": 1,
+              "assist_changes": 0,
+              "other_changes": 0,
+              "team_reassignments": 0
+            },
+            "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer",
+            "declared_changes": [
+              {
+                "change_type": "scorer_change",
+                "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
+              }
+            ],
+            "machine_diff": {
+              "ruling": "same",
+              "scorer": "changed",
+              "assists": "indeterminate",
+              "team": "same"
+            },
+            "all_changes": [
+              {
+                "change_type": "scorer_change",
+                "period": 1,
+                "clock": "6:50",
+                "team": "NJD",
+                "before": {
+                  "scorer": {
+                    "name": "Timo Meier",
+                    "sweater": 28,
+                    "team": "NJD"
+                  },
+                  "assists": null,
+                  "ruling": "goal"
+                },
+                "after": {
+                  "scorer": {
+                    "name": "Dawson Mercer",
+                    "sweater": 91,
+                    "team": "NJD",
+                    "season_goal_total": 16
+                  },
+                  "assists": [
+                    {
+                      "name": "Luke Hughes",
+                      "sweater": 43,
+                      "team": "NJD",
+                      "season_assist_total": 31
+                    },
+                    {
+                      "name": "Nico Hischier",
+                      "sweater": 13,
+                      "team": "NJD",
+                      "season_assist_total": 28
+                    }
+                  ],
+                  "ruling": "goal"
+                },
+                "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
+              }
+            ]
+          },
+          "reason": {
+            "category": "official_source_statement",
+            "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
+            "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
+            "announcement_channel": "NHL Public Relations (@NHLPR)",
+            "announcement_issued_on": "2025-03-27"
+          },
+          "timing": {
+            "when": "postgame_after_publication",
+            "reasoning": "the league announced the change on 2025-03-27, after the game of 2025-03-26 had been published as final",
+            "announced_on": "2025-03-27",
+            "announced_at_utc": "2025-03-27T04:51:19Z",
+            "game_ended_at_utc": "2025-03-27T02:02:00Z",
+            "game_end_time_note": "Report states 'Start 6:37 CDT; End 9:02 CDT'. 21:02 CDT on 2025-03-26 = 02:02Z on 2025-03-27 (CDT = UTC-5).",
+            "latency_after_final_buzzer_seconds": 10159,
+            "state_captured_at_utc": "2026-10-07T00:00:00Z"
+          },
+          "sources": [
+            {
+              "role": "corrected_state",
+              "type": "official-document",
+              "name": "Official Game Summary (HTML): GS021140.HTM",
+              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
+              "http_status": 200,
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "document_generated_at": "2025-03-27 8.23.23",
+              "quoted_row": "2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)"
+            },
+            {
+              "role": "corrected_state",
+              "type": "official-api",
+              "name": "NHL GameCenter play-by-play",
+              "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
+              "http_status": 200,
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "quoted_row": "eventId 146, period 1, timeInPeriod 06:50, typeDescKey goal, scoringPlayerId 8482110 (goal 16), assist1PlayerId 8482684 (assist 31), assist2PlayerId 8480002 (assist 28), awayScore 2, homeScore 0"
+            },
+            {
+              "role": "initial_state_corroboration",
+              "type": "official-media-metadata",
+              "name": "Highlight clip title inside the official GameCenter payload",
+              "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+            },
+            {
+              "role": "official_announcement_reproduction",
+              "type": "secondary-reproduction-of-official-statement",
+              "name": "Athlon Sports (syndicated via Yardbarker)",
+              "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
+            },
+            {
+              "role": "official_announcement",
+              "type": "official-statement",
+              "name": "NHL Public Relations (@NHLPR)",
+              "url": "https://x.com/NHLPR/status/1905120424146383077",
+              "retrievable_as_text": true,
+              "retrieved_at_utc": null,
+              "note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself."
+            },
+            {
+              "role": "cross_check",
+              "type": "official-api",
+              "name": "NHL GameCenter boxscore",
+              "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "Listed as the next cross-check to run; the Game Summary and play-by-play already agree."
+            }
+          ],
+          "evidence_status": "verified_corrected_state_and_official_announcement",
+          "settlement": {
+            "level": "attribution",
+            "could_affect_game_total_market": false,
+            "could_affect_team_markets": false,
+            "could_affect_player_props": true,
+            "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
+            "requires_book_specific_review": true
+          },
+          "detection": {
+            "detected_by": "official_statement_ingest:2025-03-26-njd-at-chi-g1140.json",
+            "detected_at_utc": "2026-10-07T00:00:00Z",
+            "state_before_fingerprint": null,
+            "state_after_fingerprint": null,
+            "source_keys_compared": [
+              "Official Game Summary (HTML): GS021140.HTM",
+              "NHL GameCenter play-by-play"
+            ],
+            "confidence": "high",
+            "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
+          },
+          "flags": [
+            "assists_before_the_change_not_captured",
+            "initial_state_reported_by_secondary_source_only",
+            "official_payload_contains_two_different_clip_titles_for_the_same_goal",
+            "pre_change_assist_credits_unresolved"
+          ],
+          "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets.",
+          "completeness": {
+            "missing_requested_fields": [],
+            "fields_present": 22,
+            "fields_requested": 22,
+            "percent_complete": 100.0
+          },
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "record_id": "NHL-20242025-021185-01",
+      "status": "verified_from_official_announcement",
+      "case_id": "CS-2025-04-01-NSH-AT-CBJ-G1185",
+      "game": {
+        "game_id": 2024021185,
+        "season": "20242025",
+        "date": "2025-04-01",
+        "away": {
+          "abbrev": "NSH",
+          "score": 4
+        },
+        "home": {
+          "abbrev": "CBJ",
+          "score": 8
+        },
+        "final_score": "4-8"
+      },
+      "event": {
+        "period": 3,
+        "period_type": "REG",
+        "clock": "9:02",
+        "strength": "EV",
+        "team": "NSH"
+      },
+      "initial_state": {
+        "ruling": "goal",
+        "team": "NSH",
+        "scorer": {
+          "name": "Jordan Oesterle",
+          "sweater": 82,
+          "team": "NSH"
+        },
+        "assists": null,
+        "evidence_status": "unavailable",
+        "evidence": "Not retrievable. The announcement says the goal 'now reads' Oesterle from Smith and McCarron, which shows the assist credits were touched but not what they were, and the reproduction only says the goal was 'originally credited without clear confirmation of the assists'. Whether the goal was previously unassisted, or carried a different assist list, is therefore UNKNOWN. The scorer line was not changed by the announcement."
+      },
+      "corrected_state": {
+        "ruling": "goal",
+        "team": "NSH",
+        "scorer": {
+          "name": "Jordan Oesterle",
+          "sweater": 82,
+          "team": "NSH",
+          "season_goal_total": 2
+        },
+        "assists": [
+          {
+            "name": "Cole Smith",
+            "sweater": 36,
+            "team": "NSH",
+            "season_assist_total": 8
+          },
+          {
+            "name": "Michael McCarron",
+            "sweater": 47,
+            "team": "NSH",
+            "season_assist_total": 9
+          }
+        ],
+        "evidence_status": "verified"
+      },
+      "change": {
+        "discrepancy_type": "assist_change",
+        "affects_goal_total": false,
+        "affects_team_assignment": false,
+        "attribution_only": true,
+        "counts": {
+          "goals_removed": 0,
+          "goals_added": 0,
+          "scorer_changes": 0,
+          "assist_changes": 1,
+          "other_changes": 0,
+          "team_reassignments": 0
+        },
+        "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron",
+        "declared_changes": [
+          {
+            "change_type": "assist_change",
+            "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
+          }
+        ],
+        "machine_diff": {
+          "ruling": "same",
+          "scorer": "same",
+          "assists": "indeterminate",
+          "team": "same"
+        },
+        "all_changes": [
+          {
+            "change_type": "assist_change",
+            "period": 3,
+            "clock": "9:02",
+            "team": "NSH",
+            "before": {
+              "scorer": {
+                "name": "Jordan Oesterle",
+                "sweater": 82,
+                "team": "NSH"
+              },
+              "assists": null,
+              "ruling": "goal"
+            },
+            "after": {
+              "scorer": {
+                "name": "Jordan Oesterle",
+                "sweater": 82,
+                "team": "NSH",
+                "season_goal_total": 2
+              },
+              "assists": [
+                {
+                  "name": "Cole Smith",
+                  "sweater": 36,
+                  "team": "NSH",
+                  "season_assist_total": 8
+                },
+                {
+                  "name": "Michael McCarron",
+                  "sweater": 47,
+                  "team": "NSH",
+                  "season_assist_total": 9
+                }
+              ],
+              "ruling": "goal"
+            },
+            "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
+          }
+        ]
+      },
+      "reason": {
+        "category": "official_source_statement",
+        "text": "OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats",
+        "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
+        "announcement_channel": "NHL Public Relations (@NHLPR)",
+        "announcement_issued_on": "2025-04-02"
+      },
+      "timing": {
+        "when": "postgame_after_publication",
+        "reasoning": "the league announced the change on 2025-04-02, after the game of 2025-04-01 had been published as final",
+        "announced_on": "2025-04-02",
+        "announced_at_utc": "2025-04-02T05:07:35Z",
+        "game_ended_at_utc": "2025-04-02T01:43:00Z",
+        "game_end_time_note": "Report states 'Start 7:09 EDT; End 9:43 EDT'. 21:43 EDT on 2025-04-01 = 01:43Z on 2025-04-02 (EDT = UTC-4).",
+        "latency_after_final_buzzer_seconds": 12275,
+        "state_captured_at_utc": "2026-10-07T00:00:00Z"
+      },
+      "sources": [
+        {
+          "role": "corrected_state",
+          "type": "official-document",
+          "name": "Official Game Summary (HTML): GS021185.HTM",
+          "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+          "http_status": 200,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "document_generated_at": "2025-04-02 1.00.11",
+          "quoted_row": "12 | 3 | 9:02 | EV | NSH | 82 J.OESTERLE(2) | 36 C.SMITH(8) | 47 M.MCCARRON(9)"
+        },
+        {
+          "role": "official_announcement_reproduction",
+          "type": "secondary-reproduction-of-official-statement",
+          "name": "Athlon Sports (syndicated via Yardbarker)",
+          "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
+        },
+        {
+          "role": "cross_check",
+          "type": "official-document",
+          "name": "Same Game Summary, season totals",
+          "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "Internal consistency with the reproduction: it states Cole Smith reached eight assists and McCarron nine; the report shows '36 C.SMITH(8)' and '47 M.MCCARRON(9)'. Two independent official numbers agree with the corrected state."
+        },
+        {
+          "role": "official_announcement",
+          "type": "official-statement",
+          "name": "NHL Public Relations (@NHLPR)",
+          "url": "https://x.com/NHLPR/status/1907298847056941350",
+          "retrievable_as_text": true,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": null
+        },
+        {
+          "role": "cross_check",
+          "type": "official-api",
+          "name": "NHL GameCenter play-by-play",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "Listed as the next cross-check to run; not quoted in this pass."
+        }
+      ],
+      "evidence_status": "verified_corrected_state_and_official_announcement",
+      "settlement": {
+        "level": "attribution",
+        "could_affect_game_total_market": false,
+        "could_affect_team_markets": false,
+        "could_affect_player_props": true,
+        "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
+        "requires_book_specific_review": true
+      },
+      "detection": {
+        "detected_by": "official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json",
+        "detected_at_utc": "2026-10-07T00:00:00Z",
+        "state_before_fingerprint": null,
+        "state_after_fingerprint": null,
+        "source_keys_compared": [
+          "Official Game Summary (HTML): GS021185.HTM"
+        ],
+        "confidence": "high",
+        "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
+      },
+      "flags": [
+        "assists_before_the_change_not_captured",
+        "declared_change_not_confirmable_from_states:assist_change",
+        "initial_state_not_retrievable_from_any_source",
+        "pre_change_assist_credits_undetermined"
+      ],
+      "notes": "The goal, the scorer and the goal count are unchanged: this correction settles assist credits on Nashville's fourth goal, so the game total (NSH 4 - CBJ 8) is untouched and only player-prop markets can be affected. What the assists read before the change is not documented by any source reviewed, so this record explicitly does not claim to know the full scope of the correction - it is flagged for human review instead.",
+      "completeness": {
+        "missing_requested_fields": [],
+        "fields_present": 22,
+        "fields_requested": 22,
+        "percent_complete": 100.0
+      },
+      "revision": 2,
+      "previous_revisions": [
+        {
+          "record_id": "NHL-20242025-021185-01",
+          "status": "verified_from_official_announcement",
+          "case_id": "CS-2025-04-01-NSH-AT-CBJ-G1185",
+          "game": {
+            "game_id": 2024021185,
+            "season": "20242025",
+            "date": "2025-04-01",
+            "away": {
+              "abbrev": "NSH",
+              "score": 4
+            },
+            "home": {
+              "abbrev": "CBJ",
+              "score": 8
+            },
+            "final_score": "4-8"
+          },
+          "event": {
+            "period": 3,
+            "period_type": "REG",
+            "clock": "9:02",
+            "strength": "EV",
+            "team": "NSH"
+          },
+          "initial_state": {
+            "ruling": "goal",
+            "team": "NSH",
+            "scorer": {
+              "name": "Jordan Oesterle",
+              "sweater": 82,
+              "team": "NSH"
+            },
+            "assists": null,
+            "evidence_status": "unavailable",
+            "evidence": "Not retrievable. The announcement says the goal 'now reads' Oesterle from Smith and McCarron, which shows the assist credits were touched but not what they were, and the reproduction only says the goal was 'originally credited without clear confirmation of the assists'. Whether the goal was previously unassisted, or carried a different assist list, is therefore UNKNOWN. The scorer line was not changed by the announcement."
+          },
+          "corrected_state": {
+            "ruling": "goal",
+            "team": "NSH",
+            "scorer": {
+              "name": "Jordan Oesterle",
+              "sweater": 82,
+              "team": "NSH",
+              "season_goal_total": 2
+            },
+            "assists": [
+              {
+                "name": "Cole Smith",
+                "sweater": 36,
+                "team": "NSH",
+                "season_assist_total": 8
+              },
+              {
+                "name": "Michael McCarron",
+                "sweater": 47,
+                "team": "NSH",
+                "season_assist_total": 9
+              }
+            ],
+            "evidence_status": "verified"
+          },
+          "change": {
+            "discrepancy_type": "assist_change",
+            "affects_goal_total": false,
+            "affects_team_assignment": false,
+            "attribution_only": true,
+            "counts": {
+              "goals_removed": 0,
+              "goals_added": 0,
+              "scorer_changes": 0,
+              "assist_changes": 1,
+              "other_changes": 0,
+              "team_reassignments": 0
+            },
+            "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron",
+            "declared_changes": [
+              {
+                "change_type": "assist_change",
+                "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
+              }
+            ],
+            "machine_diff": {
+              "ruling": "same",
+              "scorer": "same",
+              "assists": "indeterminate",
+              "team": "same"
+            },
+            "all_changes": [
+              {
+                "change_type": "assist_change",
+                "period": 3,
+                "clock": "9:02",
+                "team": "NSH",
+                "before": {
+                  "scorer": {
+                    "name": "Jordan Oesterle",
+                    "sweater": 82,
+                    "team": "NSH"
+                  },
+                  "assists": null,
+                  "ruling": "goal"
+                },
+                "after": {
+                  "scorer": {
+                    "name": "Jordan Oesterle",
+                    "sweater": 82,
+                    "team": "NSH",
+                    "season_goal_total": 2
+                  },
+                  "assists": [
+                    {
+                      "name": "Cole Smith",
+                      "sweater": 36,
+                      "team": "NSH",
+                      "season_assist_total": 8
+                    },
+                    {
+                      "name": "Michael McCarron",
+                      "sweater": 47,
+                      "team": "NSH",
+                      "season_assist_total": 9
+                    }
+                  ],
+                  "ruling": "goal"
+                },
+                "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
+              }
+            ]
+          },
+          "reason": {
+            "category": "official_source_statement",
+            "text": "OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats",
+            "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
+            "announcement_channel": "NHL Public Relations (@NHLPR)",
+            "announcement_issued_on": "2025-04-02"
+          },
+          "timing": {
+            "when": "postgame_after_publication",
+            "reasoning": "the league announced the change on 2025-04-02, after the game of 2025-04-01 had been published as final",
+            "announced_on": "2025-04-02",
+            "announced_at_utc": "2025-04-02T05:07:35Z",
+            "game_ended_at_utc": "2025-04-02T01:43:00Z",
+            "game_end_time_note": "Report states 'Start 7:09 EDT; End 9:43 EDT'. 21:43 EDT on 2025-04-01 = 01:43Z on 2025-04-02 (EDT = UTC-4).",
+            "latency_after_final_buzzer_seconds": 12275,
+            "state_captured_at_utc": "2026-10-07T00:00:00Z"
+          },
+          "sources": [
+            {
+              "role": "corrected_state",
+              "type": "official-document",
+              "name": "Official Game Summary (HTML): GS021185.HTM",
+              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+              "http_status": 200,
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "document_generated_at": "2025-04-02 1.00.11",
+              "quoted_row": "12 | 3 | 9:02 | EV | NSH | 82 J.OESTERLE(2) | 36 C.SMITH(8) | 47 M.MCCARRON(9)"
+            },
+            {
+              "role": "official_announcement_reproduction",
+              "type": "secondary-reproduction-of-official-statement",
+              "name": "Athlon Sports (syndicated via Yardbarker)",
+              "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
+            },
+            {
+              "role": "cross_check",
+              "type": "official-document",
+              "name": "Same Game Summary, season totals",
+              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "Internal consistency with the reproduction: it states Cole Smith reached eight assists and McCarron nine; the report shows '36 C.SMITH(8)' and '47 M.MCCARRON(9)'. Two independent official numbers agree with the corrected state."
+            },
+            {
+              "role": "official_announcement",
+              "type": "official-statement",
+              "name": "NHL Public Relations (@NHLPR)",
+              "url": "https://x.com/NHLPR/status/1907298847056941350",
+              "retrievable_as_text": true,
+              "retrieved_at_utc": null,
+              "note": null
+            },
+            {
+              "role": "cross_check",
+              "type": "official-api",
+              "name": "NHL GameCenter play-by-play",
+              "url": "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "Listed as the next cross-check to run; not quoted in this pass."
+            }
+          ],
+          "evidence_status": "verified_corrected_state_and_official_announcement",
+          "settlement": {
+            "level": "attribution",
+            "could_affect_game_total_market": false,
+            "could_affect_team_markets": false,
+            "could_affect_player_props": true,
+            "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
+            "requires_book_specific_review": true
+          },
+          "detection": {
+            "detected_by": "official_statement_ingest:2025-04-01-nsh-at-cbj-g1185.json",
+            "detected_at_utc": "2026-10-07T00:00:00Z",
+            "state_before_fingerprint": null,
+            "state_after_fingerprint": null,
+            "source_keys_compared": [
+              "Official Game Summary (HTML): GS021185.HTM"
+            ],
+            "confidence": "high",
+            "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
+          },
+          "flags": [
+            "assists_before_the_change_not_captured",
+            "declared_change_not_confirmable_from_states:assist_change",
+            "initial_state_not_retrievable_from_any_source",
+            "pre_change_assist_credits_undetermined"
+          ],
+          "notes": "The goal, the scorer and the goal count are unchanged: this correction settles assist credits on Nashville's fourth goal, so the game total (NSH 4 - CBJ 8) is untouched and only player-prop markets can be affected. What the assists read before the change is not documented by any source reviewed, so this record explicitly does not claim to know the full scope of the correction - it is flagged for human review instead.",
+          "completeness": {
+            "missing_requested_fields": [],
+            "fields_present": 22,
+            "fields_requested": 22,
+            "percent_complete": 100.0
+          },
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "record_id": "NHL-20242025-021238-01",
+      "status": "verified_from_official_announcement",
+      "case_id": "CS-2025-04-08-BOS-AT-NJD-G1238",
+      "game": {
+        "game_id": 2024021238,
+        "season": "20242025",
+        "date": "2025-04-08",
+        "away": {
+          "abbrev": "BOS",
+          "score": 7
+        },
+        "home": {
+          "abbrev": "NJD",
+          "score": 2
+        },
+        "final_score": "7-2"
+      },
+      "event": {
+        "period": 1,
+        "period_type": "REG",
+        "clock": "9:38",
+        "strength": "EV",
+        "team": "BOS"
+      },
+      "initial_state": {
+        "ruling": "goal",
+        "team": "BOS",
+        "scorer": {
+          "name": "David Pastrnak",
+          "sweater": 88,
+          "team": "BOS"
+        },
+        "assists": [
+          {
+            "name": "Parker Wotherspoon",
+            "sweater": 29,
+            "team": "BOS"
+          }
+        ],
+        "evidence_status": "reported_by_secondary_source",
+        "evidence": "Syndicated reproduction: the goal was 'initially credited to Pastrnak with an assist from Parker Whotherspoon'. Not retained by any official artifact found. The live-post link the reproduction cites for the 'initial' state (nhl_goal_bot status 1909755726387437819) is about a DIFFERENT goal of the same game (Callahan, 19:24 of P1), so that citation does not document the pre-change assist."
+      },
+      "corrected_state": {
+        "ruling": "goal",
+        "team": "BOS",
+        "scorer": {
+          "name": "David Pastrnak",
+          "sweater": 88,
+          "team": "BOS",
+          "season_goal_total": 41
+        },
+        "assists": [
+          {
+            "name": "Morgan Geekie",
+            "sweater": 39,
+            "team": "BOS",
+            "season_assist_total": 23
+          }
+        ],
+        "evidence_status": "verified"
+      },
+      "change": {
+        "discrepancy_type": "assist_change",
+        "affects_goal_total": false,
+        "affects_team_assignment": false,
+        "attribution_only": true,
+        "counts": {
+          "goals_removed": 0,
+          "goals_added": 0,
+          "scorer_changes": 0,
+          "assist_changes": 1,
+          "other_changes": 0,
+          "team_reassignments": 0
+        },
+        "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie",
+        "declared_changes": [
+          {
+            "change_type": "assist_change",
+            "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
+          }
+        ],
+        "machine_diff": {
+          "ruling": "same",
+          "scorer": "same",
+          "assists": "changed",
+          "team": "same"
+        },
+        "all_changes": [
+          {
+            "change_type": "assist_change",
+            "period": 1,
+            "clock": "9:38",
+            "team": "BOS",
+            "before": {
+              "scorer": {
+                "name": "David Pastrnak",
+                "sweater": 88,
+                "team": "BOS"
+              },
+              "assists": [
+                {
+                  "name": "Parker Wotherspoon",
+                  "sweater": 29,
+                  "team": "BOS"
+                }
+              ],
+              "ruling": "goal"
+            },
+            "after": {
+              "scorer": {
+                "name": "David Pastrnak",
+                "sweater": 88,
+                "team": "BOS",
+                "season_goal_total": 41
+              },
+              "assists": [
+                {
+                  "name": "Morgan Geekie",
+                  "sweater": 39,
+                  "team": "BOS",
+                  "season_assist_total": 23
+                }
+              ],
+              "ruling": "goal"
+            },
+            "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
+          }
+        ]
+      },
+      "reason": {
+        "category": "official_source_statement",
+        "text": "OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats",
+        "note": "Read directly from the league's own post at the stored URL on 2026-10-07T00:00:00Z.",
+        "announcement_channel": "NHL Public Relations (@NHLPR)",
+        "announcement_issued_on": "2025-04-09"
+      },
+      "timing": {
+        "when": "postgame_after_publication",
+        "reasoning": "the league announced the change on 2025-04-09, after the game of 2025-04-08 had been published as final",
+        "announced_on": "2025-04-09",
+        "announced_at_utc": "2025-04-09T04:50:32Z",
+        "game_ended_at_utc": "2025-04-09T01:27:00Z",
+        "game_end_time_note": "Report states 'Start 7:08 EDT; End 9:27 EDT'. 21:27 EDT on 2025-04-08 = 01:27Z on 2025-04-09 (EDT = UTC-4).",
+        "latency_after_final_buzzer_seconds": 12212,
+        "state_captured_at_utc": "2026-10-07T00:00:00Z"
+      },
+      "sources": [
+        {
+          "role": "corrected_state",
+          "type": "official-document",
+          "name": "Official Game Summary (HTML): GS021238.HTM",
+          "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+          "http_status": 200,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "document_generated_at": "2025-04-11 21.36.36",
+          "quoted_row": "1 | 1 | 9:38 | EV | BOS | 88 D.PASTRNAK(41) | 39 M.GEEKIE(23) |"
+        },
+        {
+          "role": "official_announcement_reproduction",
+          "type": "secondary-reproduction-of-official-statement",
+          "name": "Athlon Sports (syndicated via Yardbarker)",
+          "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "By Antonio Losada, page last updated Apr 9, 2025 6:10 AM ET. Full page fetched. States: 'initially credited to Pastrnak with an assist from Parker Whotherspoon. After review, Morgan Geekie, not Whoterspoo, was awarded a helper.' (Player-name spellings as published.) Also states the change leaves Geekie on 23 assists and drops Wotherspoon to six."
+        },
+        {
+          "role": "cross_check",
+          "type": "official-document",
+          "name": "Same Game Summary, goal 2 of the same game",
+          "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "Internal consistency: goal 2 (19:24 of P1) reads '79 M.CALLAHAN(1) | 29 P.WOTHERSPOON(6) | 88 D.PASTRNAK(58)'. Wotherspoon's season total of 6 in the official report matches the reproduction's statement that the change dropped him to six assists, and Geekie's 23 matches the report's '39 M.GEEKIE(23)'. Two independent official numbers therefore agree with the corrected state."
+        },
+        {
+          "role": "official_announcement",
+          "type": "official-statement",
+          "name": "NHL Public Relations (@NHLPR)",
+          "url": "https://x.com/NHLPR/status/1909831272047800540",
+          "retrievable_as_text": true,
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": null
+        },
+        {
+          "role": "cross_check",
+          "type": "official-api",
+          "name": "NHL GameCenter play-by-play",
+          "url": "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play",
+          "retrieved_at_utc": "2026-10-07T00:00:00Z",
+          "note": "Listed as the next cross-check to run. Not quoted in this pass: the retrieved chunk ended at 9:27 of P1, immediately before the goal in question."
+        }
+      ],
+      "evidence_status": "verified_corrected_state_and_official_announcement",
+      "settlement": {
+        "level": "attribution",
+        "could_affect_game_total_market": false,
+        "could_affect_team_markets": false,
+        "could_affect_player_props": true,
+        "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
+        "requires_book_specific_review": true
+      },
+      "detection": {
+        "detected_by": "official_statement_ingest:2025-04-08-bos-at-njd-g1238.json",
+        "detected_at_utc": "2026-10-07T00:00:00Z",
+        "state_before_fingerprint": null,
+        "state_after_fingerprint": null,
+        "source_keys_compared": [
+          "Official Game Summary (HTML): GS021238.HTM"
+        ],
+        "confidence": "high",
+        "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
+      },
+      "flags": [
+        "initial_state_citation_in_reproduction_points_at_a_different_goal",
+        "initial_state_reported_by_secondary_source_only",
+        "official_play_by_play_event_not_quoted_this_pass"
+      ],
+      "notes": "The goal, the scorer and the number of goals are all unchanged: this is an assist re-attribution, so the game total (BOS 7 - NJD 2) is untouched and only player-prop markets can be affected. The corrected state is verified against the official report alone in this pass; the report is internally consistent with the reproduced statement on two independent season totals (Geekie 23, Wotherspoon 6). The pre-change assist rests on the reproduction, and the reproduction's own citation for it does not support it, which is recorded as an unresolved irregularity rather than resolved by inference.",
+      "completeness": {
+        "missing_requested_fields": [],
+        "fields_present": 22,
+        "fields_requested": 22,
+        "percent_complete": 100.0
+      },
+      "revision": 2,
+      "previous_revisions": [
+        {
+          "record_id": "NHL-20242025-021238-01",
+          "status": "verified_from_official_announcement",
+          "case_id": "CS-2025-04-08-BOS-AT-NJD-G1238",
+          "game": {
+            "game_id": 2024021238,
+            "season": "20242025",
+            "date": "2025-04-08",
+            "away": {
+              "abbrev": "BOS",
+              "score": 7
+            },
+            "home": {
+              "abbrev": "NJD",
+              "score": 2
+            },
+            "final_score": "7-2"
+          },
+          "event": {
+            "period": 1,
+            "period_type": "REG",
+            "clock": "9:38",
+            "strength": "EV",
+            "team": "BOS"
+          },
+          "initial_state": {
+            "ruling": "goal",
+            "team": "BOS",
+            "scorer": {
+              "name": "David Pastrnak",
+              "sweater": 88,
+              "team": "BOS"
+            },
+            "assists": [
+              {
+                "name": "Parker Wotherspoon",
+                "sweater": 29,
+                "team": "BOS"
+              }
+            ],
+            "evidence_status": "reported_by_secondary_source",
+            "evidence": "Syndicated reproduction: the goal was 'initially credited to Pastrnak with an assist from Parker Whotherspoon'. Not retained by any official artifact found. The live-post link the reproduction cites for the 'initial' state (nhl_goal_bot status 1909755726387437819) is about a DIFFERENT goal of the same game (Callahan, 19:24 of P1), so that citation does not document the pre-change assist."
+          },
+          "corrected_state": {
+            "ruling": "goal",
+            "team": "BOS",
+            "scorer": {
+              "name": "David Pastrnak",
+              "sweater": 88,
+              "team": "BOS",
+              "season_goal_total": 41
+            },
+            "assists": [
+              {
+                "name": "Morgan Geekie",
+                "sweater": 39,
+                "team": "BOS",
+                "season_assist_total": 23
+              }
+            ],
+            "evidence_status": "verified"
+          },
+          "change": {
+            "discrepancy_type": "assist_change",
+            "affects_goal_total": false,
+            "affects_team_assignment": false,
+            "attribution_only": true,
+            "counts": {
+              "goals_removed": 0,
+              "goals_added": 0,
+              "scorer_changes": 0,
+              "assist_changes": 1,
+              "other_changes": 0,
+              "team_reassignments": 0
+            },
+            "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie",
+            "declared_changes": [
+              {
+                "change_type": "assist_change",
+                "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
+              }
+            ],
+            "machine_diff": {
+              "ruling": "same",
+              "scorer": "same",
+              "assists": "changed",
+              "team": "same"
+            },
+            "all_changes": [
+              {
+                "change_type": "assist_change",
+                "period": 1,
+                "clock": "9:38",
+                "team": "BOS",
+                "before": {
+                  "scorer": {
+                    "name": "David Pastrnak",
+                    "sweater": 88,
+                    "team": "BOS"
+                  },
+                  "assists": [
+                    {
+                      "name": "Parker Wotherspoon",
+                      "sweater": 29,
+                      "team": "BOS"
+                    }
+                  ],
+                  "ruling": "goal"
+                },
+                "after": {
+                  "scorer": {
+                    "name": "David Pastrnak",
+                    "sweater": 88,
+                    "team": "BOS",
+                    "season_goal_total": 41
+                  },
+                  "assists": [
+                    {
+                      "name": "Morgan Geekie",
+                      "sweater": 39,
+                      "team": "BOS",
+                      "season_assist_total": 23
+                    }
+                  ],
+                  "ruling": "goal"
+                },
+                "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
+              }
+            ]
+          },
+          "reason": {
+            "category": "official_source_statement",
+            "text": "OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats",
+            "note": "Text of the league's own announcement, as reproduced by the outlet named in the sources. The announcement channel URL is stored but was not retrievable as plain text from this environment.",
+            "announcement_channel": "NHL Public Relations (@NHLPR)",
+            "announcement_issued_on": "2025-04-09"
+          },
+          "timing": {
+            "when": "postgame_after_publication",
+            "reasoning": "the league announced the change on 2025-04-09, after the game of 2025-04-08 had been published as final",
+            "announced_on": "2025-04-09",
+            "announced_at_utc": "2025-04-09T04:50:32Z",
+            "game_ended_at_utc": "2025-04-09T01:27:00Z",
+            "game_end_time_note": "Report states 'Start 7:08 EDT; End 9:27 EDT'. 21:27 EDT on 2025-04-08 = 01:27Z on 2025-04-09 (EDT = UTC-4).",
+            "latency_after_final_buzzer_seconds": 12212,
+            "state_captured_at_utc": "2026-10-07T00:00:00Z"
+          },
+          "sources": [
+            {
+              "role": "corrected_state",
+              "type": "official-document",
+              "name": "Official Game Summary (HTML): GS021238.HTM",
+              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+              "http_status": 200,
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "document_generated_at": "2025-04-11 21.36.36",
+              "quoted_row": "1 | 1 | 9:38 | EV | BOS | 88 D.PASTRNAK(41) | 39 M.GEEKIE(23) |"
+            },
+            {
+              "role": "official_announcement_reproduction",
+              "type": "secondary-reproduction-of-official-statement",
+              "name": "Athlon Sports (syndicated via Yardbarker)",
+              "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "By Antonio Losada, page last updated Apr 9, 2025 6:10 AM ET. Full page fetched. States: 'initially credited to Pastrnak with an assist from Parker Whotherspoon. After review, Morgan Geekie, not Whoterspoo, was awarded a helper.' (Player-name spellings as published.) Also states the change leaves Geekie on 23 assists and drops Wotherspoon to six."
+            },
+            {
+              "role": "cross_check",
+              "type": "official-document",
+              "name": "Same Game Summary, goal 2 of the same game",
+              "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "Internal consistency: goal 2 (19:24 of P1) reads '79 M.CALLAHAN(1) | 29 P.WOTHERSPOON(6) | 88 D.PASTRNAK(58)'. Wotherspoon's season total of 6 in the official report matches the reproduction's statement that the change dropped him to six assists, and Geekie's 23 matches the report's '39 M.GEEKIE(23)'. Two independent official numbers therefore agree with the corrected state."
+            },
+            {
+              "role": "official_announcement",
+              "type": "official-statement",
+              "name": "NHL Public Relations (@NHLPR)",
+              "url": "https://x.com/NHLPR/status/1909831272047800540",
+              "retrievable_as_text": true,
+              "retrieved_at_utc": null,
+              "note": null
+            },
+            {
+              "role": "cross_check",
+              "type": "official-api",
+              "name": "NHL GameCenter play-by-play",
+              "url": "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play",
+              "retrieved_at_utc": "2026-10-07T00:00:00Z",
+              "note": "Listed as the next cross-check to run. Not quoted in this pass: the retrieved chunk ended at 9:27 of P1, immediately before the goal in question."
+            }
+          ],
+          "evidence_status": "verified_corrected_state_and_official_announcement",
+          "settlement": {
+            "level": "attribution",
+            "could_affect_game_total_market": false,
+            "could_affect_team_markets": false,
+            "could_affect_player_props": true,
+            "reasoning": "Only player attribution changed. This cannot move a game total, but it can move goal-scorer / assist player-prop markets.",
+            "requires_book_specific_review": true
+          },
+          "detection": {
+            "detected_by": "official_statement_ingest:2025-04-08-bos-at-njd-g1238.json",
+            "detected_at_utc": "2026-10-07T00:00:00Z",
+            "state_before_fingerprint": null,
+            "state_after_fingerprint": null,
+            "source_keys_compared": [
+              "Official Game Summary (HTML): GS021238.HTM"
+            ],
+            "confidence": "high",
+            "method": "statement parsed by nhl_monitor.ingest and cross-checked against the curated fields; corrected state verified against an official report/feed"
+          },
+          "flags": [
+            "initial_state_citation_in_reproduction_points_at_a_different_goal",
+            "initial_state_reported_by_secondary_source_only",
+            "official_play_by_play_event_not_quoted_this_pass"
+          ],
+          "notes": "The goal, the scorer and the number of goals are all unchanged: this is an assist re-attribution, so the game total (BOS 7 - NJD 2) is untouched and only player-prop markets can be affected. The corrected state is verified against the official report alone in this pass; the report is internally consistent with the reproduced statement on two independent season totals (Geekie 23, Wotherspoon 6). The pre-change assist rests on the reproduction, and the reproduction's own citation for it does not support it, which is recorded as an unresolved irregularity rather than resolved by inference.",
+          "completeness": {
+            "missing_requested_fields": [],
+            "fields_present": 22,
+            "fields_requested": 22,
+            "percent_complete": 100.0
+          },
+          "revision": 1
+        }
+      ]
+    }
+  ],
+  "status_note": [
+    "This database is intentionally EMPTY on the day the system was built.",
+    "A scoring discrepancy is only ever written here by the detector, and only when it has two",
+    "captured official states (or one official artifact plus a documented official statement) that",
+    "differ. Nothing is seeded from memory, media reports or assumptions, so there are no",
+    "placeholder rows to mistake for verified history.",
+    "",
+    "To populate it with the historical census, run (from a machine with normal internet access,",
+    "e.g. the scheduled GitHub workflow `backfill.yml`):",
+    "  python -m nhl_monitor backfill-era   --season 20052006 --start 1 --end 1065",
+    "  python -m nhl_monitor backfill-archive --game-id <id>   # archived-snapshot census",
+    "and for going-forward coverage:",
+    "  python -m nhl_monitor monitor --date $(date -u +%F)     # run every few minutes on game days"
+  ],
+  "coverage": {
+    "official_sources_verified": [
+      "api-web play-by-play",
+      "api-web boxscore",
+      "official Game Summary (GS)",
+      "Event Summary (ES)",
+      "Play-by-Play (PL)",
+      "Club Playing Roster (RO)",
+      "Wayback CDX + archived copies of the official documents"
+    ],
+    "sources_not_available_as_machine_readable": [
+      "NHL Situation Room rulings feed (not located)"
+    ],
+    "season_coverage_measured": {
+      "20232024": "verified: GS/ES/PL/RO retrievable; reports regenerated (not original-state)",
+      "20242025": "verified: report path archived in the Wayback CDX index",
+      "20162017": "verified: GS retrievable and frozen at game time (original state preserved)",
+      "20052006": "verified: GS/ES retrievable and frozen at game time",
+      "19992000": "verified ABSENT: 19992000/GS020001.HTM returns 404; earliest season not yet bounded"
+    },
+    "known_evidence_gaps": [
+      "No record has been produced yet: the build sandbox has no network route to NHL hosts.",
+      "The exact season where reports stopped being regenerated is measured but not yet bracketed tighter than 2016-17 .. 2023-24.",
+      "Archive snapshot density is low for most games, so most historical changes will only be recoverable via the frozen-era method, not via archives."
+    ]
+  }
+}

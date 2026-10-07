@@ -1,0 +1,123 @@
+{
+  "case_id": "CS-2025-04-01-NSH-AT-CBJ-G1185",
+  "verified_at_utc": "2026-10-07T00:00:00Z",
+  "game": {
+    "game_id": 2024021185,
+    "season": "20242025",
+    "date": "2025-04-01",
+    "away": {
+      "abbrev": "NSH",
+      "score": 4
+    },
+    "home": {
+      "abbrev": "CBJ",
+      "score": 8
+    },
+    "final_score": "4-8",
+    "game_ended_at_utc": "2025-04-02T01:43:00Z",
+    "game_end_time_note": "Report states 'Start 7:09 EDT; End 9:43 EDT'. 21:43 EDT on 2025-04-01 = 01:43Z on 2025-04-02 (EDT = UTC-4)."
+  },
+  "event": {
+    "period": 3,
+    "period_type": "REG",
+    "clock": "9:02",
+    "strength": "EV",
+    "team": "NSH"
+  },
+  "official_announcement": {
+    "channel": "NHL Public Relations (@NHLPR)",
+    "channel_url": "https://x.com/NHLPR",
+    "post_url": "https://x.com/NHLPR/status/1907298847056941350",
+    "post_url_retrievable": true,
+    "post_note": "No replies were returned with the post.",
+    "issued_on": "2025-04-02",
+    "issued_at_utc": "2025-04-02T05:07:35Z",
+    "text": "OFFICIAL SCORING CHANGE: Game 1185\n@PredsNHL at @BlueJacketsNHL\n\nGoal at 9:02 of the third period now reads Jordan Oesterle from Cole Smith and Michael McCarron. #NHLStats",
+    "text_provenance": "Read directly from the league's own post at the stored URL; identical to the text reproduced by Athlon Sports.",
+    "reproductions": [
+      {
+        "publisher": "Athlon Sports (syndicated via Yardbarker)",
+        "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_predators_blue_jackets_game/s1_17615_41992037",
+        "retrieved_at_utc": "2026-10-07T00:00:00Z",
+        "note": "By Antonio Losada, page last updated Apr 2, 2025 2:31 AM ET. Full page fetched. States: 'The change applied to the final goal of the game, which was originally credited without clear confirmation of the assists at the final buzzer.' It does NOT state what the assists read before the change, so the pre-change scope of this correction is undetermined."
+      }
+    ],
+    "post_retrieved_at_utc": "2026-10-07T00:00:00Z"
+  },
+  "initial_state": {
+    "ruling": "goal",
+    "team": "NSH",
+    "status": "unavailable",
+    "scorer": {
+      "name": "Jordan Oesterle",
+      "sweater": 82,
+      "team": "NSH"
+    },
+    "assists": null,
+    "evidence": "Not retrievable. The announcement says the goal 'now reads' Oesterle from Smith and McCarron, which shows the assist credits were touched but not what they were, and the reproduction only says the goal was 'originally credited without clear confirmation of the assists'. Whether the goal was previously unassisted, or carried a different assist list, is therefore UNKNOWN. The scorer line was not changed by the announcement."
+  },
+  "corrected_state": {
+    "ruling": "goal",
+    "team": "NSH",
+    "status": "verified",
+    "scorer": {
+      "name": "Jordan Oesterle",
+      "sweater": 82,
+      "team": "NSH",
+      "season_goal_total": 2
+    },
+    "assists": [
+      {
+        "name": "Cole Smith",
+        "sweater": 36,
+        "team": "NSH",
+        "season_assist_total": 8
+      },
+      {
+        "name": "Michael McCarron",
+        "sweater": 47,
+        "team": "NSH",
+        "season_assist_total": 9
+      }
+    ]
+  },
+  "corrected_state_sources": [
+    {
+      "type": "official-document",
+      "name": "Official Game Summary (HTML): GS021185.HTM",
+      "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "document_generated_at": "2025-04-02 1.00.11",
+      "quoted_row": "12 | 3 | 9:02 | EV | NSH | 82 J.OESTERLE(2) | 36 C.SMITH(8) | 47 M.MCCARRON(9)",
+      "note": "Goal 12 is the game's last goal and the last event of the third period, matching the announcement's 'final goal of the game'. The report contains the corrected assists. Its footer timestamp timezone is not documented by the NHL, so it is stored verbatim and not converted."
+    }
+  ],
+  "initial_state_sources": [],
+  "cross_check_sources": [
+    {
+      "type": "official-document",
+      "name": "Same Game Summary, season totals",
+      "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021185.HTM",
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "note": "Internal consistency with the reproduction: it states Cole Smith reached eight assists and McCarron nine; the report shows '36 C.SMITH(8)' and '47 M.MCCARRON(9)'. Two independent official numbers agree with the corrected state."
+    },
+    {
+      "type": "official-api",
+      "name": "NHL GameCenter play-by-play",
+      "url": "https://api-web.nhle.com/v1/gamecenter/2024021185/play-by-play",
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "note": "Listed as the next cross-check to run; not quoted in this pass."
+    }
+  ],
+  "declared_changes": [
+    {
+      "change_type": "assist_change",
+      "detail": "assist credits on the goal at 9:02 of P3 resolved to Cole Smith and Michael McCarron"
+    }
+  ],
+  "extra_flags": [
+    "pre_change_assist_credits_undetermined"
+  ],
+  "notes": "The goal, the scorer and the goal count are unchanged: this correction settles assist credits on Nashville's fourth goal, so the game total (NSH 4 - CBJ 8) is untouched and only player-prop markets can be affected. What the assists read before the change is not documented by any source reviewed, so this record explicitly does not claim to know the full scope of the correction - it is flagged for human review instead."
+}

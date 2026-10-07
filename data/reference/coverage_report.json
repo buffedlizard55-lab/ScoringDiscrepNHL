@@ -1,0 +1,436 @@
+{
+  "probed_at_utc": "2026-10-07T05:13:54Z",
+  "kind": "GS",
+  "game_type": 2,
+  "game_no": 1,
+  "seasons": [
+    {
+      "season": "19992000",
+      "url": "https://www.nhl.com/scores/htmlreports/19992000/GS020001.HTM",
+      "http_status": 404,
+      "available": false
+    },
+    {
+      "season": "20002001",
+      "url": "https://www.nhl.com/scores/htmlreports/20002001/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2000-10-04",
+      "report_generated_at": "2000-10-04 22:14:20",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.2h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 4,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20012002",
+      "url": "https://www.nhl.com/scores/htmlreports/20012002/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2001-10-03",
+      "report_generated_at": "2001-10-03 22:27:18",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.5h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 9,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20022003",
+      "url": "https://www.nhl.com/scores/htmlreports/20022003/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2002-10-09",
+      "report_generated_at": "2002-10-09 22:40:05",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.7h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20032004",
+      "url": "https://www.nhl.com/scores/htmlreports/20032004/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2003-10-08",
+      "report_generated_at": "2003-10-09 14:02:10",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 2 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 6,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived",
+        "logo-derived teams NJD/BOS do not cover the teams named in the scoring summary (N.J, BOS) - the home/away order may be wrong"
+      ]
+    },
+    {
+      "season": "20042005",
+      "url": "https://www.nhl.com/scores/htmlreports/20042005/GS020001.HTM",
+      "http_status": 404,
+      "available": false
+    },
+    {
+      "season": "20052006",
+      "url": "https://www.nhl.com/scores/htmlreports/20052006/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2005-10-05",
+      "report_generated_at": "2005-10-05 21:40:47",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 21.7h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 3,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20062007",
+      "url": "https://www.nhl.com/scores/htmlreports/20062007/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2006-10-04",
+      "report_generated_at": "2006-10-04 22:12:44",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.2h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 4,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20072008",
+      "url": "https://www.nhl.com/scores/htmlreports/20072008/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2007-09-29",
+      "report_generated_at": "",
+      "report_is_frozen_original": null,
+      "era_note": "missing game date or report generation timestamp",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived",
+        "logo-derived teams ANA/PRE do not cover the teams named in the scoring summary (L.A, ANA) - the home/away order may be wrong"
+      ]
+    },
+    {
+      "season": "20082009",
+      "url": "https://www.nhl.com/scores/htmlreports/20082009/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2008-10-04",
+      "report_generated_at": "2008-10-04 20:57:56",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 21.0h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 3,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived",
+        "logo-derived teams NYR/PRG do not cover the teams named in the scoring summary (NYR, T.B) - the home/away order may be wrong"
+      ]
+    },
+    {
+      "season": "20092010",
+      "url": "https://www.nhl.com/scores/htmlreports/20092010/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2009-10-01",
+      "report_generated_at": "2009-10-01 21:34:56",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 21.6h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20102011",
+      "url": "https://www.nhl.com/scores/htmlreports/20102011/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2010-10-07",
+      "report_generated_at": "2010-10-07 21:56:31",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 21.9h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20112012",
+      "url": "https://www.nhl.com/scores/htmlreports/20112012/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2011-10-06",
+      "report_generated_at": "2011-10-06 22:04:09",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.1h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 3,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20122013",
+      "url": "https://www.nhl.com/scores/htmlreports/20122013/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2013-01-19",
+      "report_generated_at": "2013-01-21 10:10:13",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 2 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 4,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20132014",
+      "url": "https://www.nhl.com/scores/htmlreports/20132014/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2013-10-01",
+      "report_generated_at": "2013-10-02 13:14:28",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 2 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 7,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20142015",
+      "url": "https://www.nhl.com/scores/htmlreports/20142015/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2014-10-08",
+      "report_generated_at": "2014-10-09 10:35:04",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 1 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 7,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20152016",
+      "url": "https://www.nhl.com/scores/htmlreports/20152016/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2015-10-07",
+      "report_generated_at": "",
+      "report_is_frozen_original": null,
+      "era_note": "missing game date or report generation timestamp",
+      "goals_parsed": 4,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20162017",
+      "url": "https://www.nhl.com/scores/htmlreports/20162017/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2016-10-12",
+      "report_generated_at": "2016-10-12 22:08:17",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.1h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 9,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20172018",
+      "url": "https://www.nhl.com/scores/htmlreports/20172018/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2017-10-04",
+      "report_generated_at": "",
+      "report_is_frozen_original": null,
+      "era_note": "missing game date or report generation timestamp",
+      "goals_parsed": 9,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20182019",
+      "url": "https://www.nhl.com/scores/htmlreports/20182019/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2018-10-03",
+      "report_generated_at": "2018-10-03 22:10:58",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.2h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20192020",
+      "url": "https://www.nhl.com/scores/htmlreports/20192020/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2019-10-02",
+      "report_generated_at": "2019-10-02 22:27:48",
+      "report_is_frozen_original": true,
+      "era_note": "report generated 22.5h after the game date -> frozen at game time; content is the ORIGINAL record unless the league edited it in place",
+      "goals_parsed": 8,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20202021",
+      "url": "https://www.nhl.com/scores/htmlreports/20202021/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2021-01-13",
+      "report_generated_at": "2021-01-16 14:04:07",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 4 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 9,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20212022",
+      "url": "https://www.nhl.com/scores/htmlreports/20212022/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2021-10-12",
+      "report_generated_at": "2021-11-02 17:11:17",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 22 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 8,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20222023",
+      "url": "https://www.nhl.com/scores/htmlreports/20222023/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2022-10-07",
+      "report_generated_at": "",
+      "report_is_frozen_original": null,
+      "era_note": "missing game date or report generation timestamp",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived",
+        "logo-derived teams SJS/CZE do not cover the teams named in the scoring summary (NSH, SJS) - the home/away order may be wrong"
+      ]
+    },
+    {
+      "season": "20232024",
+      "url": "https://www.nhl.com/scores/htmlreports/20232024/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2023-10-10",
+      "report_generated_at": "2024-02-06 11:19:44",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 119 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 8,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20242025",
+      "url": "https://www.nhl.com/scores/htmlreports/20242025/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2024-10-04",
+      "report_generated_at": "2025-02-12 16:54:33",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 132 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived",
+        "logo-derived teams NJD/CZE do not cover the teams named in the scoring summary (NJD, BUF) - the home/away order may be wrong"
+      ]
+    },
+    {
+      "season": "20252026",
+      "url": "https://www.nhl.com/scores/htmlreports/20252026/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2025-10-07",
+      "report_generated_at": "2026-01-06 10:07:53",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 91 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 5,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    },
+    {
+      "season": "20262027",
+      "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020001.HTM",
+      "http_status": 200,
+      "available": true,
+      "game_date": "2026-09-29",
+      "report_generated_at": "2026-09-30 11:59:44",
+      "report_is_frozen_original": false,
+      "era_note": "report generated 1 days after the game date -> the document has been REGENERATED and carries the CURRENT record",
+      "goals_parsed": 1,
+      "parse_warnings": [
+        "no game id supplied; report header game number 0001 was found but a full id cannot be derived"
+      ]
+    }
+  ],
+  "earliest_season_with_report": "20002001",
+  "latest_frozen_original_season": "20192020",
+  "earliest_regenerated_season": "20032004",
+  "frozen_seasons": [
+    "20002001",
+    "20012002",
+    "20022003",
+    "20052006",
+    "20062007",
+    "20082009",
+    "20092010",
+    "20102011",
+    "20112012",
+    "20162017",
+    "20182019",
+    "20192020"
+  ],
+  "regenerated_seasons": [
+    "20032004",
+    "20122013",
+    "20132014",
+    "20142015",
+    "20202021",
+    "20212022",
+    "20232024",
+    "20242025",
+    "20252026",
+    "20262027"
+  ],
+  "undetermined_seasons": [
+    "20072008",
+    "20152016",
+    "20172018",
+    "20222023"
+  ],
+  "seasons_without_a_report": [
+    "19992000",
+    "20042005"
+  ],
+  "eras_overlap": true,
+  "interpretation": "The two behaviours are NOT a single era transition and must be measured per season. Where the live document is still the game-night document (footer on the game's own date) it preserves the ORIGINAL ruling, so it can be diffed against the current database to recover a scoring change with both states official. Where the document has been regenerated, the original bytes are gone and only archived snapshots can show what changed - which is why the per-season column, not a cut-off year, is what the backfill should read.",
+  "caveats": [
+    "One game per season is probed: a season is classified from a single document's footer, so a single season can contain both behaviours.",
+    "A footer a few days after the game (1-4 days) is neither a game-night record nor a late batch rebuild: it may already contain corrections. Treated as weak evidence, not as an original record.",
+    "A missing report for a mid-season game does not prove the season is absent - re-run with a different --game-no before drawing a conclusion.",
+    "20042005 returns 404; that season was not played, so the absence is not a coverage gap. It is listed so the hole is visible rather than silently missing."
+  ]
+}

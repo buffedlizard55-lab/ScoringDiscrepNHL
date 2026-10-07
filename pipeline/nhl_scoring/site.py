@@ -22,12 +22,21 @@ from typing import Any, Dict, List, Optional, Tuple
 SITE_FILES = ("index.html", "styles.css", "app.js", "data.js", ".nojekyll")
 
 DOC_PAGES: List[Tuple[str, str, str]] = [
-    # (filename, nav label, page title)
+    # (path under docs/, nav label, page title). Both implementations' docs are
+    # published: the repository carries a parallel monitor line (see README
+    # "Consolidation"), and hiding one line's analysis would misrepresent what the
+    # project knows. Paths prefixed engine/ are this package's own documents.
     ("FEASIBILITY.md", "Can we detect it?", "Detection feasibility and limits"),
-    ("SOURCES.md", "Official sources", "Official source inventory and coverage"),
-    ("METHODOLOGY.md", "Methodology", "How a record gets made - and promoted"),
-    ("DATA_MODEL.md", "Data model", "Record schema, field by field"),
-    ("STATUS.md", "Status", "Project status and backlog"),
+    ("STATUS.md", "Status & backlog", "Project status, consolidation, and open work"),
+    ("engine/METHODOLOGY.md", "Methodology (engine)", "How a record gets made, validated, and promoted"),
+    ("engine/SOURCES.md", "Sources (engine)", "Official endpoints, response status, what each proves"),
+    ("engine/DATA_MODEL.md", "Data model (engine)", "Record schema, field by field"),
+    ("LIMITATIONS.md", "Limitations (monitor line)", "What the monitor line says it cannot do"),
+    ("DETECTION.md", "Detection (monitor line)", "The monitor line's detection design"),
+    ("COVERAGE_AND_LIMITATIONS.md", "Coverage (monitor line)", "Measured coverage and its holes"),
+    ("OPERATIONS.md", "Operations", "Running the monitor and the backfill"),
+    ("VERIFICATION_LOG.md", "Verification log", "Line-by-line checks performed, with links"),
+    ("ROADMAP.md", "Roadmap", "What is left, in order"),
 ]
 
 

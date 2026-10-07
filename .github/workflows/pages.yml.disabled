@@ -1,0 +1,56 @@
+# PARKED 2026-10-07 (repair pass) — this workflow deploys via actions/deploy-pages,
+# which REQUIRES the repo's Pages setting "Source: GitHub Actions". This repo's Pages
+# is configured (admin-only) to deploy from the main branch ROOT (legacy), so this
+# workflow can only fail while that setting stands — and it would fail on every
+# monitor data commit (paths: data/**). The live public site is served by legacy
+# Pages from the repo root (index.html, css/, js/, data/).
+#
+# To restore: switch Settings -> Pages -> Source to "GitHub Actions" (needs a repo
+# admin), then rename this file back to pages.yml.
+#
+name: deploy site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "data/**"
+      - "tools/build_site.py"
+      - "src/nhl_monitor/sources.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build _site (static files + committed JSON)
+        run: python tools/build_site.py
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

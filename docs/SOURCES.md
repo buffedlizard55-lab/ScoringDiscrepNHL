@@ -1,67 +1,52 @@
-# Sources: what we read, and what each one can prove
+# Official sources
 
-Every URL in this file was requested on 2026-10-07 and the status is recorded
-below. A source that returns 200 today is not a promise for next season, which is
-why `scripts/verify_sources.py` exists and CI re-runs it.
+Read this together with `python -m nhl_monitor sources` (the machine-readable registry, regenerated into
+`data/reference/sources.json` at site build time) and
+[`data/reference/verified_facts.json`](../data/reference/verified_facts.json) (the evidence ledger).
 
-## Tier 1 - official, machine-readable, primary
+## Source hierarchy
 
-| Source | URL pattern | Proves | Verified status |
-| --- | --- | --- | --- |
-| Game Summary sheet (`GS`) | `https://www.nhl.com/scores/htmlreports/{season}/{CODE}{game:06d}.HTM` | Final credited goals, scorers, assists with `(n)` counters, strength (`EV`/`PP`/`SH`, `EN` suffix), on-ice players, per-team BY PERIOD goals/shots/PN/PIM tables, generation stamp | `20002001/GS020001.HTM` 200; `20022003/GS020001.HTM` 200; `20152016/GS020001.HTM` 200; `20262027/GS020001.HTM` 200 |
-| Play-by-Play sheet (`PL`) | same, `PL` prefix | Event timeline including `GOAL`, `GOAL_STOP`, `FACEOFF`; the only artifact where a review delay leaves a footprint | used in prior-art leads; ~1 MB per file, never bulk-fetched |
-| Game Center JSON | `https://api-web.nhle.com/v1/gamecenter/{game_id}/landing` | `summary.scoring[].goals[]`: `eventId`, `strength`, `playerId`, `assists[].playerId`, `goalsToDate`, `timeInPeriod`, `awayScore`/`homeScore`, `shotType`, `goalModifier`, `pptReplayUrl`; top-level `limitedScoring` | `2023030155/landing` 200; `1999020001/landing` 200 (1999-2000); 10-digit id required |
-| Right rail JSON | `https://api-web.nhle.com/v1/gamecenter/{game_id}/right-rail` | **`gameReports[]` = the canonical list of official report links** (gameSummary, eventSummary, playByPlay, faceoffSummary, shotSummary, toiAway/Home, shiftChart), plus `linescore.byPeriod`, `shotsByPeriod`, `teamGameStats` (`powerPlay: "0/7"`), `gameOutcome.lastPeriodType` | `2026020001/right-rail` 200 |
-| Daily scoreboard JSON | `https://api-web.nhle.com/v1/score/{YYYY-MM-DD}` | Which games happened on a date and their game ids - the entry point for backfills | `2024-05-01` 200 |
-| Landing HTML | `https://www.nhl.com/gamecenter/{game_id}` | Human view of the same final data; the link a reviewer should land on | linked from records, not parsed |
+1. **Official NHL artifacts** — the only things that may appear in a record's `sources[]`:
+   * `api-web.nhle.com/v1/gamecenter/{id}/play-by-play` and `/boxscore`;
+   * `nhl.com/scores/htmlreports/<season>/GS…HTM` (Game Summary), `ES` (Event Summary), `PL`
+     (Play-by-Play), `RO` (Club Playing Roster);
+   * archived copies of those exact documents (Wayback `…id_/<original url>`), which are official bytes with
+     a third-party timestamp — the timestamp is what makes them evidence of an *earlier* state.
+2. **Official announcements** (newsroom items, league press releases) — allowed only to fill `reason.text`,
+   and only verbatim with the link.
+3. **Never evidence** — media, blogs, social posts, wikis, third-party stat sites. They may appear in
+   `secondary_leads_not_evidence` as a candidate to verify, and nowhere else.
 
-Notes on behaviour, learned the hard way:
+## The report family
 
-- The landing JSON is **mutable and unversioned**. No `ETag`/`Last-Modified`
-  contract, no version field. Two polls can straddle an edit and see nothing.
-- `limitedScoring: true` means "the league is withholding scoring detail" - the
-  parser marks the record unreadable (`parse_ok: false`) rather than reporting a
-  goalless game.
-- Pre-2000-01 seasons have no `GS` file: the fallback is exactly one artifact, so
-  cross-source checks (C10-C17) cannot run and coverage says so.
-- `gameReports` is the only trustworthy way to know which reports exist for a game.
-  Constructed URLs 404 for games whose reports were never generated (see the
-  missing-playoff-reports list in STATUS.md).
+| Kind | Document | Authoritative for | Notes |
+|---|---|---|---|
+| `GS` | Game Summary | the scoring record: goal, period, clock, strength, scorer, assists, by-period totals, officials | the key document; carries the generation timestamp in the footer |
+| `ES` | Event Summary | per-player G/A/P, TOI, shots and faceoff summaries | layout changed over the years (the 2005-06 version has no per-player G/A columns) |
+| `PL` | Play-by-Play | chronological events with on-ice skaters | used to reconstruct context around a corrected event |
+| `RO` | Club Playing Roster | lineups, scratches, coaches, game officials | supplies officials for the record |
+| `SC` | — | — | **does not exist** (verified HTTP 404 on 2026-10-07) |
 
-## Tier 2 - official, human-readable, primary but not machine-readable
+URL shape: `https://www.nhl.com/scores/htmlreports/<season>/<KIND><game_type:02d><game_no:04d>.HTM`
+where `season` is `20232024`-style, `game_type` is 1 pre-season / 2 regular season / 3 playoffs, and
+`game_no` is the last four digits of the ten-digit game id. `sources.report_url()`,
+`sources.season_folder()` and `sources.split_game_id()` implement exactly this and are unit-tested.
 
-- **Situation Room explanations** - e.g.
-  `https://www.nhl.com/news/frozen-frenzy-nhl-situation-room-live-blog-october-22-2024`.
-  The only official format that states *why* a call was overturned, in prose, per
-  play. Not published for every game, not structured, no API, no SLA. The pipeline
-  can quote it (`alerts.parse_situation_room_text`) when a page exists.
-- **NHL Rule Book** (Rule 78 for goals/assists, 37 for video review) - the standard
-  against which "correct" is defined; cited as evidence `reference`, never as proof
-  that a specific entry is wrong.
+## Why there is no "scoring change" feed
 
-## Tier 3 - third party, secondary
+The brief asked to search the Situation Room and official scoring summaries. What exists:
 
-| Source | Why it is in the list | Treatment |
-| --- | --- | --- |
-| `github.com/aknodell/nhlPbpScrapeR` - `after_goal_corrections.md` + `data/manually_changed_{api,html}_events.csv` | A public audit log of 560 games where the official play-by-play had a goal at the wrong second or lost the following faceoff | **Repository has no license file**, so the data is not copied in. Five rows are quoted individually with attribution as `pending_review` leads. |
-| `5v5hockey.com/hockey/games/` | Third-party scorekeeping that deliberately re-pulls ~7 days of games to absorb league stat corrections - independent evidence that corrections happen silently and how fast | Cited in METHODOLOGY for the 7-day re-poll window; never used as a data source |
-| `puckovertheglass.substack.com/p/a-brief-history-of-nhl-play-by-play` | Documents RTSS's 26 event types vs the API's 16, and that own goals could only be inferred before 2022-23 | Feeds the FEASIBILITY analysis of what the feed cannot express |
-| `forums.hfboards.com/threads/1429377` | Community list of specific playoff `PL` reports that 404 | Kept as a known-holes list; not load-bearing |
-| Sportradar live game API (`developer.sportradar.com/.../nhl-ig-live-game-retrieval`) | Has a real `challenge{outcome: call_overturned, decision}` object - proof that the data exists, and that it is licensed | Not used: the project's premise is free official sources |
+* **Situation Room**: no public machine-readable feed was located. Review *outcomes* surface as goal state
+  changes in the official record (that is detectable); the *reason* rarely appears in a machine-readable
+  place (that is not).
+* **Official game reports**: exactly the GS/ES/PL/RO family above, which is what this system reads.
+* **Official team reports**: club-published documents are not part of the NHL's own report family and are not
+  used as evidence, because they are not stable or uniformly addressable.
 
-## Explicitly dead ends (do not retry)
+## Verification status used in the registry
 
-- `https://www.nhl.com/webapi/v1/statspdf` - 404.
-- `statsapi.hockey.com` - unreachable.
-- `https://api-web.nhle.com/v1/club-schedule/{TEAM}/{start}/{end}` - 404; that
-  pattern circulates in old notes and does not exist.
-- Any "corrections" or "versions" query parameter on the game center endpoints: no
-  such API is documented or discoverable.
-
-## Rate and etiquette
-
-Single-threaded, 0.25 s minimum spacing (configurable), `User-Agent` identifying the
-project, exponential backoff on 5xx, no retry on 404/410, response cache keyed by
-content hash so re-runs do not re-hit the network. A full regular-season day is
-~8 games x 3 requests = 24 requests. A season backfill is batched at 25 games per
-CI run.
+| Status | Meaning |
+|---|---|
+| `verified` | fetched and cross-checked against another official artifact; the observation is recorded in the ledger |
+| `reachable_at_runtime` | the document family is verified, but each individual game document must still be fetched and validated before use |
+| `unverified` | implemented defensively; must not be cited until the pipeline confirms it |

@@ -1,0 +1,135 @@
+{
+  "case_id": "CS-2025-03-26-NJD-AT-CHI-G1140",
+  "verified_at_utc": "2026-10-07T00:00:00Z",
+  "game": {
+    "game_id": 2024021140,
+    "season": "20242025",
+    "date": "2025-03-26",
+    "away": {
+      "abbrev": "NJD",
+      "score": 5
+    },
+    "home": {
+      "abbrev": "CHI",
+      "score": 3
+    },
+    "final_score": "5-3",
+    "game_ended_at_utc": "2025-03-27T02:02:00Z",
+    "game_end_time_note": "Report states 'Start 6:37 CDT; End 9:02 CDT'. 21:02 CDT on 2025-03-26 = 02:02Z on 2025-03-27 (CDT = UTC-5)."
+  },
+  "event": {
+    "period": 1,
+    "period_type": "REG",
+    "clock": "6:50",
+    "strength": "PP",
+    "team": "NJD"
+  },
+  "official_announcement": {
+    "channel": "NHL Public Relations (@NHLPR)",
+    "channel_url": "https://x.com/NHLPR",
+    "post_url": "https://x.com/NHLPR/status/1905120424146383077",
+    "post_url_retrievable": true,
+    "issued_on": "2025-03-27",
+    "issued_at_utc": "2025-03-27T04:51:19Z",
+    "text": "OFFICIAL SCORING CHANGE: Game 1,140\n@NJDevils at @NHLBlackhawks\n\nGoal at 6:50 of the first period now reads Dawson Mercer from Luke Hughes and Nico Hischier. #NHLStats",
+    "text_provenance": "Read directly from the league's own post at the stored URL. The syndicated reproduction (Athlon Sports via Yardbarker) quotes the same statement with a dash after the game number - 'OFFICIAL SCORING CHANGE: Game 1,140 - @NJDevils at @NHLBlackhawks' - which is the only difference between the two renderings.",
+    "reproductions": [
+      {
+        "publisher": "Athlon Sports (syndicated via Yardbarker)",
+        "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_blackhawks_devils_game/s1_17615_41963992",
+        "retrieved_at_utc": "2026-10-07T00:00:00Z",
+        "note": "By Antonio Losada, page last updated 2025-03-27 5:29 AM ET. Full page fetched. It states: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.'"
+      }
+    ],
+    "post_url_note": "Post metadata (author, timestamp 2025-03-27T04:51:19Z) read from the post itself.",
+    "post_retrieved_at_utc": "2026-10-07T00:00:00Z"
+  },
+  "initial_state": {
+    "ruling": "goal",
+    "team": "NJD",
+    "scorer": {
+      "name": "Timo Meier",
+      "sweater": 28,
+      "team": "NJD"
+    },
+    "assists": null,
+    "status": "reported_by_secondary_source",
+    "evidence": "Syndicated reproduction of the announcement: 'Timo Meier was initially given credit for the goal, but he saw it removed from his stat line after the game.' No official artifact retaining the pre-change credit was found."
+  },
+  "corrected_state": {
+    "ruling": "goal",
+    "team": "NJD",
+    "status": "verified",
+    "scorer": {
+      "name": "Dawson Mercer",
+      "sweater": 91,
+      "team": "NJD",
+      "season_goal_total": 16
+    },
+    "assists": [
+      {
+        "name": "Luke Hughes",
+        "sweater": 43,
+        "team": "NJD",
+        "season_assist_total": 31
+      },
+      {
+        "name": "Nico Hischier",
+        "sweater": 13,
+        "team": "NJD",
+        "season_assist_total": 28
+      }
+    ]
+  },
+  "corrected_state_sources": [
+    {
+      "type": "official-document",
+      "name": "Official Game Summary (HTML): GS021140.HTM",
+      "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021140.HTM",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "document_generated_at": "2025-03-27 8.23.23",
+      "quoted_row": "2 | 1 | 6:50 | PP | NJD | 91 D.MERCER(16) | 43 L.HUGHES(31) | 13 N.HISCHIER(28)",
+      "note": "Report footer timestamp 2025-03-27 8.23.23 places the rebuild after the league's announcement of 2025-03-27T04:51:19Z, so the report carries the corrected credit."
+    },
+    {
+      "type": "official-api",
+      "name": "NHL GameCenter play-by-play",
+      "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/play-by-play",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "quoted_row": "eventId 146, period 1, timeInPeriod 06:50, typeDescKey goal, scoringPlayerId 8482110 (goal 16), assist1PlayerId 8482684 (assist 31), assist2PlayerId 8480002 (assist 28), awayScore 2, homeScore 0",
+      "note": "Player ids resolved from the same report: 8482684 = L.Hughes(31), 8480002 = N.Hischier(28), 8482110 = D.Mercer(16)."
+    }
+  ],
+  "initial_state_sources": [
+    {
+      "role": "initial_state_corroboration",
+      "type": "official-media-metadata",
+      "name": "Highlight clip title inside the official GameCenter payload",
+      "url": "https://nhl.com/video/njd-chi-meier-scores-ppg-against-spencer-knight-6370610304112",
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "note": "The English clip attached to event 146 is still titled 'meier-scores-ppg' while the French clip for the same event is titled 'mercer-marque-un-but-en-a-n-contre-spencer-knight'. A clip title is media metadata, not a scoring record: it corroborates that the goal was credited to Meier when the clip was published, and it is recorded here as an unresolved inconsistency inside the official payload."
+    }
+  ],
+  "cross_check_sources": [
+    {
+      "type": "official-api",
+      "name": "NHL GameCenter boxscore",
+      "url": "https://api-web.nhle.com/v1/gamecenter/2024021140/boxscore",
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "note": "Listed as the next cross-check to run; the Game Summary and play-by-play already agree."
+    }
+  ],
+  "declared_changes": [
+    {
+      "change_type": "scorer_change",
+      "detail": "goal at 6:50 of P1 credited to Timo Meier, later credited to Dawson Mercer"
+    }
+  ],
+  "extra_flags": [
+    "pre_change_assist_credits_unresolved",
+    "official_payload_contains_two_different_clip_titles_for_the_same_goal"
+  ],
+  "notes": "The goal was scored 3:46 into the first period (clock 6:50). Both official sources (report and play-by-play) show the same corrected credit; both are consistent with the league's announcement. The pre-change credit for the SCORER rests on the syndicated reproduction only, and the pre-change ASSIST credits are not retrievable at all, so the full scope of this correction is unresolved. A public reply on the announcement post asks why a Chicago player lost an assist; no official source reviewed here records a Chicago credit on this goal at any point, and the reply is a public comment, not evidence. It is logged as an open question for human review. This correction does not change the number of goals in the game (NJD 5 - CHI 3 before and after); it changes which player is credited, so it can only touch player-prop markets."
+}

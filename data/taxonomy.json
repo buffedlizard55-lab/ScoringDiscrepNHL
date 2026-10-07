@@ -1,0 +1,251 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Machine-readable vocabulary for the website filters. Any value the detector cannot yet produce is marked detectable:false so the UI does not offer a filter that can never match, and any value that is inherently not machine-detectable is marked needs_human:true.",
+  "discrepancy_types": [
+    {
+      "value": "goal_to_no_goal",
+      "label": "Goal -> no goal",
+      "affects_goal_total": true,
+      "detectable": true,
+      "needs_human": false,
+      "description": "A goal that appeared in the official record was later removed."
+    },
+    {
+      "value": "no_goal_to_goal",
+      "label": "No goal -> goal",
+      "affects_goal_total": true,
+      "detectable": true,
+      "needs_human": false,
+      "description": "A goal absent from the official record was later added."
+    },
+    {
+      "value": "scorer_change",
+      "label": "Scorer change",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": false,
+      "description": "The credited goal scorer changed."
+    },
+    {
+      "value": "assist_change",
+      "label": "Assist change",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": false,
+      "description": "The credited assists changed."
+    },
+    {
+      "value": "strength_change",
+      "label": "Strength change",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": false,
+      "description": "EV/PP/SH classification of a goal changed."
+    },
+    {
+      "value": "own_goal_flag_change",
+      "label": "Own-goal annotation change",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": false,
+      "description": "The own-goal annotation of a goal changed."
+    },
+    {
+      "value": "time_change",
+      "label": "Goal time changed",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": false,
+      "description": "The recorded clock of an existing goal moved (the goal count and the scorer are unchanged)."
+    },
+    {
+      "value": "team_change",
+      "label": "Goal reassigned to the other team",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": true,
+      "description": "Own-goal re-attribution: team totals, the puck line and the winner can change even though the game total cannot."
+    },
+    {
+      "value": "multi_change",
+      "label": "Multiple changes on one goal",
+      "affects_goal_total": true,
+      "detectable": true,
+      "needs_human": false,
+      "description": "More than one category of change on the same goal."
+    },
+    {
+      "value": "metadata_change",
+      "label": "Non-scoring metadata change",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": true,
+      "description": "Score or state changed without a matching goal-set change (inconsistent feed). Always flagged for review."
+    },
+    {
+      "value": "no_change",
+      "label": "No change detected",
+      "affects_goal_total": false,
+      "detectable": true,
+      "needs_human": false,
+      "description": "Control value; used in state comparisons, never stored as a discrepancy record."
+    }
+  ],
+  "timing": [
+    {
+      "value": "in_game",
+      "label": "During the game",
+      "detectable": true
+    },
+    {
+      "value": "intermission",
+      "label": "During an intermission",
+      "detectable": true
+    },
+    {
+      "value": "postgame_before_validation",
+      "label": "After the final horn, before the record was published as final",
+      "detectable": true
+    },
+    {
+      "value": "postgame_after_publication",
+      "label": "After the record was published as final",
+      "detectable": true
+    },
+    {
+      "value": "unknown",
+      "label": "Timing not derivable",
+      "detectable": true
+    }
+  ],
+  "settlement_levels": [
+    {
+      "value": "critical",
+      "label": "Critical - goal total changed after publication",
+      "detectable": true
+    },
+    {
+      "value": "high",
+      "label": "High - goal total changed",
+      "detectable": true
+    },
+    {
+      "value": "medium",
+      "label": "Medium - goal total changed while live",
+      "detectable": true
+    },
+    {
+      "value": "attribution",
+      "label": "Attribution only - cannot move a game total",
+      "detectable": true
+    },
+    {
+      "value": "low",
+      "label": "Low",
+      "detectable": true
+    }
+  ],
+  "evidence_statuses": [
+    {
+      "value": "verified_two_official_states",
+      "label": "Verified: both states from official artifacts"
+    },
+    {
+      "value": "verified_corrected_state",
+      "label": "Verified corrected state only"
+    },
+    {
+      "value": "official_announcement_only",
+      "label": "Official announcement only"
+    },
+    {
+      "value": "conflicting",
+      "label": "Conflicting official sources - unresolved"
+    },
+    {
+      "value": "incomplete",
+      "label": "Incomplete evidence"
+    },
+    {
+      "value": "unverifiable",
+      "label": "Unverifiable"
+    },
+    {
+      "value": "verified_corrected_state_and_official_announcement",
+      "label": "Verified corrected state + league's own announcement",
+      "note": "The corrected state is verified from an official report or game feed AND the league's own announcement states that the change was made. What the record read BEFORE the change may still be missing - each record's flags say exactly which part."
+    }
+  ],
+  "reason_categories": [
+    {
+      "value": "official_source_statement",
+      "label": "Stated verbatim inside an official artifact",
+      "detectable": true
+    },
+    {
+      "value": "unknown",
+      "label": "Not stated in any retrieved official artifact",
+      "detectable": true
+    }
+  ],
+  "not_detectable_automatically": [
+    "Why a change happened (video review, statistician correction, post-game review) unless an official artifact states it in words.",
+    "Any change that occurred entirely between two of our own polls of a source that we did not capture, when no archive snapshot exists from before the change.",
+    "Changes to sportsbook settlement behaviour, which is governed by private house rules.",
+    "Discrepancies in leagues, competitions or feeds that are not published by the NHL's own endpoints."
+  ],
+  "cause_filters": [
+    {
+      "value": "video_review",
+      "label": "video review (only when an official source says so)",
+      "detectable": true,
+      "how": "Matches records whose reason.text is a verbatim official quote mentioning review. No machine-readable review feed exists, so this filter can only match what an official artifact states in words."
+    },
+    {
+      "value": "stated",
+      "label": "any stated reason (verbatim official quote)",
+      "detectable": true
+    },
+    {
+      "value": "unknown",
+      "label": "reason not stated in any retrieved official artifact",
+      "detectable": true
+    }
+  ],
+  "filters_offered_by_the_site": {
+    "season": true,
+    "date_range": true,
+    "team": true,
+    "period": true,
+    "discrepancy_type": true,
+    "goal_no_goal_change": "via discrepancy_type + impact",
+    "scorer_assist_correction": "via discrepancy_type",
+    "video_review": "via cause (stated-officially only)",
+    "intermission_correction": "via timing",
+    "postgame_correction": "via timing",
+    "changed_the_game_total": "via impact",
+    "team_total_reassignment": "via impact label",
+    "post_final_settlement_risk": true,
+    "evidence_status": true,
+    "free_text": true
+  },
+  "not_offered_and_why": {
+    "video_review_flag_from_the_feed": "Not offered as a feed-derived flag: no review event type exists in the observed official event vocabulary (data/schema/observed_vocabulary.json). Offered only as 'cause stated officially'."
+  },
+  "provenance_paths": {
+    "auto_poll": "monitor/collect: poll an official feed, diff two captures of the same URL. Strongest evidence (two official states, timestamps for each) but blind to anything that happened before polling started.",
+    "official_statement_ingest": "ingest: the league's own announcement, cross-checked against the corrected state in an official report. Covers corrections that happened before monitoring existed. The pre-change state is only asserted when a source asserts it, never reconstructed.",
+    "archived_two_snapshot_diff": "archive/backfill-archive: two archived captures of the same official document with different content digests. Not yet exercised end to end - see docs/ROADMAP.md."
+  },
+  "record_statuses": [
+    {
+      "value": "auto_detected",
+      "label": "Auto-detected by the monitor"
+    },
+    {
+      "value": "verified_from_official_announcement",
+      "label": "Built from the league's own announcement",
+      "note": "Every field is traceable to a stored URL; flags name anything that is missing."
+    }
+  ]
+}

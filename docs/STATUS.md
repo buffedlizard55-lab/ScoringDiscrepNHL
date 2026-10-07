@@ -20,13 +20,32 @@ is still open, and what will never work.
   postgame, and total-changed; separate buckets for total-changing vs
   attribution-only; settlement exposure view; detection coverage view; every row with
   official links.
-- **Tests**: `python3 -m unittest discover -s tests -t .` -> 74 tests, all offline,
+- **Tests**: `python3 -m unittest discover -s tests -t .` -> 182 tests with the monitor
+  line's suite (74 of them here), all offline,
   including a real conflicting fixture pair and a control pair that must stay clean.
 - **Verified against live data before the sandbox boundary was known**: the seed
   record was produced by reading the actual `20002001/GS020001.HTM` and
   `gamecenter/2000020001/landing`, then encoded as fixtures so CI re-verifies it.
 
-## Seeded database (8 records)
+## Consolidation with the parallel line (this PR)
+
+`main` carried an independently built line (`src/nhl_monitor/`, root site, its own
+tests and docs) that had finished **3 records verified from the NHL's own
+scoring-change announcements** and left `data/discrepancies.json` empty. Its README
+said a decision was owed. It is taken in the README's "Consolidation" section: one
+canonical database at `data/discrepancies.json`, their file untouched as provenance,
+`docs/` as the site of record, their crons as the only schedulers, their three
+colliding docs preserved with mine at `docs/engine/`. The port is a script, not a
+retyping: `scripts/import_parallel_records.py` maps their fields onto this schema and
+keeps each original object verbatim under `parallel_record`, so a reviewer can diff
+the translation. `validate()` rejects a lossy or invented port: all three came out
+`verified`, with their own flags carried across
+(`assists_before_the_change_not_captured`, `initial_state_reported_by_secondary_source_only`).
+
+Combined suite: `python3 -m unittest discover -s tests -t .` -> **182 tests**
+(this line 74, the monitor line 108), 0 failures.
+
+## The database (11 records)
 
 | Record | Status | What it is |
 | --- | --- | ---|
@@ -55,6 +74,12 @@ that resolves each.
    here.
 3. **Resolve the two pending ruling-change records** (game id + official artifacts),
    then promote or retire them.
+3b. **Decide the site/line question for real**: the root site still renders the
+   monitor line's 3-record file. Either teach `tools/build_site.py` to read the
+   consolidated `data/discrepancies.json` (needs a schema adapter for their
+   `site/app.js`) or retire the root UI and point Pages at `docs/`. Left undone on
+   purpose rather than half-done: the port direction that matters (records) is done,
+   and no renderer was broken to make a number look tidier.
 4. **Own-goal `goalModifier` era check** for 2022-23+ (assert C16 can actually fire
    on a modern fixture; today it is only proven not to fire spuriously).
 5. **Shootout goals** (game 2025021181-style cases): decide whether SO "goals" belong

@@ -1,0 +1,124 @@
+{
+  "case_id": "CS-2025-04-08-BOS-AT-NJD-G1238",
+  "verified_at_utc": "2026-10-07T00:00:00Z",
+  "game": {
+    "game_id": 2024021238,
+    "season": "20242025",
+    "date": "2025-04-08",
+    "away": {
+      "abbrev": "BOS",
+      "score": 7
+    },
+    "home": {
+      "abbrev": "NJD",
+      "score": 2
+    },
+    "final_score": "7-2",
+    "game_ended_at_utc": "2025-04-09T01:27:00Z",
+    "game_end_time_note": "Report states 'Start 7:08 EDT; End 9:27 EDT'. 21:27 EDT on 2025-04-08 = 01:27Z on 2025-04-09 (EDT = UTC-4)."
+  },
+  "event": {
+    "period": 1,
+    "period_type": "REG",
+    "clock": "9:38",
+    "strength": "EV",
+    "team": "BOS"
+  },
+  "official_announcement": {
+    "channel": "NHL Public Relations (@NHLPR)",
+    "channel_url": "https://x.com/NHLPR",
+    "post_url": "https://x.com/NHLPR/status/1909831272047800540",
+    "post_url_retrievable": true,
+    "post_note": "The post's reply thread contains only jokes and taunts; no substantive correction.",
+    "issued_on": "2025-04-09",
+    "issued_at_utc": "2025-04-09T04:50:32Z",
+    "text": "OFFICIAL SCORING CHANGE: Game 1238\n@NHLBruins at @NJDevils\n\nGoal at 9:38 of the first period now reads David Pastrnak from Morgan Geekie. #NHLStats",
+    "text_provenance": "Read directly from the league's own post at the stored URL; identical to the text reproduced by Athlon Sports.",
+    "reproductions": [
+      {
+        "publisher": "Athlon Sports (syndicated via Yardbarker)",
+        "url": "https://www.yardbarker.com/nhl/articles/nhl_issues_scoring_change_after_bruins_devils_game/s1_17615_42025683",
+        "retrieved_at_utc": "2026-10-07T00:00:00Z",
+        "note": "By Antonio Losada, page last updated Apr 9, 2025 6:10 AM ET. Full page fetched. States: 'initially credited to Pastrnak with an assist from Parker Whotherspoon. After review, Morgan Geekie, not Whoterspoo, was awarded a helper.' (Player-name spellings as published.) Also states the change leaves Geekie on 23 assists and drops Wotherspoon to six."
+      }
+    ],
+    "post_retrieved_at_utc": "2026-10-07T00:00:00Z"
+  },
+  "initial_state": {
+    "ruling": "goal",
+    "team": "BOS",
+    "status": "reported_by_secondary_source",
+    "scorer": {
+      "name": "David Pastrnak",
+      "sweater": 88,
+      "team": "BOS"
+    },
+    "assists": [
+      {
+        "name": "Parker Wotherspoon",
+        "sweater": 29,
+        "team": "BOS"
+      }
+    ],
+    "evidence": "Syndicated reproduction: the goal was 'initially credited to Pastrnak with an assist from Parker Whotherspoon'. Not retained by any official artifact found. The live-post link the reproduction cites for the 'initial' state (nhl_goal_bot status 1909755726387437819) is about a DIFFERENT goal of the same game (Callahan, 19:24 of P1), so that citation does not document the pre-change assist."
+  },
+  "corrected_state": {
+    "ruling": "goal",
+    "team": "BOS",
+    "status": "verified",
+    "scorer": {
+      "name": "David Pastrnak",
+      "sweater": 88,
+      "team": "BOS",
+      "season_goal_total": 41
+    },
+    "assists": [
+      {
+        "name": "Morgan Geekie",
+        "sweater": 39,
+        "team": "BOS",
+        "season_assist_total": 23
+      }
+    ]
+  },
+  "corrected_state_sources": [
+    {
+      "type": "official-document",
+      "name": "Official Game Summary (HTML): GS021238.HTM",
+      "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "document_generated_at": "2025-04-11 21.36.36",
+      "quoted_row": "1 | 1 | 9:38 | EV | BOS | 88 D.PASTRNAK(41) | 39 M.GEEKIE(23) |",
+      "note": "Single assist, matching the announcement exactly. Report footer '2025-04-11 21.36.36' post-dates the announcement of 2025-04-09T04:50:32Z, so the report carries the corrected credit. The NHL does not document the timezone of that footer."
+    }
+  ],
+  "initial_state_sources": [],
+  "cross_check_sources": [
+    {
+      "type": "official-document",
+      "name": "Same Game Summary, goal 2 of the same game",
+      "url": "https://www.nhl.com/scores/htmlreports/20242025/GS021238.HTM",
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "note": "Internal consistency: goal 2 (19:24 of P1) reads '79 M.CALLAHAN(1) | 29 P.WOTHERSPOON(6) | 88 D.PASTRNAK(58)'. Wotherspoon's season total of 6 in the official report matches the reproduction's statement that the change dropped him to six assists, and Geekie's 23 matches the report's '39 M.GEEKIE(23)'. Two independent official numbers therefore agree with the corrected state."
+    },
+    {
+      "type": "official-api",
+      "name": "NHL GameCenter play-by-play",
+      "url": "https://api-web.nhle.com/v1/gamecenter/2024021238/play-by-play",
+      "retrieved_at_utc": "2026-10-07T00:00:00Z",
+      "note": "Listed as the next cross-check to run. Not quoted in this pass: the retrieved chunk ended at 9:27 of P1, immediately before the goal in question."
+    }
+  ],
+  "declared_changes": [
+    {
+      "change_type": "assist_change",
+      "detail": "assist on the goal at 9:38 of P1 changed from Parker Wotherspoon to Morgan Geekie"
+    }
+  ],
+  "extra_flags": [
+    "initial_state_citation_in_reproduction_points_at_a_different_goal",
+    "official_play_by_play_event_not_quoted_this_pass"
+  ],
+  "notes": "The goal, the scorer and the number of goals are all unchanged: this is an assist re-attribution, so the game total (BOS 7 - NJD 2) is untouched and only player-prop markets can be affected. The corrected state is verified against the official report alone in this pass; the report is internally consistent with the reproduced statement on two independent season totals (Geekie 23, Wotherspoon 6). The pre-change assist rests on the reproduction, and the reproduction's own citation for it does not support it, which is recorded as an unresolved irregularity rather than resolved by inference."
+}

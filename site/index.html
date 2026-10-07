@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NHL Scoring Discrepancies — verified database &amp; live detector</title>
+<meta name="description" content="A continuously updated, source-verified database of NHL scoring discrepancies: goals changed to no-goals, no-goals changed to goals, scorer and assist corrections, with official NHL source links for every record." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1>NHL Scoring Discrepancies</h1>
+    <p class="tagline">Every entry is tied to an official NHL artifact. Original and corrected states are both preserved.</p>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-view="database" role="tab" aria-selected="true">Database</button>
+      <button class="tab" data-view="how" role="tab" aria-selected="false">How detection works</button>
+      <button class="tab" data-view="limits" role="tab" aria-selected="false">Limitations</button>
+      <button class="tab" data-view="sources" role="tab" aria-selected="false">Sources &amp; verification</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============================ DATABASE ============================ -->
+  <section id="view-database" class="view active">
+
+    <div class="status-grid" id="status-grid">
+      <div class="card"><div class="k" id="stat-count">–</div><div class="l">records</div></div>
+      <div class="card"><div class="k" id="stat-total">–</div><div class="l">changed the goal count</div></div>
+      <div class="card"><div class="k" id="stat-attr">–</div><div class="l">attribution only</div></div>
+      <div class="card"><div class="k" id="stat-alerts">–</div><div class="l">open alerts</div></div>
+      <div class="card"><div class="k" id="stat-updated">–</div><div class="l">last data update (UTC)</div></div>
+    </div>
+
+    <div class="notice" id="empty-notice" hidden>
+      <h2>No verified records yet — and that is deliberate</h2>
+      <p id="empty-explain"></p>
+      <p class="muted">Coverage measured so far is listed under <em>Sources &amp; verification</em>. The collector and two
+      census methods are implemented and run on a schedule; each record requires two captured official states that
+      differ, so nothing is ever seeded from memory or from media reports.</p>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h2>Goal-count changes <span class="hint">these can move a game total, puck line or moneyline</span></h2>
+        <div class="table-wrap">
+          <table id="table-total">
+            <thead><tr><th>Date</th><th>Game</th><th>Event</th><th>Change</th><th>Timing</th><th>Settlement</th><th>Evidence</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="empty-row" hidden>No goal-count changes recorded.</p>
+        </div>
+      </div>
+      <div>
+        <h2>Attribution-only corrections <span class="hint">scorer/assist changes: cannot change a game total</span></h2>
+        <div class="table-wrap">
+          <table id="table-attr">
+            <thead><tr><th>Date</th><th>Game</th><th>Event</th><th>Change</th><th>Timing</th><th>Props</th><th>Evidence</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="empty-row" hidden>No attribution-only corrections recorded.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Filters</h2>
+    <form class="filters" id="filters" onsubmit="return false">
+      <label>Season <select id="f-season"><option value="">all</option></select></label>
+      <label>Team <select id="f-team"><option value="">all</option></select></label>
+      <label>From <input type="date" id="f-from" /></label>
+      <label>To <input type="date" id="f-to" /></label>
+      <label>Period <select id="f-period"><option value="">all</option></select></label>
+      <label>Type <select id="f-type"><option value="">all</option></select></label>
+      <label>Impact <select id="f-impact">
+        <option value="">all</option>
+        <option value="total">changed the goal count</option>
+        <option value="attribution">attribution only</option>
+      </select></label>
+      <label>Timing <select id="f-timing"><option value="">all</option></select></label>
+      <label>Settlement risk <select id="f-settlement"><option value="">all</option></select></label>
+      <label>Evidence <select id="f-evidence"><option value="">all</option></select></label>
+      <label>Cause <select id="f-cause">
+        <option value="">all</option>
+        <option value="video_review">video review (stated officially)</option>
+        <option value="stated">any reason stated officially</option>
+        <option value="unknown">reason not stated officially</option>
+      </select></label>
+      <label class="check"><input type="checkbox" id="f-postfinal" />
+        only changes after the record was final (market risk)</label>
+      <label>Search <input type="search" id="f-q" placeholder="player, team, record id…" /></label>
+      <button type="button" id="f-reset">Reset</button>
+    </form>
+
+    <h2>All records</h2>
+    <div class="table-wrap">
+      <table id="table-all">
+        <thead>
+          <tr>
+            <th>Date</th><th>Game</th><th>Period / clock</th><th>Type</th>
+            <th>Initial ruling</th><th>Corrected ruling</th>
+            <th>Goal count</th><th>Timing</th><th>Evidence</th><th>Official sources</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p class="empty-row" hidden>Nothing matches the current filters.</p>
+    </div>
+    <p class="muted small">Click any row to open the full record: both states, every captured timestamp, flags and gaps.</p>
+  </section>
+
+  <!-- ============================ HOW ============================ -->
+  <section id="view-how" class="view">
+    <h2>How the detector works</h2>
+    <ol class="steps">
+      <li><strong>Capture</strong> — every run fetches the official GameCenter play-by-play and boxscore, and the official
+        Game Summary document, for each game in the window. Each capture stores its URL, HTTP status and retrieval timestamp.</li>
+      <li><strong>Normalise</strong> — all three sources are rendered into one structure: period, clock, team, scorer, assists,
+        strength, own-goal flag and the score after each goal.</li>
+      <li><strong>Compare</strong> — the new capture is diffed against the previously stored capture of the same game.
+        Goals are matched on period + clock + team; anything unmatched is reported as added or removed, never silently re-paired.</li>
+      <li><strong>Classify</strong> — the diff becomes a typed record: goal→no-goal, no-goal→goal, scorer change, assist change,
+        strength change, own-goal annotation change, or non-scoring metadata change.</li>
+      <li><strong>Assess</strong> — the record is flagged as goal-count-affecting or attribution-only, and given a settlement
+        relevance level based on <em>when</em> the change appeared relative to the record being final.</li>
+      <li><strong>Alert</strong> — anything detected writes an alert (JSON + Markdown) and, in the scheduled workflow, opens a
+        GitHub issue so the change is reviewable without anyone watching a screen.</li>
+      <li><strong>Verify</strong> — <code>nhl_monitor verify</code> re-reads the official sources for a stored record so a
+        record can never silently rot.</li>
+    </ol>
+
+    <h3>Two census methods for history</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>1. Frozen-era document vs current database</h4>
+        <p>Official reports generated on game night are never regenerated in some eras (verified for 2005-06 and 2016-17).
+        Those documents preserve the <em>original</em> ruling while the league's current API returns the <em>current</em>
+        record, so any difference between them is a scoring change with both states coming from official artifacts.</p>
+      </div>
+      <div class="card">
+        <h4>2. Archived snapshots of the same document</h4>
+        <p>The Wayback CDX index exposes a content digest per snapshot. More than one digest for an official document
+        means that document changed; the distinct versions can then be diffed. This is the only method that works for the
+        modern era, where documents are regenerated in place and the original bytes are gone.</p>
+      </div>
+    </div>
+
+    <h3>What the classifier refuses to do</h3>
+    <ul>
+      <li>It never invents a reason. "Video review" is only recorded if an official artifact says so in words, because no
+        machine-readable review feed was located (see Limitations).</li>
+      <li>It never treats a document regeneration as a scoring change. Regeneration is detected by the footer timestamp and
+        excluded; only content differences create records.</li>
+      <li>It never counts a shootout attempt as a goal.</li>
+      <li>It never fills a gap. Missing fields are shown as gaps with flags.</li>
+    </ul>
+  </section>
+
+  <!-- ============================ LIMITS ============================ -->
+  <section id="view-limits" class="view">
+    <h2>Limitations — including what cannot be detected automatically</h2>
+    <div class="limits-grid" id="limits-grid"></div>
+    <h3>Open questions that need a human</h3>
+    <ul>
+      <li>Whether any specific sportsbook regraded a market after a correction — house rules are private and must be
+        verified per operator.</li>
+      <li>Whether a correction was motivated by video review, a scorer's judgement call, or a league review — unless an
+        official artifact states it.</li>
+      <li>Games where the only archive snapshot postdates the correction: the change is invisible to method 2 and must be
+        resolved from the frozen-era method or from an official announcement.</li>
+    </ul>
+  </section>
+
+  <!-- ============================ SOURCES ============================ -->
+  <section id="view-sources" class="view">
+    <h2>Official sources, with verification status</h2>
+    <p class="muted">A source is only listed as verified if it was fetched and cross-checked against another official
+    artifact. Links below are the exact URLs used for the cross-checks.</p>
+    <div class="table-wrap">
+      <table id="table-sources">
+        <thead><tr><th>Source</th><th>Kind</th><th>Status</th><th>Verified</th><th>Link</th><th>Evidence</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>Verification ledger</h2>
+    <p class="muted">The anti-hallucination ledger: every factual claim this project makes about its own sources, with the
+    observation that backs it. Claims that are only media leads are listed separately and are never treated as evidence.</p>
+    <div id="facts"></div>
+    <h3>Secondary leads — NOT evidence</h3>
+    <div id="leads"></div>
+
+    <h2>Observed event vocabulary</h2>
+    <p class="muted">Measured from the official feed. If a review event type is ever observed it will appear here, and only
+    then can an automated “video review” filter be offered.</p>
+    <pre id="vocab" class="code"></pre>
+
+    <h2>Coverage measured so far</h2>
+    <div id="coverage"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Every record links to its official NHL sources. No record is created from memory, inference or media reporting.</p>
+    <p class="muted small">Project charter, data model, operating instructions and the full original brief live in the
+      repository (<code>README.md</code>, <code>docs/</code>).</p>
+  </div>
+</footer>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer-inner">
+    <button class="drawer-close" id="drawer-close" aria-label="Close">×</button>
+    <div id="drawer-body"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
