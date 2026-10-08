@@ -1,12 +1,12 @@
 {
  "schema_version": "1.0",
  "generated_by": "pipeline/nhl_scoring (situation_room.py)",
- "generated_at": "2026-10-08T14:52:45Z",
+ "generated_at": "2026-10-08T20:40:03Z",
  "feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
  "public_index": "https://www.nhl.com/news/topic/situation-room",
  "meta": {
-  "last_run_id": "20261008T145229Z-0.5.0",
-  "last_run_at": "2026-10-08T14:52:45Z",
+  "last_run_id": "20261008T203950Z-0.5.0",
+  "last_run_at": "2026-10-08T20:40:03Z",
   "last_mode": "incremental",
   "last_stats": {
    "pages": 1,
@@ -4566,7 +4566,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:29Z",
+    "checked_at": "2026-10-08T20:39:50Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025021257/play-by-play",
     "pbp_sha256": "b885efab714aaf3f7f24a6fe170bea747f1b932fd3f021b4741d18d90fb1b86e",
     "game_state": "OFF",
@@ -8722,7 +8722,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:30Z",
+    "checked_at": "2026-10-08T20:39:50Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025021073/play-by-play",
     "pbp_sha256": "ed3f40f9afb7045ed8d1ac92b129704533baa44c66e3940fcbf7473c0f10d891",
     "game_state": "OFF",
@@ -16954,7 +16954,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:30Z",
+    "checked_at": "2026-10-08T20:39:51Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025020654/play-by-play",
     "pbp_sha256": "f5333f50a62c5111741c8565a3b3c063f34726c19bf1ce1bc06419b5df172c0c",
     "game_state": "OFF",
@@ -32665,7 +32665,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:30Z",
+    "checked_at": "2026-10-08T20:39:51Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025020031/play-by-play",
     "pbp_sha256": "e1bf737902e438e318e1b071ee818bf48e710b38f482f77134f9939dba218a51",
     "game_state": "OFF",
@@ -38638,7 +38638,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:31Z",
+    "checked_at": "2026-10-08T20:39:51Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024021110/play-by-play",
     "pbp_sha256": "f92748a042537575425fdb79781ddabd94e237ec0936905952c341e9bdf184fb",
     "game_state": "OFF",
@@ -40571,7 +40571,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:31Z",
+    "checked_at": "2026-10-08T20:39:52Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024021054/play-by-play",
     "pbp_sha256": "a72477e735958434400399196cc89dd1ac536816b68eb2fb96d31c8c2bf2d2a4",
     "game_state": "OFF",
@@ -46246,7 +46246,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:31Z",
+    "checked_at": "2026-10-08T20:39:52Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020825/play-by-play",
     "pbp_sha256": "f0443fb3e2fc868ee7d97b5ad59e4b5aabadcf7195f579ad1b1297e5f1d2aed5",
     "game_state": "OFF",
@@ -47627,7 +47627,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:32Z",
+    "checked_at": "2026-10-08T20:39:52Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020753/play-by-play",
     "pbp_sha256": "8825cf4469ca67bf373fe5511855a1e7c83dbd9e17ab7459f2c2e5c5ad290954",
     "game_state": "OFF",
@@ -47709,7 +47709,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:32Z",
+    "checked_at": "2026-10-08T20:39:52Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020752/play-by-play",
     "pbp_sha256": "2c7f13583d8e6bca29974d9c00db8f1eeb22792f7bd28197870607e651f54cc6",
     "game_state": "OFF",
@@ -52113,7 +52113,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:32Z",
+    "checked_at": "2026-10-08T20:39:53Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020490/play-by-play",
     "pbp_sha256": "93254a34f363fcf78a15895dd7cdd402e18d98e6091130a0f7a838178d1a5074",
     "game_state": "OFF",
@@ -91753,7 +91753,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:33Z",
+    "checked_at": "2026-10-08T20:39:53Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020655/play-by-play",
     "pbp_sha256": "8f8f164b11cb13ce40210785ce354d5dc49406c867cf27b2a08f42099fbfcdd0",
     "game_state": "OFF",
@@ -91835,7 +91835,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:33Z",
+    "checked_at": "2026-10-08T20:39:53Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020655/play-by-play",
     "pbp_sha256": "8f8f164b11cb13ce40210785ce354d5dc49406c867cf27b2a08f42099fbfcdd0",
     "game_state": "OFF",
@@ -100926,7 +100926,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:33Z",
+    "checked_at": "2026-10-08T20:39:53Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022021124/play-by-play",
     "pbp_sha256": "6bf31ff8c7bad0fddd2d0f3690d2ccb15f89df1293d35709f4ad258a66b70129",
     "game_state": "OFF",
@@ -104251,7 +104251,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:34Z",
+    "checked_at": "2026-10-08T20:39:54Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020960/play-by-play",
     "pbp_sha256": "5e89895b0613160086bb339be57bdcbaf4450d9df26da85d67dc1a5f69fff5a8",
     "game_state": "OFF",
@@ -123793,7 +123793,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:34Z",
+    "checked_at": "2026-10-08T20:39:54Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020131/play-by-play",
     "pbp_sha256": "d414b44503ede1161c8514c94e92a840bb9345e1eee096ef816734d213ef85e6",
     "game_state": "OFF",
@@ -124100,7 +124100,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:34Z",
+    "checked_at": "2026-10-08T20:39:54Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020127/play-by-play",
     "pbp_sha256": "d1e12fe7469f3605cede97bf0c98f75586bd791f9ccc8c13871a47edbdd036c8",
     "game_state": "OFF",
@@ -125384,7 +125384,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:34Z",
+    "checked_at": "2026-10-08T20:39:54Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020068/play-by-play",
     "pbp_sha256": "bcbfa5a9c30a170e18a8efd5419cec9953d687860fd301c8974edc109f5252e7",
     "game_state": "OFF",
@@ -136700,7 +136700,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:35Z",
+    "checked_at": "2026-10-08T20:39:55Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021021048/play-by-play",
     "pbp_sha256": "48b20f6f81d0d048eb49bb10fe5543e1bdbe8df2331fcab25f7d9e4336281cc1",
     "game_state": "OFF",
@@ -144662,7 +144662,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:35Z",
+    "checked_at": "2026-10-08T20:39:55Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020800/play-by-play",
     "pbp_sha256": "cc3a27fa23c04508ad1d898d9898471a005afb9cae1a907c6df3106a579b6775",
     "game_state": "OFF",
@@ -145713,7 +145713,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:35Z",
+    "checked_at": "2026-10-08T20:39:55Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020731/play-by-play",
     "pbp_sha256": "2a70b894a8fe7347c321ee954068325556648ecb00078e2ed6bc5afd41f75675",
     "game_state": "OFF",
@@ -157381,7 +157381,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:36Z",
+    "checked_at": "2026-10-08T20:39:55Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020139/play-by-play",
     "pbp_sha256": "10a436ba6974a0d8c0c7573308c1e108584a9e45cfb88859c55881daa0b147f1",
     "game_state": "OFF",
@@ -158808,7 +158808,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:36Z",
+    "checked_at": "2026-10-08T20:39:56Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020059/play-by-play",
     "pbp_sha256": "352c570087d61926e8cea9c6e7758a99e1a6bf0ab5e7e145a10c3230345d6af1",
     "game_state": "OFF",
@@ -162134,7 +162134,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:36Z",
+    "checked_at": "2026-10-08T20:39:56Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2020020864/play-by-play",
     "pbp_sha256": "eff21f9499fe43bde202a45527e7deb639695fcff7aac0d2f7c9052375883ff4",
     "game_state": "OFF",
@@ -162488,7 +162488,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:37Z",
+    "checked_at": "2026-10-08T20:39:56Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2020020662/play-by-play",
     "pbp_sha256": "69f1da3e77adcf3dec8a71acb8449d9adb984d176b1faff73a9b30e7c94e10c7",
     "game_state": "OFF",
@@ -165927,7 +165927,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:37Z",
+    "checked_at": "2026-10-08T20:39:56Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2020020225/play-by-play",
     "pbp_sha256": "edb9eae8c1618a8a7a912e1cd948a4dd82f082cabadc684339e2c5a29e34d86c",
     "game_state": "OFF",
@@ -186777,7 +186777,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:37Z",
+    "checked_at": "2026-10-08T20:39:57Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2019020867/play-by-play",
     "pbp_sha256": "4867837fdb11141bb1c0a2e617da6f74b2dcabb76f3440d1d13426061b460e5b",
     "game_state": "OFF",
@@ -203360,7 +203360,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:38Z",
+    "checked_at": "2026-10-08T20:39:57Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2019020199/play-by-play",
     "pbp_sha256": "e271a34bf70308b543d33121f937f279068b7f24e0c528a7c2ea88e685dafd0c",
     "game_state": "OFF",
@@ -204103,7 +204103,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:38Z",
+    "checked_at": "2026-10-08T20:39:57Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2019020176/play-by-play",
     "pbp_sha256": "829d1707898dd336a41f30d6b05f1c5ae9369d6bcec5791d44c06c190287572c",
     "game_state": "OFF",
@@ -247890,7 +247890,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:38Z",
+    "checked_at": "2026-10-08T20:39:57Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2018020089/play-by-play",
     "pbp_sha256": "8dea4209a4e4874ddbe706415ed669b7fba5978740f871bd98929052f58df0e4",
     "game_state": "OFF",
@@ -268970,7 +268970,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:38Z",
+    "checked_at": "2026-10-08T20:39:58Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017040631/play-by-play",
     "pbp_sha256": "96bb11ea831f24f65ddb2e44119eac32646261bcb08e165d35a507894caa8bd0",
     "game_state": "FINAL",
@@ -269052,7 +269052,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:39Z",
+    "checked_at": "2026-10-08T20:39:58Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017020755/play-by-play",
     "pbp_sha256": "cc7d1889e3e178e929e154b7eb9d383e87019281b2f7ba6d53d0c08d6e932297",
     "game_state": "OFF",
@@ -272346,7 +272346,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:39Z",
+    "checked_at": "2026-10-08T20:39:58Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017020656/play-by-play",
     "pbp_sha256": "8fc4d77335984caf6877c77ca1bcfe53d734a5b5bdccc3b966f2ce20a14e2c62",
     "game_state": "OFF",
@@ -274601,7 +274601,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:39Z",
+    "checked_at": "2026-10-08T20:39:59Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017020562/play-by-play",
     "pbp_sha256": "d23bf55f53666644b2a725a65671b4049b4914fd95ebebdbeda4a5293e52498e",
     "game_state": "OFF",
@@ -294146,7 +294146,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:40Z",
+    "checked_at": "2026-10-08T20:39:59Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016030412/play-by-play",
     "pbp_sha256": "d5f250cba8da65068fe25ec68695e57a2d4dbe2e017ecfc705f8b66275ff89be",
     "game_state": "OFF",
@@ -299670,7 +299670,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:40Z",
+    "checked_at": "2026-10-08T20:39:59Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016021168/play-by-play",
     "pbp_sha256": "55dc59252fc8a232f954ffee884e488f48c571a2e45ebace496f1aa2f488cec4",
     "game_state": "OFF",
@@ -304385,7 +304385,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:40Z",
+    "checked_at": "2026-10-08T20:39:59Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016021009/play-by-play",
     "pbp_sha256": "c1d12455fd02718cb4fb33f0e358b13864a0f1c96fe2df16524885b29aed3178",
     "game_state": "OFF",
@@ -309309,7 +309309,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:41Z",
+    "checked_at": "2026-10-08T20:39:59Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020887/play-by-play",
     "pbp_sha256": "06e3935927e5546f3c8ceff8bfdaafb45f19c29b662ab57509ed46cd8f647aed",
     "game_state": "OFF",
@@ -318840,7 +318840,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:41Z",
+    "checked_at": "2026-10-08T20:40:00Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020657/play-by-play",
     "pbp_sha256": "180db742c4a608251455a54dd5c8de1037ebb428545afcf8f52b14d152e4e491",
     "game_state": "OFF",
@@ -323930,7 +323930,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:41Z",
+    "checked_at": "2026-10-08T20:40:00Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020510/play-by-play",
     "pbp_sha256": "8f7322fcea6670c5471d7779c7ee4c89b7c54c56d5e8afe3682fae306580d53d",
     "game_state": "OFF",
@@ -325471,7 +325471,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:42Z",
+    "checked_at": "2026-10-08T20:40:00Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020459/play-by-play",
     "pbp_sha256": "e4d9dfc3ad517f7791b16a691f8613c895d7cdd213c239b4cf50898fa25609bf",
     "game_state": "OFF",
@@ -329145,7 +329145,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:42Z",
+    "checked_at": "2026-10-08T20:40:01Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020380/play-by-play",
     "pbp_sha256": "7a1e75629871bb6ee45200673d2c2340501363062ae4272699b3167594c75f3e",
     "game_state": "OFF",
@@ -330522,7 +330522,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:42Z",
+    "checked_at": "2026-10-08T20:40:01Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020339/play-by-play",
     "pbp_sha256": "24b29badf37e4d312a530ef8e07130c90358f2f569f2a7e94b9224e026b09265",
     "game_state": "OFF",
@@ -333673,7 +333673,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:43Z",
+    "checked_at": "2026-10-08T20:40:01Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020252/play-by-play",
     "pbp_sha256": "fcc0d0b8a4b382a39bc4b76ea6981013407c3a9b7df295fe9ec351eec1c83b77",
     "game_state": "OFF",
@@ -334445,7 +334445,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:43Z",
+    "checked_at": "2026-10-08T20:40:01Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020224/play-by-play",
     "pbp_sha256": "d9363abe0e135be0afefec12ae40d5f3b568f1b8a0781999b71ea9e74dc3ee98",
     "game_state": "OFF",
@@ -337716,7 +337716,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:43Z",
+    "checked_at": "2026-10-08T20:40:02Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020121/play-by-play",
     "pbp_sha256": "f398b724d96377dbcfe2014f310b342efa594b46611b755f30d519bfc29021bc",
     "game_state": "OFF",
@@ -338984,7 +338984,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:44Z",
+    "checked_at": "2026-10-08T20:40:02Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015030316/play-by-play",
     "pbp_sha256": "05a1044dff57d893808d6aa5d9339f735e40c2966e315e09f84c8f73f34bba8e",
     "game_state": "OFF",
@@ -345223,7 +345223,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:44Z",
+    "checked_at": "2026-10-08T20:40:02Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015021100/play-by-play",
     "pbp_sha256": "cfa11c171ce51f336af878773850b0eb21c00b5ee5869bd764db8c6f2ada6659",
     "game_state": "OFF",
@@ -349620,7 +349620,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:44Z",
+    "checked_at": "2026-10-08T20:40:02Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020967/play-by-play",
     "pbp_sha256": "da7e15e0a2f379d4a40490945a7cdb5d301131fae4fcbc54a3416d6134ecb43f",
     "game_state": "OFF",
@@ -352557,7 +352557,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:44Z",
+    "checked_at": "2026-10-08T20:40:03Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020895/play-by-play",
     "pbp_sha256": "beef6cceb0d8b63de7c074af4d5760e37175785b272e8a833c2d5b66034a42fd",
     "game_state": "OFF",
@@ -353426,7 +353426,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:45Z",
+    "checked_at": "2026-10-08T20:40:03Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020875/play-by-play",
     "pbp_sha256": "0e2285461a60349a9d6faf39844423efaeed7069004ddaed007591de7514f8ef",
     "game_state": "OFF",
@@ -357157,7 +357157,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:45Z",
+    "checked_at": "2026-10-08T20:40:03Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020767/play-by-play",
     "pbp_sha256": "d500eb36eca69598f1dd38a0391ae319c8c4745aa5d8095b19d9cf3caa483f06",
     "game_state": "OFF",
@@ -357336,7 +357336,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-08T14:52:45Z",
+    "checked_at": "2026-10-08T20:40:03Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020768/play-by-play",
     "pbp_sha256": "dca5beeaf0a08e3f75a992cd0a5f3ce3471d6688437dd7d95af1df172b249f40",
     "game_state": "OFF",
