@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (10)
 
-Run `20261009T003737Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261009T063829Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] MIN at NSH - 2026-10-01 (game 2026020012)
 
@@ -217,7 +217,7 @@ Record id: `SDN-261948dfcd` - open each link and read the goal line before actin
 **Official sources**
 - [NHL Situation Room statement - Coach’s Challenge: NSH @ MTL – 1:36 of the First Period](https://www.nhl.com/news/nashville-predators-montreal-canadiens-coach-challenge) _(evidence: primary; retrieved: 2026-10-09T00:37:22Z)_
 - [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-montreal-canadiens-coach-challenge) _(evidence: primary; retrieved: 2026-10-09T00:37:22Z)_
-- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020058/play-by-play) _(evidence: primary; retrieved: 2026-10-09T00:37:23Z; sha256 `e47451aa7944`)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020058/play-by-play) _(evidence: primary; retrieved: 2026-10-09T06:38:14Z; sha256 `80cbb5ba355a`)_
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020058.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-810e446a2c` - open each link and read the goal line before acting on this.
