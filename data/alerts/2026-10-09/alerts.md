@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (10)
 
-Run `20261009T134225Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261009T192827Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] MIN at NSH - 2026-10-01 (game 2026020012)
 
