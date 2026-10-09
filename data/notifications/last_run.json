@@ -1,66 +1,13 @@
 {
-  "generated_at": "2026-10-09T00:37:37Z",
-  "run": "situation-room-37865700212",
+  "generated_at": "2026-10-09T01:46:08Z",
+  "run": "monitor-37871358995",
   "mode": "deliver",
   "repo": "buffedlizard55-lab/ScoringDiscrepNHL",
-  "candidates": 1,
-  "unchanged_skipped": 18,
-  "deliveries": [
-    {
-      "channel": "issue",
-      "target": "buffedlizard55-lab/ScoringDiscrepNHL",
-      "alert_ids": [
-        "SDN-810e446a2c"
-      ],
-      "status": "sent",
-      "http_status": 201,
-      "url": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/22",
-      "error": "",
-      "dry_run": false
-    },
-    {
-      "channel": "webhook",
-      "target": "(unset)",
-      "alert_ids": [
-        "SDN-810e446a2c"
-      ],
-      "status": "skipped",
-      "http_status": null,
-      "url": "",
-      "error": "SDN_WEBHOOK_URL not set",
-      "dry_run": false
-    },
-    {
-      "channel": "email",
-      "target": "(unset)",
-      "alert_ids": [
-        "SDN-810e446a2c"
-      ],
-      "status": "skipped",
-      "http_status": null,
-      "url": "",
-      "error": "SDN_SMTP_HOST / SDN_SMTP_TO not set",
-      "dry_run": false
-    },
-    {
-      "channel": "feed",
-      "target": "data/alerts.json + data/alerts.xml",
-      "alert_ids": [
-        "SDN-810e446a2c"
-      ],
-      "status": "published",
-      "http_status": null,
-      "url": "https://buffedlizard55-lab.github.io/ScoringDiscrepNHL/#view=alerts",
-      "error": "",
-      "dry_run": false
-    }
-  ],
+  "candidates": 0,
+  "unchanged_skipped": 19,
+  "deliveries": [],
   "failed_channels": [],
-  "delivered_alert_ids": [
-    "SDN-810e446a2c"
-  ],
-  "retry_next_run": [],
-  "state_entries": 19,
+  "note": "nothing new to deliver",
   "feed": {
     "path": "/home/runner/work/ScoringDiscrepNHL/ScoringDiscrepNHL/data/alerts.json",
     "generated_at": "2026-10-09T00:37:37Z",
