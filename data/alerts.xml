@@ -4,7 +4,30 @@
     <title>ScoringDiscrepNHL alerts</title>
     <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>
     <description>Automated alerts for detected NHL scoring discrepancies and corrections. Every alert links to official-source evidence.</description>
-    <lastBuildDate>Thu, 08 Oct 2026 20:40:04 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 09 Oct 2026 00:37:37 GMT</lastBuildDate>
+    <item>
+      <title>[IMMEDIATE] 2026-10-08 NSH @ MTL - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal MTL at 01:36 of period 1</title>
+      <guid isPermaLink="false">sdnhl-SDN-810e446a2c</guid>
+      <pubDate>Thu, 08 Oct 2026 23:30:00 GMT</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal MTL at 01:36 of period 1
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that Montreal’s Chris Kreider preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 18:41 (1:19 elapsed time), when the off-side infraction occurred.
+Record SDN-810e446a2c - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Settlement exposure: medium (window: in_game)
+The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that Montreal’s Chris Kreider preceded the puck into the offensive zone and was in an off-side position prior to his goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”
+
+The clock is reset to show 18:41 (1:19 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/nashville-predators-montreal-canadiens-coach-challenge">https://www.nhl.com/news/nashville-predators-montreal-canadiens-coach-challenge</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-montreal-canadiens-coach-challenge">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/nashville-predators-montreal-canadiens-coach-challenge</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020058/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020058/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020058.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020058.HTM</a></p></description>
+    </item>
     <item>
       <title>[MEDIUM] Goal scorer changed: NJD @ CHI 2025-03-26 — REG P1 6:50</title>
       <guid isPermaLink="false">sdnhl-ALERT-NHL-20242025-021140-01</guid>

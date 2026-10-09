@@ -1,10 +1,9 @@
 {
   "last_run": {
-    "at": "2026-10-07T21:25:51Z",
+    "at": "2026-10-09T00:37:37Z",
     "delivered": 1,
     "failed_channels": [],
-    "note": "one-alert proof run; the full feed was then primed from data/alerts.json",
-    "run": "first-delivery-proof"
+    "run": "situation-room-37865700212"
   },
   "notified": {
     "ALERT-NHL-20242025-021140-01": {
@@ -159,6 +158,18 @@
       "notices": 0,
       "record_id": "SDN-752f5a246e"
     },
+    "SDN-810e446a2c": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/22"
+      },
+      "fingerprint": "15deeb5fc88cf820",
+      "first_delivered_at": "2026-10-08T23:30:00Z",
+      "last_delivered_at": "2026-10-09T00:37:37Z",
+      "notices": 1,
+      "record_id": "SDN-810e446a2c",
+      "severity": "high"
+    },
     "SDN-87fb3e543f": {
       "channels": {
         "feed": "primed_from_committed_feed"
@@ -206,6 +217,7 @@
     "SDN-61ee9676e1",
     "SDN-73e0895bf7",
     "SDN-752f5a246e",
+    "SDN-810e446a2c",
     "SDN-87fb3e543f",
     "SDN-d967bb12d3",
     "SDN-e84fc1c8ec"
@@ -226,10 +238,11 @@
     "SDN-61ee9676e1",
     "SDN-73e0895bf7",
     "SDN-752f5a246e",
+    "SDN-810e446a2c",
     "SDN-87fb3e543f",
     "SDN-d967bb12d3",
     "SDN-e84fc1c8ec"
   ],
   "schema_version": 1,
-  "updated_at": null
+  "updated_at": "2026-10-09T00:37:37Z"
 }
