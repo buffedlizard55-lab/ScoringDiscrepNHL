@@ -1,8 +1,8 @@
 {
   "date": "2026-10-11",
-  "run_id": "20261011T014825Z-0.5.0",
-  "count": 12,
-  "immediate_count": 12,
+  "run_id": "20261011T084142Z-0.5.0",
+  "count": 14,
+  "immediate_count": 14,
   "review_count": 0,
   "info_count": 0,
   "coverage": {},
@@ -20,8 +20,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-02T01:15:00Z"
@@ -166,7 +166,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020012/play-by-play and look at period 1 around 15:05: there must be no goal for MIN at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No goal Minnesota.",
@@ -251,10 +251,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -569,10 +574,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -588,8 +598,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-02T23:12:25.85Z"
@@ -737,7 +747,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020017/play-by-play and look at period 1 around 07:08: there must be no goal for NYR at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
@@ -824,10 +834,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -843,8 +858,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-03T03:29:04.463Z"
@@ -992,7 +1007,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020020/play-by-play and look at period 3 around 01:06: there must be no goal for STL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal St. Louis.",
@@ -1077,10 +1092,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -1096,8 +1116,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-04T01:39:13.984Z"
@@ -1245,7 +1265,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020026/play-by-play and look at period 3 around 05:25: there must be no goal for PIT at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Pittsburgh.",
@@ -1330,10 +1350,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -1560,7 +1585,7 @@
         ],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: statement gives the result but not the on-ice call; on-ice call no_goal from documented human read (2026-10-07T17:15:00Z): The official statement gives only the result (Goal Vancouver). The league's own game recap on NHL.com states the on-ice call in words: the goal was initially waved off on the ice. The play-by-play carries a video-review stoppage and the goal at the same clock (eventIds 508 and 822, P3 01:28)..",
         "first_seen_at": "2026-10-07T21:03:56Z",
-        "seen_count": 16,
+        "seen_count": 17,
         "detection_history": [
           {
             "run_id": "20261008T005622Z-0.5.0",
@@ -1636,9 +1661,14 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -1654,8 +1684,8 @@
           "rule": "situation_room_no_goal_overturned_to_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-06T01:15:00Z"
@@ -1830,7 +1860,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020042/play-by-play and look at period 2 around 09:27: a goal event for PIT must be present. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
@@ -1917,10 +1947,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -1936,8 +1971,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-07T01:38:00Z"
@@ -2085,7 +2120,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020050/play-by-play and look at period 2 around 01:05: there must be no goal for STL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal St. Louis.",
@@ -2170,10 +2205,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -2189,8 +2229,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-07T01:41:00Z"
@@ -2338,7 +2378,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020044/play-by-play and look at period 3 around 11:49: there must be no goal for TOR at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Toronto.",
@@ -2423,10 +2463,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 17,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 18,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -2442,8 +2487,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-08T23:30:00Z"
@@ -2591,7 +2636,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020058/play-by-play and look at period 1 around 01:36: there must be no goal for MTL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Montreal.",
@@ -2646,10 +2691,15 @@
             "run_id": "20261011T014808Z-0.5.0",
             "detected_at": "2026-10-11T01:48:23Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 11,
-        "last_seen_at": "2026-10-11T01:48:23Z"
+        "seen_count": 12,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -2665,8 +2715,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-10T23:35:00Z"
@@ -2681,9 +2731,9 @@
           "venue": "Centre Bell",
           "final_score": {
             "away": 0,
-            "home": 0
+            "home": 1
           },
-          "game_state": "CRIT",
+          "game_state": "OFF",
           "gamecenter_url": "https://www.nhl.com/gamecenter/2026020075",
           "report_urls": {
             "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
@@ -2765,7 +2815,7 @@
         },
         "totals": {
           "initial_game_goals": null,
-          "corrected_game_goals": 0,
+          "corrected_game_goals": 1,
           "goal_delta": -1,
           "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
         },
@@ -2791,8 +2841,8 @@
             "url": "https://api-web.nhle.com/v1/gamecenter/2026020075/play-by-play",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-11T01:48:10Z",
-            "sha256": "aecbbca778f0a5e8af236e9caddad8f45352846b1a5e0e4d5e42a15a77ab55cb",
+            "retrieved_at": "2026-10-11T08:41:27Z",
+            "sha256": "07c87f87103d3b6f0221275b5daa925b51afa12b082f7374fdbd3e5d3049e9a1",
             "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
           },
           {
@@ -2811,12 +2861,20 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020075/play-by-play and look at period 1 around 01:16: there must be no goal for MTL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No goal Montreal.",
         "first_seen_at": "2026-10-11T01:48:23Z",
-        "seen_count": 1
+        "detection_history": [
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-11T08:41:40Z"
       }
     },
     {
@@ -2832,8 +2890,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-11T01:48:23Z",
-          "run_id": "20261011T014808Z-0.5.0",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-11T00:07:07.993Z"
@@ -2848,9 +2906,9 @@
           "venue": "PPG Paints Arena",
           "final_score": {
             "away": 1,
-            "home": 1
+            "home": 2
           },
-          "game_state": "CRIT",
+          "game_state": "OFF",
           "gamecenter_url": "https://www.nhl.com/gamecenter/2026020077",
           "report_urls": {
             "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020077.HTM"
@@ -2932,7 +2990,7 @@
         },
         "totals": {
           "initial_game_goals": null,
-          "corrected_game_goals": 2,
+          "corrected_game_goals": 3,
           "goal_delta": -1,
           "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
         },
@@ -2958,8 +3016,8 @@
             "url": "https://api-web.nhle.com/v1/gamecenter/2026020077/play-by-play",
             "kind": "official_api",
             "evidence": "primary",
-            "retrieved_at": "2026-10-11T01:48:10Z",
-            "sha256": "46f2ff7ca2fc1b94c4497d8a50703993b73d01e63fccedb012059624a04c026b",
+            "retrieved_at": "2026-10-11T08:41:27Z",
+            "sha256": "30acc873ae3703f0d1593344079b1573fe0ceb449f66481d742af57ad7699acb",
             "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
           },
           {
@@ -2978,11 +3036,359 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020077/play-by-play and look at period 1 around 19:34: there must be no goal for PIT at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-11T01:48:23Z"
+          "verified_at": "2026-10-11T08:41:40Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Original call overturned – No Goal Pittsburgh.",
         "first_seen_at": "2026-10-11T01:48:23Z",
+        "detection_history": [
+          {
+            "run_id": "20261011T084125Z-0.5.0",
+            "detected_at": "2026-10-11T08:41:40Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 2,
+        "last_seen_at": "2026-10-11T08:41:40Z"
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-bfd9f23ffa",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-11T03:46:15.179Z"
+        },
+        "game": {
+          "game_id": "2026020082",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-10",
+          "away_team": "ANA",
+          "home_team": "CGY",
+          "venue": "Scotiabank Saddledome",
+          "final_score": {
+            "away": 4,
+            "home": 2
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020082",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020082.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 2,
+          "period_type": "REG",
+          "clock": "11:27",
+          "team": "CGY",
+          "field": "goal_removed",
+          "goal_key": "P2@11:27",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal CGY at 11:27 of period 2",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Calgary’s Joel Farabee preceded the puck into the offensive zone and was in an off-side position prior to the Flames’ goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:48 (11:12 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "type_group": "Off-Side",
+            "initiated_by": null,
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Calgary",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Calgary",
+            "clock_reset": {
+              "shows": "08:48",
+              "elapsed": "11:12"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Calgary’s Joel Farabee preceded the puck into the offensive zone and was in an off-side position prior to the Flames’ goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:48 (11:12 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "11:27",
+          "team": "CGY",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "11:27",
+          "team": "CGY",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 6,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: ANA @ CGY – 11:27 of the Second Period",
+            "url": "https://www.nhl.com/news/anaheim-ducks-calgary-flames-coach-challenge-x1054",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-11T08:41:26Z",
+            "quote": "Call on the ice is overturned – No Goal Calgary"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/anaheim-ducks-calgary-flames-coach-challenge-x1054",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-11T08:41:26Z",
+            "note": "contentDate 2026-10-11T03:46:15.179Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020082/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-11T08:41:26Z",
+            "sha256": "0bf1235b56120ecb284bcdc83963e97eee704af6e22e8a660f869257dad59a63",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020082.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020082/play-by-play and look at period 2 around 11:27: there must be no goal for CGY at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-11T08:41:40Z"
+        },
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Calgary.",
+        "first_seen_at": "2026-10-11T08:41:40Z",
+        "seen_count": 1
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-f4b1a957e9",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-11T08:41:40Z",
+          "run_id": "20261011T084125Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-11T02:13:00Z"
+        },
+        "game": {
+          "game_id": "2026020075",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-10",
+          "away_team": "DET",
+          "home_team": "MTL",
+          "venue": "Centre Bell",
+          "final_score": {
+            "away": 0,
+            "home": 1
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020075",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 4,
+          "period_type": "OT",
+          "clock": "02:29",
+          "team": "MTL",
+          "field": "goal_removed",
+          "goal_key": "P4@02:29",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal MTL at 02:29 of period 4",
+          "detail": "In the final minute of play in the third period and at any point in overtime (regular season and playoffs), the NHL Situation Room will initiate the review of any scenario that would otherwise be subject to a Coach’s Challenge under Rule 38.3.\n\nVideo review determined that Montreal’s Zachary Bolduc preceded the puck into the offensive zone and was in an off-side position prior to Alexandre Texier’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.” \n\nThe clock is reset to show 2:23 (2:37 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "type_group": "Off-Side",
+            "initiated_by": "Situation Room",
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Montreal",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Montreal",
+            "clock_reset": {
+              "shows": "02:23",
+              "elapsed": "02:37"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "In the final minute of play in the third period and at any point in overtime (regular season and playoffs), the NHL Situation Room will initiate the review of any scenario that would otherwise be subject to a Coach’s Challenge under Rule 38.3.\n\nVideo review determined that Montreal’s Zachary Bolduc preceded the puck into the offensive zone and was in an off-side position prior to Alexandre Texier’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.” \n\nThe clock is reset to show 2:23 (2:37 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38.3, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 4,
+          "clock": "02:29",
+          "team": "MTL",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 4,
+          "clock": "02:29",
+          "team": "MTL",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 1,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Situation Room Initiated Challenge: DET @ MTL – 2:29 of Overtime",
+            "url": "https://www.nhl.com/news/detroit-red-wings-montreal-canadiens-situation-room-initiated-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-11T08:41:26Z",
+            "quote": "Call on the ice is overturned – No Goal Montreal"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/detroit-red-wings-montreal-canadiens-situation-room-initiated-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-11T08:41:26Z",
+            "note": "contentDate 2026-10-11T02:13:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020075/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-11T08:41:27Z",
+            "sha256": "07c87f87103d3b6f0221275b5daa925b51afa12b082f7374fdbd3e5d3049e9a1",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020075/play-by-play and look at period 4 around 02:29: there must be no goal for MTL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-11T08:41:40Z"
+        },
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Montreal.",
+        "first_seen_at": "2026-10-11T08:41:40Z",
         "seen_count": 1
       }
     }

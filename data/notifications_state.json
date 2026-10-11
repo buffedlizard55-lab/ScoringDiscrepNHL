@@ -1,9 +1,9 @@
 {
   "last_run": {
-    "at": "2026-10-11T01:48:25Z",
+    "at": "2026-10-11T08:41:42Z",
     "delivered": 2,
     "failed_channels": [],
-    "run": "situation-room-38103036085"
+    "run": "situation-room-38125681589"
   },
   "notified": {
     "ALERT-NHL-20242025-021140-01": {
@@ -204,6 +204,18 @@
       "record_id": "SDN-b984718f1e",
       "severity": "high"
     },
+    "SDN-bfd9f23ffa": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/25"
+      },
+      "fingerprint": "25cfba536090dff0",
+      "first_delivered_at": "2026-10-11T03:46:15.179Z",
+      "last_delivered_at": "2026-10-11T08:41:42Z",
+      "notices": 1,
+      "record_id": "SDN-bfd9f23ffa",
+      "severity": "high"
+    },
     "SDN-d967bb12d3": {
       "channels": {
         "feed": "primed_from_committed_feed"
@@ -223,6 +235,18 @@
       "last_delivered_at": "2026-10-07T21:28:36Z",
       "notices": 0,
       "record_id": "SDN-e84fc1c8ec"
+    },
+    "SDN-f4b1a957e9": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/26"
+      },
+      "fingerprint": "9b8f09d5e740603b",
+      "first_delivered_at": "2026-10-11T02:13:00Z",
+      "last_delivered_at": "2026-10-11T08:41:42Z",
+      "notices": 1,
+      "record_id": "SDN-f4b1a957e9",
+      "severity": "high"
     }
   },
   "notified_alert_hashes": [
@@ -245,8 +269,10 @@
     "SDN-87fb3e543f",
     "SDN-a26c2f0625",
     "SDN-b984718f1e",
+    "SDN-bfd9f23ffa",
     "SDN-d967bb12d3",
-    "SDN-e84fc1c8ec"
+    "SDN-e84fc1c8ec",
+    "SDN-f4b1a957e9"
   ],
   "notified_record_ids": [
     "NHL-20242025-021140-01",
@@ -268,9 +294,11 @@
     "SDN-87fb3e543f",
     "SDN-a26c2f0625",
     "SDN-b984718f1e",
+    "SDN-bfd9f23ffa",
     "SDN-d967bb12d3",
-    "SDN-e84fc1c8ec"
+    "SDN-e84fc1c8ec",
+    "SDN-f4b1a957e9"
   ],
   "schema_version": 1,
-  "updated_at": null
+  "updated_at": "2026-10-11T08:41:42Z"
 }
