@@ -1,7 +1,57 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-14T23:24:28Z",
+  "generated_at": "2026-10-15T01:46:16Z",
   "alerts": [
+    {
+      "id": "SDN-363733aecb",
+      "record_id": "SDN-363733aecb",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-14 DAL @ COL - Video review (Distinct Kicking Motion): on-ice goal overturned, no goal COL at 09:29 of period 1",
+      "body": "Video review (Distinct Kicking Motion): on-ice goal overturned, no goal COL at 09:29 of period 1\nVideo review determined Colorado’s Gabriel Landeskog kicked the puck into the Dallas net. According to Rule 37.4: “A ‘distinct kicking motion,’ for purposes of Video Review, is one where the video makes clear that an attacking Player has deliberately propelled the puck with a kick of his foot or skate and the puck subsequently enters the net. A goal cannot be scored on a play where an attacking Player propels the puck with his skate into the net (even by means of a subsequent deflection off of another Player) using a ‘distinct kicking motion.’”\nRecord SDN-363733aecb - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nSettlement exposure: medium (window: in_game)\nThe number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.\nOfficial reason: Video review determined Colorado’s Gabriel Landeskog kicked the puck into the Dallas net. According to Rule 37.4: “A ‘distinct kicking motion,’ for purposes of Video Review, is one where the video makes clear that an attacking Player has deliberately propelled the puck with a kick of his foot or skate and the puck subsequently enters the net. A goal cannot be scored on a play where an attacking Player propels the puck with his skate into the net (even by means of a subsequent deflection off of another Player) using a ‘distinct kicking motion.’”",
+      "links": [
+        "https://www.nhl.com/news/dallas-stars-colorado-avalanche-video-review",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-video-review",
+        "https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM"
+      ],
+      "created_at": "2026-10-15T01:20:00Z",
+      "detected_at": "2026-10-15T01:46:14Z",
+      "affects_goal_total": true,
+      "settlement_risk": "medium",
+      "settlement_window": "in_game",
+      "settlement_reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+      "when_corrected": "in_game",
+      "attribution_only": false,
+      "game_date": "2026-10-14",
+      "teams": "DAL @ COL",
+      "detected_by": "nhl_scoring"
+    },
+    {
+      "id": "SDN-c78eda74a3",
+      "record_id": "SDN-c78eda74a3",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-14 DAL @ COL - Coach's Challenge (Off-Side): on-ice goal overturned, no goal COL at 01:59 of period 1",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal COL at 01:59 of period 1\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Colorado’s T.J. Hughes preceded the puck into the offensive zone and was in an off-side position prior to Jaden Schwartz’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.” \n\nThe clock is reset to show 18:05 (1:55 elapsed time), when the off-side infraction occurred.\nRecord SDN-c78eda74a3 - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nSettlement exposure: medium (window: in_game)\nThe number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Colorado’s T.J. Hughes preceded the puck into the offensive zone and was in an off-side position prior to Jaden Schwartz’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.” \n\nThe clock is reset to show 18:05 (1:55 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/dallas-stars-colorado-avalanche-coach-challenge-x7698",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-coach-challenge-x7698",
+        "https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM"
+      ],
+      "created_at": "2026-10-15T00:57:00Z",
+      "detected_at": "2026-10-15T01:46:14Z",
+      "affects_goal_total": true,
+      "settlement_risk": "medium",
+      "settlement_window": "in_game",
+      "settlement_reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+      "when_corrected": "in_game",
+      "attribution_only": false,
+      "game_date": "2026-10-14",
+      "teams": "DAL @ COL",
+      "detected_by": "nhl_scoring"
+    },
     {
       "id": "SDN-321e69e3c7",
       "record_id": "SDN-321e69e3c7",
@@ -16,7 +66,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020088.HTM"
       ],
       "created_at": "2026-10-13T01:49:47.956Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -42,7 +92,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020082.HTM"
       ],
       "created_at": "2026-10-11T03:46:15.179Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -68,7 +118,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
       ],
       "created_at": "2026-10-11T02:13:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -94,7 +144,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020077.HTM"
       ],
       "created_at": "2026-10-11T00:07:07.993Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -120,7 +170,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
       ],
       "created_at": "2026-10-10T23:35:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -146,7 +196,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020058.HTM"
       ],
       "created_at": "2026-10-08T23:30:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -282,7 +332,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM"
       ],
       "created_at": "2026-10-07T01:41:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -308,7 +358,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM"
       ],
       "created_at": "2026-10-07T01:38:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -391,7 +441,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM"
       ],
       "created_at": "2026-10-06T01:15:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -444,7 +494,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020026.HTM"
       ],
       "created_at": "2026-10-04T01:39:13.984Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -470,7 +520,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020020.HTM"
       ],
       "created_at": "2026-10-03T03:29:04.463Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -496,7 +546,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020017.HTM"
       ],
       "created_at": "2026-10-02T23:12:25.85Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -549,7 +599,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020012.HTM"
       ],
       "created_at": "2026-10-02T01:15:00Z",
-      "detected_at": "2026-10-14T23:24:26Z",
+      "detected_at": "2026-10-15T01:46:14Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",

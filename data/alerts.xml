@@ -4,7 +4,45 @@
     <title>ScoringDiscrepNHL alerts</title>
     <link>https://github.com/buffedlizard55-lab/ScoringDiscrepNHL</link>
     <description>Automated alerts for detected NHL scoring discrepancies and corrections. Every alert links to official-source evidence.</description>
-    <lastBuildDate>Wed, 14 Oct 2026 23:24:28 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 15 Oct 2026 01:46:16 GMT</lastBuildDate>
+    <item>
+      <title>[IMMEDIATE] 2026-10-14 DAL @ COL - Video review (Distinct Kicking Motion): on-ice goal overturned, no goal COL at 09:29 of period 1</title>
+      <guid isPermaLink="false">sdnhl-SDN-363733aecb</guid>
+      <pubDate>Thu, 15 Oct 2026 01:20:00 GMT</pubDate>
+      <description>Video review (Distinct Kicking Motion): on-ice goal overturned, no goal COL at 09:29 of period 1
+Video review determined Colorado’s Gabriel Landeskog kicked the puck into the Dallas net. According to Rule 37.4: “A ‘distinct kicking motion,’ for purposes of Video Review, is one where the video makes clear that an attacking Player has deliberately propelled the puck with a kick of his foot or skate and the puck subsequently enters the net. A goal cannot be scored on a play where an attacking Player propels the puck with his skate into the net (even by means of a subsequent deflection off of another Player) using a ‘distinct kicking motion.’”
+Record SDN-363733aecb - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Settlement exposure: medium (window: in_game)
+The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+Official reason: Video review determined Colorado’s Gabriel Landeskog kicked the puck into the Dallas net. According to Rule 37.4: “A ‘distinct kicking motion,’ for purposes of Video Review, is one where the video makes clear that an attacking Player has deliberately propelled the puck with a kick of his foot or skate and the puck subsequently enters the net. A goal cannot be scored on a play where an attacking Player propels the puck with his skate into the net (even by means of a subsequent deflection off of another Player) using a ‘distinct kicking motion.’”<p><a href="https://www.nhl.com/news/dallas-stars-colorado-avalanche-video-review">https://www.nhl.com/news/dallas-stars-colorado-avalanche-video-review</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-video-review">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-video-review</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM</a></p></description>
+    </item>
+    <item>
+      <title>[IMMEDIATE] 2026-10-14 DAL @ COL - Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal COL at 01:59 of period 1</title>
+      <guid isPermaLink="false">sdnhl-SDN-c78eda74a3</guid>
+      <pubDate>Thu, 15 Oct 2026 00:57:00 GMT</pubDate>
+      <description>Coach&#x27;s Challenge (Off-Side): on-ice goal overturned, no goal COL at 01:59 of period 1
+The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that Colorado’s T.J. Hughes preceded the puck into the offensive zone and was in an off-side position prior to Jaden Schwartz’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.” 
+
+The clock is reset to show 18:05 (1:55 elapsed time), when the off-side infraction occurred.
+Record SDN-c78eda74a3 - status verified - confidence high
+Change type: goal_overturned_to_no_goal
+Goal total changed: True
+Attribution only: False
+Corrected: in_game
+Settlement exposure: medium (window: in_game)
+The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+Official reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”
+
+Video review determined that Colorado’s T.J. Hughes preceded the puck into the offensive zone and was in an off-side position prior to Jaden Schwartz’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.” 
+
+The clock is reset to show 18:05 (1:55 elapsed time), when the off-side infraction occurred.<p><a href="https://www.nhl.com/news/dallas-stars-colorado-avalanche-coach-challenge-x7698">https://www.nhl.com/news/dallas-stars-colorado-avalanche-coach-challenge-x7698</a></p><p><a href="https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-coach-challenge-x7698">https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-coach-challenge-x7698</a></p><p><a href="https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play">https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play</a></p><p><a href="https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM">https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM</a></p></description>
+    </item>
     <item>
       <title>[IMMEDIATE] 2026-10-12 OTT @ NJD - Coach&#x27;s Challenge (Goaltender Interference): on-ice goal overturned, no goal NJD at 11:58 of period 3</title>
       <guid isPermaLink="false">sdnhl-SDN-321e69e3c7</guid>
