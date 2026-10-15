@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (17)
 
-Run `20261015T014616Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261015T071938Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] MIN at NSH - 2026-10-01 (game 2026020012)
 
@@ -343,7 +343,7 @@ Record id: `SDN-321e69e3c7` - open each link and read the goal line before actin
 **Official sources**
 - [NHL Situation Room statement - Video Review: DAL @ COL – 9:29 of the First Period](https://www.nhl.com/news/dallas-stars-colorado-avalanche-video-review) _(evidence: primary; retrieved: 2026-10-15T01:45:59Z)_
 - [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-video-review) _(evidence: primary; retrieved: 2026-10-15T01:45:59Z)_
-- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play) _(evidence: primary; retrieved: 2026-10-15T01:46:00Z; sha256 `454fde0112a2`)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play) _(evidence: primary; retrieved: 2026-10-15T07:19:23Z; sha256 `ebe883735fac`)_
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-363733aecb` - open each link and read the goal line before acting on this.
@@ -364,7 +364,7 @@ Record id: `SDN-363733aecb` - open each link and read the goal line before actin
 **Official sources**
 - [NHL Situation Room statement - Coach’s Challenge: DAL @ COL – 1:59 of the First Period](https://www.nhl.com/news/dallas-stars-colorado-avalanche-coach-challenge-x7698) _(evidence: primary; retrieved: 2026-10-15T01:45:59Z)_
 - [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-colorado-avalanche-coach-challenge-x7698) _(evidence: primary; retrieved: 2026-10-15T01:45:59Z)_
-- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play) _(evidence: primary; retrieved: 2026-10-15T01:46:00Z; sha256 `454fde0112a2`)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020107/play-by-play) _(evidence: primary; retrieved: 2026-10-15T07:19:23Z; sha256 `ebe883735fac`)_
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-c78eda74a3` - open each link and read the goal line before acting on this.
