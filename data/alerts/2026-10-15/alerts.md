@@ -1,6 +1,6 @@
-# Scoring discrepancy alerts (17)
+# Scoring discrepancy alerts (19)
 
-Run `20261015T211738Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261015T234827Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] MIN at NSH - 2026-10-01 (game 2026020012)
 
@@ -368,6 +368,52 @@ Record id: `SDN-363733aecb` - open each link and read the goal line before actin
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-c78eda74a3` - open each link and read the goal line before acting on this.
+
+### [IMMEDIATE] NYI at OTT - 2026-10-15 (game 2026020109)
+
+- **What changed:** Video review (Puck Over Goal Line): on-ice goal overturned, no goal OTT at 04:50 of period 1
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, OTT (period 1 04:50)
+- **Corrected state:** no_goal, OTT (period 1 04:50)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
+- **Player props affected:** yes
+- **When corrected:** in_game
+- **Record status:** flagged / confidence medium
+
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+
+**Flags:** `game_id_resolved_from_schedule`, `pbp_crosscheck_inconclusive`
+
+**Official sources**
+- [NHL Situation Room statement - Video Review: NYI @ OTT – 4:50 of the First Period](https://www.nhl.com/news/new-york-islanders-ottawa-senators-video-review) _(evidence: primary; retrieved: 2026-10-15T23:48:09Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-islanders-ottawa-senators-video-review) _(evidence: primary; retrieved: 2026-10-15T23:48:09Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020109/play-by-play) _(evidence: primary; retrieved: 2026-10-15T23:48:10Z; sha256 `15a40186433a`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM) _(evidence: reference; retrieved: n/a)_
+
+Record id: `SDN-a1883562a4` - open each link and read the goal line before acting on this.
+
+### [IMMEDIATE] NYI at OTT - 2026-10-15 (game 2026020109)
+
+- **What changed:** Coach's Challenge (Off-Side): on-ice goal overturned, no goal OTT at 11:50 of period 1
+- **Rule fired:** `SR1` Situation Room statement: on-ice call overturned (high)
+- **Initial state:** goal, OTT (period 1 11:50)
+- **Corrected state:** no_goal, OTT (period 1 11:50)
+- **Goal total affected:** yes (total_changed=True; attribution-only=False)
+- **Player props affected:** yes
+- **When corrected:** in_game
+- **Record status:** verified / confidence high
+
+**Why it matters for settlement:** The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.
+
+**Flags:** `game_id_resolved_from_schedule`
+
+**Official sources**
+- [NHL Situation Room statement - Coach’s Challenge: NYI @ OTT – 11:50 of the First Period](https://www.nhl.com/news/new-york-islanders-ottawa-senators-coach-challenge) _(evidence: primary; retrieved: 2026-10-15T23:48:09Z)_
+- [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-islanders-ottawa-senators-coach-challenge) _(evidence: primary; retrieved: 2026-10-15T23:48:09Z)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020109/play-by-play) _(evidence: primary; retrieved: 2026-10-15T23:48:10Z; sha256 `15a40186433a`)_
+- [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM) _(evidence: reference; retrieved: n/a)_
+
+Record id: `SDN-cf3ee133a4` - open each link and read the goal line before acting on this.
 
 ---
 
