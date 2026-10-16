@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (17)
 
-Run `20261016T181902Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261016T213839Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] NYR at DET - 2026-10-02 (game 2026020017)
 
@@ -342,7 +342,7 @@ Record id: `SDN-c78eda74a3` - open each link and read the goal line before actin
 **Official sources**
 - [NHL Situation Room statement - Video Review: NYI @ OTT – 4:50 of the First Period](https://www.nhl.com/news/new-york-islanders-ottawa-senators-video-review) _(evidence: primary; retrieved: 2026-10-15T23:48:09Z)_
 - [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-islanders-ottawa-senators-video-review) _(evidence: primary; retrieved: 2026-10-15T23:48:09Z)_
-- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020109/play-by-play) _(evidence: primary; retrieved: 2026-10-16T18:18:45Z; sha256 `980783dbf644`)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020109/play-by-play) _(evidence: primary; retrieved: 2026-10-16T21:38:23Z; sha256 `980783dbf644`)_
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-a1883562a4` - open each link and read the goal line before acting on this.
