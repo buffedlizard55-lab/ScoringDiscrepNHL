@@ -1,17 +1,86 @@
 {
-  "generated_at": "2026-10-18T01:22:45Z",
-  "run": "monitor-39086256854",
+  "generated_at": "2026-10-18T01:29:01Z",
+  "run": "situation-room-39086616944",
   "mode": "deliver",
   "repo": "buffedlizard55-lab/ScoringDiscrepNHL",
-  "candidates": 0,
-  "unchanged_skipped": 28,
-  "deliveries": [],
+  "candidates": 2,
+  "unchanged_skipped": 27,
+  "deliveries": [
+    {
+      "channel": "issue",
+      "target": "buffedlizard55-lab/ScoringDiscrepNHL",
+      "alert_ids": [
+        "SDN-935f2c114b"
+      ],
+      "status": "sent",
+      "http_status": 201,
+      "url": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/32",
+      "error": "",
+      "dry_run": false
+    },
+    {
+      "channel": "issue",
+      "target": "buffedlizard55-lab/ScoringDiscrepNHL",
+      "alert_ids": [
+        "SDN-a1883562a4"
+      ],
+      "status": "sent",
+      "http_status": 201,
+      "url": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/33",
+      "error": "",
+      "dry_run": false
+    },
+    {
+      "channel": "webhook",
+      "target": "(unset)",
+      "alert_ids": [
+        "SDN-935f2c114b",
+        "SDN-a1883562a4"
+      ],
+      "status": "skipped",
+      "http_status": null,
+      "url": "",
+      "error": "SDN_WEBHOOK_URL not set",
+      "dry_run": false
+    },
+    {
+      "channel": "email",
+      "target": "(unset)",
+      "alert_ids": [
+        "SDN-935f2c114b",
+        "SDN-a1883562a4"
+      ],
+      "status": "skipped",
+      "http_status": null,
+      "url": "",
+      "error": "SDN_SMTP_HOST / SDN_SMTP_TO not set",
+      "dry_run": false
+    },
+    {
+      "channel": "feed",
+      "target": "data/alerts.json + data/alerts.xml",
+      "alert_ids": [
+        "SDN-935f2c114b",
+        "SDN-a1883562a4"
+      ],
+      "status": "published",
+      "http_status": null,
+      "url": "https://buffedlizard55-lab.github.io/ScoringDiscrepNHL/#view=alerts",
+      "error": "",
+      "dry_run": false
+    }
+  ],
   "failed_channels": [],
-  "note": "nothing new to deliver",
+  "delivered_alert_ids": [
+    "SDN-935f2c114b",
+    "SDN-a1883562a4"
+  ],
+  "retry_next_run": [],
+  "state_entries": 29,
   "feed": {
     "path": "/home/runner/work/ScoringDiscrepNHL/ScoringDiscrepNHL/data/alerts.json",
-    "generated_at": "2026-10-17T23:21:43Z",
-    "count": 28
+    "generated_at": "2026-10-18T01:29:01Z",
+    "count": 29
   },
   "state_path": "/home/runner/work/ScoringDiscrepNHL/ScoringDiscrepNHL/data/notifications_state.json"
 }

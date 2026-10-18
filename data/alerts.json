@@ -1,7 +1,32 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-17T23:21:43Z",
+  "generated_at": "2026-10-18T01:29:01Z",
   "alerts": [
+    {
+      "id": "SDN-935f2c114b",
+      "record_id": "SDN-935f2c114b",
+      "type": "goal_overturned_to_no_goal",
+      "severity": "high",
+      "title": "[IMMEDIATE] 2026-10-17 DAL @ CHI - Coach's Challenge (Off-Side): on-ice goal overturned, no goal DAL at 12:10 of period 1",
+      "body": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal DAL at 12:10 of period 1\nThe play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Dallas’ Roope Hintz did not have possession and control of the puck when he preceded it into the offensive zone and was therefore in an off-side position prior to Jason Robertson’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:02 (11:58 elapsed time), when the off-side infraction occurred.\nRecord SDN-935f2c114b - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nSettlement exposure: medium (window: in_game)\nThe number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.\nOfficial reason: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Dallas’ Roope Hintz did not have possession and control of the puck when he preceded it into the offensive zone and was therefore in an off-side position prior to Jason Robertson’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:02 (11:58 elapsed time), when the off-side infraction occurred.",
+      "links": [
+        "https://www.nhl.com/news/dallas-stars-chicago-blackhawks-coach-challenge",
+        "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-chicago-blackhawks-coach-challenge",
+        "https://api-web.nhle.com/v1/gamecenter/2026020130/play-by-play",
+        "https://www.nhl.com/scores/htmlreports/20262027/GS020130.HTM"
+      ],
+      "created_at": "2026-10-17T23:44:58.397Z",
+      "detected_at": "2026-10-18T01:28:59Z",
+      "affects_goal_total": true,
+      "settlement_risk": "medium",
+      "settlement_window": "in_game",
+      "settlement_reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+      "when_corrected": "in_game",
+      "attribution_only": false,
+      "game_date": "2026-10-17",
+      "teams": "DAL @ CHI",
+      "detected_by": "nhl_scoring"
+    },
     {
       "id": "SDN-cf3ee133a4",
       "record_id": "SDN-cf3ee133a4",
@@ -16,7 +41,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM"
       ],
       "created_at": "2026-10-15T23:38:53.255Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -34,7 +59,7 @@
       "type": "goal_overturned_to_no_goal",
       "severity": "high",
       "title": "[IMMEDIATE] 2026-10-15 NYI @ OTT - Video review (Puck Over Goal Line): on-ice goal overturned, no goal OTT at 04:50 of period 1",
-      "body": "Video review (Puck Over Goal Line): on-ice goal overturned, no goal OTT at 04:50 of period 1\nVideo review confirmed the puck did not cross the NY Islanders goal line.\nRecord SDN-a1883562a4 - status flagged - confidence medium\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nSettlement exposure: medium (window: in_game)\nThe number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.\nFlags: game_id_resolved_from_schedule, pbp_crosscheck_inconclusive\nOfficial reason: Video review confirmed the puck did not cross the NY Islanders goal line.",
+      "body": "Video review (Puck Over Goal Line): on-ice goal overturned, no goal OTT at 04:50 of period 1\nVideo review confirmed the puck did not cross the NY Islanders goal line.\nRecord SDN-a1883562a4 - status verified - confidence high\nChange type: goal_overturned_to_no_goal\nGoal total changed: True\nAttribution only: False\nCorrected: in_game\nSettlement exposure: medium (window: in_game)\nThe number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.\nFlags: game_id_resolved_from_schedule\nOfficial reason: Video review confirmed the puck did not cross the NY Islanders goal line.",
       "links": [
         "https://www.nhl.com/news/new-york-islanders-ottawa-senators-video-review",
         "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-york-islanders-ottawa-senators-video-review",
@@ -42,7 +67,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM"
       ],
       "created_at": "2026-10-15T23:37:32.86Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -68,7 +93,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM"
       ],
       "created_at": "2026-10-15T01:20:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -94,7 +119,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM"
       ],
       "created_at": "2026-10-15T00:57:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -120,7 +145,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020088.HTM"
       ],
       "created_at": "2026-10-13T01:49:47.956Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -146,7 +171,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020082.HTM"
       ],
       "created_at": "2026-10-11T03:46:15.179Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -172,7 +197,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
       ],
       "created_at": "2026-10-11T02:13:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -198,7 +223,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020077.HTM"
       ],
       "created_at": "2026-10-11T00:07:07.993Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -224,7 +249,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
       ],
       "created_at": "2026-10-10T23:35:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -250,7 +275,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020058.HTM"
       ],
       "created_at": "2026-10-08T23:30:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -386,7 +411,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020044.HTM"
       ],
       "created_at": "2026-10-07T01:41:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -412,7 +437,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020050.HTM"
       ],
       "created_at": "2026-10-07T01:38:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -495,7 +520,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020042.HTM"
       ],
       "created_at": "2026-10-06T01:15:00Z",
-      "detected_at": "2026-10-17T23:21:41Z",
+      "detected_at": "2026-10-18T01:28:59Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",

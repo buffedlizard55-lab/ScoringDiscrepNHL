@@ -1,9 +1,9 @@
 {
   "last_run": {
-    "at": "2026-10-15T23:48:27Z",
+    "at": "2026-10-18T01:29:01Z",
     "delivered": 2,
     "failed_channels": [],
-    "run": "situation-room-38825712235"
+    "run": "situation-room-39086616944"
   },
   "notified": {
     "ALERT-NHL-20242025-021140-01": {
@@ -204,15 +204,27 @@
       "notices": 0,
       "record_id": "SDN-87fb3e543f"
     },
+    "SDN-935f2c114b": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/32"
+      },
+      "fingerprint": "f47688622e33c37a",
+      "first_delivered_at": "2026-10-17T23:44:58.397Z",
+      "last_delivered_at": "2026-10-18T01:29:01Z",
+      "notices": 1,
+      "record_id": "SDN-935f2c114b",
+      "severity": "high"
+    },
     "SDN-a1883562a4": {
       "channels": {
         "feed": "published",
-        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/31"
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/33"
       },
-      "fingerprint": "e972f9ffab2b0a1e",
+      "fingerprint": "87be8bc14ca9d109",
       "first_delivered_at": "2026-10-15T23:37:32.86Z",
-      "last_delivered_at": "2026-10-15T23:48:27Z",
-      "notices": 1,
+      "last_delivered_at": "2026-10-18T01:29:01Z",
+      "notices": 2,
       "record_id": "SDN-a1883562a4",
       "severity": "high"
     },
@@ -329,6 +341,7 @@
     "SDN-752f5a246e",
     "SDN-810e446a2c",
     "SDN-87fb3e543f",
+    "SDN-935f2c114b",
     "SDN-a1883562a4",
     "SDN-a26c2f0625",
     "SDN-b984718f1e",
@@ -359,6 +372,7 @@
     "SDN-752f5a246e",
     "SDN-810e446a2c",
     "SDN-87fb3e543f",
+    "SDN-935f2c114b",
     "SDN-a1883562a4",
     "SDN-a26c2f0625",
     "SDN-b984718f1e",
@@ -370,5 +384,5 @@
     "SDN-f4b1a957e9"
   ],
   "schema_version": 1,
-  "updated_at": null
+  "updated_at": "2026-10-18T01:29:01Z"
 }
