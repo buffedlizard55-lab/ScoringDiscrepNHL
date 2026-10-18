@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (14)
 
-Run `20261018T012901Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261018T063231Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] WPG at PIT - 2026-10-05 (game 2026020042)
 
@@ -297,7 +297,7 @@ Record id: `SDN-cf3ee133a4` - open each link and read the goal line before actin
 **Official sources**
 - [NHL Situation Room statement - Coach’s Challenge: DAL @ CHI – 12:10 of the First Period](https://www.nhl.com/news/dallas-stars-chicago-blackhawks-coach-challenge) _(evidence: primary; retrieved: 2026-10-18T01:28:45Z)_
 - [Same statement, league content API record (machine-readable, with tags and timestamps)](https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-chicago-blackhawks-coach-challenge) _(evidence: primary; retrieved: 2026-10-18T01:28:45Z)_
-- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020130/play-by-play) _(evidence: primary; retrieved: 2026-10-18T01:28:45Z; sha256 `8b0c8a89a582`)_
+- [Official play-by-play (api-web) - final record checked for the goal and the review stoppage](https://api-web.nhle.com/v1/gamecenter/2026020130/play-by-play) _(evidence: primary; retrieved: 2026-10-18T06:32:15Z; sha256 `187b4f66d552`)_
 - [Official Game Summary (GS) report - frozen post-game scoring summary](https://www.nhl.com/scores/htmlreports/20262027/GS020130.HTM) _(evidence: reference; retrieved: n/a)_
 
 Record id: `SDN-935f2c114b` - open each link and read the goal line before acting on this.
