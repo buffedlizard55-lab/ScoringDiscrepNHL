@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (14)
 
-Run `20261019T002643Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261019T051340Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] WPG at PIT - 2026-10-05 (game 2026020042)
 
