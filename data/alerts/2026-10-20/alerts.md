@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (13)
 
-Run `20261020T055554Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261020T112522Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] STL at CHI - 2026-10-06 (game 2026020050)
 
