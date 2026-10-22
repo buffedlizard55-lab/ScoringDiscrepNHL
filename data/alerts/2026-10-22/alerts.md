@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (11)
 
-Run `20261022T184629Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261022T221517Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] NSH at MTL - 2026-10-08 (game 2026020058)
 
