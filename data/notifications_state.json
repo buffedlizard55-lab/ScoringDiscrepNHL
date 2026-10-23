@@ -1,9 +1,9 @@
 {
   "last_run": {
-    "at": "2026-10-18T01:29:01Z",
+    "at": "2026-10-23T06:07:13Z",
     "delivered": 2,
     "failed_channels": [],
-    "run": "situation-room-39086616944"
+    "run": "situation-room-39908625106"
   },
   "notified": {
     "ALERT-NHL-20242025-021140-01": {
@@ -216,6 +216,18 @@
       "record_id": "SDN-935f2c114b",
       "severity": "high"
     },
+    "SDN-976324808d": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/35"
+      },
+      "fingerprint": "167b17a57f3deaa2",
+      "first_delivered_at": "2026-10-23T04:26:00Z",
+      "last_delivered_at": "2026-10-23T06:07:13Z",
+      "notices": 1,
+      "record_id": "SDN-976324808d",
+      "severity": "high"
+    },
     "SDN-a1883562a4": {
       "channels": {
         "feed": "published",
@@ -274,6 +286,18 @@
       "last_delivered_at": "2026-10-15T01:46:17Z",
       "notices": 1,
       "record_id": "SDN-c78eda74a3",
+      "severity": "high"
+    },
+    "SDN-cd6957d8f0": {
+      "channels": {
+        "feed": "published",
+        "issue": "https://github.com/buffedlizard55-lab/ScoringDiscrepNHL/issues/34"
+      },
+      "fingerprint": "404e60b2b1e0a889",
+      "first_delivered_at": "2026-10-23T04:40:00Z",
+      "last_delivered_at": "2026-10-23T06:07:13Z",
+      "notices": 1,
+      "record_id": "SDN-cd6957d8f0",
       "severity": "high"
     },
     "SDN-cf3ee133a4": {
@@ -342,11 +366,13 @@
     "SDN-810e446a2c",
     "SDN-87fb3e543f",
     "SDN-935f2c114b",
+    "SDN-976324808d",
     "SDN-a1883562a4",
     "SDN-a26c2f0625",
     "SDN-b984718f1e",
     "SDN-bfd9f23ffa",
     "SDN-c78eda74a3",
+    "SDN-cd6957d8f0",
     "SDN-cf3ee133a4",
     "SDN-d967bb12d3",
     "SDN-e84fc1c8ec",
@@ -373,16 +399,18 @@
     "SDN-810e446a2c",
     "SDN-87fb3e543f",
     "SDN-935f2c114b",
+    "SDN-976324808d",
     "SDN-a1883562a4",
     "SDN-a26c2f0625",
     "SDN-b984718f1e",
     "SDN-bfd9f23ffa",
     "SDN-c78eda74a3",
+    "SDN-cd6957d8f0",
     "SDN-cf3ee133a4",
     "SDN-d967bb12d3",
     "SDN-e84fc1c8ec",
     "SDN-f4b1a957e9"
   ],
   "schema_version": 1,
-  "updated_at": null
+  "updated_at": "2026-10-23T06:07:13Z"
 }
