@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-23T06:07:13Z",
+  "generated_at": "2026-10-23T11:31:04Z",
   "alerts": [
     {
       "id": "SDN-cd6957d8f0",
@@ -16,7 +16,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020164.HTM"
       ],
       "created_at": "2026-10-23T04:40:00Z",
-      "detected_at": "2026-10-23T06:07:11Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -25,7 +25,8 @@
       "attribution_only": false,
       "game_date": "2026-10-22",
       "teams": "UTA @ SEA",
-      "detected_by": "nhl_scoring"
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-23T04:40:00Z"
     },
     {
       "id": "SDN-976324808d",
@@ -41,7 +42,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020164.HTM"
       ],
       "created_at": "2026-10-23T04:26:00Z",
-      "detected_at": "2026-10-23T06:07:11Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -50,7 +51,8 @@
       "attribution_only": false,
       "game_date": "2026-10-22",
       "teams": "UTA @ SEA",
-      "detected_by": "nhl_scoring"
+      "detected_by": "nhl_scoring",
+      "first_seen_at": "2026-10-23T04:26:00Z"
     },
     {
       "id": "SDN-935f2c114b",
@@ -66,7 +68,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020130.HTM"
       ],
       "created_at": "2026-10-17T23:44:58.397Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -92,7 +94,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM"
       ],
       "created_at": "2026-10-15T23:38:53.255Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -118,7 +120,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020109.HTM"
       ],
       "created_at": "2026-10-15T23:37:32.86Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -144,7 +146,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM"
       ],
       "created_at": "2026-10-15T01:20:00Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -170,7 +172,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020107.HTM"
       ],
       "created_at": "2026-10-15T00:57:00Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -196,7 +198,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020088.HTM"
       ],
       "created_at": "2026-10-13T01:49:47.956Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -222,7 +224,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020082.HTM"
       ],
       "created_at": "2026-10-11T03:46:15.179Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -248,7 +250,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
       ],
       "created_at": "2026-10-11T02:13:00Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "high",
       "settlement_window": "in_game",
@@ -274,7 +276,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020077.HTM"
       ],
       "created_at": "2026-10-11T00:07:07.993Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
@@ -300,7 +302,7 @@
         "https://www.nhl.com/scores/htmlreports/20262027/GS020075.HTM"
       ],
       "created_at": "2026-10-10T23:35:00Z",
-      "detected_at": "2026-10-23T06:07:10Z",
+      "detected_at": "2026-10-23T11:31:01Z",
       "affects_goal_total": true,
       "settlement_risk": "medium",
       "settlement_window": "in_game",
