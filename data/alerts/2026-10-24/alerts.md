@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (12)
 
-Run `20261024T204033Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261024T224622Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] DET at MTL - 2026-10-10 (game 2026020075)
 
