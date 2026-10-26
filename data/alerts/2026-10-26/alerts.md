@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (8)
 
-Run `20261026T013650Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261026T065357Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] OTT at NJD - 2026-10-12 (game 2026020088)
 
