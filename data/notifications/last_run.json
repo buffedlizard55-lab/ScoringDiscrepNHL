@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-27T22:13:51Z",
-  "run": "monitor-40593167673",
+  "generated_at": "2026-10-27T23:58:04Z",
+  "run": "situation-room-40605598816",
   "mode": "deliver",
   "repo": "buffedlizard55-lab/ScoringDiscrepNHL",
   "candidates": 0,
@@ -10,7 +10,7 @@
   "note": "nothing new to deliver",
   "feed": {
     "path": "/home/runner/work/ScoringDiscrepNHL/ScoringDiscrepNHL/data/alerts.json",
-    "generated_at": "2026-10-27T20:37:24Z",
+    "generated_at": "2026-10-27T23:58:04Z",
     "count": 32
   },
   "state_path": "/home/runner/work/ScoringDiscrepNHL/ScoringDiscrepNHL/data/notifications_state.json"
