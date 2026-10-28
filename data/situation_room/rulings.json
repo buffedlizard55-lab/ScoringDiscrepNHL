@@ -1,21 +1,21 @@
 {
  "schema_version": "1.0",
  "generated_by": "pipeline/nhl_scoring (situation_room.py)",
- "generated_at": "2026-10-27T23:58:01Z",
+ "generated_at": "2026-10-28T05:27:29Z",
  "feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
  "public_index": "https://www.nhl.com/news/topic/situation-room",
  "meta": {
-  "last_run_id": "20261027T235748Z-0.5.0",
-  "last_run_at": "2026-10-27T23:58:01Z",
+  "last_run_id": "20261028T052713Z-0.5.0",
+  "last_run_at": "2026-10-28T05:27:29Z",
   "last_mode": "incremental",
   "last_stats": {
-   "pages": 1,
-   "items": 100,
-   "new": 0,
+   "pages": 2,
+   "items": 200,
+   "new": 6,
    "updated": 0,
-   "unchanged": 100,
-   "stories_fetched": 0,
-   "game_ids_resolved": 0,
+   "unchanged": 194,
+   "stories_fetched": 6,
+   "game_ids_resolved": 2,
    "crosschecked": 52,
    "records": 1463,
    "fetch_errors": 0,
@@ -26,29 +26,29 @@
   "offline_fixup": "2026-10-07: 0.5.0 classifier applied offline to headlines/result lines (officials updates, penalty-only verdicts, not-reviewable, 2016-17 prose direction); bodies are re-read on the next full ingest"
  },
  "summary": {
-  "rulings": 4436,
+  "rulings": 4442,
   "by_outcome": {
+   "on_ice_call_not_stated": 911,
+   "upheld": 1927,
    "overturned": 1485,
-   "on_ice_call_not_stated": 908,
-   "upheld": 1924,
    "not_a_review": 86,
    "penalty_review": 5,
    "unclassified": 20,
    "not_reviewable": 8
   },
   "by_kind": {
-   "coach_challenge": 2530,
-   "video_review": 1789,
+   "video_review": 1794,
+   "coach_challenge": 2531,
    "officials_update": 86,
    "other": 31
   },
   "by_review_type": {
-   "Goaltender Interference": 1431,
-   "Puck Over Goal Line": 1063,
+   "Goaltender Interference": 1432,
+   "Puck Over Goal Line": 1066,
    "Off-Side": 915,
    "unstated": 259,
-   "Distinct Kicking Motion": 233,
-   "High-Sticking the Puck": 139,
+   "Distinct Kicking Motion": 234,
+   "High-Sticking the Puck": 140,
    "Batted Puck": 49,
    "Off-side": 41,
    "Missed Game Stoppage Event – High-Sticking the Puck": 31,
@@ -111,12 +111,12 @@
    "Stoppage of Play - Hand Pass": 1
   },
   "by_review_type_group": {
-   "Goaltender Interference": 1440,
-   "Puck Over Goal Line": 1078,
+   "Goaltender Interference": 1441,
+   "Puck Over Goal Line": 1081,
    "Off-Side": 974,
    "unstated": 259,
-   "Distinct Kicking Motion": 234,
-   "High-Sticking the Puck": 168,
+   "Distinct Kicking Motion": 235,
+   "High-Sticking the Puck": 169,
    "Missed Game Stoppage Event": 117,
    "Hand Pass / Batted Puck": 83,
    "Net Off / Awarded Goal": 32,
@@ -249,10 +249,10 @@
     "unclassified": 0
    },
    "20262027": {
-    "total": 43,
+    "total": 49,
     "overturned": 23,
-    "upheld": 12,
-    "not_stated": 6,
+    "upheld": 15,
+    "not_stated": 9,
     "non_goal": 2,
     "unclassified": 0
    }
@@ -264,10 +264,393 @@
    "not_checked": 11
   },
   "earliest_statement": "2014-09-02T03:46:12Z",
-  "latest_statement": "2026-10-27T00:35:00Z",
+  "latest_statement": "2026-10-28T04:25:12.768Z",
   "missing_game_id": 6
  },
  "rulings": [
+  {
+   "slug": "buffalo-sabres-san-jose-sharks-video-review",
+   "headline": "Video Review: BUF @ SJS – 12:55 of the Second Period",
+   "kind": "video_review",
+   "away": "BUF",
+   "home": "SJS",
+   "period": 2,
+   "period_type": "REG",
+   "period_label": "Second Period",
+   "clock": "12:55",
+   "game_id": "2026020198",
+   "game_id_source": "tag",
+   "game_date": "2026-10-27",
+   "season": "20262027",
+   "content_date": "2026-10-28T04:25:12.768Z",
+   "last_updated": "2026-10-28T04:25:12.768Z",
+   "initiated_by": "NHL Situation Room",
+   "review_type": "Puck Over Goal Line",
+   "review_type_inferred": false,
+   "result_text": "No Goal Buffalo",
+   "explanation": "The Situation Room initiated a video review to further examine whether Tage Thompson’s original shot entered the San Jose net. Video determined that the puck did not cross the San Jose goal line.",
+   "description": null,
+   "on_ice_call": null,
+   "final_call": "no_goal",
+   "changed": null,
+   "outcome": "on_ice_call_not_stated",
+   "confidence": "low",
+   "basis": "statement gives the result but not the on-ice call",
+   "final_team": "BUF",
+   "rule_citations": [],
+   "clock_reset": null,
+   "public_url": "https://www.nhl.com/news/buffalo-sabres-san-jose-sharks-video-review",
+   "api_url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/buffalo-sabres-san-jose-sharks-video-review",
+   "format": "structured",
+   "flags": [
+    "on_ice_call_not_stated"
+   ],
+   "crosscheck": null,
+   "ingested_at": "2026-10-28T05:27:14Z",
+   "human_read": null,
+   "parser_reading": null,
+   "review_type_group": "Puck Over Goal Line",
+   "parser_version": "0.5.0",
+   "raw": {
+    "headline": "Video Review: BUF @ SJS – 12:55 of the Second Period ",
+    "body": "**Type of Review:** Puck Over Goal Line \n\n**Result:** No Goal Buffalo\n\n**Explanation:** The Situation Room initiated a video review to further examine whether <forge-entity title=\"Tage Thompson\" slug=\"tage-thompson-8479420\" code=\"player\">Tage Thompson</forge-entity>’s original shot entered the San Jose net. Video determined that **the puck did not cross the San Jose goal line**.",
+    "description": null,
+    "summary": "Type of Review: Puck Over Goal Line\nResult: No Goal Buffalo\nExplanation: The Situation Room initiated a video review to further examine whether Tage Thompson’s original shot entered the San Jose net. Video determined that the puck did not cross the San Jose goal line.",
+    "tags": [
+     {
+      "slug": "2025-26",
+      "title": "2025-26",
+      "extraData": {}
+     },
+     {
+      "slug": "gameid-2026020198",
+      "title": "BUF@SJS 10/27/2026 10:30PM",
+      "extraData": {
+       "gameId": "2026020198"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "slug": "minnesota-wild-utah-mammoth-video-review",
+   "headline": "Video Review: MIN @ UTA – 7:21 of the Second Period",
+   "kind": "video_review",
+   "away": "MIN",
+   "home": "UTA",
+   "period": 2,
+   "period_type": "REG",
+   "period_label": "Second Period",
+   "clock": "07:21",
+   "game_id": "2026020195",
+   "game_id_source": "tag",
+   "game_date": "2026-10-27",
+   "season": "20262027",
+   "content_date": "2026-10-28T02:30:00.914Z",
+   "last_updated": "2026-10-28T02:30:00.914Z",
+   "initiated_by": null,
+   "review_type": "Distinct Kicking Motion",
+   "review_type_inferred": false,
+   "result_text": "Call on the ice is upheld – No goal Minnesota",
+   "explanation": "Video review confirmed Minnesota’s Ryan Hartman kicked the puck into the Utah net. According to Rule 49.2, “A goal cannot be scored by an attacking player who uses a distinct kicking motion to propel the puck into the net with his skate/foot.”",
+   "description": null,
+   "on_ice_call": "no_goal",
+   "final_call": "no_goal",
+   "changed": false,
+   "outcome": "upheld",
+   "confidence": "high",
+   "basis": "result line: Call on the ice is upheld – No goal Minnesota",
+   "final_team": "MIN",
+   "rule_citations": [
+    "49.2"
+   ],
+   "clock_reset": null,
+   "public_url": "https://www.nhl.com/news/minnesota-wild-utah-mammoth-video-review",
+   "api_url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/minnesota-wild-utah-mammoth-video-review",
+   "format": "structured",
+   "flags": [],
+   "crosscheck": null,
+   "ingested_at": "2026-10-28T05:27:14Z",
+   "human_read": null,
+   "parser_reading": null,
+   "review_type_group": "Distinct Kicking Motion",
+   "parser_version": "0.5.0",
+   "raw": {
+    "headline": "Video Review: MIN @ UTA – 7:21 of the Second Period ",
+    "body": "**Type of Review:** Distinct Kicking Motion \n\n**Result:** Call on the ice is upheld – No goal Minnesota \n\n**Explanation:**  Video review confirmed **Minnesota’s <forge-entity title=\"Ryan Hartman\" slug=\"ryan-hartman-8477451\" code=\"player\">Ryan Hartman</forge-entity> kicked the puck into the Utah net.** According to Rule 49.2, “A *goal cannot be scored by an attacking player who uses a distinct kicking motion to propel the puck into the net with his skate/foot.”*",
+    "description": null,
+    "summary": "Type of Review: Distinct Kicking Motion\nResult: Call on the ice is upheld – No goal Minnesota\nExplanation: Video review confirmed Minnesota’s Ryan Hartman kicked the puck into the Utah net. According to Rule 49.2, “A goal cannot be scored by an attacking player who uses a distinct kicking motion",
+    "tags": [
+     {
+      "slug": "2025-26",
+      "title": "2025-26",
+      "extraData": {}
+     },
+     {
+      "slug": "gameid-2026020195",
+      "title": "MIN@UTA 10/27/2026 09:00PM",
+      "extraData": {
+       "gameId": "2026020195"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "slug": "montreal-canadiens-st-louis-blues-video-review",
+   "headline": "Video Review: MTL @ STL – 2:17 of the Third Period",
+   "kind": "video_review",
+   "away": "MTL",
+   "home": "STL",
+   "period": 3,
+   "period_type": "REG",
+   "period_label": "Third Period",
+   "clock": "02:17",
+   "game_id": "2026020191",
+   "game_id_source": "tag",
+   "game_date": "2026-10-27",
+   "season": "20262027",
+   "content_date": "2026-10-28T02:19:37.899Z",
+   "last_updated": "2026-10-28T02:19:37.899Z",
+   "initiated_by": null,
+   "review_type": "High-Sticking the Puck",
+   "review_type_inferred": false,
+   "result_text": "Original call is upheld – Goal Montreal",
+   "explanation": "Video review confirmed that Florian Xhekaj's stick was at or below the height of the crossbar when he directed the puck into the St. Louis net. According to Rule 37.5, “If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”",
+   "description": null,
+   "on_ice_call": "goal",
+   "final_call": "goal",
+   "changed": false,
+   "outcome": "upheld",
+   "confidence": "high",
+   "basis": "result line: Original call is upheld – Goal Montreal",
+   "final_team": "MTL",
+   "rule_citations": [
+    "37.5"
+   ],
+   "clock_reset": null,
+   "public_url": "https://www.nhl.com/news/montreal-canadiens-st-louis-blues-video-review",
+   "api_url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/montreal-canadiens-st-louis-blues-video-review",
+   "format": "structured",
+   "flags": [],
+   "crosscheck": null,
+   "ingested_at": "2026-10-28T05:27:14Z",
+   "human_read": null,
+   "parser_reading": null,
+   "review_type_group": "High-Sticking the Puck",
+   "parser_version": "0.5.0",
+   "raw": {
+    "headline": "Video Review: MTL @ STL – 2:17 of the Third Period ",
+    "body": "**Type of Review:** High-Sticking the Puck\n\n**Result:** Original call is upheld – Goal Montreal \n\n**Explanation:** Video review confirmed that **<forge-entity title=\"Florian Xhekaj\" slug=\"florian-xhekaj-8484403\" code=\"player\">Florian Xhekaj</forge-entity>'s stick was at or below the height of the crossbar** when he directed the puck into the St. Louis net. According to Rule 37.5, *“If the puck makes contact with a portion of the stick that is at or below the level of the crossbar (despite some other portion of the stick being above the crossbar) and enters the goal, the goal shall be allowed.”*",
+    "description": null,
+    "summary": "Type of Review: High-Sticking the Puck\nResult: Original call is upheld – Goal Montreal\nExplanation: Video review confirmed that Florian Xhekaj's stick was at or below the height of the crossbar when he directed the puck into the St. Louis net. According to Rule 37.5, “If the puck makes contact",
+    "tags": [
+     {
+      "slug": "2025-26",
+      "title": "2025-26",
+      "extraData": {}
+     },
+     {
+      "slug": "gameid-2026020191",
+      "title": "MTL@STL 10/27/2026 08:00PM",
+      "extraData": {
+       "gameId": "2026020191"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "slug": "florida-panthers-winnipeg-jets-video-review",
+   "headline": "Video Review: FLA @ WPG – 12:27 of the Second Period",
+   "kind": "video_review",
+   "away": "FLA",
+   "home": "WPG",
+   "period": 2,
+   "period_type": "REG",
+   "period_label": "Second Period",
+   "clock": "12:27",
+   "game_id": "2026020194",
+   "game_id_source": "tag",
+   "game_date": "2026-10-27",
+   "season": "20262027",
+   "content_date": "2026-10-28T01:50:21.735Z",
+   "last_updated": "2026-10-28T01:50:21.735Z",
+   "initiated_by": null,
+   "review_type": "Puck Over Goal Line",
+   "review_type_inferred": false,
+   "result_text": "Goal Winnipeg",
+   "explanation": "The Situation Room informed the off-ice officials to sound the in-arena horn after it was confirmed that Adam Lowry’s shot at 7:33 completely crossed the Florida goal line. According to Rule 37.6, “Should the NHL Situation Room be able to determine that a goal has been scored through the use of video replay, and play on the ice has nonetheless continued, the NHL Situation Room shall instruct that the in-arena horn be sounded to stop play immediately, and the goal will be awarded. The game clock (and penalty clocks, if applicable) will then be re-set to the time of the goal.”\n\nTherefore, the clock is reset to show 7:33 (12:27 elapsed time).",
+   "description": null,
+   "on_ice_call": null,
+   "final_call": "goal",
+   "changed": null,
+   "outcome": "on_ice_call_not_stated",
+   "confidence": "low",
+   "basis": "statement gives the result but not the on-ice call",
+   "final_team": "WPG",
+   "rule_citations": [
+    "37.6"
+   ],
+   "clock_reset": {
+    "shows": "07:33",
+    "elapsed": "12:27"
+   },
+   "public_url": "https://www.nhl.com/news/florida-panthers-winnipeg-jets-video-review",
+   "api_url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/florida-panthers-winnipeg-jets-video-review",
+   "format": "structured",
+   "flags": [
+    "on_ice_call_not_stated"
+   ],
+   "crosscheck": null,
+   "ingested_at": "2026-10-28T05:27:14Z",
+   "human_read": null,
+   "parser_reading": null,
+   "review_type_group": "Puck Over Goal Line",
+   "parser_version": "0.5.0",
+   "raw": {
+    "headline": "Video Review: FLA @ WPG – 12:27 of the Second Period",
+    "body": "**Type of Review:** Puck Over Goal Line\n\n**Result:** Goal Winnipeg\n\n**Explanation**: The Situation Room informed the off-ice officials to sound the in-arena horn after it was **confirmed that Adam Lowry’s shot at 7:33 completely crossed the Florida goal line**. According to Rule 37.6, *“Should the NHL Situation Room be able to determine that a goal has been scored through the use of video replay, and play on the ice has nonetheless continued, the NHL Situation Room shall instruct that the in-arena horn be sounded to stop play immediately, and the goal will be awarded. The game clock (and penalty clocks, if applicable) will then be re-set to the time of the goal.”*\n\nTherefore, the clock is reset to show 7:33 (12:27 elapsed time).",
+    "description": null,
+    "summary": "Type of Review: Puck Over Goal Line\nResult: Goal Winnipeg\nExplanation: The Situation Room informed the off-ice officials to sound the in-arena horn after it was confirmed that Adam Lowry’s shot at 7:33 completely crossed the Florida goal line. According to Rule 37.6, “Should the NHL Situation Room be able",
+    "tags": [
+     {
+      "slug": "2026-27",
+      "title": "2026-27",
+      "extraData": {}
+     },
+     {
+      "slug": "gameid-2026020194",
+      "title": "FLA@WPG 10/27/2026 08:00PM",
+      "extraData": {
+       "gameId": "2026020194"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "slug": "new-jersey-devils-dallas-stars-coach-challenge",
+   "headline": "Coach’s Challenge: NJD @ DAL – 2:41 of the First Period",
+   "kind": "coach_challenge",
+   "away": "NJD",
+   "home": "DAL",
+   "period": 1,
+   "period_type": "REG",
+   "period_label": "First Period",
+   "clock": "02:41",
+   "game_id": "2026020193",
+   "game_id_source": "schedule",
+   "game_date": "2026-10-27",
+   "season": "20262027",
+   "content_date": "2026-10-28T00:28:38.007Z",
+   "last_updated": "2026-10-28T00:28:38.007Z",
+   "initiated_by": "Dallas",
+   "review_type": "Goaltender Interference",
+   "review_type_inferred": false,
+   "result_text": "Original call is confirmed – Goal New Jersey",
+   "explanation": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review confirmed no goaltender interference infractions occurred prior to Nico Hischier’s goal.\n\nPenalty: 2:00 minor penalty: Delay of Game – Unsuccessful Challenge",
+   "description": null,
+   "on_ice_call": "goal",
+   "final_call": "goal",
+   "changed": false,
+   "outcome": "upheld",
+   "confidence": "high",
+   "basis": "result line: Original call is confirmed – Goal New Jersey",
+   "final_team": "NJD",
+   "rule_citations": [
+    "38",
+    "38.1"
+   ],
+   "clock_reset": null,
+   "public_url": "https://www.nhl.com/news/new-jersey-devils-dallas-stars-coach-challenge",
+   "api_url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/new-jersey-devils-dallas-stars-coach-challenge",
+   "format": "structured",
+   "flags": [
+    "game_id_not_tagged",
+    "game_id_resolved_from_schedule"
+   ],
+   "crosscheck": null,
+   "ingested_at": "2026-10-28T05:27:15Z",
+   "human_read": null,
+   "parser_reading": null,
+   "review_type_group": "Goaltender Interference",
+   "parser_version": "0.5.0",
+   "raw": {
+    "headline": "Coach’s Challenge: NJD @ DAL – 2:41 of the First Period",
+    "body": "**Challenge Initiated By**: Dallas\n\n**Type of Challenge**: Goaltender Interference\n\n**Result**: Original call is confirmed – Goal New Jersey\n\n**Explanation**: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, *“In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”*\n\nVideo review confirmed **no goaltender interference infractions occurred prior to Nico Hischier’s goal.**\n\n**Penalty**: 2:00 minor penalty: Delay of Game – Unsuccessful Challenge",
+    "description": null,
+    "summary": "Challenge Initiated By: Dallas\nType of Challenge: Goaltender Interference\nResult: Original call is confirmed – Goal New Jersey\nExplanation: The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if,",
+    "tags": [
+     {
+      "slug": "2025-26",
+      "title": "2025-26",
+      "extraData": {}
+     }
+    ]
+   }
+  },
+  {
+   "slug": "los-angeles-kings-chicago-blackhawks-video-review",
+   "headline": "Video Review: LAK @ CHI – 4:06 of the First Period",
+   "kind": "video_review",
+   "away": "LAK",
+   "home": "CHI",
+   "period": 1,
+   "period_type": "REG",
+   "period_label": "First Period",
+   "clock": "04:06",
+   "game_id": "2026020190",
+   "game_id_source": "schedule",
+   "game_date": "2026-10-27",
+   "season": "20262027",
+   "content_date": "2026-10-28T00:27:47.882Z",
+   "last_updated": "2026-10-28T00:27:47.882Z",
+   "initiated_by": null,
+   "review_type": "Puck Over Goal Line",
+   "review_type_inferred": false,
+   "result_text": "No Goal Los Angeles",
+   "explanation": "The Referee informed the Situation Room he blew his whistle to stop play before the puck entered the Chicago net. According to Rule 78.5 (xii), apparent goals shall be disallowed \"when the Referee deems the play has been stopped, even if he had not physically had the opportunity to stop play by blowing his whistle.”",
+   "description": null,
+   "on_ice_call": null,
+   "final_call": "no_goal",
+   "changed": null,
+   "outcome": "on_ice_call_not_stated",
+   "confidence": "low",
+   "basis": "statement gives the result but not the on-ice call",
+   "final_team": "LAK",
+   "rule_citations": [
+    "78.5"
+   ],
+   "clock_reset": null,
+   "public_url": "https://www.nhl.com/news/los-angeles-kings-chicago-blackhawks-video-review",
+   "api_url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/los-angeles-kings-chicago-blackhawks-video-review",
+   "format": "structured",
+   "flags": [
+    "game_id_not_tagged",
+    "game_id_resolved_from_schedule",
+    "on_ice_call_not_stated"
+   ],
+   "crosscheck": null,
+   "ingested_at": "2026-10-28T05:27:15Z",
+   "human_read": null,
+   "parser_reading": null,
+   "review_type_group": "Puck Over Goal Line",
+   "parser_version": "0.5.0",
+   "raw": {
+    "headline": "Video Review: LAK @ CHI – 4:06 of the First Period",
+    "body": "**Type of Review:** Puck Over Goal Line\n\n**Result:** No Goal Los Angeles\n\n**Explanation:** The Referee informed the Situation Room he blew his whistle to stop play before the puck entered the Chicago net. According to Rule 78.5 (xii), apparent goals shall be disallowed *\"when the Referee deems the play has been stopped, even if he had not physically had the opportunity to stop play by blowing his whistle.”*",
+    "description": null,
+    "summary": "Type of Review: Puck Over Goal Line\nResult: No Goal Los Angeles\nExplanation: The Referee informed the Situation Room he blew his whistle to stop play before the puck entered the Chicago net. According to Rule 78.5 (xii), apparent goals shall be disallowed \"when the Referee deems the play has",
+    "tags": [
+     {
+      "slug": "2025-26",
+      "title": "2025-26",
+      "extraData": {}
+     }
+    ]
+   }
+  },
   {
    "slug": "los-angeles-kings-new-york-rangers-coach-challenge-october-26-2026",
    "headline": "Coach’s Challenge: LAK @ NYR – 7:26 of the Second Period",
@@ -6894,7 +7277,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:48Z",
+    "checked_at": "2026-10-28T05:27:16Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025021257/play-by-play",
     "pbp_sha256": "b885efab714aaf3f7f24a6fe170bea747f1b932fd3f021b4741d18d90fb1b86e",
     "game_state": "OFF",
@@ -11050,7 +11433,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:48Z",
+    "checked_at": "2026-10-28T05:27:16Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025021073/play-by-play",
     "pbp_sha256": "ed3f40f9afb7045ed8d1ac92b129704533baa44c66e3940fcbf7473c0f10d891",
     "game_state": "OFF",
@@ -19282,7 +19665,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:49Z",
+    "checked_at": "2026-10-28T05:27:16Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025020654/play-by-play",
     "pbp_sha256": "f5333f50a62c5111741c8565a3b3c063f34726c19bf1ce1bc06419b5df172c0c",
     "game_state": "OFF",
@@ -34993,7 +35376,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:49Z",
+    "checked_at": "2026-10-28T05:27:17Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2025020031/play-by-play",
     "pbp_sha256": "e1bf737902e438e318e1b071ee818bf48e710b38f482f77134f9939dba218a51",
     "game_state": "OFF",
@@ -40966,7 +41349,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:49Z",
+    "checked_at": "2026-10-28T05:27:17Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024021110/play-by-play",
     "pbp_sha256": "f92748a042537575425fdb79781ddabd94e237ec0936905952c341e9bdf184fb",
     "game_state": "OFF",
@@ -42899,7 +43282,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:49Z",
+    "checked_at": "2026-10-28T05:27:17Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024021054/play-by-play",
     "pbp_sha256": "a72477e735958434400399196cc89dd1ac536816b68eb2fb96d31c8c2bf2d2a4",
     "game_state": "OFF",
@@ -48574,7 +48957,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:50Z",
+    "checked_at": "2026-10-28T05:27:17Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020825/play-by-play",
     "pbp_sha256": "f0443fb3e2fc868ee7d97b5ad59e4b5aabadcf7195f579ad1b1297e5f1d2aed5",
     "game_state": "OFF",
@@ -49955,7 +50338,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:50Z",
+    "checked_at": "2026-10-28T05:27:18Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020753/play-by-play",
     "pbp_sha256": "8825cf4469ca67bf373fe5511855a1e7c83dbd9e17ab7459f2c2e5c5ad290954",
     "game_state": "OFF",
@@ -50037,7 +50420,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:50Z",
+    "checked_at": "2026-10-28T05:27:18Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020752/play-by-play",
     "pbp_sha256": "2c7f13583d8e6bca29974d9c00db8f1eeb22792f7bd28197870607e651f54cc6",
     "game_state": "OFF",
@@ -54441,7 +54824,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:50Z",
+    "checked_at": "2026-10-28T05:27:18Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2024020490/play-by-play",
     "pbp_sha256": "93254a34f363fcf78a15895dd7cdd402e18d98e6091130a0f7a838178d1a5074",
     "game_state": "OFF",
@@ -94081,7 +94464,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:51Z",
+    "checked_at": "2026-10-28T05:27:18Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020655/play-by-play",
     "pbp_sha256": "8f8f164b11cb13ce40210785ce354d5dc49406c867cf27b2a08f42099fbfcdd0",
     "game_state": "OFF",
@@ -94163,7 +94546,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:51Z",
+    "checked_at": "2026-10-28T05:27:19Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020655/play-by-play",
     "pbp_sha256": "8f8f164b11cb13ce40210785ce354d5dc49406c867cf27b2a08f42099fbfcdd0",
     "game_state": "OFF",
@@ -103254,7 +103637,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:51Z",
+    "checked_at": "2026-10-28T05:27:19Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022021124/play-by-play",
     "pbp_sha256": "6bf31ff8c7bad0fddd2d0f3690d2ccb15f89df1293d35709f4ad258a66b70129",
     "game_state": "OFF",
@@ -106579,7 +106962,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:51Z",
+    "checked_at": "2026-10-28T05:27:19Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020960/play-by-play",
     "pbp_sha256": "5e89895b0613160086bb339be57bdcbaf4450d9df26da85d67dc1a5f69fff5a8",
     "game_state": "OFF",
@@ -126121,7 +126504,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:52Z",
+    "checked_at": "2026-10-28T05:27:19Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020131/play-by-play",
     "pbp_sha256": "d414b44503ede1161c8514c94e92a840bb9345e1eee096ef816734d213ef85e6",
     "game_state": "OFF",
@@ -126428,7 +126811,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:52Z",
+    "checked_at": "2026-10-28T05:27:20Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020127/play-by-play",
     "pbp_sha256": "d1e12fe7469f3605cede97bf0c98f75586bd791f9ccc8c13871a47edbdd036c8",
     "game_state": "OFF",
@@ -127712,7 +128095,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:52Z",
+    "checked_at": "2026-10-28T05:27:20Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2022020068/play-by-play",
     "pbp_sha256": "bcbfa5a9c30a170e18a8efd5419cec9953d687860fd301c8974edc109f5252e7",
     "game_state": "OFF",
@@ -139028,7 +139411,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:52Z",
+    "checked_at": "2026-10-28T05:27:20Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021021048/play-by-play",
     "pbp_sha256": "48b20f6f81d0d048eb49bb10fe5543e1bdbe8df2331fcab25f7d9e4336281cc1",
     "game_state": "OFF",
@@ -146990,7 +147373,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:53Z",
+    "checked_at": "2026-10-28T05:27:20Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020800/play-by-play",
     "pbp_sha256": "cc3a27fa23c04508ad1d898d9898471a005afb9cae1a907c6df3106a579b6775",
     "game_state": "OFF",
@@ -148041,7 +148424,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:53Z",
+    "checked_at": "2026-10-28T05:27:21Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020731/play-by-play",
     "pbp_sha256": "2a70b894a8fe7347c321ee954068325556648ecb00078e2ed6bc5afd41f75675",
     "game_state": "OFF",
@@ -159709,7 +160092,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:53Z",
+    "checked_at": "2026-10-28T05:27:21Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020139/play-by-play",
     "pbp_sha256": "10a436ba6974a0d8c0c7573308c1e108584a9e45cfb88859c55881daa0b147f1",
     "game_state": "OFF",
@@ -161136,7 +161519,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:53Z",
+    "checked_at": "2026-10-28T05:27:21Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2021020059/play-by-play",
     "pbp_sha256": "352c570087d61926e8cea9c6e7758a99e1a6bf0ab5e7e145a10c3230345d6af1",
     "game_state": "OFF",
@@ -164462,7 +164845,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:54Z",
+    "checked_at": "2026-10-28T05:27:21Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2020020864/play-by-play",
     "pbp_sha256": "eff21f9499fe43bde202a45527e7deb639695fcff7aac0d2f7c9052375883ff4",
     "game_state": "OFF",
@@ -164816,7 +165199,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:54Z",
+    "checked_at": "2026-10-28T05:27:22Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2020020662/play-by-play",
     "pbp_sha256": "69f1da3e77adcf3dec8a71acb8449d9adb984d176b1faff73a9b30e7c94e10c7",
     "game_state": "OFF",
@@ -168255,7 +168638,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:54Z",
+    "checked_at": "2026-10-28T05:27:22Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2020020225/play-by-play",
     "pbp_sha256": "edb9eae8c1618a8a7a912e1cd948a4dd82f082cabadc684339e2c5a29e34d86c",
     "game_state": "OFF",
@@ -189105,7 +189488,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:54Z",
+    "checked_at": "2026-10-28T05:27:22Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2019020867/play-by-play",
     "pbp_sha256": "4867837fdb11141bb1c0a2e617da6f74b2dcabb76f3440d1d13426061b460e5b",
     "game_state": "OFF",
@@ -205688,7 +206071,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:55Z",
+    "checked_at": "2026-10-28T05:27:22Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2019020199/play-by-play",
     "pbp_sha256": "e271a34bf70308b543d33121f937f279068b7f24e0c528a7c2ea88e685dafd0c",
     "game_state": "OFF",
@@ -206431,7 +206814,7 @@
    "flags": [],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:55Z",
+    "checked_at": "2026-10-28T05:27:23Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2019020176/play-by-play",
     "pbp_sha256": "829d1707898dd336a41f30d6b05f1c5ae9369d6bcec5791d44c06c190287572c",
     "game_state": "OFF",
@@ -250218,7 +250601,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:55Z",
+    "checked_at": "2026-10-28T05:27:23Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2018020089/play-by-play",
     "pbp_sha256": "8dea4209a4e4874ddbe706415ed669b7fba5978740f871bd98929052f58df0e4",
     "game_state": "OFF",
@@ -271298,7 +271681,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:55Z",
+    "checked_at": "2026-10-28T05:27:23Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017040631/play-by-play",
     "pbp_sha256": "96bb11ea831f24f65ddb2e44119eac32646261bcb08e165d35a507894caa8bd0",
     "game_state": "FINAL",
@@ -271380,7 +271763,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:56Z",
+    "checked_at": "2026-10-28T05:27:23Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017020755/play-by-play",
     "pbp_sha256": "cc7d1889e3e178e929e154b7eb9d383e87019281b2f7ba6d53d0c08d6e932297",
     "game_state": "OFF",
@@ -274674,7 +275057,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:56Z",
+    "checked_at": "2026-10-28T05:27:24Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017020656/play-by-play",
     "pbp_sha256": "8fc4d77335984caf6877c77ca1bcfe53d734a5b5bdccc3b966f2ce20a14e2c62",
     "game_state": "OFF",
@@ -276929,7 +277312,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:56Z",
+    "checked_at": "2026-10-28T05:27:24Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2017020562/play-by-play",
     "pbp_sha256": "d23bf55f53666644b2a725a65671b4049b4914fd95ebebdbeda4a5293e52498e",
     "game_state": "OFF",
@@ -296474,7 +296857,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:56Z",
+    "checked_at": "2026-10-28T05:27:24Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016030412/play-by-play",
     "pbp_sha256": "d5f250cba8da65068fe25ec68695e57a2d4dbe2e017ecfc705f8b66275ff89be",
     "game_state": "OFF",
@@ -301998,7 +302381,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:57Z",
+    "checked_at": "2026-10-28T05:27:25Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016021168/play-by-play",
     "pbp_sha256": "55dc59252fc8a232f954ffee884e488f48c571a2e45ebace496f1aa2f488cec4",
     "game_state": "OFF",
@@ -306713,7 +307096,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:57Z",
+    "checked_at": "2026-10-28T05:27:25Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016021009/play-by-play",
     "pbp_sha256": "c1d12455fd02718cb4fb33f0e358b13864a0f1c96fe2df16524885b29aed3178",
     "game_state": "OFF",
@@ -311637,7 +312020,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:57Z",
+    "checked_at": "2026-10-28T05:27:25Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020887/play-by-play",
     "pbp_sha256": "06e3935927e5546f3c8ceff8bfdaafb45f19c29b662ab57509ed46cd8f647aed",
     "game_state": "OFF",
@@ -321168,7 +321551,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:57Z",
+    "checked_at": "2026-10-28T05:27:25Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020657/play-by-play",
     "pbp_sha256": "180db742c4a608251455a54dd5c8de1037ebb428545afcf8f52b14d152e4e491",
     "game_state": "OFF",
@@ -326258,7 +326641,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:58Z",
+    "checked_at": "2026-10-28T05:27:26Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020510/play-by-play",
     "pbp_sha256": "8f7322fcea6670c5471d7779c7ee4c89b7c54c56d5e8afe3682fae306580d53d",
     "game_state": "OFF",
@@ -327799,7 +328182,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:58Z",
+    "checked_at": "2026-10-28T05:27:26Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020459/play-by-play",
     "pbp_sha256": "e4d9dfc3ad517f7791b16a691f8613c895d7cdd213c239b4cf50898fa25609bf",
     "game_state": "OFF",
@@ -331473,7 +331856,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:58Z",
+    "checked_at": "2026-10-28T05:27:26Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020380/play-by-play",
     "pbp_sha256": "7a1e75629871bb6ee45200673d2c2340501363062ae4272699b3167594c75f3e",
     "game_state": "OFF",
@@ -332850,7 +333233,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:58Z",
+    "checked_at": "2026-10-28T05:27:26Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020339/play-by-play",
     "pbp_sha256": "24b29badf37e4d312a530ef8e07130c90358f2f569f2a7e94b9224e026b09265",
     "game_state": "OFF",
@@ -336001,7 +336384,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:59Z",
+    "checked_at": "2026-10-28T05:27:27Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020252/play-by-play",
     "pbp_sha256": "fcc0d0b8a4b382a39bc4b76ea6981013407c3a9b7df295fe9ec351eec1c83b77",
     "game_state": "OFF",
@@ -336773,7 +337156,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:59Z",
+    "checked_at": "2026-10-28T05:27:27Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020224/play-by-play",
     "pbp_sha256": "d9363abe0e135be0afefec12ae40d5f3b568f1b8a0781999b71ea9e74dc3ee98",
     "game_state": "OFF",
@@ -340044,7 +340427,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:59Z",
+    "checked_at": "2026-10-28T05:27:27Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2016020121/play-by-play",
     "pbp_sha256": "f398b724d96377dbcfe2014f310b342efa594b46611b755f30d519bfc29021bc",
     "game_state": "OFF",
@@ -341312,7 +341695,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:57:59Z",
+    "checked_at": "2026-10-28T05:27:27Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015030316/play-by-play",
     "pbp_sha256": "05a1044dff57d893808d6aa5d9339f735e40c2966e315e09f84c8f73f34bba8e",
     "game_state": "OFF",
@@ -347551,7 +347934,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:58:00Z",
+    "checked_at": "2026-10-28T05:27:28Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015021100/play-by-play",
     "pbp_sha256": "cfa11c171ce51f336af878773850b0eb21c00b5ee5869bd764db8c6f2ada6659",
     "game_state": "OFF",
@@ -351948,7 +352331,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:58:00Z",
+    "checked_at": "2026-10-28T05:27:28Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020967/play-by-play",
     "pbp_sha256": "da7e15e0a2f379d4a40490945a7cdb5d301131fae4fcbc54a3416d6134ecb43f",
     "game_state": "OFF",
@@ -354885,7 +355268,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:58:00Z",
+    "checked_at": "2026-10-28T05:27:28Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020895/play-by-play",
     "pbp_sha256": "beef6cceb0d8b63de7c074af4d5760e37175785b272e8a833c2d5b66034a42fd",
     "game_state": "OFF",
@@ -355754,7 +356137,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:58:00Z",
+    "checked_at": "2026-10-28T05:27:28Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020875/play-by-play",
     "pbp_sha256": "0e2285461a60349a9d6faf39844423efaeed7069004ddaed007591de7514f8ef",
     "game_state": "OFF",
@@ -359485,7 +359868,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:58:01Z",
+    "checked_at": "2026-10-28T05:27:29Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020767/play-by-play",
     "pbp_sha256": "d500eb36eca69598f1dd38a0391ae319c8c4745aa5d8095b19d9cf3caa483f06",
     "game_state": "OFF",
@@ -359664,7 +360047,7 @@
    ],
    "crosscheck": {
     "status": "inconclusive",
-    "checked_at": "2026-10-27T23:58:01Z",
+    "checked_at": "2026-10-28T05:27:29Z",
     "pbp_url": "https://api-web.nhle.com/v1/gamecenter/2015020768/play-by-play",
     "pbp_sha256": "dca5beeaf0a08e3f75a992cd0a5f3ce3471d6688437dd7d95af1df172b249f40",
     "game_state": "OFF",
