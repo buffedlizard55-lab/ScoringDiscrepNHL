@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (8)
 
-Run `20261028T171946Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261028T215318Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] DAL at COL - 2026-10-14 (game 2026020107)
 
