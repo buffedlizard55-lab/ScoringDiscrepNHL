@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (6)
 
-Run `20261029T082312Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261029T153016Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] NYI at OTT - 2026-10-15 (game 2026020109)
 
