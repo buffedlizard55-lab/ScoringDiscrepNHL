@@ -1,6 +1,6 @@
 # Scoring discrepancy alerts (4)
 
-Run `20261030T062204Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
+Run `20261030T132817Z-0.5.0`. Every entry below is machine-detected from official NHL artifacts and carries its source links. Nothing here has been adjudicated by a human.
 
 ### [IMMEDIATE] DAL at CHI - 2026-10-17 (game 2026020130)
 
