@@ -1,6 +1,6 @@
 {
   "date": "2026-10-30",
-  "run_id": "20261030T132817Z-0.5.0",
+  "run_id": "20261030T184858Z-0.5.0",
   "count": 4,
   "immediate_count": 4,
   "review_count": 0,
@@ -20,8 +20,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-30T13:28:14Z",
-          "run_id": "20261030T132800Z-0.5.0",
+          "detected_at": "2026-10-30T18:48:55Z",
+          "run_id": "20261030T184838Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-17T23:44:58.397Z"
@@ -169,7 +169,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020130/play-by-play and look at period 1 around 12:10: there must be no goal for DAL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-30T13:28:14Z"
+          "verified_at": "2026-10-30T18:48:55Z"
         },
         "flags": [],
         "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Dallas.",
@@ -519,10 +519,15 @@
             "run_id": "20261030T132800Z-0.5.0",
             "detected_at": "2026-10-30T13:28:14Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 70,
-        "last_seen_at": "2026-10-30T13:28:14Z"
+        "seen_count": 71,
+        "last_seen_at": "2026-10-30T18:48:55Z"
       }
     },
     {
@@ -538,8 +543,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-30T13:28:14Z",
-          "run_id": "20261030T132800Z-0.5.0",
+          "detected_at": "2026-10-30T18:48:55Z",
+          "run_id": "20261030T184838Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-23T04:26:00Z"
@@ -687,7 +692,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020164/play-by-play and look at period 3 around 01:47: there must be no goal for UTA at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-30T13:28:14Z"
+          "verified_at": "2026-10-30T18:48:55Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
@@ -889,10 +894,15 @@
             "run_id": "20261030T132800Z-0.5.0",
             "detected_at": "2026-10-30T13:28:14Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 40,
-        "last_seen_at": "2026-10-30T13:28:14Z"
+        "seen_count": 41,
+        "last_seen_at": "2026-10-30T18:48:55Z"
       }
     },
     {
@@ -908,8 +918,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-30T13:28:14Z",
-          "run_id": "20261030T132800Z-0.5.0",
+          "detected_at": "2026-10-30T18:48:55Z",
+          "run_id": "20261030T184838Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-23T04:40:00Z"
@@ -1057,7 +1067,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020164/play-by-play and look at period 3 around 08:43: there must be no goal for SEA at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-30T13:28:14Z"
+          "verified_at": "2026-10-30T18:48:55Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
@@ -1259,10 +1269,15 @@
             "run_id": "20261030T132800Z-0.5.0",
             "detected_at": "2026-10-30T13:28:14Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 40,
-        "last_seen_at": "2026-10-30T13:28:14Z"
+        "seen_count": 41,
+        "last_seen_at": "2026-10-30T18:48:55Z"
       }
     },
     {
@@ -1278,8 +1293,8 @@
           "rule": "situation_room_goal_overturned_to_no_goal",
           "rule_label": "Situation Room statement: on-ice call overturned",
           "severity": "high",
-          "detected_at": "2026-10-30T13:28:14Z",
-          "run_id": "20261030T132800Z-0.5.0",
+          "detected_at": "2026-10-30T18:48:55Z",
+          "run_id": "20261030T184838Z-0.5.0",
           "tool_version": "0.5.0",
           "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
           "statement_published_at": "2026-10-27T00:35:00Z"
@@ -1424,7 +1439,7 @@
           "method": "league_statement+pbp_crosscheck",
           "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020185/play-by-play and look at period 2 around 07:26: there must be no goal for LAK at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
           "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
-          "verified_at": "2026-10-30T13:28:14Z"
+          "verified_at": "2026-10-30T18:48:55Z"
         },
         "flags": [
           "game_id_resolved_from_schedule"
@@ -1506,10 +1521,15 @@
             "run_id": "20261030T132800Z-0.5.0",
             "detected_at": "2026-10-30T13:28:14Z",
             "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
           }
         ],
-        "seen_count": 16,
-        "last_seen_at": "2026-10-30T13:28:14Z"
+        "seen_count": 17,
+        "last_seen_at": "2026-10-30T18:48:55Z"
       }
     }
   ]
