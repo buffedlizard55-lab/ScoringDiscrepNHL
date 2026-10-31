@@ -1,0 +1,1576 @@
+{
+  "date": "2026-10-31",
+  "run_id": "20261031T021638Z-0.5.0",
+  "count": 4,
+  "immediate_count": 4,
+  "review_count": 0,
+  "info_count": 0,
+  "coverage": {},
+  "alerts": [
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-935f2c114b",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-31T02:16:35Z",
+          "run_id": "20261031T021621Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-17T23:44:58.397Z"
+        },
+        "game": {
+          "game_id": "2026020130",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-17",
+          "away_team": "DAL",
+          "home_team": "CHI",
+          "venue": "United Center",
+          "final_score": {
+            "away": 4,
+            "home": 0
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020130",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020130.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 1,
+          "period_type": "REG",
+          "clock": "12:10",
+          "team": "DAL",
+          "field": "goal_removed",
+          "goal_key": "P1@12:10",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal DAL at 12:10 of period 1",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Dallas’ Roope Hintz did not have possession and control of the puck when he preceded it into the offensive zone and was therefore in an off-side position prior to Jason Robertson’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:02 (11:58 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "type_group": "Off-Side",
+            "initiated_by": "Chicago",
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Dallas",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Dallas",
+            "clock_reset": {
+              "shows": "08:02",
+              "elapsed": "11:58"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Dallas’ Roope Hintz did not have possession and control of the puck when he preceded it into the offensive zone and was therefore in an off-side position prior to Jason Robertson’s goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 8:02 (11:58 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 1,
+          "clock": "12:10",
+          "team": "DAL",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 1,
+          "clock": "12:10",
+          "team": "DAL",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 4,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: DAL @ CHI – 12:10 of the First Period",
+            "url": "https://www.nhl.com/news/dallas-stars-chicago-blackhawks-coach-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-18T01:28:45Z",
+            "quote": "Call on the ice is overturned – No Goal Dallas"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/dallas-stars-chicago-blackhawks-coach-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-18T01:28:45Z",
+            "note": "contentDate 2026-10-17T23:44:58.397Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020130/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-18T06:32:15Z",
+            "sha256": "187b4f66d55236d0119b62b3a846aca74ac9c59b60d05355f842e0587438ce85",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020130.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020130/play-by-play and look at period 1 around 12:10: there must be no goal for DAL at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-31T02:16:35Z"
+        },
+        "flags": [],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Dallas.",
+        "first_seen_at": "2026-10-18T01:28:59Z",
+        "detection_history": [
+          {
+            "run_id": "20261018T063214Z-0.5.0",
+            "detected_at": "2026-10-18T06:32:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261018T113819Z-0.5.0",
+            "detected_at": "2026-10-18T11:38:33Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261018T144702Z-0.5.0",
+            "detected_at": "2026-10-18T14:47:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261018T180111Z-0.5.0",
+            "detected_at": "2026-10-18T18:01:24Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261018T203228Z-0.5.0",
+            "detected_at": "2026-10-18T20:32:43Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261018T223406Z-0.5.0",
+            "detected_at": "2026-10-18T22:34:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261019T002628Z-0.5.0",
+            "detected_at": "2026-10-19T00:26:42Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261019T051323Z-0.5.0",
+            "detected_at": "2026-10-19T05:13:38Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261019T111050Z-0.5.0",
+            "detected_at": "2026-10-19T11:11:05Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261019T172705Z-0.5.0",
+            "detected_at": "2026-10-19T17:27:20Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261019T214337Z-0.5.0",
+            "detected_at": "2026-10-19T21:43:52Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261020T010228Z-0.5.0",
+            "detected_at": "2026-10-20T01:02:46Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261020T055537Z-0.5.0",
+            "detected_at": "2026-10-20T05:55:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261020T112503Z-0.5.0",
+            "detected_at": "2026-10-20T11:25:19Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261020T154921Z-0.5.0",
+            "detected_at": "2026-10-20T15:49:44Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261020T195808Z-0.5.0",
+            "detected_at": "2026-10-20T19:58:22Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261020T230828Z-0.5.0",
+            "detected_at": "2026-10-20T23:08:45Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261021T013003Z-0.5.0",
+            "detected_at": "2026-10-21T01:30:18Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261021T063037Z-0.5.0",
+            "detected_at": "2026-10-21T06:30:52Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261021T121724Z-0.5.0",
+            "detected_at": "2026-10-21T12:17:38Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261021T173642Z-0.5.0",
+            "detected_at": "2026-10-21T17:36:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261021T205449Z-0.5.0",
+            "detected_at": "2026-10-21T20:55:03Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261021T235831Z-0.5.0",
+            "detected_at": "2026-10-21T23:58:45Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261022T043106Z-0.5.0",
+            "detected_at": "2026-10-22T04:31:19Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261022T095111Z-0.5.0",
+            "detected_at": "2026-10-22T09:51:25Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261022T143748Z-0.5.0",
+            "detected_at": "2026-10-22T14:38:06Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261022T184613Z-0.5.0",
+            "detected_at": "2026-10-22T18:46:26Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261022T221500Z-0.5.0",
+            "detected_at": "2026-10-22T22:15:14Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T005333Z-0.5.0",
+            "detected_at": "2026-10-23T00:53:47Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T060655Z-0.5.0",
+            "detected_at": "2026-10-23T06:07:10Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T113047Z-0.5.0",
+            "detected_at": "2026-10-23T11:31:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T155335Z-0.5.0",
+            "detected_at": "2026-10-23T15:53:49Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T195530Z-0.5.0",
+            "detected_at": "2026-10-23T19:55:43Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T230414Z-0.5.0",
+            "detected_at": "2026-10-23T23:04:28Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T012943Z-0.5.0",
+            "detected_at": "2026-10-24T01:29:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T064727Z-0.5.0",
+            "detected_at": "2026-10-24T06:47:41Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T113133Z-0.5.0",
+            "detected_at": "2026-10-24T11:31:47Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T144945Z-0.5.0",
+            "detected_at": "2026-10-24T14:49:59Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T180507Z-0.5.0",
+            "detected_at": "2026-10-24T18:05:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T204015Z-0.5.0",
+            "detected_at": "2026-10-24T20:40:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T224606Z-0.5.0",
+            "detected_at": "2026-10-24T22:46:19Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T010217Z-0.5.0",
+            "detected_at": "2026-10-25T01:02:31Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T055809Z-0.5.0",
+            "detected_at": "2026-10-25T05:58:23Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T111501Z-0.5.0",
+            "detected_at": "2026-10-25T11:15:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T150736Z-0.5.0",
+            "detected_at": "2026-10-25T15:07:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T182158Z-0.5.0",
+            "detected_at": "2026-10-25T18:22:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T211111Z-0.5.0",
+            "detected_at": "2026-10-25T21:11:25Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T231249Z-0.5.0",
+            "detected_at": "2026-10-25T23:13:03Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T013634Z-0.5.0",
+            "detected_at": "2026-10-26T01:36:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T065339Z-0.5.0",
+            "detected_at": "2026-10-26T06:53:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T140817Z-0.5.0",
+            "detected_at": "2026-10-26T14:08:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T195239Z-0.5.0",
+            "detected_at": "2026-10-26T19:52:53Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T234618Z-0.5.0",
+            "detected_at": "2026-10-26T23:46:32Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T045207Z-0.5.0",
+            "detected_at": "2026-10-27T04:52:23Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T102442Z-0.5.0",
+            "detected_at": "2026-10-27T10:24:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T155932Z-0.5.0",
+            "detected_at": "2026-10-27T15:59:45Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T203707Z-0.5.0",
+            "detected_at": "2026-10-27T20:37:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T235748Z-0.5.0",
+            "detected_at": "2026-10-27T23:58:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T052713Z-0.5.0",
+            "detected_at": "2026-10-28T05:27:29Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T113437Z-0.5.0",
+            "detected_at": "2026-10-28T11:34:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T171930Z-0.5.0",
+            "detected_at": "2026-10-28T17:19:44Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T215300Z-0.5.0",
+            "detected_at": "2026-10-28T21:53:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T014421Z-0.5.0",
+            "detected_at": "2026-10-29T01:44:35Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T082255Z-0.5.0",
+            "detected_at": "2026-10-29T08:23:09Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T152959Z-0.5.0",
+            "detected_at": "2026-10-29T15:30:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T203040Z-0.5.0",
+            "detected_at": "2026-10-29T20:30:54Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T001512Z-0.5.0",
+            "detected_at": "2026-10-30T00:15:27Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T062149Z-0.5.0",
+            "detected_at": "2026-10-30T06:22:02Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T132800Z-0.5.0",
+            "detected_at": "2026-10-30T13:28:14Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T225534Z-0.5.0",
+            "detected_at": "2026-10-30T22:55:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261031T021621Z-0.5.0",
+            "detected_at": "2026-10-31T02:16:35Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 73,
+        "last_seen_at": "2026-10-31T02:16:35Z"
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-976324808d",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-31T02:16:35Z",
+          "run_id": "20261031T021621Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-23T04:26:00Z"
+        },
+        "game": {
+          "game_id": "2026020164",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-22",
+          "away_team": "UTA",
+          "home_team": "SEA",
+          "venue": "Climate Pledge Arena",
+          "final_score": {
+            "away": 3,
+            "home": 5
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020164",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020164.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 3,
+          "period_type": "REG",
+          "clock": "01:47",
+          "team": "UTA",
+          "field": "goal_removed",
+          "goal_key": "P3@01:47",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal UTA at 01:47 of period 3",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Utah’s Barrett Hayton preceded the puck into the offensive zone and was in an off-side position prior to the goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 18:23 (1:37 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "type_group": "Off-Side",
+            "initiated_by": null,
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Utah",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Utah",
+            "clock_reset": {
+              "shows": "18:23",
+              "elapsed": "01:37"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Utah’s Barrett Hayton preceded the puck into the offensive zone and was in an off-side position prior to the goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 18:23 (1:37 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "01:47",
+          "team": "UTA",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "01:47",
+          "team": "UTA",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 8,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: UTA @ SEA – 1:47 of the Third Period",
+            "url": "https://www.nhl.com/news/utah-mammoth-seattle-kraken-coach-challenge",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-23T06:06:55Z",
+            "quote": "Call on the ice is overturned – No Goal Utah"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/utah-mammoth-seattle-kraken-coach-challenge",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-23T06:06:55Z",
+            "note": "contentDate 2026-10-23T04:26:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020164/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-23T06:06:57Z",
+            "sha256": "27d2349b3939a62b37a09aee4755cf11001a0af9151b3a67480196040550da03",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020164.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020164/play-by-play and look at period 3 around 01:47: there must be no goal for UTA at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-31T02:16:35Z"
+        },
+        "flags": [
+          "game_id_resolved_from_schedule"
+        ],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Utah.",
+        "first_seen_at": "2026-10-23T06:07:11Z",
+        "detection_history": [
+          {
+            "run_id": "20261023T113047Z-0.5.0",
+            "detected_at": "2026-10-23T11:31:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T155335Z-0.5.0",
+            "detected_at": "2026-10-23T15:53:49Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T195530Z-0.5.0",
+            "detected_at": "2026-10-23T19:55:43Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T230414Z-0.5.0",
+            "detected_at": "2026-10-23T23:04:28Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T012943Z-0.5.0",
+            "detected_at": "2026-10-24T01:29:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T064727Z-0.5.0",
+            "detected_at": "2026-10-24T06:47:41Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T113133Z-0.5.0",
+            "detected_at": "2026-10-24T11:31:47Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T144945Z-0.5.0",
+            "detected_at": "2026-10-24T14:49:59Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T180507Z-0.5.0",
+            "detected_at": "2026-10-24T18:05:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T204015Z-0.5.0",
+            "detected_at": "2026-10-24T20:40:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T224606Z-0.5.0",
+            "detected_at": "2026-10-24T22:46:19Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T010217Z-0.5.0",
+            "detected_at": "2026-10-25T01:02:31Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T055809Z-0.5.0",
+            "detected_at": "2026-10-25T05:58:23Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T111501Z-0.5.0",
+            "detected_at": "2026-10-25T11:15:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T150736Z-0.5.0",
+            "detected_at": "2026-10-25T15:07:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T182158Z-0.5.0",
+            "detected_at": "2026-10-25T18:22:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T211111Z-0.5.0",
+            "detected_at": "2026-10-25T21:11:25Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T231249Z-0.5.0",
+            "detected_at": "2026-10-25T23:13:03Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T013634Z-0.5.0",
+            "detected_at": "2026-10-26T01:36:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T065339Z-0.5.0",
+            "detected_at": "2026-10-26T06:53:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T140817Z-0.5.0",
+            "detected_at": "2026-10-26T14:08:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T195239Z-0.5.0",
+            "detected_at": "2026-10-26T19:52:53Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T234618Z-0.5.0",
+            "detected_at": "2026-10-26T23:46:32Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T045207Z-0.5.0",
+            "detected_at": "2026-10-27T04:52:23Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T102442Z-0.5.0",
+            "detected_at": "2026-10-27T10:24:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T155932Z-0.5.0",
+            "detected_at": "2026-10-27T15:59:45Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T203707Z-0.5.0",
+            "detected_at": "2026-10-27T20:37:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T235748Z-0.5.0",
+            "detected_at": "2026-10-27T23:58:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T052713Z-0.5.0",
+            "detected_at": "2026-10-28T05:27:29Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T113437Z-0.5.0",
+            "detected_at": "2026-10-28T11:34:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T171930Z-0.5.0",
+            "detected_at": "2026-10-28T17:19:44Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T215300Z-0.5.0",
+            "detected_at": "2026-10-28T21:53:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T014421Z-0.5.0",
+            "detected_at": "2026-10-29T01:44:35Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T082255Z-0.5.0",
+            "detected_at": "2026-10-29T08:23:09Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T152959Z-0.5.0",
+            "detected_at": "2026-10-29T15:30:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T203040Z-0.5.0",
+            "detected_at": "2026-10-29T20:30:54Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T001512Z-0.5.0",
+            "detected_at": "2026-10-30T00:15:27Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T062149Z-0.5.0",
+            "detected_at": "2026-10-30T06:22:02Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T132800Z-0.5.0",
+            "detected_at": "2026-10-30T13:28:14Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T225534Z-0.5.0",
+            "detected_at": "2026-10-30T22:55:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261031T021621Z-0.5.0",
+            "detected_at": "2026-10-31T02:16:35Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 43,
+        "last_seen_at": "2026-10-31T02:16:35Z"
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-cd6957d8f0",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-31T02:16:35Z",
+          "run_id": "20261031T021621Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-23T04:40:00Z"
+        },
+        "game": {
+          "game_id": "2026020164",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-22",
+          "away_team": "UTA",
+          "home_team": "SEA",
+          "venue": "Climate Pledge Arena",
+          "final_score": {
+            "away": 3,
+            "home": 5
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020164",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020164.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 3,
+          "period_type": "REG",
+          "clock": "08:43",
+          "team": "SEA",
+          "field": "goal_removed",
+          "goal_key": "P3@08:43",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Off-Side): on-ice goal overturned, no goal SEA at 08:43 of period 3",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Seattle’s Chandler Stephenson preceded the puck into the offensive zone and was in an off-side position prior to the goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 11:21 (8:39 elapsed time), when the off-side infraction occurred.",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "high",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "type_group": "Off-Side",
+            "initiated_by": "Utah",
+            "type": "Off-Side",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No Goal Seattle",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No Goal Seattle",
+            "clock_reset": {
+              "shows": "11:21",
+              "elapsed": "08:39"
+            },
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Seattle’s Chandler Stephenson preceded the puck into the offensive zone and was in an off-side position prior to the goal. According to Rule 38.9, “The standard for overturning the call in the event of a “GOAL” call on the ice is that the NHL Situation Room, after reviewing any and all available replays and consulting with the On-Ice Official(s), determines that one or more Players on the attacking team preceded the puck into the attacking zone prior to the goal being scored and that, as a result, the play should have been stopped for an “Off-Side” infraction; where this standard is met, the goal will be disallowed.”\n\nThe clock is reset to show 11:21 (8:39 elapsed time), when the off-side infraction occurred.",
+            "rule_citation": "38, 38.1, 38.9",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "08:43",
+          "team": "SEA",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 3,
+          "clock": "08:43",
+          "team": "SEA",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 8,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: UTA @ SEA – 8:43 of the Third Period",
+            "url": "https://www.nhl.com/news/utah-mammoth-seattle-kraken-coach-challenge-october-22-2026",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-23T06:06:55Z",
+            "quote": "Call on the ice is overturned – No Goal Seattle"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/utah-mammoth-seattle-kraken-coach-challenge-october-22-2026",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-23T06:06:55Z",
+            "note": "contentDate 2026-10-23T04:40:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020164/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-23T06:06:57Z",
+            "sha256": "27d2349b3939a62b37a09aee4755cf11001a0af9151b3a67480196040550da03",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020164.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020164/play-by-play and look at period 3 around 08:43: there must be no goal for SEA at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-31T02:16:35Z"
+        },
+        "flags": [
+          "game_id_resolved_from_schedule"
+        ],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No Goal Seattle.",
+        "first_seen_at": "2026-10-23T06:07:11Z",
+        "detection_history": [
+          {
+            "run_id": "20261023T113047Z-0.5.0",
+            "detected_at": "2026-10-23T11:31:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T155335Z-0.5.0",
+            "detected_at": "2026-10-23T15:53:49Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T195530Z-0.5.0",
+            "detected_at": "2026-10-23T19:55:43Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261023T230414Z-0.5.0",
+            "detected_at": "2026-10-23T23:04:28Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T012943Z-0.5.0",
+            "detected_at": "2026-10-24T01:29:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T064727Z-0.5.0",
+            "detected_at": "2026-10-24T06:47:41Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T113133Z-0.5.0",
+            "detected_at": "2026-10-24T11:31:47Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T144945Z-0.5.0",
+            "detected_at": "2026-10-24T14:49:59Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T180507Z-0.5.0",
+            "detected_at": "2026-10-24T18:05:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T204015Z-0.5.0",
+            "detected_at": "2026-10-24T20:40:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261024T224606Z-0.5.0",
+            "detected_at": "2026-10-24T22:46:19Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T010217Z-0.5.0",
+            "detected_at": "2026-10-25T01:02:31Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T055809Z-0.5.0",
+            "detected_at": "2026-10-25T05:58:23Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T111501Z-0.5.0",
+            "detected_at": "2026-10-25T11:15:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T150736Z-0.5.0",
+            "detected_at": "2026-10-25T15:07:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T182158Z-0.5.0",
+            "detected_at": "2026-10-25T18:22:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T211111Z-0.5.0",
+            "detected_at": "2026-10-25T21:11:25Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261025T231249Z-0.5.0",
+            "detected_at": "2026-10-25T23:13:03Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T013634Z-0.5.0",
+            "detected_at": "2026-10-26T01:36:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T065339Z-0.5.0",
+            "detected_at": "2026-10-26T06:53:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T140817Z-0.5.0",
+            "detected_at": "2026-10-26T14:08:30Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T195239Z-0.5.0",
+            "detected_at": "2026-10-26T19:52:53Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261026T234618Z-0.5.0",
+            "detected_at": "2026-10-26T23:46:32Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T045207Z-0.5.0",
+            "detected_at": "2026-10-27T04:52:23Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T102442Z-0.5.0",
+            "detected_at": "2026-10-27T10:24:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T155932Z-0.5.0",
+            "detected_at": "2026-10-27T15:59:45Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T203707Z-0.5.0",
+            "detected_at": "2026-10-27T20:37:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T235748Z-0.5.0",
+            "detected_at": "2026-10-27T23:58:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T052713Z-0.5.0",
+            "detected_at": "2026-10-28T05:27:29Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T113437Z-0.5.0",
+            "detected_at": "2026-10-28T11:34:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T171930Z-0.5.0",
+            "detected_at": "2026-10-28T17:19:44Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T215300Z-0.5.0",
+            "detected_at": "2026-10-28T21:53:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T014421Z-0.5.0",
+            "detected_at": "2026-10-29T01:44:35Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T082255Z-0.5.0",
+            "detected_at": "2026-10-29T08:23:09Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T152959Z-0.5.0",
+            "detected_at": "2026-10-29T15:30:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T203040Z-0.5.0",
+            "detected_at": "2026-10-29T20:30:54Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T001512Z-0.5.0",
+            "detected_at": "2026-10-30T00:15:27Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T062149Z-0.5.0",
+            "detected_at": "2026-10-30T06:22:02Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T132800Z-0.5.0",
+            "detected_at": "2026-10-30T13:28:14Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T225534Z-0.5.0",
+            "detected_at": "2026-10-30T22:55:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261031T021621Z-0.5.0",
+            "detected_at": "2026-10-31T02:16:35Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 43,
+        "last_seen_at": "2026-10-31T02:16:35Z"
+      }
+    },
+    {
+      "level": "immediate",
+      "record": {
+        "record_id": "SDN-7337c7bd87",
+        "schema_version": "1.0",
+        "status": "verified",
+        "confidence": "high",
+        "detected_by": "league_statement",
+        "detection": {
+          "check_id": "SR1",
+          "rule": "situation_room_goal_overturned_to_no_goal",
+          "rule_label": "Situation Room statement: on-ice call overturned",
+          "severity": "high",
+          "detected_at": "2026-10-31T02:16:35Z",
+          "run_id": "20261031T021621Z-0.5.0",
+          "tool_version": "0.5.0",
+          "source_feed": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=situation-room&$limit=100&$skip=0",
+          "statement_published_at": "2026-10-27T00:35:00Z"
+        },
+        "game": {
+          "game_id": "2026020185",
+          "season": "20262027",
+          "game_type": "REG",
+          "date": "2026-10-26",
+          "away_team": "LAK",
+          "home_team": "NYR",
+          "venue": "Madison Square Garden",
+          "final_score": {
+            "away": 6,
+            "home": 3
+          },
+          "game_state": "OFF",
+          "gamecenter_url": "https://www.nhl.com/gamecenter/2026020185",
+          "report_urls": {
+            "GS": "https://www.nhl.com/scores/htmlreports/20262027/GS020185.HTM"
+          }
+        },
+        "discrepancy": {
+          "period": 2,
+          "period_type": "REG",
+          "clock": "07:26",
+          "team": "LAK",
+          "field": "goal_removed",
+          "goal_key": "P2@07:26",
+          "change_type": "goal_overturned_to_no_goal",
+          "summary": "Coach's Challenge (Goaltender Interference): on-ice goal overturned, no goal LAK at 07:26 of period 2",
+          "detail": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Los Angeles’ Brandt Clarke interfered with Dylan Garand by pushing his glove which was covering the puck, causing it to enter the net. The decision was made in accordance of Rule 69.7, which states in part, “In the event that a goalkeeper has been pushed into the net together with the puck by an attacking player after making a stop, the goal will be disallowed.”",
+          "total_changed": true,
+          "attribution_only": false,
+          "goal_no_goal_change": true,
+          "video_review": true,
+          "when_corrected": "in_game",
+          "timing_uncertain": false,
+          "market_impact": {
+            "total_changed": true,
+            "affects_game_total": "yes",
+            "affects_period_total": "yes",
+            "affects_player_props": "yes",
+            "affects_result_markets": "yes",
+            "risk": "medium",
+            "settlement_window": "in_game",
+            "reason": "The number of goals in the game changed between the on-ice announcement and the official ruling, inside the same game. Live game-total, period-total and anytime-scorer markets that reacted to the on-ice call were exposed; the post-game box score already reflects the corrected state, so a settlement made from the final official record is not affected. NHL records are not a sportsbook source of record; this is an exposure flag, not a claim that any market was mis-settled.",
+            "rule_class": "total"
+          },
+          "review": {
+            "kind": "coach_challenge",
+            "type_group": "Goaltender Interference",
+            "initiated_by": "NY Rangers",
+            "type": "Goaltender Interference",
+            "type_inferred": false,
+            "result": "Call on the ice is overturned – No goal Los Angeles",
+            "on_ice_call": "goal",
+            "final_call": "no_goal",
+            "outcome": "overturned",
+            "classification_confidence": "high",
+            "classification_basis": "result line: Call on the ice is overturned – No goal Los Angeles",
+            "clock_reset": null,
+            "statement_format": "structured"
+          },
+          "reason": {
+            "stated_by_league": true,
+            "text": "The play on the ice was challenged under Rule 38 – Coach’s Challenge. Rule 38.1 states, “In all Coach’s Challenge situations, the original call on the ice will be overturned if, and only if, a conclusive and irrefutable determination can be made on the basis of video evidence that the original call on the ice was clearly not correct. If a review is not conclusive and/or there is any doubt whatsoever as to whether the call on the ice was correct, the original call on the ice will be confirmed.”\n\nVideo review determined that Los Angeles’ Brandt Clarke interfered with Dylan Garand by pushing his glove which was covering the puck, causing it to enter the net. The decision was made in accordance of Rule 69.7, which states in part, “In the event that a goalkeeper has been pushed into the net together with the puck by an attacking player after making a stop, the goal will be disallowed.”",
+            "rule_citation": "38, 38.1, 69.7",
+            "needs_human_read": false
+          }
+        },
+        "initial_state": {
+          "artifact": "on-ice call, as described in the NHL Situation Room statement",
+          "goal_present": true,
+          "ruling": "goal",
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "07:26",
+          "team": "LAK",
+          "score_after": null,
+          "note": "the disallowed goal is removed from the official record, so the on-ice scorer is not recoverable from the final play-by-play"
+        },
+        "corrected_state": {
+          "artifact": "NHL Situation Room result (confirmed against play-by-play)",
+          "goal_present": false,
+          "ruling": "no_goal",
+          "scorer": null,
+          "assists": [],
+          "period": 2,
+          "clock": "07:26",
+          "team": "LAK",
+          "score_after": null,
+          "event_id": null,
+          "shot_type": null
+        },
+        "totals": {
+          "initial_game_goals": null,
+          "corrected_game_goals": 9,
+          "goal_delta": -1,
+          "basis": "on-ice call versus the official ruling; game total from the final play-by-play when available"
+        },
+        "sources": [
+          {
+            "label": "NHL Situation Room statement - Coach’s Challenge: LAK @ NYR – 7:26 of the Second Period",
+            "url": "https://www.nhl.com/news/los-angeles-kings-new-york-rangers-coach-challenge-october-26-2026",
+            "kind": "official_statement",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-27T04:52:08Z",
+            "quote": "Call on the ice is overturned – No goal Los Angeles"
+          },
+          {
+            "label": "Same statement, league content API record (machine-readable, with tags and timestamps)",
+            "url": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories/los-angeles-kings-new-york-rangers-coach-challenge-october-26-2026",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-27T04:52:08Z",
+            "note": "contentDate 2026-10-27T00:35:00Z"
+          },
+          {
+            "label": "Official play-by-play (api-web) - final record checked for the goal and the review stoppage",
+            "url": "https://api-web.nhle.com/v1/gamecenter/2026020185/play-by-play",
+            "kind": "official_api",
+            "evidence": "primary",
+            "retrieved_at": "2026-10-27T04:52:09Z",
+            "sha256": "8a1b63407c19982acec8f95f52b47b4877be67f6e4c95a8237d7241607620ed9",
+            "note": "cross-check: agree; no goal in the final record at the clock; review stoppage present"
+          },
+          {
+            "label": "Official Game Summary (GS) report - frozen post-game scoring summary",
+            "url": "https://www.nhl.com/scores/htmlreports/20262027/GS020185.HTM",
+            "kind": "official_report",
+            "evidence": "reference",
+            "retrieved_at": "",
+            "note": "linked for manual re-verification; not fetched by the Situation Room ingest"
+          }
+        ],
+        "verification": {
+          "status": "verified",
+          "evidence_grade": "primary",
+          "independently_checkable": true,
+          "method": "league_statement+pbp_crosscheck",
+          "check_instructions": "Open the Situation Room statement and confirm the Result line. Then open https://api-web.nhle.com/v1/gamecenter/2026020185/play-by-play and look at period 2 around 07:26: there must be no goal for LAK at that clock, and a chlg-*/video-review stoppage nearby. The GS report should show the same scoring summary.",
+          "verified_by": "nhl_scoring.situation_room - official statement and official play-by-play agree",
+          "verified_at": "2026-10-31T02:16:35Z"
+        },
+        "flags": [
+          "game_id_resolved_from_schedule"
+        ],
+        "notes": "Ingested from the official NHL Situation Room feed (structured format). Classification basis: result line: Call on the ice is overturned – No goal Los Angeles.",
+        "first_seen_at": "2026-10-27T04:52:23Z",
+        "detection_history": [
+          {
+            "run_id": "20261027T102442Z-0.5.0",
+            "detected_at": "2026-10-27T10:24:56Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T155932Z-0.5.0",
+            "detected_at": "2026-10-27T15:59:45Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T203707Z-0.5.0",
+            "detected_at": "2026-10-27T20:37:21Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261027T235748Z-0.5.0",
+            "detected_at": "2026-10-27T23:58:01Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T052713Z-0.5.0",
+            "detected_at": "2026-10-28T05:27:29Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T113437Z-0.5.0",
+            "detected_at": "2026-10-28T11:34:51Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T171930Z-0.5.0",
+            "detected_at": "2026-10-28T17:19:44Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261028T215300Z-0.5.0",
+            "detected_at": "2026-10-28T21:53:15Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T014421Z-0.5.0",
+            "detected_at": "2026-10-29T01:44:35Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T082255Z-0.5.0",
+            "detected_at": "2026-10-29T08:23:09Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T152959Z-0.5.0",
+            "detected_at": "2026-10-29T15:30:13Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261029T203040Z-0.5.0",
+            "detected_at": "2026-10-29T20:30:54Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T001512Z-0.5.0",
+            "detected_at": "2026-10-30T00:15:27Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T062149Z-0.5.0",
+            "detected_at": "2026-10-30T06:22:02Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T132800Z-0.5.0",
+            "detected_at": "2026-10-30T13:28:14Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T184838Z-0.5.0",
+            "detected_at": "2026-10-30T18:48:55Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261030T225534Z-0.5.0",
+            "detected_at": "2026-10-30T22:55:48Z",
+            "machine_status": "verified"
+          },
+          {
+            "run_id": "20261031T021621Z-0.5.0",
+            "detected_at": "2026-10-31T02:16:35Z",
+            "machine_status": "verified"
+          }
+        ],
+        "seen_count": 19,
+        "last_seen_at": "2026-10-31T02:16:35Z"
+      }
+    }
+  ]
+}
